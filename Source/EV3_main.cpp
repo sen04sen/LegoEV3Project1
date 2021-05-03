@@ -1,6 +1,4 @@
-//*************************
-//*** EV3 Main Function ***
-//*************************tutu
+//FUCKING SLAVE!!!
 
 #include <EV3_Motor.h>
 #include "EV3_LCDDisplay.h"
