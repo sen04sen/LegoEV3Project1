@@ -1,4 +1,4 @@
-//FUCKING SLAVE!!!
+//FUCKING SLAVE!!! Yes? vgnireeiv
 
 #include <EV3_Motor.h>
 #include "EV3_LCDDisplay.h"
