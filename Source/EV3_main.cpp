@@ -1226,7 +1226,7 @@ void builded() {
     ed.pb(Edge(d90, 0));
 }
 
-class Exception : public std::exception {
+class Exception {
     // Тут просто класс наших исключений
 private:
     std::string m_error;
@@ -1234,9 +1234,7 @@ private:
 public:
     Exception(string error) : m_error(error) {}
 
-    // Возвращаем std::string в качестве константной строки C-style
-    //	const char* what() const { return m_error.c_str(); } // до C++11
-    const char *what() const noexcept { return m_error.c_str(); } // C++11 и выше
+    const char* what() { return m_error.c_str(); }
 };
 
 template<class T>
@@ -1248,17 +1246,6 @@ string str(T forConvert) {
 
 struct Color {
     int r, g, b;
-
-    Color(const initializer_list<int> &list) {
-        if (list.size() != 3)
-            throw Exception("Color initializer_list.size need 3 parameter, you gave " + str(list.size()));
-        auto it = list.begin();
-        r = *it;
-        it++;
-        g = *it;
-        it++;
-        b = *it;
-    }
 
     Color(int newR, int newG, int newB) : r(newR), g(newG), b(newB) {}
 };
@@ -1284,9 +1271,7 @@ Color getRGB(int port) {
     int r = d[0];
     int g = d[2];
     int b = d[4];
-    // Попробуй так, если не робит, то закомментируй и раскомментрируй другое
-    Color color = {r, g, b};
-    //Color color = Color(r, g, b);
+    Color color = Color(r, g, b);
     return color;
 }
 
@@ -1385,7 +1370,7 @@ int gclr(int uy) {
     }
 }
 
-bool write(int x, int y, int uy) {
+void write(int x, int y, int uy) {
     stringstream s;
     s << uy;
     string a;
@@ -1411,7 +1396,7 @@ int go(int sp, int fromm, int dd1, int totoo, int dd2, bool lst = 1) {
         int dd = st.begin()->first;
         int v = st.begin()->second;
         st.erase(st.begin());
-        for (int i = 0; i < g[v].size(); i++) {
+        for (unsigned int i = 0; i < g[v].size(); i++) {
             int to = g[v][i].first;
             if (msgo[to].second == -1) {
                 msgo[to].first = v;
