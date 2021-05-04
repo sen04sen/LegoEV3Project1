@@ -1226,41 +1226,79 @@ void builded() {
     ed.pb(Edge(d90, 0));
 }
 
+class Exception : public std::exception {
+    // Тут просто класс наших исключений
+private:
+    std::string m_error;
+
+public:
+    Exception(string error) : m_error(error) {}
+
+    // Возвращаем std::string в качестве константной строки C-style
+    //	const char* what() const { return m_error.c_str(); } // до C++11
+    const char *what() const noexcept { return m_error.c_str(); } // C++11 и выше
+};
+
+template<class T>
+string str(T forConvert) {
+    ostringstream ss;
+    ss << forConvert;
+    return ss.str();
+}
+
 struct Color {
     int r, g, b;
 
+    Color(const initializer_list<int> &list) {
+        if (list.size() != 3)
+            throw Exception("Color initializer_list.size need 3 parameter, you gave " + str(list.size()));
+        auto it = list.begin();
+        r = *it;
+        it++;
+        g = *it;
+        it++;
+        b = *it;
+    }
+
+    Color(int newR, int newG, int newB) : r(newR), g(newG), b(newB) {}
 };
 
-pair<pair<int, int>, int> grgb(int port) {
+
+Color getRGB(int port) {
     const void *a;
-    switch (condition) {
+    switch (port) {
         case 3:
             a = GetData_UART(E_Port_3, E_UART_Type_Color, 4);
-
-    }
-    if (port == 3) {
-        a = GetData_UART(E_Port_3, E_UART_Type_Color, 4);
-    } else if (port == 4) {
-        a = GetData_UART(E_Port_4, E_UART_Type_Color, 4);
-    } else if (port == 2) {
-        a = GetData_UART(E_Port_2, E_UART_Type_Color, 4);
+            break;
+        case 4:
+            a = GetData_UART(E_Port_4, E_UART_Type_Color, 4);
+            break;
+        case 2:
+            a = GetData_UART(E_Port_2, E_UART_Type_Color, 4);
+            break;
+        default:
+            throw Exception("invalid port parameter (need 2-4), you gave " + str(port));
+            break;
     }
     unsigned char *d = reinterpret_cast<unsigned char *>(const_cast<void *>(a));
     int r = d[0];
     int g = d[2];
     int b = d[4];
-    return make_pair(make_pair(r, g), b);
+    // Попробуй так, если не робит, то закомментируй и раскомментрируй другое
+    Color color = {r, g, b};
+    //Color color = Color(r, g, b);
+    return color;
 }
 
 void line(int sp, int dist, int tp) {
     bool stop = 0;
     if (tp == 4) {
-        grgb(3);
+        getRGB(3);
         EV3_Sleep(50);
     }
     double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
     if (tp == 4)
-        grgb(3);
+        getRGB(3);
     while (!stop) {
         if (tp == 0 || tp == 6 || tp == 8) {
             if (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st > dist) {
@@ -1275,8 +1313,9 @@ void line(int sp, int dist, int tp) {
                 else if (tp == 3 && s2() < black)
                     stop = 1;
                 else if (tp == 4) {
-                    pair<int, int> rer = grgb(3).first;
-                    if (rer.first - rer.second > 70)
+                    //make_pair(make_pair(r, g), b);
+                    Color color = getRGB(3);
+                    if (color.r - color.g > 70)
                         stop = 1;
                 } else if (tp == 5 && s2() > bluck)
                     stop = 1;
@@ -1615,10 +1654,10 @@ void pov_bat() {
     line(speed, 70, 7);
     moveBC(speed, proe, 0);
     line(speed, 550, 8);
-    grgb(2);
+    getRGB(2);
     moveBC(speed, 60, 0);
     startBC(speed);
-    while (grgb(2).second < 100);
+    while (getRGB(2).b < 100);
     s2();
     moveBC(speed, 70, 1);
     pov(speed, d90, -2);
