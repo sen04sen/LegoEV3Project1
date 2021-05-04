@@ -106,7 +106,7 @@ void moveB(int sp, int dist, bool stop) {
     double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
     while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < dist);
     if (stop)
-        stopb();
+        stopB();
 }
 
 void moveC(int sp, int dist, bool stop) {
@@ -114,7 +114,7 @@ void moveC(int sp, int dist, bool stop) {
     double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
     while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dist);
     if (stop)
-        stopc();
+        stopC();
 }
 
 void moveD(int sp, int dist) {
@@ -127,7 +127,7 @@ void moveD(int sp, int dist) {
         SpeedMotor(E_Port_D, -sp);
         while (GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium) > dist);
     }
-    startd(0);
+    startD(0);
 }
 
 void moveBC(int sp, int dist, bool stop) {
@@ -136,19 +136,19 @@ void moveBC(int sp, int dist, bool stop) {
     double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
     while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dist);
     if (stop)
-        stopbc();
+        stopBC();
 }
 
 void moveBTime(int sp, int time) {
     SpeedMotor_Time(E_Port_B, sp, time);
     wait(time);
-    stopb();
+    stopB();
 }
 
 void moveCTime(int sp, int time) {
     SpeedMotor_Time(E_Port_C, sp, time);
     wait(time);
-    stopc();
+    stopC();
 }
 
 void moveDTime(int sp, int time) {
@@ -160,7 +160,7 @@ void moveDTime(int sp, int time) {
 void moveBCTime(int sp, int time) {
     SpeedMotor_Time(E_Port_BC, sp, time);
     wait(time);
-    stopbc();
+    stopBC();
 }
 
 vector<vector<pair<int, int> > > g;
