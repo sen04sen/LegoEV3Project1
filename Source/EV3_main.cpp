@@ -27,7 +27,8 @@ int ce = 21 * 2;
 int ver = 22;
 
 struct edge {
-	int dt, tp;
+	int dt;
+	void* u;
 };
 
 double stadegd;
