@@ -13,7 +13,6 @@
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 #include <functional>
-#include <chrono>
 #include <map>
 
 
@@ -37,42 +36,23 @@ public:
     const char *what() { return m_error.c_str(); }
 };
 
-class Timer {
-private:
-    // Псевдонимы типов используются для удобного доступа к вложенным типам
-    using clock_t = std::chrono::high_resolution_clock;
-    using second_t = std::chrono::duration<double, std::ratio<1> >;
 
-    std::chrono::time_point<clock_t> m_beg;
-
-public:
-    Timer() : m_beg(clock_t::now()) {}
-
-    void reset() {
-        m_beg = clock_t::now();
-    }
-
-    double elapsed() const {
-        return std::chrono::duration_cast<second_t>(clock_t::now() - m_beg).count();
-    }
-};
 
 class Edge {
     int to, index;
     double time;
-    function<void(void)> def;
+    function < void(void) >  def;
 public:
-    Edge(int newTo, function<void(void)> newDef, double newTime = 1.0) : to(newTo), def(newDef), time(newTime) {
+    Edge(int newTo, function < void ( void ) >  newDef, double newTime = 1.0) : to(newTo), def(newDef), time(newTime) {
         static int generatorIndex = 1;
         index = generatorIndex;
         generatorIndex++;
     }
-
     void operator()(bool reWriteTime = true) {
         if (reWriteTime) {
-            Timer t;
+            T_TimerId id = Timer_Start();
             def();
-            time = t.elapsed();
+            time = Timer_GetTime(id);
         } else def();
     }
 
@@ -94,21 +74,6 @@ void fillG() {
     vec.pb(Edge(1, []() {}));
     g.pb(vec);
     vec.clear();
-}
-
-void add(int from, int to, function<void()> def, double time = 1.0) {
-    try {
-        auto vec = g.at(from);
-        try {
-            vec.pb(Edge(1, def));
-        }
-        catch (exception &exception) {
-            throw Exception("add: to index" + str(exception.what()));
-        }
-    }
-    catch (exception &exception) {
-        throw Exception("add: from index" + str(exception.what()));
-    }
 }
 
 
@@ -392,7 +357,7 @@ void write(int x, int y, int uy) {
 
 pair<int, int> msgo[maxv];
 
-int go(int sp, int fromm, int dd1, int totoo, int dd2, bool lst = 1) {
+/*int go(int sp, int fromm, int dd1, int totoo, int dd2, bool lst = 1) {
     int from = fromm * 4 + dd1;
     int toto = totoo * 4 + dd2;
     for (int i = 0; i < maxv; i++) {
@@ -458,7 +423,7 @@ int go(int sp, int fromm, int dd1, int totoo, int dd2, bool lst = 1) {
         lst = 0;
     }
     return way.size();
-}
+}*/
 
 void vivod_4() {
     for (int i = 0; i < 100; i++) {
@@ -700,6 +665,21 @@ void *okonchanie(void *lpvoid) {
     exit(0);
 }
 
+void add(int from, int to, function<void()> def, double time = 1.0) {
+    try {
+        auto vec = g.at(from);
+        try {
+            vec.pb(Edge(1, def));
+        }
+        catch (exception &exception) {
+            throw Exception("add: to index" + str(exception.what()));
+        }
+    }
+    catch (exception &exception) {
+        throw Exception("add: from index" + str(exception.what()));
+    }
+}
+
 void addcrossroad(int v, int u, int r, int d, int l) {
     if (u == 1) {
         g[v + 2].pb(Edge(v, []() {pov(speed, d90, 3); }));
@@ -758,6 +738,7 @@ signed EV3_main() {
     addcrossroad(39, 0, 1, 1, 1);
     addcrossroad(51, 1, 1, 0, 1);
     addcrossroad(63, 0, 1, 1, 1);
+    add(3, 20, { line(speed, 270, 2); });
     goD(-4);
     wait(1000);
     stadegd = GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
