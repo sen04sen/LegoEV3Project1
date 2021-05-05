@@ -67,6 +67,10 @@ public:
         }
         else def();
     }
+
+    int getTo() { return to; }
+    double getTime() { return time; }
+    double getIndex() { return index; }
 };
 
 void fillG() {
