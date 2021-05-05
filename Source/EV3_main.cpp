@@ -85,7 +85,8 @@ void fillG() {
 double stadegd;
 
 double Pr = 0.3;
-int wise = 130;
+double dws = 130; // расстояние между датчиками и колёсами
+double dsl = 50; //съезд датчиков с линии
 int proe = 50;
 int d90 = 250;
 int d180 = 500;
@@ -840,12 +841,12 @@ int go(int sp, int fromm, int dd1, int totoo, int dd2, bool lst = 1) {
         if (lst == 0) {
             if (ed[nw].tp >= 4) {
                 moveBC(sp, proe, 0);
-                del = wise - proe;
+                del = dws - proe;
             }
             else if (ed[nw].tp >= -2)
-                moveBC(sp, wise);
+                moveBC(sp, dws);
             else
-                moveBC(sp, wise, 0);
+                moveBC(sp, dws, 0);
         }
         if (ed[nw].tp == -3) {
             moveBC(sp, ed[nw].dt + del, 0);
@@ -1106,17 +1107,62 @@ void* okonchanie(void* lpvoid) {
 
 void addcrossroad(int v, int u, int r, int d, int l) {
     if (u == 1) {
-        g[v + 2].pb(Edge(v, []() {pov(speed, d90, 3)}));
+        g[v + 2].pb(Edge(v, []() {pov(speed, d90, 3); }));
+        g[v + 4].pb(Edge(v, []() {pov(speed, d180, 2); }));
+        g[v + 6].pb(Edge(v, []() {pov(speed, d90, 0); }));
     }
+    else {
+        g[v + 2].pb(Edge(v, []() {pov(speed, d90, -2); }));
+        g[v + 4].pb(Edge(v, []() {pov(speed, d180, -2); }));
+        g[v + 6].pb(Edge(v, []() {pov(speed, d90, -1); }));
+    }
+    if (r == 1) {
+        g[v].pb(Edge(v, []() {pov(speed, d90, 0); }));
+        g[v + 4].pb(Edge(v, []() {pov(speed, d90, 3); }));
+        g[v + 6].pb(Edge(v, []() {pov(speed, d180, 2); }));
+    }
+    else {
+        g[v].pb(Edge(v, []() {pov(speed, d90, -1); }));
+        g[v + 4].pb(Edge(v, []() {pov(speed, d90, -2); }));
+        g[v + 6].pb(Edge(v, []() {pov(speed, d180, -2); }));
+    }
+    if (d == 1) {
+        g[v].pb(Edge(v, []() {pov(speed, d90, 2); }));
+        g[v + 2].pb(Edge(v, []() {pov(speed, d180, 0); }));
+        g[v + 6].pb(Edge(v, []() {pov(speed, d90, 3); }));
+    }
+    else {
+        g[v].pb(Edge(v, []() {pov(speed, d90, -2); }));
+        g[v + 2].pb(Edge(v, []() {pov(speed, d180, -1); }));
+        g[v + 6].pb(Edge(v, []() {pov(speed, d90, -2); }));
+    }
+    if (l == 1) {
+        g[v].pb(Edge(v, []() {pov(speed, d90, 3); }));
+        g[v + 2].pb(Edge(v, []() {pov(speed, d180, 2); }));
+        g[v + 4].pb(Edge(v, []() {pov(speed, d90, 0); }));
+    }
+    else {
+        g[v].pb(Edge(v, []() {pov(speed, d90, -2); }));
+        g[v + 2].pb(Edge(v, []() {pov(speed, d180, -2); }));
+        g[v + 4].pb(Edge(v, []() {pov(speed, d90, -1); }));
+    }
+    g[v + 1].pb(Edge(v + 4, []() {moveBC(speed, dws, 1); }));
+    g[v + 1].pb(Edge(v + 9, []() {moveBC(speed, dsl, 0); }));
+    g[v + 3].pb(Edge(v + 6, []() {moveBC(speed, dws, 1); }));
+    g[v + 3].pb(Edge(v + 11, []() {moveBC(speed, dsl, 0); }));
+    g[v + 5].pb(Edge(v, []() {moveBC(speed, dws, 1); }));
+    g[v + 5].pb(Edge(v + 8, []() {moveBC(speed, dsl, 0); }));
+    g[v + 7].pb(Edge(v + 2, []() {moveBC(speed, dws, 1); }));
+    g[v + 7].pb(Edge(v + 9, []() {moveBC(speed, dsl, 0); }));
 }
 
 signed EV3_main() {
     addcrossroad(1, 1, 1, 0, 0);
-    addcrossroad(9, 0, 1, 1, 1);
-    addcrossroad(19, 1, 1, 0, 1);
-    addcrossroad(28, 0, 1, 1, 1);
-    addcrossroad(36, 1, 1, 0, 1);
-    addcrossroad(45, 0, 1, 1, 1);
+    addcrossroad(13, 0, 1, 1, 1);
+    addcrossroad(27, 1, 1, 0, 1);
+    addcrossroad(39, 0, 1, 1, 1);
+    addcrossroad(51, 1, 1, 0, 1);
+    addcrossroad(63, 0, 1, 1, 1);
     goD(-4);
     wait(1000);
     stadegd = GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
