@@ -38,12 +38,12 @@ double dws = 130; // расстояние между датчиками и колёсами
 double dsl = 50; //съезд датчиков с линии
 int d90 = 250;
 int d180 = 500;
-int black = 25;
+int black = 20;
 int bluck = 35;
-int grey = 35;
+int grey = 30;
 int bley = 45;
 int dovorot = 50;
-int pov1wheel = 525;
+int pov1wheel = 530;
 
 int ndir = 0;
 int speed = 23;
@@ -280,46 +280,6 @@ void give2() {
     goD(3);
 }
 
-void give4() {
-    stopBC();
-    stopD();
-    wait(30);
-    moveD(-speedD, 400);
-    moveBC(speed, 200);
-    moveBC(-speed, 200);
-    moveD(speedD, 400);
-}
-
-pair<int, int> gtf() {
-    moveBC(speed, 35);
-    SpeedMotor(E_Port_C, -speed);
-    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < pov1wheel);
-    stopC();
-    moveBC(speed, 365);
-    GetColor(E_Port_4);
-    EV3_Sleep(500);
-    int fi = gclr(4);
-    if (fi == 7)
-        fi = 4;
-    moveBC(speed, 120);
-    EV3_Sleep(500);
-    int se = gclr(4);
-    if (se == 7)
-        se = 4;
-    stopBC();
-    Clear_Display();
-    write(1, 1, fi);
-    write(51, 1, se);
-    return make_pair(fi, se);
-}
-
-void gtb() {
-    moveBC(-speed, 330);
-    pov(speed, d90, 0);
-    line(speed, 50, 1);
-}
-
 pair<int, int> d1;
 pair<int, int> d2;
 pair<int, int> d3;
@@ -402,32 +362,32 @@ void pov_bat() {
     moveD(speedD, 0);
     moveC(speed, 70, 1);
     moveB(speed, 70, 1);
-    moveBC(speed, 130, 1);
-    moveD(speedD, 220);
+    moveBC(10, 130, 1);
+    moveD(15, 230);
     moveB(-speed, 30, 1);
     moveD(speedD, 250);
-    moveBC(-speed, 90, 1);
-    moveD(speedD, 500);
+    moveBC(-speed, 80, 1);
+    moveD(speedD, 520);
     pov(speed, d90 - 20, 3);
-    line(speed, 310, 0);
+    line(speed, 320, 0);
     stopBC();
     pov(speed, d90, -1);
     moveBC(-speed, 60, 1);
     moveD(speedD, 20);
-    moveBC(speed, 170, 1);
-    moveD(speedD, 220);
+    moveBC(speed, 180, 1);
+    moveD(15, 230);
     moveB(-speed, 30, 1);
     moveD(speedD, 250);
     moveBC(-speed, 90, 1);
-    moveD(speedD, 500);
+    moveD(speedD, 520);
     moveBC(-speed, 60, 1);
     pov(speed, d90 - 30, 0);
     pov(speed, 60, -1);
     line(speed, 50, 7);
     moveBC(speed, dsl, 0);
-    line(speed, 550, 8);
+    line(speed, 535, 8);
     getRGB(2);
-    moveBC(speed, 60, 0);
+    moveBC(speed, 75, 0); 
     goBC(speed);
     while (getRGB(2).b < 100);
     s2();
@@ -546,11 +506,33 @@ void f13() {
 }
 
 void f14() {
-    gtf();
+    moveBC(speed, 35);
+    SpeedMotor(E_Port_C, -speed);
+    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < pov1wheel);
+    stopC();
+    moveBC(speed, 365);
+    GetColor(E_Port_4);
+    EV3_Sleep(500);
+    int fi = gclr(4);
+    if (fi == 7)
+        fi = 4;
+    moveBC(speed, 120);
+    EV3_Sleep(500);
+    int se = gclr(4);
+    if (se == 7)
+        se = 4;
+    stopBC();
+    d1 = make_pair(fi, se);
+    Clear_Display();
+    write(1, 1, fi);
+    write(51, 1, se);
 }
 
 void f15() {
-    gtb();
+    moveBC(-speed, 330);
+    pov(speed, d90, 0);
+    line(speed, 50, 1);
 }
 
 void f16() {
@@ -596,18 +578,31 @@ void f25() {
     moveB(speed, 890, 1);
     moveD(speedD, 520);
     pov(speed, 60, -1);
-    wait(2000);
     if (gclr(4) != 0) {
         gdeb = 4;
     }
     write(1, 1, gdeb);
-    wait(2000);
-    moveBC(speed, 380, 0);
+    moveBC(speed, 390, 0);
     goBC(speed);
     while (s2() > black);
     moveBC(speed, 100, 1);
     pov(speed, 160, 3);
     line(speed, 200, 3);
+}
+
+void f26() {
+    stopBC();
+    stopD();
+    wait(30);
+    moveD(speedD, 420);
+    moveBC(speed, 200);
+    moveBC(-speed, 200);
+    moveD(speedD, 520);
+}
+
+void f27() {
+    pov(speed, 180, 2);
+    line(speed, grad[2] - dws, 1);
 }
 
 
@@ -685,6 +680,9 @@ void buildg() {
 
     add(26, 23, f15);
 
+    add(23, 111, f26);
+    add(111, 23, f27);
+
     add(27, 99, f16);
 
     add(28, 50, f17);
@@ -714,13 +712,18 @@ signed EV3_main() {
     buildgrad();
     buildg();
     goD(-speed);
-    wait(1000);
+    wait(700);
     goD(0);
     go(speed, 0, 26);
-    go(speed, 26, 99);
+    if (d1.first == 4 || d1.second == 4) {
+        go(speed, 26, 111);
+        go(speed, 11, 99);
+    }
+    else
+        go(speed, 26, 99);
     pov_bat();
     return 0;
-    d1 = gtf();
+    /*d1 = gtf();
     gtb();
     if (d1.first == 4 || d1.second == 4) {
         stopBC();
@@ -786,6 +789,6 @@ signed EV3_main() {
     moveBC(speed, dws, 1);
     pov(speed, d90, 0);
     line(speed, 100, 3);
-    get_4_blue();
+    get_4_blue();*/
     return 0;
 }
