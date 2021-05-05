@@ -45,17 +45,6 @@ public:
     const char *what() { return m_error.c_str(); }
 };
 
-/*
-try{
-
-}
-catch(...){
-    throw Exception(__LINE__)
-}
-*/
-
-vector<vector<Edge> > g;
-
 class Edge {
     int to, index;
     double time;
@@ -85,8 +74,6 @@ public:
 
     double getIndex() { return index; }
 
-vector < vector < Edge > > g(500);
-
     void open() { active = true; }
 
     static void closeFromIndex(int newIndex) {
@@ -104,24 +91,12 @@ vector < vector < Edge > > g(500);
     }
 };
 
-void fillG() {
-    vector<Edge> vec;
-
-    vec.pb(Edge(1, []() {}));
-    vec.pb(Edge(1, []() {}));
-    vec.pb(Edge(1, []() {}));
-    vec.pb(Edge(1, []() {}));
-    g.pb(vec);
-    vec.clear();
-}
-
+vector<vector<Edge> > g(500);
 
 double stadegd;
-vector < vector < Edge > > g(500);
 double Pr = 0.3;
 double dws = 130; // расстояние между датчиками и колёсами
 double dsl = 50; //съезд датчиков с линии
-int proe = 50;
 int d90 = 250;
 int d180 = 500;
 int black = 25;
@@ -299,7 +274,7 @@ int go(int sp, int from, int toto) {
         double dd = st.begin()->first;
         int v = st.begin()->second;
         st.erase(st.begin());
-        for (unsigned int i = 0; i < g[v].size(); i++) {
+        for (int i = 0; i < g[v].size(); i++) {
             int to = g[v][i].getTo();
             if (dd + g[v][i].getTime() < msgo[to].first.first) {
                 st.erase(make_pair(msgo[to].first.first, to));
@@ -427,7 +402,7 @@ void end_4_green() {
     moveBC(-speed, 140, 1);
     pov(speed, d90, 3);
     line(speed, 30, 2);
-    moveBC(speed, proe, 1);
+    moveBC(speed, dsl, 1);
     line(speed, 220, 0);
     stopBC();
     pov(speed, d90, -1);
@@ -439,14 +414,14 @@ void end_4_green() {
     pov(speed, d90, 3);
     line(speed, 400, 3);
     if (d1.first == 3 || d1.second == 3) {
-        moveBC(speed, wise, 1);
+        moveBC(speed, dws, 1);
         pov(speed, d180, 1);
         line(speed, 780, 3);
-        moveBC(speed, proe, 0);
+        moveBC(speed, dsl, 0);
         line(speed, 170, 2);
-        moveBC(speed, proe, 0);
+        moveBC(speed, dsl, 0);
         line(speed, 590, 3);
-        moveBC(speed, wise, 1);
+        moveBC(speed, dws, 1);
         pov(speed, d90, 3);
         line(speed, 200, 4);
         moveBC(speed, 50, 1);
@@ -455,18 +430,18 @@ void end_4_green() {
         pov(speed, d90, 0);
         SpeedMotor_Time(E_Port_D, -30, 2000);
         wait(2000);
-        stopd();
+        stopD();
         line(speed, 270, 2);
-        moveBC(speed, wise, 1);
+        moveBC(speed, dws, 1);
         pov(speed, d90, 0);
         line(speed, 750, 0);
         moveBC(speed, 300, 1);
         wait(10000);
     }
     else {
-        moveBC(speed, proe, 0);
+        moveBC(speed, dsl, 0);
         line(speed, 760, 2);
-        moveBC(speed, wise, 1);
+        moveBC(speed, dws, 1);
         pov(speed, d90, 0);
         line(speed, 200, 4);
         moveBC(speed, 50, 1);
@@ -475,17 +450,17 @@ void end_4_green() {
         pov(speed, d90, 0);
         SpeedMotor_Time(E_Port_D, -30, 2000);
         wait(2000);
-        stopd();
+        stopD();
         line(speed, 760, 2);
-        moveBC(speed, proe, 0);
+        moveBC(speed, dsl, 0);
         line(speed, 780, 3);
-        moveBC(speed, proe, 0);
+        moveBC(speed, dsl, 0);
         line(speed, 170, 2);
-        moveBC(speed, proe, 0);
+        moveBC(speed, dsl, 0);
         line(speed, 590, 3);
-        moveBC(speed, proe, 0);
+        moveBC(speed, dsl, 0);
         line(speed, 270, 2);
-        moveBC(speed, wise, 1);
+        moveBC(speed, dws, 1);
         pov(speed, d90, 0);
         line(speed, 750, 0);
         moveBC(speed, 300, 1);
@@ -519,7 +494,7 @@ void pov_bat() {
     pov(speed, d90 - 30, 0);
     pov(speed, 60, -1);
     line(speed, 70, 7);
-    moveBC(speed, proe, 0);
+    moveBC(speed, dsl, 0);
     line(speed, 550, 8);
     grgb(2);
     moveBC(speed, 60, 0);
@@ -801,7 +776,7 @@ signed EV3_main() {
     moveBC(speed, 375, 0);
     goBC(speed);
     while (s3() > black);
-    moveBC(speed, wise + 20, 1);
+    moveBC(speed, dws + 20, 1);
     pov(speed, 130, 3);
     line(speed, 200, 3);
     ////go(speed, 1, 2, 3, 2, 0);
@@ -826,7 +801,7 @@ signed EV3_main() {
     pov(speed, d90 + 40, -1);
     goBC(speed);
     while (s2() > black);
-    moveBC(speed, wise + 10, 1);
+    moveBC(speed, dws + 10, 1);
     pov(speed, d90, 3);
     line(speed, 200, 4);
     d2 = gtf();
@@ -839,7 +814,7 @@ signed EV3_main() {
     moveB(speed, pov1wheel, 1);
     goBC(speed);
     while (s3() > black);
-    moveBC(speed, wise, 1);
+    moveBC(speed, dws, 1);
     if (d2.first == 4 || d2.second == 4) {
         pov(speed, d90, 0);
         line(speed, 300, 4);
@@ -869,7 +844,7 @@ signed EV3_main() {
         pov(speed, d180, 2);
         line(speed, 250, 1);
     }
-    moveBC(speed, wise, 1);
+    moveBC(speed, dws, 1);
     pov(speed, d90, 0);
     line(speed, 100, 3);
     get_4_blue();
