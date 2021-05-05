@@ -112,8 +112,8 @@ int dovorot = 50;
 int pov1wheel = 525;
 
 int ndir = 0;
-int speed = 15;
-int speedD = 15;
+int speed = 30;
+int speedD = 40;
 
 int s2() {
     return GetReflect(E_Port_2);
@@ -539,6 +539,7 @@ void get_4_blue() {
 void *okonchanie(void *lpvoid) {
     while (!isBrickButtonPressed(E_BTN_ESC));
     StopMotorAll();
+    wait(500);
     exit(0);
 }
 
@@ -664,16 +665,16 @@ void f24() {
 void f25() {
     moveBC(speed, 340, 0);
     stopB();
-    moveC(speed, 50, 1);
-    moveB(speed, 790, 1);
-    wait(4000);
-    moveD(speedD, 500);
-    goD(3);
-    pov(speed, 50, -1);
-    wait(3000);
+    moveC(speed, 80, 1);
+    moveB(speed, 880, 1);
+    moveD(speedD, 510);
+    pov(speed, 70, -1);
+    wait(2000);
     if (gclr(4) != 0) {
         gdeb = 4;
     }
+    write(1, 1, gdeb);
+    wait(2000);
     moveBC(speed, 375, 0);
     goBC(speed);
     while (s3() > black);
@@ -785,7 +786,7 @@ signed EV3_main() {
     CreateThread(okonchanie, 0);
     buildgrad();
     buildg();
-    goD(-40);
+    goD(-speed);
     wait(1000);
     goD(0);
     go(speed, 0, 26);
