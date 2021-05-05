@@ -12,6 +12,8 @@
 #include <set>
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
+#include <functional>
+
 
 
 using namespace ev3_c_api;
@@ -828,6 +830,25 @@ void fillG() {
 }
 
 vector<Edge> ed;
+
+// Rebro(1.45, ()[]{ lineT(140); })
+// Rebro(1.45, ()[]{ lineT(350); })
+// add(1, 45, 1.34, ()[]{ lineT(123); });
+
+enum Pologenie
+{
+    firstCross,
+    firstCross1, // Колесами вперед 
+    firstCross2, // Колесами назад 
+    batarLeft,
+    batarRirht,
+};
+
+Pologenie a;
+
+void add(Pologenie, Pologenie, double time, (void*));
+
+// add(firstCross, batarLeft, 1.34, ()[]{ lineT(123); });
 
 void builded() {
     ed.pb(Edge(750, 7));
