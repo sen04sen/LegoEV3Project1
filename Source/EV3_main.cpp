@@ -94,10 +94,12 @@ void goBC(int sp, int uy = 0) {
     if (uy == 0) {
         SpeedMotor(E_Port_B, -1 * (sp));
         SpeedMotor(E_Port_C, sp);
-    } else if (uy == 1) {
+    }
+    else if (uy == 1) {
         SpeedMotor(E_Port_B, -1 * (sp));
         SpeedMotor(E_Port_C, -1 * sp);
-    } else {
+    }
+    else {
         SpeedMotor(E_Port_B, sp);
         SpeedMotor(E_Port_C, sp);
     }
@@ -120,12 +122,13 @@ void moveC(int sp, int dist, bool stop = true) {
 }
 
 void moveD(int sp, int dist) {
-    dist = (double) dist + stadegd;
+    dist = (double)dist + stadegd;
     double st = dist - GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
     if (st >= 0) {
         SpeedMotor(E_Port_D, sp);
         while (GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium) < dist);
-    } else {
+    }
+    else {
         SpeedMotor(E_Port_D, -sp);
         while (GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium) > dist);
     }
@@ -1255,7 +1258,7 @@ private:
 public:
     Exception(string error) : m_error(error) {}
 
-    const char *what() { return m_error.c_str(); }
+    const char* what() { return m_error.c_str(); }
 };
 
 template<class T>
@@ -1273,22 +1276,22 @@ struct Color {
 
 
 Color getRGB(int port) {
-    const void *a;
+    const void* a;
     switch (port) {
-        case 3:
-            a = GetData_UART(E_Port_3, E_UART_Type_Color, 4);
-            break;
-        case 4:
-            a = GetData_UART(E_Port_4, E_UART_Type_Color, 4);
-            break;
-        case 2:
-            a = GetData_UART(E_Port_2, E_UART_Type_Color, 4);
-            break;
-        default:
-            throw Exception("invalid port parameter (need 2-4), you gave " + str(port));
-            break;
+    case 3:
+        a = GetData_UART(E_Port_3, E_UART_Type_Color, 4);
+        break;
+    case 4:
+        a = GetData_UART(E_Port_4, E_UART_Type_Color, 4);
+        break;
+    case 2:
+        a = GetData_UART(E_Port_2, E_UART_Type_Color, 4);
+        break;
+    default:
+        throw Exception("invalid port parameter (need 2-4), you gave " + str(port));
+        break;
     }
-    unsigned char *d = reinterpret_cast<unsigned char *>(const_cast<void *>(a));
+    unsigned char* d = reinterpret_cast<unsigned char*>(const_cast<void*>(a));
     int r = d[0];
     int g = d[2];
     int b = d[4];
@@ -1310,7 +1313,8 @@ void line(int sp, int dist, int tp) {
             if (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st > dist) {
                 stop = 1;
             }
-        } else {
+        }
+        else {
             if (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st > dist - 50) {
                 if (tp == 1 && s2() < black && s3() < black)
                     stop = 1;
@@ -1323,7 +1327,8 @@ void line(int sp, int dist, int tp) {
                     Color color = getRGB(3);
                     if (color.r - color.g > 70)
                         stop = 1;
-                } else if (tp == 5 && s2() > bluck)
+                }
+                else if (tp == 5 && s2() > bluck)
                     stop = 1;
                 else if (tp == 7 && s3() < black)
                     stop = 1;
@@ -1331,13 +1336,16 @@ void line(int sp, int dist, int tp) {
         }
         double del;
         if (tp == 5 || tp == 6) {
-            del = (double) (s3() - bley) * Pr * 3 / 3;
-        } else if (tp == 4) {
-            del = (double) (grey - s2()) * Pr * 2 / 3;
-        } else if (tp == 7 || tp == 8) {
-            del = (double) (s2() - grey) * Pr * 3 / 3;
-        } else
-            del = (double) (s3() - s2()) * Pr;
+            del = (double)(s3() - bley) * Pr * 3 / 3;
+        }
+        else if (tp == 4) {
+            del = (double)(grey - s2()) * Pr * 2 / 3;
+        }
+        else if (tp == 7 || tp == 8) {
+            del = (double)(s2() - grey) * Pr * 3 / 3;
+        }
+        else
+            del = (double)(s3() - s2()) * Pr;
         SpeedMotor(E_Port_B, -1 * (sp - del));
         SpeedMotor(E_Port_C, sp + del);
     }
@@ -1350,7 +1358,8 @@ void pov(int sp, int dt, int tp) {
         if (tp < 2 || tp == 4) {
             SpeedMotor(E_Port_B, -1 * (sp));
             SpeedMotor(E_Port_C, -1 * (sp));
-        } else {
+        }
+        else {
             SpeedMotor(E_Port_B, sp);
             SpeedMotor(E_Port_C, sp);
         }
@@ -1363,17 +1372,20 @@ void pov(int sp, int dt, int tp) {
             while (s2() > bluck);
         else if (tp < 2) {
             while (s3() > black);
-        } else {
+        }
+        else {
             while (s2() > black);
         }
         st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
         while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dovorot);
         stopBC();
-    } else {
+    }
+    else {
         if (tp == -1) {
             SpeedMotor(E_Port_B, -1 * (sp));
             SpeedMotor(E_Port_C, -1 * (sp));
-        } else {
+        }
+        else {
             SpeedMotor(E_Port_B, sp);
             SpeedMotor(E_Port_C, sp);
         }
@@ -1386,7 +1398,8 @@ void pov(int sp, int dt, int tp) {
 int gclr(int uy) {
     if (uy == 4) {
         return GetColor(E_Port_4);
-    } else {
+    }
+    else {
         return GetColor(E_Port_3);
     }
 }
@@ -1448,7 +1461,8 @@ int go(int sp, int fromm, int dd1, int totoo, int dd2, bool lst = 1) {
             if (ed[nw].tp >= 4) {
                 moveBC(sp, proe, 0);
                 del = wise - proe;
-            } else if (ed[nw].tp >= -2)
+            }
+            else if (ed[nw].tp >= -2)
                 moveBC(sp, wise);
             else
                 moveBC(sp, wise, 0);
@@ -1471,8 +1485,8 @@ int go(int sp, int fromm, int dd1, int totoo, int dd2, bool lst = 1) {
 
 void vivod_4() {
     for (int i = 0; i < 100; i++) {
-        const void *a = GetData_UART(E_Port_3, E_UART_Type_Color, 4);
-        unsigned char *d = reinterpret_cast<unsigned char *>(const_cast<void *>(a));
+        const void* a = GetData_UART(E_Port_3, E_UART_Type_Color, 4);
+        unsigned char* d = reinterpret_cast<unsigned char*>(const_cast<void*>(a));
         int r = d[0];
         int g = d[2];
         int b = d[4];
@@ -1602,7 +1616,8 @@ void end_4_green() {
         line(speed, 750, 0);
         moveBC(1, 2);
         wait(10000);
-    } else {
+    }
+    else {
         moveBC(speed, proe, 0);
         line(speed, 760, 2);
         moveBC(1, 2);
@@ -1704,7 +1719,7 @@ void get_4_blue() {
     stopBC();
 }
 
-void *okonchanie(void *lpvoid) {
+void* okonchanie(void* lpvoid) {
     while (!isBrickButtonPressed(E_BTN_ESC));
     exit(0);
 }
@@ -1786,7 +1801,8 @@ signed EV3_main() {
         p2 = 1;
         pov(speed, d180, 2);
         line(speed, 600, 1);
-    } else {
+    }
+    else {
         pov(speed, d90, 3);
         line(speed, 200, 1);
     }
