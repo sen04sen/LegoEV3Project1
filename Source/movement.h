@@ -15,6 +15,11 @@
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 #include <functional>
+#include "wait.h"
+
+
+using namespace ev3_c_api;
+using namespace std;
 
 void stopB() {
     StopMotor(E_Port_B, 1);
@@ -74,6 +79,7 @@ void moveC(int sp, int dist, bool stop = true) {
 }
 
 void moveD(int sp, int dist) {
+    static double stadegd =  GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
     dist = (double) dist + stadegd;
     double st = dist - GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
     if (st >= 0) {
