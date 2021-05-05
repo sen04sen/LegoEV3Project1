@@ -38,6 +38,7 @@ private:
 
 public:
     Exception(string error) : m_error(error) {}
+
     Exception(int line) : m_error(str(line)) {}
 
     const char *what() { return m_error.c_str(); }
@@ -52,18 +53,21 @@ catch(...){
 }
 */
 
-
+vector<vector<Edge> > g;
 
 class Edge {
     int to, index;
     double time;
-    void (*def)() = NULL;
+    bool active;
+    void (*def)();
+    // index объединяет ребра в группы для одновременной активации или дезактивации
+
 public:
-    Edge(int newTo, void (*const newDef)(), double newTime = 1.0) : to(newTo), def(newDef), time(newTime) {
-        static int generatorIndex = 1;
-        index = generatorIndex;
-        generatorIndex++;
-    }
+    Edge(int newTo, void (*const newDef)(), double newTime = 1.0, bool newActive = true, int newIndex = 0) : to(newTo),
+                                                                                                             time(newTime),
+                                                                                                             active(newActive),
+                                                                                                             index(newIndex) {}
+
     void operator()(bool reWriteTime = true) {
         if (reWriteTime) {
             T_TimerId id = Timer_Start();
@@ -77,9 +81,25 @@ public:
     double getTime() { return time; }
 
     double getIndex() { return index; }
-};
 
-vector < vector < Edge > > g;
+    void close() { active = false; }
+
+    void open() { active = true; }
+
+    static void closeFromIndex(int newIndex) {
+        for (int i = 0; i < g.size(); ++i)
+            for (int j = 0; j < g[i].size(); ++j)
+                if (g[i][j].getIndex() == newIndex)
+                    g[i][j].close();
+    }
+
+    static void openFromIndex(int newIndex) {
+        for (int i = 0; i < g.size(); ++i)
+            for (int j = 0; j < g[i].size(); ++j)
+                if (g[i][j].getIndex() == newIndex)
+                    g[i][j].open();
+    }
+};
 
 void fillG() {
     vector<Edge> vec;
@@ -227,8 +247,6 @@ void moveBCTime(int sp, int time) {
     wait(time);
     stopBC();
 }
-
-
 
 
 struct Color {
@@ -693,53 +711,49 @@ void add(int from, int to, function<void()> def, double time = 1.0) {
 
 void addcrossroad(int v, int u, int r, int d, int l) {
     if (u == 1) {
-        g[v + 2].pb(Edge(v, []() {pov(speed, d90, 3); }));
-        g[v + 4].pb(Edge(v, []() {pov(speed, d180, 2); }));
-        g[v + 6].pb(Edge(v, []() {pov(speed, d90, 0); }));
-    }
-    else {
-        g[v + 2].pb(Edge(v, []() {pov(speed, d90, -2); }));
-        g[v + 4].pb(Edge(v, []() {pov(speed, d180, -2); }));
-        g[v + 6].pb(Edge(v, []() {pov(speed, d90, -1); }));
+        g[v + 2].pb(Edge(v, []() { pov(speed, d90, 3); }));
+        g[v + 4].pb(Edge(v, []() { pov(speed, d180, 2); }));
+        g[v + 6].pb(Edge(v, []() { pov(speed, d90, 0); }));
+    } else {
+        g[v + 2].pb(Edge(v, []() { pov(speed, d90, -2); }));
+        g[v + 4].pb(Edge(v, []() { pov(speed, d180, -2); }));
+        g[v + 6].pb(Edge(v, []() { pov(speed, d90, -1); }));
     }
     if (r == 1) {
-        g[v].pb(Edge(v, []() {pov(speed, d90, 0); }));
-        g[v + 4].pb(Edge(v, []() {pov(speed, d90, 3); }));
-        g[v + 6].pb(Edge(v, []() {pov(speed, d180, 2); }));
-    }
-    else {
-        g[v].pb(Edge(v, []() {pov(speed, d90, -1); }));
-        g[v + 4].pb(Edge(v, []() {pov(speed, d90, -2); }));
-        g[v + 6].pb(Edge(v, []() {pov(speed, d180, -2); }));
+        g[v].pb(Edge(v, []() { pov(speed, d90, 0); }));
+        g[v + 4].pb(Edge(v, []() { pov(speed, d90, 3); }));
+        g[v + 6].pb(Edge(v, []() { pov(speed, d180, 2); }));
+    } else {
+        g[v].pb(Edge(v, []() { pov(speed, d90, -1); }));
+        g[v + 4].pb(Edge(v, []() { pov(speed, d90, -2); }));
+        g[v + 6].pb(Edge(v, []() { pov(speed, d180, -2); }));
     }
     if (d == 1) {
-        g[v].pb(Edge(v, []() {pov(speed, d90, 2); }));
-        g[v + 2].pb(Edge(v, []() {pov(speed, d180, 0); }));
-        g[v + 6].pb(Edge(v, []() {pov(speed, d90, 3); }));
-    }
-    else {
-        g[v].pb(Edge(v, []() {pov(speed, d90, -2); }));
-        g[v + 2].pb(Edge(v, []() {pov(speed, d180, -1); }));
-        g[v + 6].pb(Edge(v, []() {pov(speed, d90, -2); }));
+        g[v].pb(Edge(v, []() { pov(speed, d90, 2); }));
+        g[v + 2].pb(Edge(v, []() { pov(speed, d180, 0); }));
+        g[v + 6].pb(Edge(v, []() { pov(speed, d90, 3); }));
+    } else {
+        g[v].pb(Edge(v, []() { pov(speed, d90, -2); }));
+        g[v + 2].pb(Edge(v, []() { pov(speed, d180, -1); }));
+        g[v + 6].pb(Edge(v, []() { pov(speed, d90, -2); }));
     }
     if (l == 1) {
-        g[v].pb(Edge(v, []() {pov(speed, d90, 3); }));
-        g[v + 2].pb(Edge(v, []() {pov(speed, d180, 2); }));
-        g[v + 4].pb(Edge(v, []() {pov(speed, d90, 0); }));
+        g[v].pb(Edge(v, []() { pov(speed, d90, 3); }));
+        g[v + 2].pb(Edge(v, []() { pov(speed, d180, 2); }));
+        g[v + 4].pb(Edge(v, []() { pov(speed, d90, 0); }));
+    } else {
+        g[v].pb(Edge(v, []() { pov(speed, d90, -2); }));
+        g[v + 2].pb(Edge(v, []() { pov(speed, d180, -2); }));
+        g[v + 4].pb(Edge(v, []() { pov(speed, d90, -1); }));
     }
-    else {
-        g[v].pb(Edge(v, []() {pov(speed, d90, -2); }));
-        g[v + 2].pb(Edge(v, []() {pov(speed, d180, -2); }));
-        g[v + 4].pb(Edge(v, []() {pov(speed, d90, -1); }));
-    }
-    g[v + 1].pb(Edge(v + 4, []() {moveBC(speed, dws, 1); }));
-    g[v + 1].pb(Edge(v + 9, []() {moveBC(speed, dsl, 0); }));
-    g[v + 3].pb(Edge(v + 6, []() {moveBC(speed, dws, 1); }));
-    g[v + 3].pb(Edge(v + 11, []() {moveBC(speed, dsl, 0); }));
-    g[v + 5].pb(Edge(v, []() {moveBC(speed, dws, 1); }));
-    g[v + 5].pb(Edge(v + 8, []() {moveBC(speed, dsl, 0); }));
-    g[v + 7].pb(Edge(v + 2, []() {moveBC(speed, dws, 1); }));
-    g[v + 7].pb(Edge(v + 9, []() {moveBC(speed, dsl, 0); }));
+    g[v + 1].pb(Edge(v + 4, []() { moveBC(speed, dws, 1); }));
+    g[v + 1].pb(Edge(v + 9, []() { moveBC(speed, dsl, 0); }));
+    g[v + 3].pb(Edge(v + 6, []() { moveBC(speed, dws, 1); }));
+    g[v + 3].pb(Edge(v + 11, []() { moveBC(speed, dsl, 0); }));
+    g[v + 5].pb(Edge(v, []() { moveBC(speed, dws, 1); }));
+    g[v + 5].pb(Edge(v + 8, []() { moveBC(speed, dsl, 0); }));
+    g[v + 7].pb(Edge(v + 2, []() { moveBC(speed, dws, 1); }));
+    g[v + 7].pb(Edge(v + 9, []() { moveBC(speed, dsl, 0); }));
 }
 
 signed EV3_main() {
@@ -749,7 +763,7 @@ signed EV3_main() {
     addcrossroad(39, 0, 1, 1, 1);
     addcrossroad(51, 1, 1, 0, 1);
     addcrossroad(63, 0, 1, 1, 1);
-    add(3, 20, { line(speed, 270, 2); });
+    add(3, 20, {line(speed, 270, 2);});
     goD(-4);
     wait(1000);
     stadegd = GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
