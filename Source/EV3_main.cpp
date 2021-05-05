@@ -13,12 +13,10 @@
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 #include <functional>
-#include "wait.h"
+#include "utils.h"
 #include "motors.h"
-#include "exception.h"
-#include "str.h"
 #include "edge.h"
-#include "okonchanie.h"
+#include "sensors.h"
 
 using namespace ev3_c_api;
 using namespace std;
@@ -34,8 +32,8 @@ vector<vector<Edge> > g(maxv);
 
 
 double Pr = 0.3;
-double dws = 130; // расстояние между датчиками и колёсами
-double dsl = 50; //съезд датчиков с линии
+double dws = 130; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+double dsl = 50; //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
 int d90 = 250;
 int d180 = 500;
 int black = 25;
@@ -49,45 +47,7 @@ int ndir = 0;
 int speed = 23;
 int speedD = 40;
 
-int s2() {
-    return GetReflect(E_Port_2);
-}
 
-int s3() {
-    return GetReflect(E_Port_3);
-}
-
-
-struct Color {
-    int r, g, b;
-
-    Color(int newR, int newG, int newB) : r(newR), g(newG), b(newB) {}
-};
-
-
-Color getRGB(int port) {
-    const void *a;
-    switch (port) {
-        case 3:
-            a = GetData_UART(E_Port_3, E_UART_Type_Color, 4);
-            break;
-        case 4:
-            a = GetData_UART(E_Port_4, E_UART_Type_Color, 4);
-            break;
-        case 2:
-            a = GetData_UART(E_Port_2, E_UART_Type_Color, 4);
-            break;
-        default:
-            throw Exception("invalid port parameter (need 2-4), you gave " + str(port));
-            break;
-    }
-    unsigned char *d = reinterpret_cast<unsigned char *>(const_cast<void *>(a));
-    int r = d[0];
-    int g = d[2];
-    int b = d[4];
-    Color color = Color(r, g, b);
-    return color;
-}
 
 void line(int sp, int dist, int tp) {
     bool stop = 0;
@@ -176,21 +136,9 @@ void pov(int sp, int dt, int tp) {
     }
 }
 
-int gclr(int uy) {
-    if (uy == 4) {
-        return GetColor(E_Port_4);
-    } else {
-        return GetColor(E_Port_3);
-    }
-}
 
-void write(int x, int y, int uy) {
-    stringstream s;
-    s << uy;
-    string a;
-    s >> a;
-    Draw_Text(x, y, E_Font_Normal, 0, &(a[0]));
-}
+
+
 
 
 pair<pair<double, int>, Edge> msgo[maxv];
