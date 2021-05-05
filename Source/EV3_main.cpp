@@ -14,6 +14,11 @@
 #include "EV3_BrickUI.h"
 #include <functional>
 
+using namespace ev3_c_api;
+using namespace std;
+
+#define pb push_back
+
 void wait(int time) {
     // время сна в миллисекундах
     EV3_Sleep(time);
@@ -123,10 +128,6 @@ void moveBCTime(int sp, int time) {
     stopBC();
 }
 
-using namespace ev3_c_api;
-using namespace std;
-
-#define pb push_back
 
 const int maxv = 500;
 int ce = 21 * 2;
@@ -156,14 +157,16 @@ class Edge {
     int to, index;
     double time;
     bool active;
-
     void (*def)();
+    
     // index объединяет ребра в группы для одновременной активации или дезактивации
 
 public:
-    static double closeTime;
+    
+    Edge() {}
 
     Edge(int newTo, void (*const newDef)(), double newTime = 1.0, bool newActive = true, int newIndex = 0) : to(newTo),
+                                                                                                                def(newDef),
                                                                                                              time(newTime),
                                                                                                              active(newActive),
                                                                                                              index(newIndex) {}
@@ -178,15 +181,14 @@ public:
 
     int getTo() { return to; }
 
-    double getTime() { return active ? time : closeTime; }
+    double getTime() { return active ? time : 100000000.0; }
 
     double getIndex() { return index; }
 
-vector < vector < Edge > > g(500);
-
     void open() { active = true; }
+    void close() { active = false; }
 
-    static void closeFromIndex(int newIndex) {
+    /*static void closeFromIndex(int newIndex) {
         for (int i = 0; i < g.size(); ++i)
             for (int j = 0; j < g[i].size(); ++j)
                 if (g[i][j].getIndex() == newIndex)
@@ -198,18 +200,12 @@ vector < vector < Edge > > g(500);
             for (int j = 0; j < g[i].size(); ++j)
                 if (g[i][j].getIndex() == newIndex)
                     g[i][j].open();
-    }
+    }*/
 };
 
-vector<vector<Edge> > g(500);
+vector<vector<Edge> > g(maxv);
 
 
-
-
-
-vector < vector < Edge > > g(500);
-
-vector < vector < Edge > > g(500);
 double Pr = 0.3;
 double dws = 130; // расстояние между датчиками и колёсами
 double dsl = 50; //съезд датчиков с линии
@@ -410,7 +406,7 @@ int go(int sp, int from, int toto) {
     }
     for (int i = way.size() - 1; i >= 0; i--) {
         Edge nw = way[i];
-        nw(0);
+        nw();
     }
     return way.size();
 }
@@ -547,10 +543,6 @@ void end_4_green() {
     }
     else {
         moveBC(speed, dsl, 0);
-        wait(10000);
-    }
-    else {
-        moveBC(speed, proe, 0);
         line(speed, 760, 2);
         moveBC(speed, dws, 1);
         pov(speed, d90, 0);
@@ -607,10 +599,10 @@ void pov_bat() {
     line(speed, 70, 7);
     moveBC(speed, dsl, 0);
     line(speed, 550, 8);
-    grgb(2);
+    getRGB(2);
     moveBC(speed, 60, 0);
     goBC(speed);
-    while (grgb(2).second < 100);
+    while (getRGB(2).b < 100);
     s2();
     moveBC(speed, 70, 1);
     pov(speed, d90, -2);
@@ -653,6 +645,7 @@ void get_4_blue() {
 
 void *okonchanie(void *lpvoid) {
     while (!isBrickButtonPressed(E_BTN_ESC));
+    StopMotorAll();
     exit(0);
 }
 
@@ -878,14 +871,15 @@ signed EV3_main() {
     buildg();
     goD(-4);
     wait(1000);
-    Clear_Display();
     goD(0);
+    write(1, 1, g[1][0].getTo());
+    wait(3000);
+    g[1][0]();
+    return 0;
     int lol = go(speed, 1, 86);
     stopBC();
     write(1, 1, lol);
     wait(5000);
-    return 0;
-    pov_bat();
     return 0;
     moveBC(speed, 250, 0);
     stopB();
@@ -894,7 +888,7 @@ signed EV3_main() {
     pov(speed, 120, -1);
     moveD(-speedD, 100);
     moveBC(speed, 10, 0);
-    stopС();
+    stopC();
     moveB(speed, 790, 1);
     moveD(speedD, 100);
     goD(3);
