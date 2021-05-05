@@ -13,9 +13,115 @@
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 #include <functional>
-#include "movement.h"
-#include "wait.h"
 
+void wait(int time) {
+    // время сна в миллисекундах
+    EV3_Sleep(time);
+}
+
+void stopB() {
+    StopMotor(E_Port_B, 1);
+}
+
+void stopC() {
+    StopMotor(E_Port_C, 1);
+}
+
+void stopD() {
+    StopMotor(E_Port_D, 1);
+}
+
+void stopBC() {
+    StopMotor(E_Port_BC, 1);
+}
+
+void goB(int sp) {
+    SpeedMotor(E_Port_B, -1 * (sp));
+}
+
+void goC(int sp) {
+    SpeedMotor(E_Port_C, sp);
+}
+
+void goD(int sp) {
+    SpeedMotor(E_Port_D, sp);
+}
+
+void goBC(int sp, int uy = 0) {
+    if (uy == 0) {
+        SpeedMotor(E_Port_B, -1 * (sp));
+        SpeedMotor(E_Port_C, sp);
+    } else if (uy == 1) {
+        SpeedMotor(E_Port_B, -1 * (sp));
+        SpeedMotor(E_Port_C, -1 * sp);
+    } else {
+        SpeedMotor(E_Port_B, sp);
+        SpeedMotor(E_Port_C, sp);
+    }
+}
+
+void moveB(int sp, int dist, bool stop = true) {
+    SpeedMotor(E_Port_B, -1 * (sp));
+    double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
+    while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < dist);
+    if (stop)
+        stopB();
+}
+
+void moveC(int sp, int dist, bool stop = true) {
+    SpeedMotor(E_Port_C, sp);
+    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dist);
+    if (stop)
+        stopC();
+}
+
+void moveD(int sp, int dist) {
+    static double stadegd = GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
+    dist = (double) dist + stadegd;
+    double st = dist - GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
+    if (st >= 0) {
+        SpeedMotor(E_Port_D, sp);
+        while (GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium) < dist);
+    } else {
+        SpeedMotor(E_Port_D, -sp);
+        while (GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium) > dist);
+    }
+    goD(0);
+}
+
+void moveBC(int sp, int dist, bool stop = true) {
+    SpeedMotor(E_Port_B, -1 * (sp));
+    SpeedMotor(E_Port_C, sp);
+    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dist);
+    if (stop)
+        stopBC();
+}
+
+void moveBTime(int sp, int time) {
+    SpeedMotor_Time(E_Port_B, sp, time);
+    wait(time);
+    stopB();
+}
+
+void moveCTime(int sp, int time) {
+    SpeedMotor_Time(E_Port_C, sp, time);
+    wait(time);
+    stopC();
+}
+
+void moveDTime(int sp, int time) {
+    SpeedMotor_Time(E_Port_D, sp, time);
+    wait(time);
+    stopD();
+}
+
+void moveBCTime(int sp, int time) {
+    SpeedMotor_Time(E_Port_BC, sp, time);
+    wait(time);
+    stopBC();
+}
 
 using namespace ev3_c_api;
 using namespace std;
@@ -50,6 +156,7 @@ class Edge {
     int to, index;
     double time;
     bool active;
+
     void (*def)();
     // index объединяет ребра в группы для одновременной активации или дезактивации
 
@@ -75,6 +182,8 @@ public:
 
     double getIndex() { return index; }
 
+vector < vector < Edge > > g(500);
+
     void open() { active = true; }
 
     static void closeFromIndex(int newIndex) {
@@ -94,6 +203,11 @@ public:
 
 vector<vector<Edge> > g(500);
 
+
+
+
+
+vector < vector < Edge > > g(500);
 
 vector < vector < Edge > > g(500);
 double Pr = 0.3;
@@ -430,13 +544,13 @@ void end_4_green() {
         stopD();
         line(speed, 270, 2);
         moveBC(speed, dws, 1);
-        pov(speed, d90, 0);
-        line(speed, 750, 0);
-        moveBC(speed, 300, 1);
-        wait(10000);
     }
     else {
         moveBC(speed, dsl, 0);
+        wait(10000);
+    }
+    else {
+        moveBC(speed, proe, 0);
         line(speed, 760, 2);
         moveBC(speed, dws, 1);
         pov(speed, d90, 0);
@@ -568,72 +682,95 @@ void buildgrad() {
 void f1() {
     pov(speed, d90, 3);
 }
+
 void f2() {
     pov(speed, d180, 2);
 }
+
 void f3() {
     pov(speed, d90, 0);
 }
+
 void f4() {
     pov(speed, d90, -2);
 }
+
 void f5() {
     pov(speed, d180, -2);
 }
+
 void f6() {
     pov(speed, d90, -1);
 }
+
 void f7() {
     moveBC(speed, dsl, 0);
 }
+
 void f8() {
     moveBC(speed, dws, 1);
 }
+
 void f9() {
     line(speed, grad[1] - dws, 2);
 }
+
 void f10() {
     line(speed, grad[1] - dsl, 2);
 }
+
 void f11() {
     line(speed, grad[3] - dws, 3);
 }
+
 void f12() {
     line(speed, grad[3] - dsl, 3);
 }
+
 void f13() {
     line(speed, grad[2] - dws, 4);
 }
+
 void f14() {
     gtf();
 }
+
 void f15() {
     gtb();
 }
+
 void f16() {
     line(speed, grad[4] - dws, 1);
 }
+
 void f17() {
     line(speed, grad[7] - dws, 2);
 }
+
 void f18() {
     line(speed, grad[7] - dsl, 2);
 }
+
 void f19() {
     line(speed, grad[9] - dws, 3);
 }
+
 void f20() {
     line(speed, grad[9] - dsl, 3);
 }
+
 void f21() {
     line(speed, grad[11] - dws, 2);
 }
+
 void f22() {
     line(speed, grad[11] - dsl, 2);
 }
+
 void f23() {
     line(speed, grad[13] - dws, 3);
 }
+
 void f24() {
     line(speed, grad[13] - dsl, 3);
 }
@@ -648,8 +785,7 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v + 1].pb(Edge(v, f1));
         g[v + 2].pb(Edge(v, f2));
         g[v + 3].pb(Edge(v, f3));
-    }
-    else {
+    } else {
         g[v + 1].pb(Edge(v, f4));
         g[v + 2].pb(Edge(v, f5));
         g[v + 3].pb(Edge(v, f6));
@@ -658,8 +794,7 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v].pb(Edge(v + 1, f3));
         g[v + 2].pb(Edge(v + 1, f1));
         g[v + 3].pb(Edge(v + 1, f2));
-    }
-    else {
+    } else {
         g[v].pb(Edge(v + 1, f6));
         g[v + 2].pb(Edge(v + 1, f4));
         g[v + 3].pb(Edge(v + 1, f5));
@@ -668,8 +803,7 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v].pb(Edge(v + 2, f2));
         g[v + 1].pb(Edge(v + 2, f3));
         g[v + 3].pb(Edge(v + 2, f1));
-    }
-    else {
+    } else {
         g[v].pb(Edge(v + 2, f6));
         g[v + 1].pb(Edge(v + 2, f5));
         g[v + 3].pb(Edge(v + 2, f4));
@@ -678,8 +812,7 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v].pb(Edge(v + 3, f1));
         g[v + 1].pb(Edge(v + 3, f2));
         g[v + 2].pb(Edge(v + 3, f3));
-    }
-    else {
+    } else {
         g[v].pb(Edge(v + 3, f4));
         g[v + 1].pb(Edge(v + 3, f5));
         g[v + 2].pb(Edge(v + 3, f6));
@@ -821,8 +954,7 @@ signed EV3_main() {
         p2 = 1;
         pov(speed, d180, 2);
         line(speed, 600, 1);
-    }
-    else {
+    } else {
         pov(speed, d90, 3);
         line(speed, 200, 1);
     }
