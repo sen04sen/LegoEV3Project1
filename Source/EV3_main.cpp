@@ -45,7 +45,7 @@ int dovorot = 50;
 int pov1wheel = 525;
 
 int ndir = 0;
-int speed = 30;
+int speed = 23;
 int speedD = 40;
 
 int s2() {
@@ -398,8 +398,9 @@ void end_4_green() {
 
 void pov_bat() {
     stopBC();
-    moveC(speed, 80, 1);
-    moveB(speed, 80, 1);
+    moveD(speedD, 0);
+    moveC(speed, 70, 1);
+    moveB(speed, 70, 1);
     moveBC(speed, 130, 1);
     moveD(speedD, 220);
     moveB(-speed, 30, 1);
@@ -407,7 +408,7 @@ void pov_bat() {
     moveBC(-speed, 90, 1);
     moveD(speedD, 500);
     pov(speed, d90 - 20, 3);
-    line(speed, 330, 0);
+    line(speed, 310, 0);
     stopBC();
     pov(speed, d90, -1);
     moveBC(-speed, 60, 1);
@@ -421,7 +422,7 @@ void pov_bat() {
     moveBC(-speed, 60, 1);
     pov(speed, d90 - 30, 0);
     pov(speed, 60, -1);
-    line(speed, 70, 7);
+    line(speed, 50, 7);
     moveBC(speed, dsl, 0);
     line(speed, 550, 8);
     getRGB(2);
@@ -598,20 +599,20 @@ void f25() {
     moveBC(speed, 340, 0);
     stopB();
     moveC(speed, 80, 1);
-    moveB(speed, 880, 1);
-    moveD(speedD, 510);
-    pov(speed, 70, -1);
+    moveB(speed, 890, 1);
+    moveD(speedD, 520);
+    pov(speed, 60, -1);
     wait(2000);
     if (gclr(4) != 0) {
         gdeb = 4;
     }
     write(1, 1, gdeb);
     wait(2000);
-    moveBC(speed, 375, 0);
+    moveBC(speed, 380, 0);
     goBC(speed);
-    while (s3() > black);
-    moveBC(speed, dws + 20, 1);
-    pov(speed, 130, 3);
+    while (s2() > black);
+    moveBC(speed, 100, 1);
+    pov(speed, 160, 3);
     line(speed, 200, 3);
 }
 
@@ -710,7 +711,7 @@ void buildg() {
     add(64, 86, f23);
     add(68, 86, f24);
 
-    add(0, 3, f25);
+    add(0, 9, f25);
 }
 
 signed EV3_main() {
@@ -722,6 +723,8 @@ signed EV3_main() {
     wait(1000);
     goD(0);
     go(speed, 0, 26);
+    go(speed, 26, 99);
+    pov_bat();
     return 0;
     d1 = gtf();
     gtb();
