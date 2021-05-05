@@ -768,6 +768,31 @@ void f24() {
     line(speed, grad[13] - dsl, 3);
 }
 
+void f25() {
+    moveBC(speed, 440, 0);
+    stopB();
+    moveC(speed, 220, 1);
+    moveD(speedD, 450);
+    pov(speed, 120, -1);
+    moveD(-speedD, 100);
+    moveBC(speed, 10, 0);
+    stopC();
+    moveB(speed, 790, 1);
+    moveD(speedD, 100);
+    goD(3);
+    pov(speed, 50, -1);
+    wait(3000);
+    if (gclr(4) != 0) {
+        gdeb = 4;
+    }
+    moveBC(speed, 375, 0);
+    goBC(speed);
+    while (s3() > black);
+    moveBC(speed, dws + 20, 1);
+    pov(speed, 130, 3);
+    line(speed, 200, 3);
+}
+
 
 void add(int from, int to, void (*def)(), double time = 1.0) {
     g[from].pb(Edge(to, def, time));
@@ -862,6 +887,8 @@ void buildg() {
 
     add(64, 86, f23);
     add(68, 86, f24);
+
+    add(0, 3, f25);
 }
 
 signed EV3_main() {
@@ -869,40 +896,11 @@ signed EV3_main() {
     CreateThread(okonchanie, 0);
     buildgrad();
     buildg();
-    goD(-4);
+    goD(-40);
     wait(1000);
     goD(0);
-    write(1, 1, g[1][0].getTo());
-    wait(3000);
-    g[1][0]();
+    go(speed, 0, 26);
     return 0;
-    int lol = go(speed, 1, 86);
-    stopBC();
-    write(1, 1, lol);
-    wait(5000);
-    return 0;
-    moveBC(speed, 250, 0);
-    stopB();
-    moveC(speed, 220, 1);
-    moveD(speedD, 450);
-    pov(speed, 120, -1);
-    moveD(-speedD, 100);
-    moveBC(speed, 10, 0);
-    stopC();
-    moveB(speed, 790, 1);
-    moveD(speedD, 100);
-    goD(3);
-    pov(speed, 50, -1);
-    if (gclr(4) != 0) {
-        gdeb = 4;
-    }
-    moveBC(speed, 375, 0);
-    goBC(speed);
-    while (s3() > black);
-    moveBC(speed, dws + 20, 1);
-    pov(speed, 130, 3);
-    line(speed, 200, 3);
-    ////go(speed, 1, 2, 3, 2, 0);
     d1 = gtf();
     gtb();
     if (d1.first == 4 || d1.second == 4) {
