@@ -13,8 +13,6 @@
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 #include <functional>
-#include <chrono>
-#include <map>
 
 
 using namespace ev3_c_api;
@@ -26,6 +24,13 @@ const int maxv = 90;
 int ce = 21 * 2;
 int ver = 22;
 
+template<class T>
+string str(T forConvert) {
+    ostringstream ss;
+    ss << forConvert;
+    return ss.str();
+}
+
 class Exception {
     // “ут просто класс наших исключений
 private:
@@ -33,36 +38,28 @@ private:
 
 public:
     Exception(string error) : m_error(error) {}
+    Exception(int line) : m_error(str(line)) {}
 
     const char *what() { return m_error.c_str(); }
 };
 
-class Timer {
-private:
-    // ѕсевдонимы типов используютс€ дл€ удобного доступа к вложенным типам
-    using clock_t = std::chrono::high_resolution_clock;
-    using second_t = std::chrono::duration<double, std::ratio<1> >;
+/*
+try{
 
-    std::chrono::time_point<clock_t> m_beg;
+}
+catch(...){
+    throw Exception(__LINE__)
+}
+*/
 
-public:
-    Timer() : m_beg(clock_t::now()) {}
 
-    void reset() {
-        m_beg = clock_t::now();
-    }
-
-    double elapsed() const {
-        return std::chrono::duration_cast<second_t>(clock_t::now() - m_beg).count();
-    }
-};
 
 class Edge {
     int to, index;
     double time;
-    function<void(void)> def;
+    void (*def)() = NULL;
 public:
-    Edge(int newTo, function<void(void)> newDef, double newTime = 1.0) : to(newTo), def(newDef), time(newTime) {
+    Edge(int newTo, void (*const newDef)(), double newTime = 1.0) : to(newTo), def(newDef), time(newTime) {
         static int generatorIndex = 1;
         index = generatorIndex;
         generatorIndex++;
@@ -70,9 +67,7 @@ public:
 
     void operator()(bool reWriteTime = true) {
         if (reWriteTime) {
-            Timer t;
             def();
-            time = t.elapsed();
         } else def();
     }
 
@@ -83,7 +78,7 @@ public:
     double getIndex() { return index; }
 };
 
-vector<vector<Edge>> g;
+vector < vector < Edge > > g;
 
 void fillG() {
     vector<Edge> vec;
@@ -96,7 +91,7 @@ void fillG() {
     vec.clear();
 }
 
-void add(int from, int to, function<void()> def, double time = 1.0) {
+void add(int from, int to, void (*def)(), double time = 1.0) {
     try {
         auto vec = g.at(from);
         try {
@@ -248,12 +243,7 @@ void moveBCTime(int sp, int time) {
 }
 
 
-template<class T>
-string str(T forConvert) {
-    ostringstream ss;
-    ss << forConvert;
-    return ss.str();
-}
+
 
 struct Color {
     int r, g, b;
