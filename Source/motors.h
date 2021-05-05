@@ -16,7 +16,7 @@
 #include "EV3_Sensor_UART.h"
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
-#include "wait.h"
+#include "utils.h"
 
 using namespace ev3_c_api;
 using namespace std;
