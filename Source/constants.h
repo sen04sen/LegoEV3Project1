@@ -44,4 +44,6 @@ void buildDegreesConstants() {
     degreesConstants.pb(410);
 }
 
+vector<vector<Edge> > g(maxv);
+
 #endif

@@ -26,11 +26,11 @@ using namespace std;
 
 #define pb push_back
 
-vector<vector<Edge> > g(maxv);
 
-pair<pair<double, int>, Edge> msgo[maxv];
+
 
 int go(int sp, int from, int toto) {
+    pair<pair<double, int>, Edge> msgo[maxv];
     for (int i = 0; i < maxv; i++) {
         msgo[i].first.first = (double) 1000000000;
         msgo[i].first.second = -1;
