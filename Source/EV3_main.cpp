@@ -13,12 +13,13 @@
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 #include <functional>
-#include "wait.h"
+#include "utils.h"
 #include "motors.h"
-#include "exception.h"
-#include "str.h"
 #include "edge.h"
-#include "okonchanie.h"
+#include "sensors.h"
+#include "line.h"
+#include "constants.h"
+#include "turn.h"
 
 using namespace ev3_c_api;
 using namespace std;
@@ -26,176 +27,10 @@ using namespace std;
 #define pb push_back
 
 
-const int maxv = 500;
-int ce = 21 * 2;
-int ver = 22;
 
-vector<vector<Edge> > g(maxv);
-
-
-double Pr = 0.3;
-double dws = 130; // расстояние между датчиками и колёсами
-double dsl = 50; //съезд датчиков с линии
-int d90 = 250;
-int d180 = 500;
-int black = 20;
-int bluck = 35;
-int grey = 30;
-int bley = 45;
-int dovorot = 50;
-int pov1wheel = 530;
-
-int ndir = 0;
-int speed = 23;
-int speedD = 40;
-
-int s2() {
-    return GetReflect(E_Port_2);
-}
-
-int s3() {
-    return GetReflect(E_Port_3);
-}
-
-
-struct Color {
-    int r, g, b;
-
-    Color(int newR, int newG, int newB) : r(newR), g(newG), b(newB) {}
-};
-
-
-Color getRGB(int port) {
-    const void *a;
-    switch (port) {
-        case 3:
-            a = GetData_UART(E_Port_3, E_UART_Type_Color, 4);
-            break;
-        case 4:
-            a = GetData_UART(E_Port_4, E_UART_Type_Color, 4);
-            break;
-        case 2:
-            a = GetData_UART(E_Port_2, E_UART_Type_Color, 4);
-            break;
-        default:
-            throw Exception("invalid port parameter (need 2-4), you gave " + str(port));
-            break;
-    }
-    unsigned char *d = reinterpret_cast<unsigned char *>(const_cast<void *>(a));
-    int r = d[0];
-    int g = d[2];
-    int b = d[4];
-    Color color = Color(r, g, b);
-    return color;
-}
-
-void line(int sp, int dist, int tp) {
-    bool stop = 0;
-    if (tp == 4) {
-        getRGB(3);
-        EV3_Sleep(50);
-    }
-    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    if (tp == 4)
-        getRGB(3);
-    while (!stop) {
-        if (tp == 0 || tp == 6 || tp == 8) {
-            if (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st > dist) {
-                stop = 1;
-            }
-        } else {
-            if (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st > dist - 50) {
-                if (tp == 1 && s2() < black && s3() < black)
-                    stop = 1;
-                else if (tp == 2 && s3() < black)
-                    stop = 1;
-                else if (tp == 3 && s2() < black)
-                    stop = 1;
-                else if (tp == 4) {
-                    //make_pair(make_pair(r, g), b);
-                    Color color = getRGB(3);
-                    if (color.r - color.g > 70)
-                        stop = 1;
-                } else if (tp == 5 && s2() > bluck)
-                    stop = 1;
-                else if (tp == 7 && s3() < black)
-                    stop = 1;
-            }
-        }
-        double del;
-        if (tp == 5 || tp == 6) {
-            del = (double) (s3() - bley) * Pr * 3 / 3;
-        } else if (tp == 4) {
-            del = (double) (grey - s2()) * Pr * 2 / 3;
-        } else if (tp == 7 || tp == 8) {
-            del = (double) (s2() - grey) * Pr * 3 / 3;
-        } else
-            del = (double) (s3() - s2()) * Pr;
-        SpeedMotor(E_Port_B, -1 * (sp - del));
-        SpeedMotor(E_Port_C, sp + del);
-    }
-    if (tp == 4)
-        s3();
-}
-
-void pov(int sp, int dt, int tp) {
-    if (tp >= 0) {
-        if (tp < 2 || tp == 4) {
-            SpeedMotor(E_Port_B, -1 * (sp));
-            SpeedMotor(E_Port_C, -1 * (sp));
-        } else {
-            SpeedMotor(E_Port_B, sp);
-            SpeedMotor(E_Port_C, sp);
-        }
-
-        double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-        while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dt - 80);
-        if (tp == 4)
-            while (s3() > bluck);
-        else if (tp == 5)
-            while (s2() > bluck);
-        else if (tp < 2) {
-            while (s3() > black);
-        } else {
-            while (s2() > black);
-        }
-        st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-        while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dovorot);
-        stopBC();
-    } else {
-        if (tp == -1) {
-            SpeedMotor(E_Port_B, -1 * (sp));
-            SpeedMotor(E_Port_C, -1 * (sp));
-        } else {
-            SpeedMotor(E_Port_B, sp);
-            SpeedMotor(E_Port_C, sp);
-        }
-        double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-        while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dt);
-        stopBC();
-    }
-}
-
-int gclr(int uy) {
-    if (uy == 4) {
-        return GetColor(E_Port_4);
-    } else {
-        return GetColor(E_Port_3);
-    }
-}
-
-void write(int x, int y, int uy) {
-    stringstream s;
-    s << uy;
-    string a;
-    s >> a;
-    Draw_Text(x, y, E_Font_Normal, 0, &(a[0]));
-}
-
-
-pair<pair<double, int>, Edge> msgo[maxv];
 
 int go(int sp, int from, int toto) {
+    pair<pair<double, int>, Edge> msgo[maxv];
     for (int i = 0; i < maxv; i++) {
         msgo[i].first.first = (double) 1000000000;
         msgo[i].first.second = -1;
@@ -280,6 +115,46 @@ void give2() {
     goD(3);
 }
 
+void give4() {
+    stopBC();
+    stopD();
+    wait(30);
+    moveD(-speedD, 400);
+    moveBC(speed, 200);
+    moveBC(-speed, 200);
+    moveD(speedD, 400);
+}
+
+pair<int, int> gtf() {
+    moveBC(speed, 35);
+    SpeedMotor(E_Port_C, -speed);
+    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < turn1wheel);
+    stopC();
+    moveBC(speed, 365);
+    GetColor(E_Port_4);
+    EV3_Sleep(500);
+    int fi = gclr(4);
+    if (fi == 7)
+        fi = 4;
+    moveBC(speed, 120);
+    EV3_Sleep(500);
+    int se = gclr(4);
+    if (se == 7)
+        se = 4;
+    stopBC();
+    Clear_Display();
+    write(1, 1, fi);
+    write(51, 1, se);
+    return make_pair(fi, se);
+}
+
+void gtb() {
+    moveBC(-speed, 330);
+    turn(speed, d90, 0);
+    line(speed, 50, 1);
+}
+
 pair<int, int> d1;
 pair<int, int> d2;
 pair<int, int> d3;
@@ -290,38 +165,38 @@ int gdeb = 3;
 void end_4_green() {
     line(speed, 170, 2);
     moveBC(-speed, 50, 1);
-    pov(speed, d90, -1);
+    turn(speed, d90, -1);
     moveBC(10, 140, 1);
     moveD(-speedD, 70);
     moveBC(-speed, 140, 1);
-    pov(speed, d90, 3);
+    turn(speed, d90, 3);
     line(speed, 30, 2);
     moveBC(speed, dsl, 1);
     line(speed, 220, 0);
     stopBC();
-    pov(speed, d90, -1);
+    turn(speed, d90, -1);
     moveD(10, 65);
     EV3_Sleep(1000);
     moveBC(10, 140, 1);
     moveD(-speedD, 65);
     moveBC(-speed, 140, 1);
-    pov(speed, d90, 3);
+    turn(speed, d90, 3);
     line(speed, 400, 3);
     if (d1.first == 3 || d1.second == 3) {
         moveBC(speed, dws, 1);
-        pov(speed, d180, 1);
+        turn(speed, d180, 1);
         line(speed, 780, 3);
         moveBC(speed, dsl, 0);
         line(speed, 170, 2);
         moveBC(speed, dsl, 0);
         line(speed, 590, 3);
         moveBC(speed, dws, 1);
-        pov(speed, d90, 3);
+        turn(speed, d90, 3);
         line(speed, 200, 4);
         moveBC(speed, 50, 1);
         moveD(10, 110);
         moveBC(-speed, 400, 1);
-        pov(speed, d90, 0);
+        turn(speed, d90, 0);
         SpeedMotor_Time(E_Port_D, -30, 2000);
         wait(2000);
         stopD();
@@ -331,12 +206,12 @@ void end_4_green() {
         moveBC(speed, dsl, 0);
         line(speed, 760, 2);
         moveBC(speed, dws, 1);
-        pov(speed, d90, 0);
+        turn(speed, d90, 0);
         line(speed, 200, 4);
         moveBC(speed, 50, 1);
         moveD(10, 110);
         moveBC(-speed, 400, 1);
-        pov(speed, d90, 0);
+        turn(speed, d90, 0);
         SpeedMotor_Time(E_Port_D, -30, 2000);
         wait(2000);
         stopD();
@@ -350,14 +225,14 @@ void end_4_green() {
         moveBC(speed, dsl, 0);
         line(speed, 270, 2);
         moveBC(speed, dws, 1);
-        pov(speed, d90, 0);
+        turn(speed, d90, 0);
         line(speed, 750, 0);
         moveBC(speed, 300, 1);
         wait(10000);
     }
 }
 
-void pov_bat() {
+void turn_bat() {
     stopBC();
     moveD(speedD, 0);
     moveC(speed, 70, 1);
@@ -368,10 +243,10 @@ void pov_bat() {
     moveD(speedD, 250);
     moveBC(-speed, 80, 1);
     moveD(speedD, 520);
-    pov(speed, d90 - 20, 3);
+    turn(speed, d90 - 20, 3);
     line(speed, 320, 0);
     stopBC();
-    pov(speed, d90, -1);
+    turn(speed, d90, -1);
     moveBC(-speed, 60, 1);
     moveD(speedD, 20);
     moveBC(speed, 180, 1);
@@ -381,8 +256,8 @@ void pov_bat() {
     moveBC(-speed, 90, 1);
     moveD(speedD, 520);
     moveBC(-speed, 60, 1);
-    pov(speed, d90 - 30, 0);
-    pov(speed, 60, -1);
+    turn(speed, d90 - 30, 0);
+    turn(speed, 60, -1);
     line(speed, 50, 7);
     moveBC(speed, dsl, 0);
     line(speed, 535, 8);
@@ -392,89 +267,67 @@ void pov_bat() {
     while (getRGB(2).b < 100);
     s2();
     moveBC(speed, 70, 1);
-    pov(speed, d90, -2);
+    turn(speed, d90, -2);
 }
 
 void get_4_blue() {
     moveBC(speed, 40, 1);
-    pov(speed, d90, -2);
+    turn(speed, d90, -2);
     moveBC(speed, 50, 0);
     line(speed, 460, 5);
     goBC(speed);
     while (s2() > black);
     stopBC();
     moveBC(-speed, 30, 1);
-    pov(speed, d90, -1);
+    turn(speed, d90, -1);
     moveBC(-speed, 50, 1);
     moveD(speedD, 395);
     moveBC(speed, 90, 1);
     moveD(speedD, 280);
     moveBC(-speed, 30, 1);
-    pov(speed, d90, -2);
+    turn(speed, d90, -2);
     moveBC(speed, 130, 1);
     goBC(speed, 2);
     while (s3() > bluck);
     stopBC();
     line(speed, 150, 6);
     stopBC();
-    pov(speed, d90, -1);
+    turn(speed, d90, -1);
     moveBC(-speed, 50, 1);
     moveD(speedD, 395);
     moveBC(speed, 90, 1);
     moveD(speedD, 280);
     moveBC(-speed, 60, 1);
-    pov(speed, d90, -1);
+    turn(speed, d90, -1);
     moveBC(speed, 600, 0);
     goBC(speed);
     while (s2() > black);
     stopBC();
 }
 
-vector<int> grad;
-
-void buildgrad() {
-    grad.pb(850);
-    grad.pb(390);
-    grad.pb(470);
-    grad.pb(820);
-    grad.pb(760);
-    grad.pb(580);
-    grad.pb(580);
-    grad.pb(270);
-    grad.pb(220);
-    grad.pb(990);
-    grad.pb(1100);
-    grad.pb(880);
-    grad.pb(470);
-    grad.pb(250);
-    grad.pb(670);
-    grad.pb(230);
-    grad.pb(210);
-    grad.pb(410);
-}
 
 void f1() {
-    pov(speed, d90, 3);
+    turn(speed, d90, 3);
 }
 
 void f2() {
-    pov(speed, d180, 2);
+    turn(speed, d180, 2);
 }
 
 void f3() {
-    pov(speed, d90, 0);
+    turn(speed, d90, 0);
 }
 
 void f4() {
-    pov(speed, d90, -2);
+    turn(speed, d90, -2);
 }
 
 void f5() {
-    pov(speed, d180, -2);
+    turn(speed, d180, -2);
 }
 
 void f6() {
-    pov(speed, d90, -1);
+    turn(speed, d90, -1);
 }
 
 void f7() {
@@ -486,30 +339,30 @@ void f8() {
 }
 
 void f9() {
-    line(speed, grad[1] - dws, 2);
+    line(speed, degreesConstants[1] - dws, 2);
 }
 
 void f10() {
-    line(speed, grad[1] - dsl, 2);
+    line(speed, degreesConstants[1] - dsl, 2);
 }
 
 void f11() {
-    line(speed, grad[3] - dws, 3);
+    line(speed, degreesConstants[3] - dws, 3);
 }
 
 void f12() {
-    line(speed, grad[3] - dsl, 3);
+    line(speed, degreesConstants[3] - dsl, 3);
 }
 
 void f13() {
-    line(speed, grad[2] - dws, 4);
+    line(speed, degreesConstants[2] - dws, 4);
 }
 
 void f14() {
     moveBC(speed, 35);
     SpeedMotor(E_Port_C, -speed);
     double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < pov1wheel);
+    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < turn1wheel);
     stopC();
     moveBC(speed, 365);
     GetColor(E_Port_4);
@@ -531,44 +384,44 @@ void f14() {
 
 void f15() {
     moveBC(-speed, 330);
-    pov(speed, d90, 0);
+    turn(speed, d90, 0);
     line(speed, 50, 1);
 }
 
 void f16() {
-    line(speed, grad[4] - dws, 1);
+    line(speed, degreesConstants[4] - dws, 1);
 }
 
 void f17() {
-    line(speed, grad[7] - dws, 2);
+    line(speed, degreesConstants[7] - dws, 2);
 }
 
 void f18() {
-    line(speed, grad[7] - dsl, 2);
+    line(speed, degreesConstants[7] - dsl, 2);
 }
 
 void f19() {
-    line(speed, grad[9] - dws, 3);
+    line(speed, degreesConstants[9] - dws, 3);
 }
 
 void f20() {
-    line(speed, grad[9] - dsl, 3);
+    line(speed, degreesConstants[9] - dsl, 3);
 }
 
 void f21() {
-    line(speed, grad[11] - dws, 2);
+    line(speed, degreesConstants[11] - dws, 2);
 }
 
 void f22() {
-    line(speed, grad[11] - dsl, 2);
+    line(speed, degreesConstants[11] - dsl, 2);
 }
 
 void f23() {
-    line(speed, grad[13] - dws, 3);
+    line(speed, degreesConstants[13] - dws, 3);
 }
 
 void f24() {
-    line(speed, grad[13] - dsl, 3);
+    line(speed, degreesConstants[13] - dsl, 3);
 }
 
 void f25() {
@@ -577,7 +430,7 @@ void f25() {
     moveC(speed, 80, 1);
     moveB(speed, 890, 1);
     moveD(speedD, 520);
-    pov(speed, 60, -1);
+    turn(speed, 60, -1);
     if (gclr(4) != 0) {
         gdeb = 4;
     }
@@ -586,7 +439,7 @@ void f25() {
     goBC(speed);
     while (s2() > black);
     moveBC(speed, 100, 1);
-    pov(speed, 160, 3);
+    turn(speed, 160, 3);
     line(speed, 200, 3);
 }
 
@@ -601,7 +454,7 @@ void f26() {
 }
 
 void f27() {
-    pov(speed, 180, 2);
+    turn(speed, 180, 2);
     line(speed, grad[2] - dws, 1);
 }
 
@@ -709,7 +562,7 @@ void buildg() {
 signed EV3_main() {
     Clear_Display();
     CreateThread(okonchanie, 0);
-    buildgrad();
+    buildDegreesConstants();
     buildg();
     goD(-speed);
     wait(700);
@@ -721,73 +574,73 @@ signed EV3_main() {
     }
     else
         go(speed, 26, 99);
-    pov_bat();
+    turn_bat();
     return 0;
     /*d1 = gtf();
     gtb();
     if (d1.first == 4 || d1.second == 4) {
         stopBC();
-        pov(speed, d180, 2);
+        turn(speed, d180, 2);
         line(speed, 200, 4);
         p1 = 1;
         give4();
-        pov(speed, d180, 2);
+        turn(speed, d180, 2);
         line(speed, 250, 1);
     }
     ////go(speed, 2, 0, 6, 0, 0);
-    pov_bat();
+    turn_bat();
     moveD(-speedD, 140);
     moveBC(speed, 320, 1);
     moveD(speedD, 110);
     goD(0);
     moveBC(-speed, 320, 1);
-    pov(speed, d90 + 40, -1);
+    turn(speed, d90 + 40, -1);
     goBC(speed);
     while (s2() > black);
     moveBC(speed, dws + 10, 1);
-    pov(speed, d90, 3);
+    turn(speed, d90, 3);
     line(speed, 200, 4);
     d2 = gtf();
     moveBC(-speed, 20, 1);
-    pov(speed, d90, -1);
+    turn(speed, d90, -1);
     moveBC(speed, 10, 1);
     if (gclr(4) != 0) {
         gdeb = 2;
     }
-    moveB(speed, pov1wheel, 1);
+    moveB(speed, turn1wheel, 1);
     goBC(speed);
     while (s3() > black);
     moveBC(speed, dws, 1);
     if (d2.first == 4 || d2.second == 4) {
-        pov(speed, d90, 0);
+        turn(speed, d90, 0);
         line(speed, 300, 4);
         if (p1)
             give4();
         else
             give2();
         p2 = 1;
-        pov(speed, d180, 2);
+        turn(speed, d180, 2);
         line(speed, 600, 1);
     } else {
-        pov(speed, d90, 3);
+        turn(speed, d90, 3);
         line(speed, 200, 1);
     }
     ////go(speed, 12, 2, 15, 2, 0);
     d3 = gtf();
     gtb();
     if (d3.first == 4 || d3.second == 4) {
-        pov(speed, d180, 2);
+        turn(speed, d180, 2);
         line(speed, 200, 4);
         if (p1 || p2)
             give4();
         else
             give2();
         p3 = 1;
-        pov(speed, d180, 2);
+        turn(speed, d180, 2);
         line(speed, 250, 1);
     }
     moveBC(speed, dws, 1);
-    pov(speed, d90, 0);
+    turn(speed, d90, 0);
     line(speed, 100, 3);
     get_4_blue();*/
     return 0;
