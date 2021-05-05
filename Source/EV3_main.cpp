@@ -13,7 +13,6 @@
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 #include <functional>
-#include <map>
 
 
 using namespace ev3_c_api;
@@ -25,6 +24,13 @@ const int maxv = 90;
 int ce = 21 * 2;
 int ver = 22;
 
+template<class T>
+string str(T forConvert) {
+    ostringstream ss;
+    ss << forConvert;
+    return ss.str();
+}
+
 class Exception {
     // Тут просто класс наших исключений
 private:
@@ -32,18 +38,28 @@ private:
 
 public:
     Exception(string error) : m_error(error) {}
+    Exception(int line) : m_error(str(line)) {}
 
     const char *what() { return m_error.c_str(); }
 };
+
+/*
+try{
+
+}
+catch(...){
+    throw Exception(__LINE__)
+}
+*/
 
 
 
 class Edge {
     int to, index;
     double time;
-    function < void(void) >  def;
+    void (*def)() = NULL;
 public:
-    Edge(int newTo, function < void ( void ) >  newDef, double newTime = 1.0) : to(newTo), def(newDef), time(newTime) {
+    Edge(int newTo, void (*const newDef)(), double newTime = 1.0) : to(newTo), def(newDef), time(newTime) {
         static int generatorIndex = 1;
         index = generatorIndex;
         generatorIndex++;
@@ -63,7 +79,7 @@ public:
     double getIndex() { return index; }
 };
 
-vector<vector<Edge>> g;
+vector < vector < Edge > > g;
 
 void fillG() {
     vector<Edge> vec;
@@ -213,12 +229,7 @@ void moveBCTime(int sp, int time) {
 }
 
 
-template<class T>
-string str(T forConvert) {
-    ostringstream ss;
-    ss << forConvert;
-    return ss.str();
-}
+
 
 struct Color {
     int r, g, b;
