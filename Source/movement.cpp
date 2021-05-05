@@ -1,6 +1,4 @@
-//
-// Created by ПК on 05.05.2021.
-//
+#pragma once
 
 #include <EV3_Motor.h>
 #include "EV3_LCDDisplay.h"
