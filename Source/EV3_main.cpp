@@ -13,16 +13,13 @@
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 #include <functional>
+#include "wait.h"
 
 using namespace ev3_c_api;
 using namespace std;
 
 #define pb push_back
 
-void wait(int time) {
-    // время сна в миллисекундах
-    EV3_Sleep(time);
-}
 
 void stopB() {
     StopMotor(E_Port_B, 1);
