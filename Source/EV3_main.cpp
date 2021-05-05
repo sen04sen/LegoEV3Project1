@@ -26,6 +26,17 @@ const int maxv = 90;
 int ce = 21 * 2;
 int ver = 22;
 
+class Exception {
+    // Тут просто класс наших исключений
+private:
+    std::string m_error;
+
+public:
+    Exception(string error) : m_error(error) {}
+
+    const char* what() { return m_error.c_str(); }
+};
+
 class Timer
 {
 private:
@@ -56,8 +67,12 @@ class Edge {
     double time;
     function <void(void)> def;
 public:
-    Edge(int newTo, function <void(void)> newDef, double newTime = 1.0, int newIndex = -1) : to(newTo),
-        def(newDef), time(newTime), index(newIndex) {}
+    Edge(int newTo, function <void(void)> newDef, double newTime = 1.0) : to(newTo),
+        def(newDef), time(newTime) {
+        static int generatorIndex = 1;
+        index = generatorIndex;
+        generatorIndex++;
+    }
 
     void operator()(bool reWriteTime = true) {
         if (reWriteTime) {
@@ -633,17 +648,6 @@ void builded() {
     ed.pb(Edge(d180, 1));
     ed.pb(Edge(d90, 0));
 }
-
-class Exception {
-    // Тут просто класс наших исключений
-private:
-    std::string m_error;
-
-public:
-    Exception(string error) : m_error(error) {}
-
-    const char* what() { return m_error.c_str(); }
-};
 
 template<class T>
 string str(T forConvert) {
