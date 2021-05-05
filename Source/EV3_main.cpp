@@ -15,6 +15,9 @@
 #include <functional>
 #include "wait.h"
 #include "motors.h"
+#include "exception.h"
+#include "str.h"
+#include "edge.h"
 
 using namespace ev3_c_api;
 using namespace std;
@@ -25,76 +28,6 @@ using namespace std;
 const int maxv = 500;
 int ce = 21 * 2;
 int ver = 22;
-
-template<class T>
-string str(T forConvert) {
-    ostringstream ss;
-    ss << forConvert;
-    return ss.str();
-}
-
-class Exception {
-    // Тут просто класс наших исключений
-private:
-    std::string m_error;
-
-public:
-    Exception(string error) : m_error(error) {}
-
-    Exception(int line) : m_error(str(line)) {}
-
-    const char *what() { return m_error.c_str(); }
-};
-
-class Edge {
-    int to, index;
-    double time;
-    bool active;
-    void (*def)();
-    
-    // index объединяет ребра в группы для одновременной активации или дезактивации
-
-public:
-    
-    Edge() {}
-
-    Edge(int newTo, void (*const newDef)(), double newTime = 1.0, bool newActive = true, int newIndex = 0) : to(newTo),
-                                                                                                                def(newDef),
-                                                                                                             time(newTime),
-                                                                                                             active(newActive),
-                                                                                                             index(newIndex) {}
-
-    void operator()(bool reWriteTime = true) {
-        if (reWriteTime) {
-            T_TimerId id = Timer_Start();
-            def();
-            time = Timer_GetTime(id);
-        } else def();
-    }
-
-    int getTo() { return to; }
-
-    double getTime() { return active ? time : 100000000.0; }
-
-    double getIndex() { return index; }
-
-    void open() { active = true; }
-    void close() { active = false; }
-
-    /*static void closeFromIndex(int newIndex) {
-        for (int i = 0; i < g.size(); ++i)
-            for (int j = 0; j < g[i].size(); ++j)
-                if (g[i][j].getIndex() == newIndex)
-                    g[i][j].close();
-    }
-
-    static void openFromIndex(int newIndex) {
-        for (int i = 0; i < g.size(); ++i)
-            for (int j = 0; j < g[i].size(); ++j)
-                if (g[i][j].getIndex() == newIndex)
-                    g[i][j].open();
-    }*/
-};
 
 vector<vector<Edge> > g(maxv);
 
@@ -433,8 +366,7 @@ void end_4_green() {
         stopD();
         line(speed, 270, 2);
         moveBC(speed, dws, 1);
-    }
-    else {
+    } else {
         moveBC(speed, dsl, 0);
         line(speed, 760, 2);
         moveBC(speed, dws, 1);
