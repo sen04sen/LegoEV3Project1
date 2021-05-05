@@ -28,8 +28,6 @@ using namespace std;
 
 vector<vector<Edge> > g(maxv);
 
-
-
 pair<pair<double, int>, Edge> msgo[maxv];
 
 int go(int sp, int from, int toto) {
@@ -307,28 +305,6 @@ void get_4_blue() {
     stopBC();
 }
 
-vector<int> grad;
-
-void buildgrad() {
-    grad.pb(850);
-    grad.pb(390);
-    grad.pb(470);
-    grad.pb(820);
-    grad.pb(760);
-    grad.pb(580);
-    grad.pb(580);
-    grad.pb(270);
-    grad.pb(220);
-    grad.pb(990);
-    grad.pb(1100);
-    grad.pb(880);
-    grad.pb(470);
-    grad.pb(250);
-    grad.pb(670);
-    grad.pb(230);
-    grad.pb(210);
-    grad.pb(410);
-}
 
 void f1() {
     turn(speed, d90, 3);
@@ -363,23 +339,23 @@ void f8() {
 }
 
 void f9() {
-    line(speed, grad[1] - dws, 2);
+    line(speed, degreesConstants[1] - dws, 2);
 }
 
 void f10() {
-    line(speed, grad[1] - dsl, 2);
+    line(speed, degreesConstants[1] - dsl, 2);
 }
 
 void f11() {
-    line(speed, grad[3] - dws, 3);
+    line(speed, degreesConstants[3] - dws, 3);
 }
 
 void f12() {
-    line(speed, grad[3] - dsl, 3);
+    line(speed, degreesConstants[3] - dsl, 3);
 }
 
 void f13() {
-    line(speed, grad[2] - dws, 4);
+    line(speed, degreesConstants[2] - dws, 4);
 }
 
 void f14() {
@@ -391,39 +367,39 @@ void f15() {
 }
 
 void f16() {
-    line(speed, grad[4] - dws, 1);
+    line(speed, degreesConstants[4] - dws, 1);
 }
 
 void f17() {
-    line(speed, grad[7] - dws, 2);
+    line(speed, degreesConstants[7] - dws, 2);
 }
 
 void f18() {
-    line(speed, grad[7] - dsl, 2);
+    line(speed, degreesConstants[7] - dsl, 2);
 }
 
 void f19() {
-    line(speed, grad[9] - dws, 3);
+    line(speed, degreesConstants[9] - dws, 3);
 }
 
 void f20() {
-    line(speed, grad[9] - dsl, 3);
+    line(speed, degreesConstants[9] - dsl, 3);
 }
 
 void f21() {
-    line(speed, grad[11] - dws, 2);
+    line(speed, degreesConstants[11] - dws, 2);
 }
 
 void f22() {
-    line(speed, grad[11] - dsl, 2);
+    line(speed, degreesConstants[11] - dsl, 2);
 }
 
 void f23() {
-    line(speed, grad[13] - dws, 3);
+    line(speed, degreesConstants[13] - dws, 3);
 }
 
 void f24() {
-    line(speed, grad[13] - dsl, 3);
+    line(speed, degreesConstants[13] - dsl, 3);
 }
 
 void f25() {
@@ -548,7 +524,7 @@ void buildg() {
 signed EV3_main() {
     Clear_Display();
     CreateThread(okonchanie, 0);
-    buildgrad();
+    buildDegreesConstants();
     buildg();
     goD(-speed);
     wait(1000);

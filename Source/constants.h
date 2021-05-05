@@ -19,4 +19,29 @@ const int ndir = 0;
 const int speed = 23;
 const int speedD = 40;
 
+vector<int> degreesConstants;
+
+#define pb push_back
+
+void buildDegreesConstants() {
+    degreesConstants.pb(850);
+    degreesConstants.pb(390);
+    degreesConstants.pb(470);
+    degreesConstants.pb(820);
+    degreesConstants.pb(760);
+    degreesConstants.pb(580);
+    degreesConstants.pb(580);
+    degreesConstants.pb(270);
+    degreesConstants.pb(220);
+    degreesConstants.pb(990);
+    degreesConstants.pb(1100);
+    degreesConstants.pb(880);
+    degreesConstants.pb(470);
+    degreesConstants.pb(250);
+    degreesConstants.pb(670);
+    degreesConstants.pb(230);
+    degreesConstants.pb(210);
+    degreesConstants.pb(410);
+}
+
 #endif
