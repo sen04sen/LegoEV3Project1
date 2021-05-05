@@ -15,6 +15,8 @@
 #include <functional>
 #include "wait.h"
 #include "motors.h"
+#include "exception.h"
+#include "str.h"
 
 using namespace ev3_c_api;
 using namespace std;
@@ -26,25 +28,8 @@ const int maxv = 500;
 int ce = 21 * 2;
 int ver = 22;
 
-template<class T>
-string str(T forConvert) {
-    ostringstream ss;
-    ss << forConvert;
-    return ss.str();
-}
 
-class Exception {
-    // Тут просто класс наших исключений
-private:
-    std::string m_error;
 
-public:
-    Exception(string error) : m_error(error) {}
-
-    Exception(int line) : m_error(str(line)) {}
-
-    const char *what() { return m_error.c_str(); }
-};
 
 class Edge {
     int to, index;
