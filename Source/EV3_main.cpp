@@ -1104,8 +1104,19 @@ void* okonchanie(void* lpvoid) {
     exit(0);
 }
 
+void addcrossroad(int v, int u, int r, int d, int l) {
+    if (u == 1) {
+        g[v + 2].pb(Edge(v, []() {pov(speed, d90, 3)}));
+    }
+}
 
 signed EV3_main() {
+    addcrossroad(1, 1, 1, 0, 0);
+    addcrossroad(9, 0, 1, 1, 1);
+    addcrossroad(19, 1, 1, 0, 1);
+    addcrossroad(28, 0, 1, 1, 1);
+    addcrossroad(36, 1, 1, 0, 1);
+    addcrossroad(45, 0, 1, 1, 1);
     goD(-4);
     wait(1000);
     stadegd = GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
