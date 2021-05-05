@@ -18,6 +18,7 @@
 #include "exception.h"
 #include "str.h"
 #include "edge.h"
+#include "okonchanie.h"
 
 using namespace ev3_c_api;
 using namespace std;
@@ -466,13 +467,6 @@ void get_4_blue() {
     goBC(speed);
     while (s2() > black);
     stopBC();
-}
-
-void *okonchanie(void *lpvoid) {
-    while (!isBrickButtonPressed(E_BTN_ESC));
-    StopMotorAll();
-    wait(500);
-    exit(0);
 }
 
 vector<int> grad;
