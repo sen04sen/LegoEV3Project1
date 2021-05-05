@@ -13,7 +13,8 @@
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 #include <functional>
-
+#include <chrono>
+#include <map>
 
 
 using namespace ev3_c_api;
@@ -25,11 +26,61 @@ const int maxv = 90;
 int ce = 21 * 2;
 int ver = 22;
 
-struct Edge {
-    int dt, tp;
+class Timer
+{
+private:
+    // Псевдонимы типов используются для удобного доступа к вложенным типам
+    using clock_t = std::chrono::high_resolution_clock;
+    using second_t = std::chrono::duration<double, std::ratio<1> >;
 
-    Edge(int newDist, int newTp) : dt(newDist), tp(newTp) {}
+    std::chrono::time_point<clock_t> m_beg;
+
+public:
+    Timer() : m_beg(clock_t::now())
+    {
+    }
+
+    void reset()
+    {
+        m_beg = clock_t::now();
+    }
+
+    double elapsed() const
+    {
+        return std::chrono::duration_cast<second_t>(clock_t::now() - m_beg).count();
+    }
 };
+
+class Edge {
+    int to, index;
+    double time;
+    function <void(void)> def;
+public:
+    Edge(int newTo, function <void(void)> newDef, double newTime = 1.0, int newIndex = -1) : to(newTo),
+        def(newDef), time(newTime), index(newIndex) {}
+
+    void operator()(bool reWriteTime = true) {
+        if (reWriteTime) {
+            Timer t;
+            def();
+            time = t.elapsed();
+        }
+        else def();
+    }
+};
+
+void fillG() {
+    vector<Edge> vec;
+
+    vec.pb(Edge(1, []() {}));
+    vec.pb(Edge(1, []() {}));
+    vec.pb(Edge(1, []() {}));
+    vec.pb(Edge(1, []() {}));
+    g.pb(vec);
+    vec.clear();
+}
+
+
 
 double stadegd;
 
@@ -168,669 +219,9 @@ void moveBCTime(int sp, int time) {
     stopBC();
 }
 
-vector<vector<pair<int, int> > > g;
+vector<vector<Edge>> g;
 
-void fillG() {
-    vector<pair<int, int> > vec;
 
-    vec.pb(make_pair(1, 49));
-    vec.pb(make_pair(2, 51));
-    vec.pb(make_pair(2, 52));
-    vec.pb(make_pair(3, 54));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(0, 42));
-    vec.pb(make_pair(2, 53));
-    vec.pb(make_pair(3, 55));
-    vec.pb(make_pair(3, 56));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(6, 0));
-    vec.pb(make_pair(0, 43));
-    vec.pb(make_pair(0, 44));
-    vec.pb(make_pair(1, 46));
-    vec.pb(make_pair(3, 57));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(0, 45));
-    vec.pb(make_pair(1, 47));
-    vec.pb(make_pair(1, 48));
-    vec.pb(make_pair(2, 50));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(0, 1));
-    vec.pb(make_pair(5, 65));
-    vec.pb(make_pair(6, 67));
-    vec.pb(make_pair(6, 68));
-    vec.pb(make_pair(7, 70));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(9, 2));
-    vec.pb(make_pair(4, 58));
-    vec.pb(make_pair(6, 69));
-    vec.pb(make_pair(7, 71));
-    vec.pb(make_pair(7, 72));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(4, 59));
-    vec.pb(make_pair(4, 60));
-    vec.pb(make_pair(5, 62));
-    vec.pb(make_pair(7, 73));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(4, 61));
-    vec.pb(make_pair(5, 63));
-    vec.pb(make_pair(5, 64));
-    vec.pb(make_pair(6, 66));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(9, 81));
-    vec.pb(make_pair(10, 83));
-    vec.pb(make_pair(10, 84));
-    vec.pb(make_pair(11, 86));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(17, 6));
-    vec.pb(make_pair(8, 74));
-    vec.pb(make_pair(10, 85));
-    vec.pb(make_pair(11, 87));
-    vec.pb(make_pair(11, 88));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(14, 4));
-    vec.pb(make_pair(8, 75));
-    vec.pb(make_pair(8, 76));
-    vec.pb(make_pair(9, 78));
-    vec.pb(make_pair(11, 89));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(7, 3));
-    vec.pb(make_pair(8, 77));
-    vec.pb(make_pair(9, 79));
-    vec.pb(make_pair(9, 80));
-    vec.pb(make_pair(10, 82));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(8, 5));
-    vec.pb(make_pair(13, 97));
-    vec.pb(make_pair(14, 99));
-    vec.pb(make_pair(14, 100));
-    vec.pb(make_pair(15, 102));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(12, 90));
-    vec.pb(make_pair(14, 101));
-    vec.pb(make_pair(15, 103));
-    vec.pb(make_pair(15, 104));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(12, 91));
-    vec.pb(make_pair(12, 92));
-    vec.pb(make_pair(13, 94));
-    vec.pb(make_pair(15, 105));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(12, 93));
-    vec.pb(make_pair(13, 95));
-    vec.pb(make_pair(13, 96));
-    vec.pb(make_pair(14, 98));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(17, 113));
-    vec.pb(make_pair(18, 115));
-    vec.pb(make_pair(18, 116));
-    vec.pb(make_pair(19, 118));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(21, 8));
-    vec.pb(make_pair(16, 106));
-    vec.pb(make_pair(18, 117));
-    vec.pb(make_pair(19, 119));
-    vec.pb(make_pair(19, 120));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(16, 107));
-    vec.pb(make_pair(16, 108));
-    vec.pb(make_pair(17, 110));
-    vec.pb(make_pair(19, 121));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(11, 7));
-    vec.pb(make_pair(16, 109));
-    vec.pb(make_pair(17, 111));
-    vec.pb(make_pair(17, 112));
-    vec.pb(make_pair(18, 114));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(24, 10));
-    vec.pb(make_pair(21, 129));
-    vec.pb(make_pair(22, 131));
-    vec.pb(make_pair(22, 132));
-    vec.pb(make_pair(23, 134));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(37, 16));
-    vec.pb(make_pair(20, 122));
-    vec.pb(make_pair(22, 133));
-    vec.pb(make_pair(23, 135));
-    vec.pb(make_pair(23, 136));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(20, 123));
-    vec.pb(make_pair(20, 124));
-    vec.pb(make_pair(21, 126));
-    vec.pb(make_pair(23, 137));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(19, 9));
-    vec.pb(make_pair(20, 125));
-    vec.pb(make_pair(21, 127));
-    vec.pb(make_pair(21, 128));
-    vec.pb(make_pair(22, 130));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(25, 145));
-    vec.pb(make_pair(26, 147));
-    vec.pb(make_pair(26, 148));
-    vec.pb(make_pair(27, 150));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(33, 14));
-    vec.pb(make_pair(24, 138));
-    vec.pb(make_pair(26, 149));
-    vec.pb(make_pair(27, 151));
-    vec.pb(make_pair(27, 152));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(22, 11));
-    vec.pb(make_pair(24, 139));
-    vec.pb(make_pair(24, 140));
-    vec.pb(make_pair(25, 142));
-    vec.pb(make_pair(27, 153));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(31, 12));
-    vec.pb(make_pair(24, 141));
-    vec.pb(make_pair(25, 143));
-    vec.pb(make_pair(25, 144));
-    vec.pb(make_pair(26, 146));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(29, 161));
-    vec.pb(make_pair(30, 163));
-    vec.pb(make_pair(30, 164));
-    vec.pb(make_pair(31, 166));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(25, 13));
-    vec.pb(make_pair(28, 154));
-    vec.pb(make_pair(30, 165));
-    vec.pb(make_pair(31, 167));
-    vec.pb(make_pair(31, 168));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(28, 155));
-    vec.pb(make_pair(28, 156));
-    vec.pb(make_pair(29, 158));
-    vec.pb(make_pair(31, 169));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(28, 157));
-    vec.pb(make_pair(29, 159));
-    vec.pb(make_pair(29, 160));
-    vec.pb(make_pair(30, 162));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(33, 177));
-    vec.pb(make_pair(34, 179));
-    vec.pb(make_pair(34, 180));
-    vec.pb(make_pair(35, 182));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(32, 170));
-    vec.pb(make_pair(34, 181));
-    vec.pb(make_pair(35, 183));
-    vec.pb(make_pair(35, 184));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(32, 171));
-    vec.pb(make_pair(32, 172));
-    vec.pb(make_pair(33, 174));
-    vec.pb(make_pair(35, 185));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(27, 15));
-    vec.pb(make_pair(32, 173));
-    vec.pb(make_pair(33, 175));
-    vec.pb(make_pair(33, 176));
-    vec.pb(make_pair(34, 178));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(37, 193));
-    vec.pb(make_pair(38, 195));
-    vec.pb(make_pair(38, 196));
-    vec.pb(make_pair(39, 198));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(45, 20));
-    vec.pb(make_pair(36, 186));
-    vec.pb(make_pair(38, 197));
-    vec.pb(make_pair(39, 199));
-    vec.pb(make_pair(39, 200));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(42, 18));
-    vec.pb(make_pair(36, 187));
-    vec.pb(make_pair(36, 188));
-    vec.pb(make_pair(37, 190));
-    vec.pb(make_pair(39, 201));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(23, 17));
-    vec.pb(make_pair(36, 189));
-    vec.pb(make_pair(37, 191));
-    vec.pb(make_pair(37, 192));
-    vec.pb(make_pair(38, 194));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(36, 19));
-    vec.pb(make_pair(41, 209));
-    vec.pb(make_pair(42, 211));
-    vec.pb(make_pair(42, 212));
-    vec.pb(make_pair(43, 214));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(40, 202));
-    vec.pb(make_pair(42, 213));
-    vec.pb(make_pair(43, 215));
-    vec.pb(make_pair(43, 216));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(40, 203));
-    vec.pb(make_pair(40, 204));
-    vec.pb(make_pair(41, 206));
-    vec.pb(make_pair(43, 217));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(40, 205));
-    vec.pb(make_pair(41, 207));
-    vec.pb(make_pair(41, 208));
-    vec.pb(make_pair(42, 210));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(45, 225));
-    vec.pb(make_pair(46, 227));
-    vec.pb(make_pair(46, 228));
-    vec.pb(make_pair(47, 230));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(49, 22));
-    vec.pb(make_pair(44, 218));
-    vec.pb(make_pair(46, 229));
-    vec.pb(make_pair(47, 231));
-    vec.pb(make_pair(47, 232));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(44, 219));
-    vec.pb(make_pair(44, 220));
-    vec.pb(make_pair(45, 222));
-    vec.pb(make_pair(47, 233));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(39, 21));
-    vec.pb(make_pair(44, 221));
-    vec.pb(make_pair(45, 223));
-    vec.pb(make_pair(45, 224));
-    vec.pb(make_pair(46, 226));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(52, 24));
-    vec.pb(make_pair(49, 241));
-    vec.pb(make_pair(50, 243));
-    vec.pb(make_pair(50, 244));
-    vec.pb(make_pair(51, 246));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(57, 26));
-    vec.pb(make_pair(48, 234));
-    vec.pb(make_pair(50, 245));
-    vec.pb(make_pair(51, 247));
-    vec.pb(make_pair(51, 248));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(48, 235));
-    vec.pb(make_pair(48, 236));
-    vec.pb(make_pair(49, 238));
-    vec.pb(make_pair(51, 249));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(47, 23));
-    vec.pb(make_pair(48, 237));
-    vec.pb(make_pair(49, 239));
-    vec.pb(make_pair(49, 240));
-    vec.pb(make_pair(50, 242));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(53, 257));
-    vec.pb(make_pair(54, 259));
-    vec.pb(make_pair(54, 260));
-    vec.pb(make_pair(55, 262));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(52, 250));
-    vec.pb(make_pair(54, 261));
-    vec.pb(make_pair(55, 263));
-    vec.pb(make_pair(55, 264));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(50, 25));
-    vec.pb(make_pair(52, 251));
-    vec.pb(make_pair(52, 252));
-    vec.pb(make_pair(53, 254));
-    vec.pb(make_pair(55, 265));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(52, 253));
-    vec.pb(make_pair(53, 255));
-    vec.pb(make_pair(53, 256));
-    vec.pb(make_pair(54, 258));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(57, 273));
-    vec.pb(make_pair(58, 275));
-    vec.pb(make_pair(58, 276));
-    vec.pb(make_pair(59, 278));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(65, 30));
-    vec.pb(make_pair(56, 266));
-    vec.pb(make_pair(58, 277));
-    vec.pb(make_pair(59, 279));
-    vec.pb(make_pair(59, 280));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(62, 28));
-    vec.pb(make_pair(56, 267));
-    vec.pb(make_pair(56, 268));
-    vec.pb(make_pair(57, 270));
-    vec.pb(make_pair(59, 281));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(51, 27));
-    vec.pb(make_pair(56, 269));
-    vec.pb(make_pair(57, 271));
-    vec.pb(make_pair(57, 272));
-    vec.pb(make_pair(58, 274));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(56, 29));
-    vec.pb(make_pair(61, 289));
-    vec.pb(make_pair(62, 291));
-    vec.pb(make_pair(62, 292));
-    vec.pb(make_pair(63, 294));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(60, 282));
-    vec.pb(make_pair(62, 293));
-    vec.pb(make_pair(63, 295));
-    vec.pb(make_pair(63, 296));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(60, 283));
-    vec.pb(make_pair(60, 284));
-    vec.pb(make_pair(61, 286));
-    vec.pb(make_pair(63, 297));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(60, 285));
-    vec.pb(make_pair(61, 287));
-    vec.pb(make_pair(61, 288));
-    vec.pb(make_pair(62, 290));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(68, 32));
-    vec.pb(make_pair(65, 305));
-    vec.pb(make_pair(66, 307));
-    vec.pb(make_pair(66, 308));
-    vec.pb(make_pair(67, 310));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(85, 40));
-    vec.pb(make_pair(64, 298));
-    vec.pb(make_pair(66, 309));
-    vec.pb(make_pair(67, 311));
-    vec.pb(make_pair(67, 312));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(64, 299));
-    vec.pb(make_pair(64, 300));
-    vec.pb(make_pair(65, 302));
-    vec.pb(make_pair(67, 313));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(59, 31));
-    vec.pb(make_pair(64, 301));
-    vec.pb(make_pair(65, 303));
-    vec.pb(make_pair(65, 304));
-    vec.pb(make_pair(66, 306));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(72, 34));
-    vec.pb(make_pair(69, 321));
-    vec.pb(make_pair(70, 323));
-    vec.pb(make_pair(70, 324));
-    vec.pb(make_pair(71, 326));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(68, 314));
-    vec.pb(make_pair(70, 325));
-    vec.pb(make_pair(71, 327));
-    vec.pb(make_pair(71, 328));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(66, 33));
-    vec.pb(make_pair(68, 315));
-    vec.pb(make_pair(68, 316));
-    vec.pb(make_pair(69, 318));
-    vec.pb(make_pair(71, 329));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(68, 317));
-    vec.pb(make_pair(69, 319));
-    vec.pb(make_pair(69, 320));
-    vec.pb(make_pair(70, 322));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(80, 38));
-    vec.pb(make_pair(73, 337));
-    vec.pb(make_pair(74, 339));
-    vec.pb(make_pair(74, 340));
-    vec.pb(make_pair(75, 342));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(72, 330));
-    vec.pb(make_pair(74, 341));
-    vec.pb(make_pair(75, 343));
-    vec.pb(make_pair(75, 344));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(70, 35));
-    vec.pb(make_pair(72, 331));
-    vec.pb(make_pair(72, 332));
-    vec.pb(make_pair(73, 334));
-    vec.pb(make_pair(75, 345));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(79, 36));
-    vec.pb(make_pair(72, 333));
-    vec.pb(make_pair(73, 335));
-    vec.pb(make_pair(73, 336));
-    vec.pb(make_pair(74, 338));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(77, 353));
-    vec.pb(make_pair(78, 355));
-    vec.pb(make_pair(78, 356));
-    vec.pb(make_pair(79, 358));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(73, 37));
-    vec.pb(make_pair(76, 346));
-    vec.pb(make_pair(78, 357));
-    vec.pb(make_pair(79, 359));
-    vec.pb(make_pair(79, 360));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(76, 347));
-    vec.pb(make_pair(76, 348));
-    vec.pb(make_pair(77, 350));
-    vec.pb(make_pair(79, 361));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(76, 349));
-    vec.pb(make_pair(77, 351));
-    vec.pb(make_pair(77, 352));
-    vec.pb(make_pair(78, 354));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(81, 369));
-    vec.pb(make_pair(82, 371));
-    vec.pb(make_pair(82, 372));
-    vec.pb(make_pair(83, 374));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(80, 362));
-    vec.pb(make_pair(82, 373));
-    vec.pb(make_pair(83, 375));
-    vec.pb(make_pair(83, 376));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(74, 39));
-    vec.pb(make_pair(80, 363));
-    vec.pb(make_pair(80, 364));
-    vec.pb(make_pair(81, 366));
-    vec.pb(make_pair(83, 377));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(80, 365));
-    vec.pb(make_pair(81, 367));
-    vec.pb(make_pair(81, 368));
-    vec.pb(make_pair(82, 370));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(85, 385));
-    vec.pb(make_pair(86, 387));
-    vec.pb(make_pair(86, 388));
-    vec.pb(make_pair(87, 390));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(84, 378));
-    vec.pb(make_pair(86, 389));
-    vec.pb(make_pair(87, 391));
-    vec.pb(make_pair(87, 392));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(84, 379));
-    vec.pb(make_pair(84, 380));
-    vec.pb(make_pair(85, 382));
-    vec.pb(make_pair(87, 393));
-    g.pb(vec);
-    vec.clear();
-
-    vec.pb(make_pair(67, 41));
-    vec.pb(make_pair(84, 381));
-    vec.pb(make_pair(85, 383));
-    vec.pb(make_pair(85, 384));
-    vec.pb(make_pair(86, 386));
-    g.pb(vec);
-    vec.clear();
-}
 
 vector<Edge> ed;
 
@@ -838,18 +229,7 @@ vector<Edge> ed;
 // Rebro(1.45, ()[]{ lineT(350); })
 // add(1, 45, 1.34, ()[]{ lineT(123); });
 
-enum Pologenie
-{
-    firstCross,
-    firstCross1, // Колесами вперед 
-    firstCross2, // Колесами назад 
-    batarLeft,
-    batarRirht,
-};
-
-Pologenie a;
-
-void add(Pologenie, Pologenie, double time, (void*));
+void add(int, int, function<void()>, double);
 
 // add(firstCross, batarLeft, 1.34, ()[]{ lineT(123); });
 
