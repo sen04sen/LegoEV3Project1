@@ -63,6 +63,8 @@ class Edge {
     // index объединяет ребра в группы для одновременной активации или дезактивации
 
 public:
+    static double closeTime;
+
     Edge(int newTo, void (*const newDef)(), double newTime = 1.0, bool newActive = true, int newIndex = 0) : to(newTo),
                                                                                                              time(newTime),
                                                                                                              active(newActive),
@@ -78,7 +80,7 @@ public:
 
     int getTo() { return to; }
 
-    double getTime() { return time; }
+    double getTime() { return active ? time : closeTime; }
 
     double getIndex() { return index; }
 
