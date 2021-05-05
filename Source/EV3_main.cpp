@@ -20,7 +20,7 @@ using namespace std;
 
 #define pb push_back
 
-const int maxv = 90;
+const int maxv = 500;
 int ce = 21 * 2;
 int ver = 22;
 
@@ -53,13 +53,17 @@ catch(...){
 */
 
 
-
 class Edge {
     int to, index;
     double time;
-    void (*def)() = NULL;
+    void(*def)();
+    
 public:
-    Edge(int newTo, void (*const newDef)(), double newTime = 1.0) : to(newTo), def(newDef), time(newTime) {
+    Edge() {}
+    Edge(int newTo, void(*fn)(), double newTime = 1.0) {
+        time = newTime;
+        to = newTo;
+        def = fn;
         static int generatorIndex = 1;
         index = generatorIndex;
         generatorIndex++;
@@ -74,24 +78,13 @@ public:
 
     int getTo() { return to; }
 
+
     double getTime() { return time; }
 
     double getIndex() { return index; }
 };
 
-vector < vector < Edge > > g;
-
-void fillG() {
-    vector<Edge> vec;
-
-    vec.pb(Edge(1, []() {}));
-    vec.pb(Edge(1, []() {}));
-    vec.pb(Edge(1, []() {}));
-    vec.pb(Edge(1, []() {}));
-    g.pb(vec);
-    vec.clear();
-}
-
+vector < vector < Edge > > g(500);
 
 double stadegd;
 
@@ -366,75 +359,50 @@ void write(int x, int y, int uy) {
 }
 
 
-pair<int, int> msgo[maxv];
+pair<pair<double, int>, Edge> msgo[maxv];
 
-/*int go(int sp, int fromm, int dd1, int totoo, int dd2, bool lst = 1) {
-    int from = fromm * 4 + dd1;
-    int toto = totoo * 4 + dd2;
+int go(int sp, int from, int toto) {
     for (int i = 0; i < maxv; i++) {
-        msgo[i].first = 0;
-        msgo[i].second = -1;
+        msgo[i].first.first = (double) 1000000000;
+        msgo[i].first.second = -1;
     }
-    msgo[from] = make_pair(-1, 0);
-    set<pair<int, int> > st;
-    st.insert(make_pair(0, from));
+    msgo[from].first.first = (double) 0;
+    set<pair<double, int> > st;
+    st.insert(make_pair((double) 0, from));
     bool end = 0;
     while (!st.empty()) {
-        int dd = st.begin()->first;
+        double dd = st.begin()->first;
         int v = st.begin()->second;
         st.erase(st.begin());
         for (unsigned int i = 0; i < g[v].size(); i++) {
-            int to = g[v][i].first;
-            if (msgo[to].second == -1) {
-                msgo[to].first = v;
-                msgo[to].second = g[v][i].second;
+            int to = g[v][i].getTo();
+            if (dd + g[v][i].getTime() < msgo[to].first.first) {
+                st.erase(make_pair(msgo[to].first.first, to));
+                msgo[to].first.first = dd + g[v][i].getTime();
+                msgo[to].first.second = v;
+                msgo[to].second = g[v][i];
                 if (to == toto) {
                     end = 1;
                     break;
                 }
-                st.insert(make_pair(dd + ed[msgo[to].second].dt, to));
+                st.insert(make_pair(msgo[to].first.first, to));
             }
         }
         if (end)
             break;
     }
-    vector<int> way;
+    vector<Edge> way;
     int nv = toto;
     while (nv != from) {
         way.pb(msgo[nv].second);
-        nv = msgo[nv].first;
+        nv = msgo[nv].first.second;
     }
-    int kak = 1;
     for (int i = way.size() - 1; i >= 0; i--) {
-        int nw = way[i];
-        write(kak, 1, nw);
-        kak += 20;
-        int del = 0;
-        if (lst == 0) {
-            if (ed[nw].tp >= 4) {
-                moveBC(sp, proe, 0);
-                del = dws - proe;
-            }
-            else if (ed[nw].tp >= -2)
-                moveBC(sp, dws);
-            else
-                moveBC(sp, dws, 0);
-        }
-        if (ed[nw].tp == -3) {
-            moveBC(sp, ed[nw].dt + del, 0);
-            lst = 0;
-            continue;
-        }
-        if (ed[nw].tp < 4) {
-            pov(sp, ed[nw].dt, ed[nw].tp);
-            lst = 1;
-            continue;
-        }
-        line(sp, ed[nw].dt + del, ed[nw].tp - 4);
-        lst = 0;
+        Edge nw = way[i];
+        nw(0);
     }
     return way.size();
-}*/
+}
 
 void vivod_4() {
     for (int i = 0; i < 100; i++) {
@@ -676,86 +644,217 @@ void *okonchanie(void *lpvoid) {
     exit(0);
 }
 
-void add(int from, int to, function<void()> def, double time = 1.0) {
-    try {
-        auto vec = g.at(from);
-        try {
-            vec.pb(Edge(1, def));
-        }
-        catch (exception &exception) {
-            throw Exception("add: to index" + str(exception.what()));
-        }
-    }
-    catch (exception &exception) {
-        throw Exception("add: from index" + str(exception.what()));
-    }
+vector<int> grad;
+
+void buildgrad() {
+    grad.pb(850);
+    grad.pb(390);
+    grad.pb(470);
+    grad.pb(820);
+    grad.pb(760);
+    grad.pb(580);
+    grad.pb(580);
+    grad.pb(270);
+    grad.pb(220);
+    grad.pb(990);
+    grad.pb(1100);
+    grad.pb(880);
+    grad.pb(470);
+    grad.pb(250);
+    grad.pb(670);
+    grad.pb(230);
+    grad.pb(210);
+    grad.pb(410);
+}
+
+void f1() {
+    pov(speed, d90, 3);
+}
+void f2() {
+    pov(speed, d180, 2);
+}
+void f3() {
+    pov(speed, d90, 0);
+}
+void f4() {
+    pov(speed, d90, -2);
+}
+void f5() {
+    pov(speed, d180, -2);
+}
+void f6() {
+    pov(speed, d90, -1);
+}
+void f7() {
+    moveBC(speed, dsl, 0);
+}
+void f8() {
+    moveBC(speed, dws, 1);
+}
+void f9() {
+    line(speed, grad[1] - dws, 2);
+}
+void f10() {
+    line(speed, grad[1] - dsl, 2);
+}
+void f11() {
+    line(speed, grad[3] - dws, 3);
+}
+void f12() {
+    line(speed, grad[3] - dsl, 3);
+}
+void f13() {
+    line(speed, grad[2] - dws, 4);
+}
+void f14() {
+    gtf();
+}
+void f15() {
+    gtb();
+}
+void f16() {
+    line(speed, grad[4] - dws, 1);
+}
+void f17() {
+    line(speed, grad[7] - dws, 2);
+}
+void f18() {
+    line(speed, grad[7] - dsl, 2);
+}
+void f19() {
+    line(speed, grad[9] - dws, 3);
+}
+void f20() {
+    line(speed, grad[9] - dsl, 3);
+}
+void f21() {
+    line(speed, grad[11] - dws, 2);
+}
+void f22() {
+    line(speed, grad[11] - dsl, 2);
+}
+void f23() {
+    line(speed, grad[13] - dws, 3);
+}
+void f24() {
+    line(speed, grad[13] - dsl, 3);
+}
+
+
+void add(int from, int to, void (*def)(), double time = 1.0) {
+    g[from].pb(Edge(to, def, time));
 }
 
 void addcrossroad(int v, int u, int r, int d, int l) {
     if (u == 1) {
-        g[v + 2].pb(Edge(v, []() {pov(speed, d90, 3); }));
-        g[v + 4].pb(Edge(v, []() {pov(speed, d180, 2); }));
-        g[v + 6].pb(Edge(v, []() {pov(speed, d90, 0); }));
+        g[v + 1].pb(Edge(v, f1));
+        g[v + 2].pb(Edge(v, f2));
+        g[v + 3].pb(Edge(v, f3));
     }
     else {
-        g[v + 2].pb(Edge(v, []() {pov(speed, d90, -2); }));
-        g[v + 4].pb(Edge(v, []() {pov(speed, d180, -2); }));
-        g[v + 6].pb(Edge(v, []() {pov(speed, d90, -1); }));
+        g[v + 1].pb(Edge(v, f4));
+        g[v + 2].pb(Edge(v, f5));
+        g[v + 3].pb(Edge(v, f6));
     }
     if (r == 1) {
-        g[v].pb(Edge(v, []() {pov(speed, d90, 0); }));
-        g[v + 4].pb(Edge(v, []() {pov(speed, d90, 3); }));
-        g[v + 6].pb(Edge(v, []() {pov(speed, d180, 2); }));
+        g[v].pb(Edge(v + 1, f3));
+        g[v + 2].pb(Edge(v + 1, f1));
+        g[v + 3].pb(Edge(v + 1, f2));
     }
     else {
-        g[v].pb(Edge(v, []() {pov(speed, d90, -1); }));
-        g[v + 4].pb(Edge(v, []() {pov(speed, d90, -2); }));
-        g[v + 6].pb(Edge(v, []() {pov(speed, d180, -2); }));
+        g[v].pb(Edge(v + 1, f6));
+        g[v + 2].pb(Edge(v + 1, f4));
+        g[v + 3].pb(Edge(v + 1, f5));
     }
     if (d == 1) {
-        g[v].pb(Edge(v, []() {pov(speed, d90, 2); }));
-        g[v + 2].pb(Edge(v, []() {pov(speed, d180, 0); }));
-        g[v + 6].pb(Edge(v, []() {pov(speed, d90, 3); }));
+        g[v].pb(Edge(v + 2, f2));
+        g[v + 1].pb(Edge(v + 2, f3));
+        g[v + 3].pb(Edge(v + 2, f1));
     }
     else {
-        g[v].pb(Edge(v, []() {pov(speed, d90, -2); }));
-        g[v + 2].pb(Edge(v, []() {pov(speed, d180, -1); }));
-        g[v + 6].pb(Edge(v, []() {pov(speed, d90, -2); }));
+        g[v].pb(Edge(v + 2, f6));
+        g[v + 1].pb(Edge(v + 2, f5));
+        g[v + 3].pb(Edge(v + 2, f4));
     }
     if (l == 1) {
-        g[v].pb(Edge(v, []() {pov(speed, d90, 3); }));
-        g[v + 2].pb(Edge(v, []() {pov(speed, d180, 2); }));
-        g[v + 4].pb(Edge(v, []() {pov(speed, d90, 0); }));
+        g[v].pb(Edge(v + 3, f1));
+        g[v + 1].pb(Edge(v + 3, f2));
+        g[v + 2].pb(Edge(v + 3, f3));
     }
     else {
-        g[v].pb(Edge(v, []() {pov(speed, d90, -2); }));
-        g[v + 2].pb(Edge(v, []() {pov(speed, d180, -2); }));
-        g[v + 4].pb(Edge(v, []() {pov(speed, d90, -1); }));
+        g[v].pb(Edge(v + 3, f4));
+        g[v + 1].pb(Edge(v + 3, f5));
+        g[v + 2].pb(Edge(v + 3, f6));
     }
-    g[v + 1].pb(Edge(v + 4, []() {moveBC(speed, dws, 1); }));
-    g[v + 1].pb(Edge(v + 9, []() {moveBC(speed, dsl, 0); }));
-    g[v + 3].pb(Edge(v + 6, []() {moveBC(speed, dws, 1); }));
-    g[v + 3].pb(Edge(v + 11, []() {moveBC(speed, dsl, 0); }));
-    g[v + 5].pb(Edge(v, []() {moveBC(speed, dws, 1); }));
-    g[v + 5].pb(Edge(v + 8, []() {moveBC(speed, dsl, 0); }));
-    g[v + 7].pb(Edge(v + 2, []() {moveBC(speed, dws, 1); }));
-    g[v + 7].pb(Edge(v + 9, []() {moveBC(speed, dsl, 0); }));
+    g[v + 8].pb(Edge(v + 2, f8));
+    g[v + 8].pb(Edge(v + 6, f7));
+    g[v + 10].pb(Edge(v, f8));
+    g[v + 10].pb(Edge(v + 4, f7));
+    g[v + 11].pb(Edge(v + 1, f8));
+    g[v + 11].pb(Edge(v + 5, f7));
+    g[v + 9].pb(Edge(v + 3, f8));
+    g[v + 9].pb(Edge(v + 7, f7));
 }
 
-signed EV3_main() {
+void buildg() {
     addcrossroad(1, 1, 1, 0, 0);
     addcrossroad(13, 0, 1, 1, 1);
     addcrossroad(27, 1, 1, 0, 1);
     addcrossroad(39, 0, 1, 1, 1);
     addcrossroad(51, 1, 1, 0, 1);
     addcrossroad(63, 0, 1, 1, 1);
-    add(3, 20, { line(speed, 270, 2); });
+
+    add(2, 24, f9);
+    add(16, 10, f9);
+    add(20, 10, f10);
+
+    add(14, 38, f11);
+    add(18, 38, f12);
+    add(30, 22, f11);
+    add(34, 22, f12);
+
+    add(15, 25, f13);
+
+    add(25, 26, f14);
+
+    add(26, 23, f15);
+
+    add(27, 99, f16);
+
+    add(28, 50, f17);
+    add(32, 50, f18);
+    add(42, 36, f17);
+    add(46, 36, f18);
+
+    add(40, 62, f19);
+    add(44, 62, f20);
+    add(54, 48, f19);
+    add(58, 48, f20);
+
+    add(52, 74, f21);
+    add(56, 74, f22);
+    add(66, 60, f21);
+    add(70, 60, f22);
+
+    add(64, 86, f23);
+    add(68, 86, f24);
+}
+
+signed EV3_main() {
+    Clear_Display();
+    CreateThread(okonchanie, 0);
+    buildgrad();
+    buildg();
     goD(-4);
     wait(1000);
+    Clear_Display();
     stadegd = GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
     goD(0);
-    CreateThread(okonchanie, 0);
-    Clear_Display();
+    int lol = go(speed, 1, 86);
+    stopBC();
+    write(1, 1, lol);
+    wait(5000);
+    return 0;
     pov_bat();
     return 0;
     moveBC(speed, 250, 0);
@@ -779,7 +878,7 @@ signed EV3_main() {
     moveBC(1, 2);
     pov(speed, 130, 3);
     line(speed, 200, 3);
-    go(speed, 1, 2, 3, 2, 0);
+    ////go(speed, 1, 2, 3, 2, 0);
     d1 = gtf();
     gtb();
     if (d1.first == 4 || d1.second == 4) {
@@ -791,7 +890,7 @@ signed EV3_main() {
         pov(speed, d180, 2);
         line(speed, 250, 1);
     }
-    go(speed, 2, 0, 6, 0, 0);
+    ////go(speed, 2, 0, 6, 0, 0);
     pov_bat();
     moveD(-speedD, 140);
     moveBC(1, 2);
@@ -829,7 +928,7 @@ signed EV3_main() {
         pov(speed, d90, 3);
         line(speed, 200, 1);
     }
-    go(speed, 12, 2, 15, 2, 0);
+    ////go(speed, 12, 2, 15, 2, 0);
     d3 = gtf();
     gtb();
     if (d3.first == 4 || d3.second == 4) {
