@@ -647,16 +647,12 @@ void f24() {
 }
 
 void f25() {
-    moveBC(speed, 440, 0);
+    moveBC(speed, 340, 0);
     stopB();
-    moveC(speed, 220, 1);
-    moveD(speedD, 450);
-    pov(speed, 120, -1);
-    moveD(-speedD, 100);
-    moveBC(speed, 10, 0);
-    stopC();
+    moveC(speed, 50, 1);
     moveB(speed, 790, 1);
-    moveD(speedD, 100);
+    wait(4000);
+    moveD(speedD, 500);
     goD(3);
     pov(speed, 50, -1);
     wait(3000);
