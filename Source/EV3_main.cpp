@@ -13,7 +13,8 @@
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 #include <functional>
-#include "movement.cpp"
+#include "movement.h"
+#include "wait.h"
 
 
 using namespace ev3_c_api;
@@ -116,7 +117,8 @@ void fillG() {
 }
 
 
-double stadegd;
+
+
 vector < vector < Edge > > g(500);
 double Pr = 0.3;
 double dws = 130; // расстояние между датчиками и колёсами
@@ -134,11 +136,6 @@ int pov1wheel = 525;
 int ndir = 0;
 int speed = 15;
 int speedD = 15;
-
-void wait(int time) {
-    // время сна в миллисекундах
-    EV3_Sleep(time);
-}
 
 int s2() {
     return GetReflect(E_Port_2);
@@ -774,7 +771,6 @@ signed EV3_main() {
     goD(-4);
     wait(1000);
     Clear_Display();
-    stadegd = GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
     goD(0);
     int lol = go(speed, 1, 86);
     stopBC();
