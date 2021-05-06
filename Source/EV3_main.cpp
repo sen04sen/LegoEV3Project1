@@ -115,46 +115,6 @@ void give2() {
     goD(3);
 }
 
-void give4() {
-    stopBC();
-    stopD();
-    wait(30);
-    moveD(-speedD, 400);
-    moveBC(speed, 200);
-    moveBC(-speed, 200);
-    moveD(speedD, 400);
-}
-
-pair<int, int> gtf() {
-    moveBC(speed, 35);
-    SpeedMotor(E_Port_C, -speed);
-    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < turn1wheel);
-    stopC();
-    moveBC(speed, 365);
-    GetColor(E_Port_4);
-    EV3_Sleep(500);
-    int fi = gclr(4);
-    if (fi == 7)
-        fi = 4;
-    moveBC(speed, 120);
-    EV3_Sleep(500);
-    int se = gclr(4);
-    if (se == 7)
-        se = 4;
-    stopBC();
-    Clear_Display();
-    write(1, 1, fi);
-    write(51, 1, se);
-    return make_pair(fi, se);
-}
-
-void gtb() {
-    moveBC(-speed, 330);
-    turn(speed, d90, 0);
-    line(speed, 50, 1);
-}
-
 pair<int, int> d1;
 pair<int, int> d2;
 pair<int, int> d3;
@@ -241,7 +201,7 @@ void turn_bat() {
     moveD(15, 230);
     moveB(-speed, 30, 1);
     moveD(speedD, 250);
-    moveBC(-speed, 80, 1);
+    moveBC(-speed, 60, 1);
     moveD(speedD, 520);
     turn(speed, d90 - 20, 3);
     line(speed, 320, 0);
@@ -260,9 +220,14 @@ void turn_bat() {
     turn(speed, 60, -1);
     line(speed, 50, 7);
     moveBC(speed, dsl, 0);
-    line(speed, 535, 8);
+    line(speed, 510, 8);
+    stopBC();
+    wait(5000);
     getRGB(2);
-    moveBC(speed, 75, 0); 
+    moveBC(speed, 70, 1); 
+    stopBC();
+    wait(5000);
+    return;
     goBC(speed);
     while (getRGB(2).b < 100);
     s2();
@@ -305,6 +270,31 @@ void get_4_blue() {
     stopBC();
 }
 
+
+pair<int, int> gtf() {
+    moveBC(speed, 35);
+    SpeedMotor(E_Port_C, -speed);
+    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < turn1wheel);
+    stopC();
+    moveBC(speed, 365);
+    GetColor(E_Port_4);
+    EV3_Sleep(500);
+    int fi = gclr(4);
+    if (fi == 7)
+        fi = 4;
+    moveBC(speed, 120);
+    EV3_Sleep(500);
+    int se = gclr(4);
+    if (se == 7)
+        se = 4;
+    stopBC();
+    d1 = make_pair(fi, se);
+    Clear_Display();
+    write(1, 1, fi);
+    write(51, 1, se);
+    return make_pair(fi, se);
+}
 
 void f1() {
     turn(speed, d90, 3);
@@ -359,31 +349,19 @@ void f13() {
 }
 
 void f14() {
-    moveBC(speed, 35);
-    SpeedMotor(E_Port_C, -speed);
-    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < turn1wheel);
-    stopC();
-    moveBC(speed, 365);
-    GetColor(E_Port_4);
-    EV3_Sleep(500);
-    int fi = gclr(4);
-    if (fi == 7)
-        fi = 4;
-    moveBC(speed, 120);
-    EV3_Sleep(500);
-    int se = gclr(4);
-    if (se == 7)
-        se = 4;
-    stopBC();
-    d1 = make_pair(fi, se);
-    Clear_Display();
-    write(1, 1, fi);
-    write(51, 1, se);
+    d1 = gtf();
 }
 
 void f15() {
     moveBC(-speed, 330);
+}
+
+void f15a() {
+    turn(speed, d90, 3);
+    line(speed, 50, 4);
+}
+
+void f15b() {
     turn(speed, d90, 0);
     line(speed, 50, 1);
 }
@@ -444,20 +422,54 @@ void f25() {
 }
 
 void f26() {
-    stopBC();
-    stopD();
-    wait(30);
-    moveD(speedD, 420);
-    moveBC(speed, 200);
-    moveBC(-speed, 200);
-    moveD(speedD, 520);
+    turn(speed, d180, 2);
+    line(speed, degreesConstants[2] - 2 * dws, 1);
 }
 
-void f27() {
-    turn(speed, 180, 2);
-    line(speed, grad[2] - dws, 1);
+void f28() {
+    moveD(-speedD, 140);
+    moveBC(speed, 320, 1);
+    moveD(speedD, 110);
+    goD(0);
 }
 
+void f29() {
+    moveBC(-speed, 320, 1);
+}
+
+void f30() {
+    turn(speed, d90 + 30, -1);
+    goBC(speed);
+    while (s2() > black);
+    moveBC(speed, dws + 10, 1);
+}
+
+void f31() {
+    turn(speed, d90 + 20, 3);
+    line(speed, 200, 4);
+}
+
+void f32() {
+    d2 = gtf();
+}
+
+void f33() {
+    moveBC(-speed, 20, 1);
+    turn(speed, d90, -1);
+    moveBC(speed, 10, 1);
+    if (gclr(4) != 0) {
+        gdeb = 2;
+    }
+    moveB(speed, turn1wheel, 1);
+    goBC(speed);
+    while (s3() > black);
+    moveBC(speed, dws, 1);
+}
+
+void f34() {
+    turn(speed, d90, 0);
+    line(speed, 300, 4);
+}
 
 void add(int from, int to, void (*def)(), double time = 1.0) {
     g[from].pb(Edge(to, def, time));
@@ -531,10 +543,11 @@ void buildg() {
 
     add(25, 26, f14);
 
-    add(26, 23, f15);
+    add(26, 120, f15);
+    add(120, 25, f15a);
+    add(120, 23, f15b);
 
-    add(23, 111, f26);
-    add(111, 23, f27);
+    add(25, 23, f26);
 
     add(27, 99, f16);
 
@@ -557,6 +570,17 @@ void buildg() {
     add(68, 86, f24);
 
     add(0, 9, f25);
+
+    add(112, 113, f4);
+    add(113, 114, f28);
+    add(114, 113, f29);
+    add(113, 115, f30);
+    add(115, 116, f31);
+
+    add(116, 117, f32);
+    add(117, 119, f33);
+
+    add(119, 116, f34);
 }
 
 signed EV3_main() {
@@ -569,8 +593,13 @@ signed EV3_main() {
     goD(0);
     go(speed, 0, 26);
     if (d1.first == 4 || d1.second == 4) {
-        go(speed, 26, 111);
-        go(speed, 11, 99);
+        go(speed, 26, 25);
+        stopBC();
+        moveD(speedD, 300);
+        moveBC(speed, 270);
+        moveBC(-speed, 270);
+        moveD(speedD, 520);
+        go(speed, 25, 99);
     }
     else
         go(speed, 26, 99);
@@ -589,28 +618,12 @@ signed EV3_main() {
     }
     ////go(speed, 2, 0, 6, 0, 0);
     turn_bat();
-    moveD(-speedD, 140);
-    moveBC(speed, 320, 1);
-    moveD(speedD, 110);
-    goD(0);
-    moveBC(-speed, 320, 1);
-    turn(speed, d90 + 40, -1);
-    goBC(speed);
-    while (s2() > black);
-    moveBC(speed, dws + 10, 1);
+
+
     turn(speed, d90, 3);
     line(speed, 200, 4);
     d2 = gtf();
-    moveBC(-speed, 20, 1);
-    turn(speed, d90, -1);
-    moveBC(speed, 10, 1);
-    if (gclr(4) != 0) {
-        gdeb = 2;
-    }
-    moveB(speed, turn1wheel, 1);
-    goBC(speed);
-    while (s3() > black);
-    moveBC(speed, dws, 1);
+ 
     if (d2.first == 4 || d2.second == 4) {
         turn(speed, d90, 0);
         line(speed, 300, 4);
