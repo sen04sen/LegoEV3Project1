@@ -28,14 +28,14 @@ int s3() {
 }
 
 
-struct Color {
+struct ColorRGB {
     int r, g, b;
 
-    Color(int newR, int newG, int newB) : r(newR), g(newG), b(newB) {}
+    ColorRGB(int newR, int newG, int newB) : r(newR), g(newG), b(newB) {}
 };
 
 
-Color getRGB(int port) {
+ColorRGB getRGB(int port) {
     const void *a;
     switch (port) {
         case 3:
@@ -55,7 +55,7 @@ Color getRGB(int port) {
     int r = d[0];
     int g = d[2];
     int b = d[4];
-    Color color = Color(r, g, b);
+    ColorRGB color = ColorRGB(r, g, b);
     return color;
 }
 

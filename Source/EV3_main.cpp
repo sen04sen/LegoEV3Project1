@@ -20,14 +20,12 @@
 #include "line.h"
 #include "constants.h"
 #include "turn.h"
+#include "field.h"
 
 using namespace ev3_c_api;
 using namespace std;
 
 #define pb push_back
-
-
-
 
 int go(int sp, int from, int toto) {
     pair<pair<double, int>, Edge> msgo[maxv];
@@ -73,29 +71,6 @@ int go(int sp, int from, int toto) {
     return way.size();
 }
 
-void vivod_4() {
-    for (int i = 0; i < 100; i++) {
-        const void *a = GetData_UART(E_Port_3, E_UART_Type_Color, 4);
-        unsigned char *d = reinterpret_cast<unsigned char *>(const_cast<void *>(a));
-        int r = d[0];
-        int g = d[2];
-        int b = d[4];
-        Clear_Display();
-        write(1, 1, r);
-        write(41, 1, g);
-        write(81, 1, b);
-        EV3_Sleep(200);
-    }
-}
-
-void vivod_clr() {
-    for (int i = 0; i < 100; i++) {
-        Clear_Display();
-        write(1, 1, GetColor(E_Port_3));
-        EV3_Sleep(200);
-    }
-}
-
 void give2() {
     stopBC();
     stopD();
@@ -125,7 +100,7 @@ void give4() {
     moveD(speedD, 400);
 }
 
-pair<int, int> gtf() {
+DoubleMarker gtf() {
     moveBC(speed, 35);
     SpeedMotor(E_Port_C, -speed);
     double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
@@ -146,20 +121,13 @@ pair<int, int> gtf() {
     Clear_Display();
     write(1, 1, fi);
     write(51, 1, se);
-    return make_pair(fi, se);
+    return DoubleMarker(fi, se);
 }
 
-void gtb() {
-    moveBC(-speed, 330);
-    turn(speed, d90, 0);
-    line(speed, 50, 1);
-}
-
-pair<int, int> d1;
-pair<int, int> d2;
-pair<int, int> d3;
-bool p1 = 0, p2 = 0, p3 = 0;
-double st;
+Field field = StandartInit();
+DoubleMarker& d1 = field.house1;
+DoubleMarker& d2 = field.house1;
+DoubleMarker& d3 = field.house1;
 int gdeb = 3;
 
 void end_4_green() {
@@ -182,7 +150,7 @@ void end_4_green() {
     moveBC(-speed, 140, 1);
     turn(speed, d90, 3);
     line(speed, 400, 3);
-    if (d1.first == 3 || d1.second == 3) {
+    if (d1.left == 3 || d1.right == 3) {
         moveBC(speed, dws, 1);
         turn(speed, d180, 1);
         line(speed, 780, 3);
@@ -262,7 +230,7 @@ void turn_bat() {
     moveBC(speed, dsl, 0);
     line(speed, 535, 8);
     getRGB(2);
-    moveBC(speed, 75, 0); 
+    moveBC(speed, 75, 0);
     goBC(speed);
     while (getRGB(2).b < 100);
     s2();
@@ -304,7 +272,6 @@ void get_4_blue() {
     while (s2() > black);
     stopBC();
 }
-
 
 void f1() {
     turn(speed, d90, 3);
@@ -376,7 +343,7 @@ void f14() {
     if (se == 7)
         se = 4;
     stopBC();
-    d1 = make_pair(fi, se);
+    d1 = DoubleMarker(fi, se);
     Clear_Display();
     write(1, 1, fi);
     write(51, 1, se);
@@ -455,9 +422,8 @@ void f26() {
 
 void f27() {
     turn(speed, 180, 2);
-    line(speed, grad[2] - dws, 1);
+    line(speed, degreesConstants[2] - dws, 1);
 }
-
 
 void add(int from, int to, void (*def)(), double time = 1.0) {
     g[from].pb(Edge(to, def, time));
@@ -568,17 +534,16 @@ signed EV3_main() {
     wait(700);
     goD(0);
     go(speed, 0, 26);
-    if (d1.first == 4 || d1.second == 4) {
+    if (d1.left == 4 || d1.right == 4) {
         go(speed, 26, 111);
         go(speed, 11, 99);
-    }
-    else
+    } else
         go(speed, 26, 99);
     turn_bat();
     return 0;
-    /*d1 = gtf();
+    /*house1 = gtf();
     gtb();
-    if (d1.first == 4 || d1.second == 4) {
+    if (house1.first == 4 || house1.second == 4) {
         stopBC();
         turn(speed, d180, 2);
         line(speed, 200, 4);
