@@ -1,6 +1,13 @@
 #ifndef constants_h
 #define constants_h
 
+#include "speed.h"
+#include <map>
+#include <vector>
+
+using namespace ev3_c_api;
+using namespace std;
+
 const int maxv = 500;
 const int ce = 21 * 2;
 const int ver = 22;
@@ -45,5 +52,13 @@ void buildDegreesConstants() {
 }
 
 vector<vector<Edge> > g(maxv);
+
+const int lineArrayLen = 4;
+const int linePreviewLooking = 50; // расстояние начала просмотра того, что пора тормозить
+
+void buildSpeedConstants() {
+    Speed::add(ZERO, 23, 20, 1.0, 1.0, 1, 1, 1);
+}
+
 
 #endif
