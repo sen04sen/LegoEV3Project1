@@ -51,7 +51,7 @@ void buildDegreesConstants() {
     degreesConstants.pb(410);
 }
 
-vector<vector<Edge> > g(maxv);
+vector<vector<Edge > > g(maxv);
 
 const int lineArrayLen = 4;
 const int linePreviewLooking = 50; // расстояние начала просмотра того, что пора тормозить

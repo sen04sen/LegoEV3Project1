@@ -109,9 +109,10 @@ void line(SpeedProfileName speed, int dist, int type) {
         double kP = p.p * ((double)nowSpeed / (double)p.maxS);
         double kD = p.d * ((double)nowSpeed / (double)p.maxS);
 
-        SpeedMotor(E_Port_B, -1 * (speed + error * kP + (error - errors[count % lineArrayLen]) * kD));
-        SpeedMotor(E_Port_C, speed - error * kP - (error - errors[count % lineArrayLen]) * kD);
-        errors[count % lineArrayLen] = error;
+        SpeedMotor(E_Port_B, -1 * (nowSpeed + error * kP + (error - errors[count % lineArrayLen]) * kD));
+        SpeedMotor(E_Port_C, nowSpeed - error * kP - (error - errors[count % lineArrayLen]) * kD);
+
+        errors[count % lineArrayLen] = error; // для d составляющей
     }
     if (type == 4) s3(); // Какая-то типизация
 }

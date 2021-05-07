@@ -17,6 +17,8 @@
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 #include "utils.h"
+#include "speed.h"
+#include "constants.h"
 
 using namespace ev3_c_api;
 using namespace std;
@@ -93,13 +95,52 @@ void moveD(int sp, int dist) {
     goD(0);
 }
 
-void moveBC(int sp, int dist, bool stop = true) {
-    SpeedMotor(E_Port_B, -1 * (sp));
-    SpeedMotor(E_Port_C, sp);
-    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dist);
-    if (stop)
-        stopBC();
+void moveBC(int speed, int dist, bool stop = true) {}
+
+void moveBC2(SpeedProfileName speed, int dist, bool stop = true) {
+    Speed p; // Извлечение настроек
+    try {
+        p = Speed::speeds[speed];
+    } catch (...) {
+        throw Exception("No speed Profile");
+    }
+
+    if (dist > 0) {
+        int home = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) +
+                   GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+
+        double kUpDist = 0.5 * (p.maxS / p.sEnc), kDownDist = 0.5 * (p.maxS / p.eEnc);
+
+        int upDist, downDist;
+        if (p.sEnc > 0) upDist = ((int) (p.sEnc * 2)) + home;
+        else upDist = -2147483648;
+        if (p.eEnc > 0) downDist = ((int) ((dist - p.zEnc - p.eEnc) * 2)) + home;
+        else downDist = 2147483647;
+
+        int way = dist * 2 + home, encoders = home;
+
+        bool stop = 0; // флаг завершения
+        for (int count = 0; !stop; count++) {
+
+            encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) +
+                       GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+
+            int nowSpeed;
+            if (encoders > downDist) nowSpeed = p.maxS - (encoders - downDist) * kDownDist;
+            else if (encoders < upDist) nowSpeed = (encoders - home) * kUpDist;
+            else nowSpeed = p.maxS;
+            if (encoders > way - linePreviewLooking * 2 || nowSpeed < p.minS) nowSpeed = p.minS;
+
+            if (encoders >= way) stop = 1;
+
+            SpeedMotor(E_Port_B, -1 * nowSpeed);
+            SpeedMotor(E_Port_C, nowSpeed);
+        }
+    } else if (dist < 0) {
+
+    }
+
+    if (stop) stopBC(); // финальное торможение
 }
 
 void moveBTime(int sp, int time) {
