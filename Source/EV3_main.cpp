@@ -76,16 +76,16 @@ void give2() {
     stopD();
     wait(30);
     moveD(-speedD, 400);
-    moveBC(speed, 200);
-    moveBC(-speed, 110);
+    moveBC(ZERO, 200);
+    moveBC(ZERO, -110);
     moveD(speedD, 400);
     moveDTime(1, 500);
     stopD();
     moveD(-5, 8);
     wait(100);
-    moveBC(-speed, 150);
+    moveBC(ZERO, -150);
     moveD(-speedD, 100);
-    moveBC(speed, 60);
+    moveBC(ZERO, 60);
     moveD(speedD, 120);
     goD(3);
 }
@@ -95,24 +95,24 @@ void give4() {
     stopD();
     wait(30);
     moveD(-speedD, 400);
-    moveBC(speed, 200);
-    moveBC(-speed, 200);
+    moveBC(ZERO, 200);
+    moveBC(ZERO, -200);
     moveD(speedD, 400);
 }
 
 DoubleMarker gtf() {
-    moveBC(speed, 35);
+    moveBC(ZERO, 35);
     SpeedMotor(E_Port_C, -speed);
     double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
     while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < turn1wheel);
     stopC();
-    moveBC(speed, 365);
+    moveBC(ZERO, 365);
     GetColor(E_Port_4);
     EV3_Sleep(500);
     int fi = gclr(4);
     if (fi == 7)
         fi = 4;
-    moveBC(speed, 120);
+    moveBC(ZERO, 120);
     EV3_Sleep(500);
     int se = gclr(4);
     if (se == 7)
@@ -132,70 +132,70 @@ int gdeb = 3;
 
 void end_4_green() {
     line(ZERO, 170, 2);
-    moveBC(-speed, 50, 1);
+    moveBC(ZERO, -50);
     turn(speed, d90, -1);
-    moveBC(10, 140, 1);
+    moveBC(ZERO, 140); // Была скорость 10
     moveD(-speedD, 70);
-    moveBC(-speed, 140, 1);
+    moveBC(ZERO, -140);
     turn(speed, d90, 3);
     line(ZERO, 30, 2);
-    moveBC(speed, dsl, 1);
+    moveBC(ZERO, dsl);
     line(ZERO, 220, 0);
     stopBC();
     turn(speed, d90, -1);
     moveD(10, 65);
     EV3_Sleep(1000);
-    moveBC(10, 140, 1);
+    moveBC(ZERO, 140); // Была скорость 10
     moveD(-speedD, 65);
-    moveBC(-speed, 140, 1);
+    moveBC(ZERO, -140);
     turn(speed, d90, 3);
     line(ZERO, 400, 3);
     if (d1.left == 3 || d1.right == 3) {
-        moveBC(speed, dws, 1);
+        moveBC(ZERO, dws);
         turn(speed, d180, 1);
         line(ZERO, 780, 3);
-        moveBC(speed, dsl, 0);
+        moveBC(ZERO, dsl, 0);
         line(ZERO, 170, 2);
-        moveBC(speed, dsl, 0);
+        moveBC(ZERO, dsl, 0);
         line(ZERO, 590, 3);
-        moveBC(speed, dws, 1);
+        moveBC(ZERO, dws);
         turn(speed, d90, 3);
         line(ZERO, 200, 4);
-        moveBC(speed, 50, 1);
+        moveBC(ZERO, 50);
         moveD(10, 110);
-        moveBC(-speed, 400, 1);
+        moveBC(ZERO, -400);
         turn(speed, d90, 0);
         SpeedMotor_Time(E_Port_D, -30, 2000);
         wait(2000);
         stopD();
         line(ZERO, 270, 2);
-        moveBC(speed, dws, 1);
+        moveBC(ZERO, dws);
     } else {
-        moveBC(speed, dsl, 0);
+        moveBC(ZERO, dsl, 0);
         line(ZERO, 760, 2);
-        moveBC(speed, dws, 1);
+        moveBC(ZERO, dws);
         turn(speed, d90, 0);
         line(ZERO, 200, 4);
-        moveBC(speed, 50, 1);
+        moveBC(ZERO, 50);
         moveD(10, 110);
-        moveBC(-speed, 400, 1);
+        moveBC(ZERO, -400);
         turn(speed, d90, 0);
         SpeedMotor_Time(E_Port_D, -30, 2000);
         wait(2000);
         stopD();
         line(ZERO, 760, 2);
-        moveBC(speed, dsl, 0);
+        moveBC(ZERO, dsl, 0);
         line(ZERO, 780, 3);
-        moveBC(speed, dsl, 0);
+        moveBC(ZERO, dsl, 0);
         line(ZERO, 170, 2);
-        moveBC(speed, dsl, 0);
+        moveBC(ZERO, dsl, 0);
         line(ZERO, 590, 3);
-        moveBC(speed, dsl, 0);
+        moveBC(ZERO, dsl, 0);
         line(ZERO, 270, 2);
-        moveBC(speed, dws, 1);
+        moveBC(ZERO, dws);
         turn(speed, d90, 0);
         line(ZERO, 750, 0);
-        moveBC(speed, 300, 1);
+        moveBC(ZERO, 300);
         wait(10000);
     }
 }
@@ -205,69 +205,69 @@ void turn_bat() {
     moveD(speedD, 0);
     moveC(speed, 70, 1);
     moveB(speed, 70, 1);
-    moveBC(10, 130, 1);
+    moveBC(ZERO, 130); // Была скорость 10
     moveD(15, 230);
     moveB(-speed, 30, 1);
     moveD(speedD, 250);
-    moveBC(-speed, 80, 1);
+    moveBC(ZERO, -80);
     moveD(speedD, 520);
     turn(speed, d90 - 20, 3);
     line(ZERO, 320, 0);
     stopBC();
     turn(speed, d90, -1);
-    moveBC(-speed, 60, 1);
+    moveBC(ZERO, -60);
     moveD(speedD, 20);
-    moveBC(speed, 180, 1);
+    moveBC(ZERO, 180);
     moveD(15, 230);
     moveB(-speed, 30, 1);
     moveD(speedD, 250);
-    moveBC(-speed, 90, 1);
+    moveBC(ZERO, -90);
     moveD(speedD, 520);
-    moveBC(-speed, 60, 1);
+    moveBC(ZERO, -60);
     turn(speed, d90 - 30, 0);
     turn(speed, 60, -1);
     line(ZERO, 50, 7);
-    moveBC(speed, dsl, 0);
+    moveBC(ZERO, dsl, 0);
     line(ZERO, 535, 8);
     getRGB(2);
-    moveBC(speed, 75, 0);
+    moveBC(ZERO, 75, 0);
     goBC(speed);
     while (getRGB(2).b < 100);
     s2();
-    moveBC(speed, 70, 1);
+    moveBC(ZERO, 70);
     turn(speed, d90, -2);
 }
 
 void get_4_blue() {
-    moveBC(speed, 40, 1);
+    moveBC(ZERO, 40);
     turn(speed, d90, -2);
-    moveBC(speed, 50, 0);
+    moveBC(ZERO, 50, 0);
     line(ZERO, 460, 5);
     goBC(speed);
     while (s2() > black);
     stopBC();
-    moveBC(-speed, 30, 1);
+    moveBC(ZERO, -30);
     turn(speed, d90, -1);
-    moveBC(-speed, 50, 1);
+    moveBC(ZERO, -50);
     moveD(speedD, 395);
-    moveBC(speed, 90, 1);
+    moveBC(ZERO, 90);
     moveD(speedD, 280);
-    moveBC(-speed, 30, 1);
+    moveBC(ZERO, -30);
     turn(speed, d90, -2);
-    moveBC(speed, 130, 1);
+    moveBC(ZERO, 130);
     goBC(speed, 2);
     while (s3() > bluck);
     stopBC();
     line(ZERO, 150, 6);
     stopBC();
     turn(speed, d90, -1);
-    moveBC(-speed, 50, 1);
+    moveBC(ZERO, -50);
     moveD(speedD, 395);
-    moveBC(speed, 90, 1);
+    moveBC(ZERO, 90);
     moveD(speedD, 280);
-    moveBC(-speed, 60, 1);
+    moveBC(ZERO, -60);
     turn(speed, d90, -1);
-    moveBC(speed, 600, 0);
+    moveBC(ZERO, 600, 0);
     goBC(speed);
     while (s2() > black);
     stopBC();
@@ -298,11 +298,11 @@ void f6() {
 }
 
 void f7() {
-    moveBC(speed, dsl, 0);
+    moveBC(ZERO, dsl, 0);
 }
 
 void f8() {
-    moveBC(speed, dws, 1);
+    moveBC(ZERO, dws);
 }
 
 void f9() {
@@ -326,18 +326,18 @@ void f13() {
 }
 
 void f14() {
-    moveBC(speed, 35);
+    moveBC(ZERO, 35);
     SpeedMotor(E_Port_C, -speed);
     double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
     while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < turn1wheel);
     stopC();
-    moveBC(speed, 365);
+    moveBC(ZERO, 365);
     GetColor(E_Port_4);
     EV3_Sleep(500);
     int fi = gclr(4);
     if (fi == 7)
         fi = 4;
-    moveBC(speed, 120);
+    moveBC(ZERO, 120);
     EV3_Sleep(500);
     int se = gclr(4);
     if (se == 7)
@@ -350,7 +350,7 @@ void f14() {
 }
 
 void f15() {
-    moveBC(-speed, 330);
+    moveBC(ZERO, -330);
     turn(speed, d90, 0);
     line(ZERO, 50, 1);
 }
@@ -392,7 +392,7 @@ void f24() {
 }
 
 void f25() {
-    moveBC(speed, 340, 0);
+    moveBC(ZERO, 340, 0);
     stopB();
     moveC(speed, 80, 1);
     moveB(speed, 890, 1);
@@ -402,10 +402,10 @@ void f25() {
         gdeb = 4;
     }
     write(1, 1, gdeb);
-    moveBC(speed, 390, 0);
+    moveBC(ZERO, 390, 0);
     goBC(speed);
     while (s2() > black);
-    moveBC(speed, 100, 1);
+    moveBC(ZERO, 100);
     turn(speed, 160, 3);
     line(ZERO, 200, 3);
 }
@@ -415,8 +415,8 @@ void f26() {
     stopD();
     wait(30);
     moveD(speedD, 420);
-    moveBC(speed, 200);
-    moveBC(-speed, 200);
+    moveBC(ZERO, 200);
+    moveBC(ZERO, -200);
     moveD(speedD, 520);
 }
 
@@ -560,27 +560,27 @@ signed EV3_main() {
     ////go(speed, 2, 0, 6, 0, 0);
     turn_bat();
     moveD(-speedD, 140);
-    moveBC(speed, 320, 1);
+    moveBC(ZERO, 320);
     moveD(speedD, 110);
     goD(0);
-    moveBC(-speed, 320, 1);
+    moveBC(ZERO, -320);
     turn(speed, d90 + 40, -1);
     goBC(speed);
     while (s2() > black);
-    moveBC(speed, dws + 10, 1);
+    moveBC(ZERO, dws + 10);
     turn(speed, d90, 3);
     line(ZERO, 200, 4);
     d2 = gtf();
-    moveBC(-speed, 20, 1);
+    moveBC(ZERO, -20);
     turn(speed, d90, -1);
-    moveBC(speed, 10, 1);
+    moveBC(ZERO, 10);
     if (gclr(4) != 0) {
         gdeb = 2;
     }
     moveB(speed, turn1wheel, 1);
     goBC(speed);
     while (s3() > black);
-    moveBC(speed, dws, 1);
+    moveBC(ZERO, dws);
     if (d2.first == 4 || d2.second == 4) {
         turn(speed, d90, 0);
         line(ZERO, 300, 4);
@@ -609,7 +609,7 @@ signed EV3_main() {
         turn(speed, d180, 2);
         line(ZERO, 250, 1);
     }
-    moveBC(speed, dws, 1);
+    moveBC(ZERO, dws);
     turn(speed, d90, 0);
     line(ZERO, 100, 3);
     get_4_blue();*/

@@ -18,7 +18,6 @@
 #include "EV3_BrickUI.h"
 #include "utils.h"
 #include "speed.h"
-#include "constants.h"
 
 using namespace ev3_c_api;
 using namespace std;
@@ -95,9 +94,7 @@ void moveD(int sp, int dist) {
     goD(0);
 }
 
-void moveBC(int speed, int dist, bool stop = true) {}
-
-void moveBC2(SpeedProfileName speed, int dist, bool stop = true) {
+void moveBC(SpeedProfileName speed, int dist, bool stop = true) {
     Speed p; // Извлечение настроек
     try {
         p = Speed::speeds[speed];
@@ -129,7 +126,7 @@ void moveBC2(SpeedProfileName speed, int dist, bool stop = true) {
             if (encoders > downDist) nowSpeed = p.maxS - (encoders - downDist) * kDownDist;
             else if (encoders < upDist) nowSpeed = (encoders - home) * kUpDist;
             else nowSpeed = p.maxS;
-            if (encoders > way - linePreviewLooking * 2 || nowSpeed < p.minS) nowSpeed = p.minS;
+            if (encoders > way || nowSpeed < p.minS) nowSpeed = p.minS;
 
             if (encoders >= way) stop = 1;
 
@@ -137,7 +134,10 @@ void moveBC2(SpeedProfileName speed, int dist, bool stop = true) {
             SpeedMotor(E_Port_C, nowSpeed);
         }
     } else if (dist < 0) {
-
+        SpeedMotor(E_Port_B, -1 * p.maxS);
+        SpeedMotor(E_Port_C, p.maxS);
+        double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+        while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dist);
     }
 
     if (stop) stopBC(); // финальное торможение
