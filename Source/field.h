@@ -88,7 +88,10 @@ struct Field {
 
     int gdeb() {
         int ans = 0;
-        return 3;
+        if (yellowB1 == YELLOW || yellowB2 == YELLOW || yellowB3 == YELLOW || yellowB4 == YELLOW) ans = 1;
+        if (greenB1 == GREEN || greenB2 == GREEN || greenB3 == GREEN || greenB4 == GREEN) ans = 2;
+        if (blueB1 == BLUE || blueB2 == BLUE || blueB3 == BLUE || blueB4 == BLUE) ans = 3;
+        return ans;
     }
 };
 

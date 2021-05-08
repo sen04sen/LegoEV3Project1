@@ -128,6 +128,9 @@ Field field = StandartInit();
 DoubleMarker& d1 = field.house1;
 DoubleMarker& d2 = field.house2;
 DoubleMarker& d3 = field.house3;
+int& cnt1 = field.cnt1;
+int& cnt2 = field.cnt2;
+int& cnt3 = field.cnt3;
 int gdeb = 3;
 
 void end_4_green() {
