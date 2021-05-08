@@ -131,7 +131,6 @@ DoubleMarker& d3 = field.house3;
 int& cnt1 = field.cnt1;
 int& cnt2 = field.cnt2;
 int& cnt3 = field.cnt3;
-int gdeb = 3;
 
 void end_4_green() {
     line(ZERO, 170, 2);
@@ -402,9 +401,9 @@ void f25() {
     moveD(speedD, 520);
     turn(speed, 60, -1);
     if (gclr(4) != 0) {
-        gdeb = 4;
+        field.setYellowB();
     }
-    write(1, 1, gdeb);
+    write(1, 1, field.gdeb());
     moveBC(ZERO, 390, 0);
     goBC(speed);
     while (s2() > black);
@@ -578,7 +577,7 @@ signed EV3_main() {
     turn(speed, d90, -1);
     moveBC(ZERO, 10);
     if (gclr(4) != 0) {
-        gdeb = 2;
+        field.setBlueB();
     }
     moveB(speed, turn1wheel, 1);
     goBC(speed);
