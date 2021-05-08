@@ -126,8 +126,8 @@ DoubleMarker gtf() {
 
 Field field = StandartInit();
 DoubleMarker& d1 = field.house1;
-DoubleMarker& d2 = field.house1;
-DoubleMarker& d3 = field.house1;
+DoubleMarker& d2 = field.house2;
+DoubleMarker& d3 = field.house3;
 int gdeb = 3;
 
 void end_4_green() {

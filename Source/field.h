@@ -22,7 +22,7 @@ struct DoubleMarker {
 
 struct Field {
     DoubleMarker house1, house2, house3;
-    int how1, how2, how3;
+    int cnt1, cnt2, cnt3;
 
     Color yellowA1, yellowA2, yellowA3, yellowA4;
     Color greenA1, greenA2, greenA3, greenA4;
@@ -73,7 +73,7 @@ struct Field {
 
     Field(Mode newMode) : mode(newMode) {
         house1 = house2 = house3 = DoubleMarker(NOREAD, NOREAD);
-        how1 = how2 = how3 = 0;
+        cnt1 = cnt2 = cnt3 = 0;
 
         yellowA1 = yellowA2 = yellowA3 = yellowA4 = NOREAD;
         greenA1 = greenA2 = greenA3 = greenA4 = NOREAD;
@@ -84,6 +84,11 @@ struct Field {
         blueB1 = blueB2 = blueB3 = blueB4 = NOREAD;
 
         batteryLeft = batteryRight = DONOTKNOW;
+    }
+
+    int gdeb() {
+        int ans = 0;
+        return 3;
     }
 };
 
