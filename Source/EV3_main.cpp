@@ -229,18 +229,11 @@ void turn_bat() {
     line(speed, 50, 7);
     moveBC(speed, dsl, 0);
     line(speed, 510, 8);
-    stopBC();
-    wait(5000);
     getRGB(2);
-    moveBC(speed, 70, 1); 
-    stopBC();
-    wait(5000);
-    return;
-    goBC(speed);
+    moveBC(speed, 55, 0); 
     while (getRGB(2).b < 100);
-    s2();
     moveBC(speed, 70, 1);
-    turn(speed, d90, -2);
+    s2();
 }
 
 void get_4_blue() {
@@ -276,6 +269,10 @@ void get_4_blue() {
     goBC(speed);
     while (s2() > black);
     stopBC();
+}
+
+void add(int from, int to, void (*def)(), double time = 1.0) {
+    g[from].pb(Edge(to, def, time));
 }
 
 void f1() {
@@ -385,10 +382,11 @@ void f24() {
 }
 
 void f25() {
-    moveBC(speed, 340, 0);
+    moveBC(speed, 390, 0);
     stopB();
-    moveC(speed, 80, 1);
-    moveB(speed, 890, 1);
+    moveC(speed, 100, 1);
+    moveB(speed, 910, 1);
+    wait(2000);
     moveD(speedD, 520);
     turn(speed, 60, -1);
     if (gclr(4) != 0) {
@@ -409,9 +407,9 @@ void f26() {
 }
 
 void f28() {
-    moveD(-speedD, 140);
+    moveD(speedD, 300);
     moveBC(speed, 320, 1);
-    moveD(speedD, 110);
+    moveD(speedD, 520);
     goD(0);
 }
 
@@ -427,7 +425,7 @@ void f30() {
 }
 
 void f31() {
-    turn(speed, d90 + 20, 3);
+    turn(speed, d90 + 40, 3);
     line(speed, 200, 4);
 }
 
@@ -453,8 +451,56 @@ void f34() {
     line(speed, 300, 4);
 }
 
-void add(int from, int to, void (*def)(), double time = 1.0) {
-    g[from].pb(Edge(to, def, time));
+void f35() {
+    turn(speed, d180, 2);
+    line(speed, degreesConstants[10] - dws * 2, 1);
+}
+
+void f36() {
+    turn(speed, d90, 3);
+    line(speed, 200, 1);
+}
+
+void f37() {
+    d3 = gtf();
+}
+
+void f38() {
+    moveBC(speed, 40);
+    turn(speed, d90, -2);
+}
+
+void f39() {
+    moveBC(speed, 50, 0);
+    line(speed, 460, 5);
+    goBC(speed);
+    while (s2() > black);
+}
+
+void f40() {
+    wait(30);
+    moveBC(-15, 60);
+    moveD(speedD, 300);
+    line(speed, 130, 0);
+    moveBC(speed, 420);
+    moveD(speedD, 520);
+}
+
+void f41() {
+    turn(speed, d90, -2);
+    moveBC(speed, 440, 0);
+    while (s2() > black);
+    moveBC(speed, dws);
+}
+
+void f42() {
+    turn(speed, d90, 0);
+    line(speed, 500, 2);
+}
+
+void f43() {
+    turn(speed, d90, 3);
+    line(speed, 200, 2);
 }
 
 void addcrossroad(int v, int u, int r, int d, int l) {
@@ -462,7 +508,8 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v + 1].pb(Edge(v, f1));
         g[v + 2].pb(Edge(v, f2));
         g[v + 3].pb(Edge(v, f3));
-    } else {
+    }
+    else {
         g[v + 1].pb(Edge(v, f4));
         g[v + 2].pb(Edge(v, f5));
         g[v + 3].pb(Edge(v, f6));
@@ -471,7 +518,8 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v].pb(Edge(v + 1, f3));
         g[v + 2].pb(Edge(v + 1, f1));
         g[v + 3].pb(Edge(v + 1, f2));
-    } else {
+    }
+    else {
         g[v].pb(Edge(v + 1, f6));
         g[v + 2].pb(Edge(v + 1, f4));
         g[v + 3].pb(Edge(v + 1, f5));
@@ -480,7 +528,8 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v].pb(Edge(v + 2, f2));
         g[v + 1].pb(Edge(v + 2, f3));
         g[v + 3].pb(Edge(v + 2, f1));
-    } else {
+    }
+    else {
         g[v].pb(Edge(v + 2, f6));
         g[v + 1].pb(Edge(v + 2, f5));
         g[v + 3].pb(Edge(v + 2, f4));
@@ -489,7 +538,8 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v].pb(Edge(v + 3, f1));
         g[v + 1].pb(Edge(v + 3, f2));
         g[v + 2].pb(Edge(v + 3, f3));
-    } else {
+    }
+    else {
         g[v].pb(Edge(v + 3, f4));
         g[v + 1].pb(Edge(v + 3, f5));
         g[v + 2].pb(Edge(v + 3, f6));
@@ -529,7 +579,7 @@ void buildg() {
     add(120, 25, f15a);
     add(120, 23, f15b);
 
-    add(25, 23, f26);
+    add(25, 23, f26);   
 
     add(27, 99, f16);
 
@@ -563,18 +613,44 @@ void buildg() {
     add(117, 119, f33);
 
     add(119, 116, f34);
+
+    add(116, 59, f35);
+    add(119, 59, f36);
+
+    add(65, 121, f13);
+
+    add(121, 122, f37);
+    add(122, 123, f15);
+    add(123, 121, f15a);
+    add(123, 73, f15b);
+    add(121, 73, f26);
+
+    add(86, 75, f38);
+    add(75, 97, f39);
+    add(97, 87, f8);
+    add(87, 90, f1);
+    add(90, 124, f40);
+    add(124, 125, f41);
+    add(125, 60, f42);
+    add(125, 74, f43);
 }
+
+double block_cubes = 330;
+double before_take_cubes = 200;
+double after_take_cubes = 460;
+double before_take_loops = 340;
+double after_take_loops = 440;
 
 signed EV3_main() {
     Clear_Display();
     CreateThread(okonchanie, 0);
     buildDegreesConstants();
     buildg();
-    goD(-speed);
+    goD(speedD);
     wait(700);
     goD(0);
     go(speed, 0, 26);
-    if (d1.first == 4 || d1.second == 4) {
+    if (d1.left == 4 || d1.right == 4) {
         go(speed, 26, 25);
         stopBC();
         moveD(speedD, 300);
@@ -586,6 +662,36 @@ signed EV3_main() {
     else
         go(speed, 26, 99);
     turn_bat();
+    go(speed, 112, 114);
+    go(speed, 114, 117);
+    go(speed, 117, 119);
+    if (d2.left == 4 || d2.right == 4) {
+        go(speed, 119, 116);
+        stopBC();
+        moveD(speedD, 300);
+        moveBC(speed, 270);
+        moveBC(-speed, 270);
+        moveD(speedD, 520);
+        go(speed, 116, 122);
+    }
+    else {
+        go(speed, 119, 122);
+    }
+    go(speed, 122, 123);
+    if (d3.left == 4 || d3.right == 4) {
+        go(speed, 123, 121);
+        stopBC();
+        moveD(speedD, 300);
+        moveBC(speed, 270);
+        moveBC(-speed, 270);
+        moveD(speedD, 520);
+        go(speed, 121, 124);
+    }
+    else {
+        go(speed, 123, 124);
+    }
+    go(speed, 124, 25);
+    stopBC();
     return 0;
     /*house1 = gtf();
     gtb();

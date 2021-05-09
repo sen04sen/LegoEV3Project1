@@ -17,7 +17,7 @@ const int dovorot = 50;
 const int turn1wheel = 525;
 const int ndir = 0;
 const int speed = 23;
-const int speedD = 40;
+const int speedD = 30;
 
 vector<int> degreesConstants;
 
