@@ -20,14 +20,12 @@
 #include "line.h"
 #include "constants.h"
 #include "turn.h"
+#include "field.h"
 
 using namespace ev3_c_api;
 using namespace std;
 
 #define pb push_back
-
-
-
 
 int go(int sp, int from, int toto) {
     pair<pair<double, int>, Edge> msgo[maxv];
@@ -73,29 +71,6 @@ int go(int sp, int from, int toto) {
     return way.size();
 }
 
-void vivod_4() {
-    for (int i = 0; i < 100; i++) {
-        const void *a = GetData_UART(E_Port_3, E_UART_Type_Color, 4);
-        unsigned char *d = reinterpret_cast<unsigned char *>(const_cast<void *>(a));
-        int r = d[0];
-        int g = d[2];
-        int b = d[4];
-        Clear_Display();
-        write(1, 1, r);
-        write(41, 1, g);
-        write(81, 1, b);
-        EV3_Sleep(200);
-    }
-}
-
-void vivod_clr() {
-    for (int i = 0; i < 100; i++) {
-        Clear_Display();
-        write(1, 1, GetColor(E_Port_3));
-        EV3_Sleep(200);
-    }
-}
-
 void give2() {
     stopBC();
     stopD();
@@ -115,11 +90,44 @@ void give2() {
     goD(3);
 }
 
-pair<int, int> d1;
-pair<int, int> d2;
-pair<int, int> d3;
-bool p1 = 0, p2 = 0, p3 = 0;
-double st;
+void give4() {
+    stopBC();
+    stopD();
+    wait(30);
+    moveD(-speedD, 400);
+    moveBC(speed, 200);
+    moveBC(-speed, 200);
+    moveD(speedD, 400);
+}
+
+DoubleMarker gtf() {
+    moveBC(speed, 35);
+    SpeedMotor(E_Port_C, -speed);
+    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < turn1wheel);
+    stopC();
+    moveBC(speed, 365);
+    GetColor(E_Port_4);
+    EV3_Sleep(500);
+    int fi = gclr(4);
+    if (fi == 7)
+        fi = 4;
+    moveBC(speed, 120);
+    EV3_Sleep(500);
+    int se = gclr(4);
+    if (se == 7)
+        se = 4;
+    stopBC();
+    Clear_Display();
+    write(1, 1, fi);
+    write(51, 1, se);
+    return DoubleMarker(fi, se);
+}
+
+Field field = StandartInit();
+DoubleMarker& d1 = field.house1;
+DoubleMarker& d2 = field.house1;
+DoubleMarker& d3 = field.house1;
 int gdeb = 3;
 
 void end_4_green() {
@@ -142,7 +150,7 @@ void end_4_green() {
     moveBC(-speed, 140, 1);
     turn(speed, d90, 3);
     line(speed, 400, 3);
-    if (d1.first == 3 || d1.second == 3) {
+    if (d1.left == 3 || d1.right == 3) {
         moveBC(speed, dws, 1);
         turn(speed, d180, 1);
         line(speed, 780, 3);
@@ -268,32 +276,6 @@ void get_4_blue() {
     goBC(speed);
     while (s2() > black);
     stopBC();
-}
-
-
-pair<int, int> gtf() {
-    moveBC(speed, 35);
-    SpeedMotor(E_Port_C, -speed);
-    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < turn1wheel);
-    stopC();
-    moveBC(speed, 365);
-    GetColor(E_Port_4);
-    EV3_Sleep(500);
-    int fi = gclr(4);
-    if (fi == 7)
-        fi = 4;
-    moveBC(speed, 120);
-    EV3_Sleep(500);
-    int se = gclr(4);
-    if (se == 7)
-        se = 4;
-    stopBC();
-    d1 = make_pair(fi, se);
-    Clear_Display();
-    write(1, 1, fi);
-    write(51, 1, se);
-    return make_pair(fi, se);
 }
 
 void f1() {
@@ -605,9 +587,9 @@ signed EV3_main() {
         go(speed, 26, 99);
     turn_bat();
     return 0;
-    /*d1 = gtf();
+    /*house1 = gtf();
     gtb();
-    if (d1.first == 4 || d1.second == 4) {
+    if (house1.first == 4 || house1.second == 4) {
         stopBC();
         turn(speed, d180, 2);
         line(speed, 200, 4);
