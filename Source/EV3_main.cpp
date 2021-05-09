@@ -29,6 +29,8 @@
 using namespace ev3_c_api;
 using namespace std;
 
+extern File logs;
+
 #define pb push_back
 
 int go(int sp, int from, int toto) {

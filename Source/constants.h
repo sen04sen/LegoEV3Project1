@@ -62,6 +62,6 @@ void buildSpeedConstants() {
     Speed::add(ZERO, 23, 20, 1.0, 1.0, 1, 1, 1);
 }
 
-File log = File("logs", true, true);
+extern File logs = File("logs.txt", true, true);
 
 #endif

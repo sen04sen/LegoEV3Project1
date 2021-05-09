@@ -73,31 +73,31 @@ void line(SpeedProfileName speed, int dist, int type) {
         if (type == 0 || type == 6 || type == 8) {
             if (encoders >= way) {
                 stop = 1;
-                log.write(str("line end: type == 0 || type == 6 || type == 8 encoders >= way"));
+                logs.write(str("line end: type == 0 || type == 6 || type == 8 encoders >= way"));
             }
         } else {
             if (encoders >= way - linePreviewLooking * 2) {
                 if (type == 1 && s2() < black && s3() < black) {
                     stop = 1;
-                    log.write(str("line end: type == 1 && s2() < black && s3() < black"));
+                    logs.write(str("line end: type == 1 && s2() < black && s3() < black"));
                 } else if (type == 2 && s3() < black) {
                     stop = 1;
-                    log.write(str("line end: type == 2 && s3() < black"));
+                    logs.write(str("line end: type == 2 && s3() < black"));
                 } else if (type == 3 && s2() < black) {
                     stop = 1;
-                    log.write(str("line end: type == 3 && s2() < black"));
+                    logs.write(str("line end: type == 3 && s2() < black"));
                 } else if (type == 4) {
                     ColorRGB color = getRGB(3);
                     if (color.r - color.g > 70) {
                         stop = 1;
-                        log.write(str("line end: type == 4 color.r - color.g > 70"));
+                        logs.write(str("line end: type == 4 color.r - color.g > 70"));
                     }
                 } else if (type == 5 && s2() > bluck) {
                     stop = 1;
-                    log.write(str("line end: type == 5 && s2() > bluck"));
+                    logs.write(str("line end: type == 5 && s2() > bluck"));
                 } else if (type == 7 && s3() < black) {
                     stop = 1;
-                    log.write(str("line end: type == 7 && s3() < black"));
+                    logs.write(str("line end: type == 7 && s3() < black"));
                 }
             }
         }
