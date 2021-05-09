@@ -1,7 +1,6 @@
 #ifndef motors_h
 #define motors_h
 
-#include <EV3_Motor.h>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -10,12 +9,15 @@
 #include <sstream>
 #include <set>
 #include <functional>
+
+#include "EV3_Motor.h"
 #include "EV3_Thread.h"
 #include "EV3_LCDDisplay.h"
 #include "EV3_Sensor_Color.h"
 #include "EV3_Sensor_UART.h"
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
+
 #include "utils.h"
 #include "speed.h"
 

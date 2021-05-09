@@ -1,9 +1,11 @@
 #ifndef constants_h
 #define constants_h
 
-#include "speed.h"
 #include <map>
 #include <vector>
+
+#include "speed.h"
+#include "file.h"
 
 using namespace ev3_c_api;
 using namespace std;
@@ -60,5 +62,6 @@ void buildSpeedConstants() {
     Speed::add(ZERO, 23, 20, 1.0, 1.0, 1, 1, 1);
 }
 
+File log = File("logs", true, true);
 
 #endif

@@ -1,23 +1,26 @@
 #ifndef line_h
 #define line_h
 
-#include <EV3_Motor.h>
-#include "EV3_LCDDisplay.h"
-#include "EV3_Sensor_Color.h"
-#include "EV3_Sensor_UART.h"
 #include <iostream>
 #include <vector>
 #include <string>
-#include <stdio.h>
-#include <stdlib.h>
-#include "EV3_Thread.h"
 #include <sstream>
 #include <set>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "EV3_Motor.h"
+#include "EV3_LCDDisplay.h"
+#include "EV3_Sensor_Color.h"
+#include "EV3_Sensor_UART.h"
+#include "EV3_Thread.h"
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
+
 #include "speed.h"
 #include "constants.h"
 #include "utils.h"
+#include "sensors.h"
 
 using namespace ev3_c_api;
 using namespace std;
@@ -26,9 +29,9 @@ void line(SpeedProfileName speed, int dist, int type) {
     // Просто надо помнить, что эта линия не предполагает движения назaд
 
     Speed p; // Извлечение настроек
-    try{
+    try {
         p = Speed::speeds[speed];
-    } catch (...){
+    } catch (...) {
         throw Exception("No speed Profile");
     }
 
@@ -40,13 +43,14 @@ void line(SpeedProfileName speed, int dist, int type) {
     if (type == 4) getRGB(3);
 
 
-    int home = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) + GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+    int home =
+            GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) + GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
     double kUpDist = 0.5 * (p.maxS / p.sEnc), kDownDist = 0.5 * (p.maxS / p.eEnc);
 
     int upDist, downDist;
-    if (p.sEnc > 0) upDist = ((int)(p.sEnc * 2)) + home;
+    if (p.sEnc > 0) upDist = ((int) (p.sEnc * 2)) + home;
     else upDist = -2147483648;
-    if (p.eEnc > 0) downDist = ((int)((dist - p.zEnc - p.eEnc) * 2)) + home;
+    if (p.eEnc > 0) downDist = ((int) ((dist - p.zEnc - p.eEnc) * 2)) + home;
     else downDist = 2147483647;
 
     int way = dist * 2 + home, encoders = home, error = 0, errors[lineArrayLen];
@@ -57,7 +61,8 @@ void line(SpeedProfileName speed, int dist, int type) {
     bool stop = 0; // флаг завершения
     for (int count = 0; !stop; count++) {
 
-        encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) + GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+        encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) +
+                   GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
 
         int nowSpeed;
         if (encoders > downDist) nowSpeed = p.maxS - (encoders - downDist) * kDownDist;
@@ -68,23 +73,32 @@ void line(SpeedProfileName speed, int dist, int type) {
         if (type == 0 || type == 6 || type == 8) {
             if (encoders >= way) {
                 stop = 1;
+                log.write(str("line end: type == 0 || type == 6 || type == 8 encoders >= way"));
             }
         } else {
             if (encoders >= way - linePreviewLooking * 2) {
-                if (type == 1 && s2() < black && s3() < black)
+                if (type == 1 && s2() < black && s3() < black) {
                     stop = 1;
-                else if (type == 2 && s3() < black)
+                    log.write(str("line end: type == 1 && s2() < black && s3() < black"));
+                } else if (type == 2 && s3() < black) {
                     stop = 1;
-                else if (type == 3 && s2() < black)
+                    log.write(str("line end: type == 2 && s3() < black"));
+                } else if (type == 3 && s2() < black) {
                     stop = 1;
-                else if (type == 4) {
+                    log.write(str("line end: type == 3 && s2() < black"));
+                } else if (type == 4) {
                     ColorRGB color = getRGB(3);
-                    if (color.r - color.g > 70)
+                    if (color.r - color.g > 70) {
                         stop = 1;
-                } else if (type == 5 && s2() > bluck)
+                        log.write(str("line end: type == 4 color.r - color.g > 70"));
+                    }
+                } else if (type == 5 && s2() > bluck) {
                     stop = 1;
-                else if (type == 7 && s3() < black)
+                    log.write(str("line end: type == 5 && s2() > bluck"));
+                } else if (type == 7 && s3() < black) {
                     stop = 1;
+                    log.write(str("line end: type == 7 && s3() < black"));
+                }
             }
         }
 
@@ -106,8 +120,8 @@ void line(SpeedProfileName speed, int dist, int type) {
                 break;
         } // подсчет ошибки
 
-        double kP = p.p * ((double)nowSpeed / (double)p.maxS);
-        double kD = p.d * ((double)nowSpeed / (double)p.maxS);
+        double kP = p.p * ((double) nowSpeed / (double) p.maxS);
+        double kD = p.d * ((double) nowSpeed / (double) p.maxS);
 
         SpeedMotor(E_Port_B, -1 * (nowSpeed + error * kP + (error - errors[count % lineArrayLen]) * kD));
         SpeedMotor(E_Port_C, nowSpeed - error * kP - (error - errors[count % lineArrayLen]) * kD);

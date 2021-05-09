@@ -1,18 +1,20 @@
-#include <EV3_Motor.h>
-#include "EV3_LCDDisplay.h"
-#include "EV3_Sensor_Color.h"
-#include "EV3_Sensor_UART.h"
 #include <iostream>
 #include <vector>
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
-#include "EV3_Thread.h"
 #include <sstream>
 #include <set>
+#include <functional>
+
+#include "EV3_Motor.h"
+#include "EV3_LCDDisplay.h"
+#include "EV3_Sensor_Color.h"
+#include "EV3_Sensor_UART.h"
+#include "EV3_Thread.h"
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
-#include <functional>
+
 #include "utils.h"
 #include "motors.h"
 #include "edge.h"
@@ -21,6 +23,8 @@
 #include "constants.h"
 #include "turn.h"
 #include "field.h"
+#include "file.h"
+
 
 using namespace ev3_c_api;
 using namespace std;
