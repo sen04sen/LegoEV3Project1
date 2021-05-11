@@ -1,6 +1,8 @@
 #ifndef turn_h
 #define turn_h
 
+#include "EV3_Motor.h"
+
 void turn(int sp, int dt, int tp) {
     if (tp >= 0) {
         if (tp < 2 || tp == 4) {

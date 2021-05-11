@@ -1,18 +1,19 @@
 #ifndef utils_h
 #define utils_h
 
-#include <EV3_Motor.h>
-#include "EV3_LCDDisplay.h"
-#include "EV3_Sensor_Color.h"
-#include "EV3_Sensor_UART.h"
 #include <iostream>
 #include <vector>
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
-#include "EV3_Thread.h"
 #include <sstream>
 #include <set>
+
+#include "EV3_Motor.h"
+#include "EV3_LCDDisplay.h"
+#include "EV3_Sensor_Color.h"
+#include "EV3_Sensor_UART.h"
+#include "EV3_Thread.h"
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 
