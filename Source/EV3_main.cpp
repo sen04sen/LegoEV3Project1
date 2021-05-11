@@ -27,7 +27,7 @@ using namespace std;
 
 #define pb push_back
 
-double block_cubes = 340;
+double block_cubes = 334;
 double before_take_cubes = 200;
 double after_take_cubes = 460;
 double before_take_loops = 340;
@@ -261,6 +261,8 @@ void f24() {
 }
 
 void f25() {
+    moveB(speed, 20);
+    moveC(speed, 10);
     moveBC(speed, 480, 0);
     stopC();
     moveB(speed, 890, 1);
@@ -270,7 +272,7 @@ void f25() {
     write(1, 1, gdeb);
     moveBC(speed, 430, 0);
     while (s2() > black);
-    moveBC(speed, dws + 10);
+    moveBC(speed, dws - 10);
     turn(speed, 160, 3);
     moveD(speedD, block_cubes);
     line(speed, 200, 3);
@@ -539,7 +541,7 @@ signed EV3_main() {
     buildDegreesConstants();
     buildg();
     goD(speedD);
-    wait(700);
+    wait(1500);
     goD(0);
     go(speed, 0, 26);
     if (d1.left == 4 || d1.right == 4) {

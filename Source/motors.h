@@ -83,6 +83,7 @@ void moveC(int sp, int dist, bool stop = true) {
 }
 
 void moveD(int sp, int dist) {
+    dist *= -1;
     static double stadegd = GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
     dist = (double) dist + stadegd;
     double st = dist - GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
