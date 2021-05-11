@@ -537,6 +537,7 @@ void buildg() {
 
 signed EV3_main() {
     Clear_Display();
+    write(10, 10, "abc");
     CreateThread(okonchanie, 0);
     buildDegreesConstants();
     buildg();

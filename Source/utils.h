@@ -52,11 +52,9 @@ void* okonchanie(void *lpvoid) {
     exit(0);
 }
 
-void write(int x, int y, int uy) {
-    stringstream s;
-    s << uy;
-    string a;
-    s >> a;
+template<class T>
+void write(int x, int y, T uy) {
+    string a = str(uy);
     Draw_Text(x, y, E_Font_Normal, 0, &(a[0]));
 }
 
