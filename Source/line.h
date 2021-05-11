@@ -44,7 +44,7 @@ void line(int sp, int dist, int tp) {
                     stop = 1;
                 else if (tp == 4) {
                     //make_pair(make_pair(r, g), b);
-                    Color color = getRGB(3);
+                    ColorRGB color = getRGB(3);
                     if (color.r - color.g > 70)
                         stop = 1;
                 } else if (tp == 5 && s2() > bluck)

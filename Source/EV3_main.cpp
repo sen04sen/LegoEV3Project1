@@ -20,6 +20,7 @@
 #include "line.h"
 #include "constants.h"
 #include "turn.h"
+#include "field.h"
 
 using namespace ev3_c_api;
 using namespace std;
