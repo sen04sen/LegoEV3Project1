@@ -547,7 +547,6 @@ signed EV3_main() {
     CreateThread(okonchanie, 0);
     buildDegreesConstants();
     buildg();
-    buildSpeedConstants();
     goD(speedD);
     wait(700);
     goD(0);

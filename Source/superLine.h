@@ -25,11 +25,7 @@
 using namespace ev3_c_api;
 using namespace std;
 
-void line(int speed, int dist, int type){
-    line(ZERO, dist, type);
-}
-
-void lineNEW(SpeedProfileName speed, int dist, int type) {
+void lineNEW(Speed p, int dist, int type) {
     // Просто надо помнить, что эта линия не предполагает движения назaд
 
     // Какая-то типизация
@@ -41,13 +37,13 @@ void lineNEW(SpeedProfileName speed, int dist, int type) {
 
 
     int home =
-            GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) + GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+        GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) + GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
     double kUpDist = 0.5 * (p.maxS / p.sEnc), kDownDist = 0.5 * (p.maxS / p.eEnc);
 
     int upDist, downDist;
-    if (p.sEnc > 0) upDist = ((int) (p.sEnc * 2)) + home;
+    if (p.sEnc > 0) upDist = ((int)(p.sEnc * 2)) + home;
     else upDist = -2147483648;
-    if (p.eEnc > 0) downDist = ((int) ((dist - p.zEnc - p.eEnc) * 2)) + home;
+    if (p.eEnc > 0) downDist = ((int)((dist - p.zEnc - p.eEnc) * 2)) + home;
     else downDist = 2147483647;
 
     int way = dist * 2 + home, encoders = home, error = 0, errors[lineArrayLen];
@@ -59,7 +55,7 @@ void lineNEW(SpeedProfileName speed, int dist, int type) {
     for (int count = 0; !stop; count++) {
 
         encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) +
-                   GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+            GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
 
         int nowSpeed;
         if (encoders > downDist) nowSpeed = p.maxS - (encoders - downDist) * kDownDist;
@@ -71,27 +67,33 @@ void lineNEW(SpeedProfileName speed, int dist, int type) {
             if (encoders >= way) {
                 stop = 1;
             }
-        } else {
+        }
+        else {
             if (encoders >= way - linePreviewLooking * 2) {
                 if (type == 1 && s2() < black && s3() < black) {
                     stop = 1;
 
-                } else if (type == 2 && s3() < black) {
+                }
+                else if (type == 2 && s3() < black) {
                     stop = 1;
 
-                } else if (type == 3 && s2() < black) {
+                }
+                else if (type == 3 && s2() < black) {
                     stop = 1;
 
-                } else if (type == 4) {
+                }
+                else if (type == 4) {
                     ColorRGB color = getRGB(3);
                     if (color.r - color.g > 70) {
                         stop = 1;
 
                     }
-                } else if (type == 5 && s2() > bluck) {
+                }
+                else if (type == 5 && s2() > bluck) {
                     stop = 1;
 
-                } else if (type == 7 && s3() < black) {
+                }
+                else if (type == 7 && s3() < black) {
                     stop = 1;
 
                 }
@@ -99,25 +101,25 @@ void lineNEW(SpeedProfileName speed, int dist, int type) {
         }
 
         switch (type) {
-            case 5:
-                error = (double) (s3() - bley) * 3 / 3;
-                break;
-            case 6:
-                error = (double) (s3() - bley) * 3 / 3;
-                break;
-            case 4:
-                error = (double) (grey - s2()) * 2 / 3;
-                break;
-            case 7:
-                error = (double) (s2() - grey) * 3 / 3;
-                break;
-            default:
-                error = (double) (s3() - s2());
-                break;
+        case 5:
+            error = (double)(s3() - bley) * 3 / 3;
+            break;
+        case 6:
+            error = (double)(s3() - bley) * 3 / 3;
+            break;
+        case 4:
+            error = (double)(grey - s2()) * 2 / 3;
+            break;
+        case 7:
+            error = (double)(s2() - grey) * 3 / 3;
+            break;
+        default:
+            error = (double)(s3() - s2());
+            break;
         } // подсчет ошибки
 
-        double kP = p.p * ((double) nowSpeed / (double) p.maxS);
-        double kD = p.d * ((double) nowSpeed / (double) p.maxS);
+        double kP = p.p * ((double)nowSpeed / (double)p.maxS);
+        double kD = p.d * ((double)nowSpeed / (double)p.maxS);
 
         SpeedMotor(E_Port_B, -1 * (nowSpeed + error * kP + (error - errors[count % lineArrayLen]) * kD));
         SpeedMotor(E_Port_C, nowSpeed - error * kP - (error - errors[count % lineArrayLen]) * kD);
@@ -125,6 +127,10 @@ void lineNEW(SpeedProfileName speed, int dist, int type) {
         errors[count % lineArrayLen] = error; // для d составляющей
     }
     if (type == 4) s3(); // Какая-то типизация
+}
+
+void line(int speed, int dist, int type){
+    lineNEW(ZERO, dist, type);
 }
 
 #endif
