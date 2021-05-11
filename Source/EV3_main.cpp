@@ -72,9 +72,10 @@ int go(int sp, int from, int toto) {
     return way.size();
 }
 
-pair<int, int> d1;
-pair<int, int> d2;
-pair<int, int> d3;
+Field field = StandartInit();
+DoubleMarker& d1 = field.house1;
+DoubleMarker& d2 = field.house2;
+DoubleMarker& d3 = field.house3;
 bool p1 = 0, p2 = 0, p3 = 0;
 double st;
 int gdeb = 3;
@@ -125,9 +126,7 @@ void turn_bat() {
 }
 
 
-
-
-pair<int, int> gtf() {
+DoubleMarker gtf() {
     moveBC(speed, 35);
     SpeedMotor(E_Port_C, -speed);
     double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
@@ -145,11 +144,10 @@ pair<int, int> gtf() {
     if (se == 7)
         se = 4;
     stopBC();
-    d1 = make_pair(fi, se);
     Clear_Display();
     write(1, 1, fi);
     write(51, 1, se);
-    return make_pair(fi, se);
+    return DoubleMarker(Color(fi), Color(se));
 }
 
 void f1() {
@@ -448,7 +446,7 @@ signed EV3_main() {
     wait(700);
     goD(0);
     go(speed, 0, 26);
-    if (d1.first == 4 || d1.second == 4) {
+    if (d1.left == 4 || d1.right == 4) {
         go(speed, 26, 25);
         stopBC();
         moveD(speedD, 300);
