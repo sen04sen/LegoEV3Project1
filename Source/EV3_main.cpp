@@ -296,6 +296,13 @@ pair<int, int> gtf() {
     return make_pair(fi, se);
 }
 
+int block_cubes = 330;
+double before_take_cubes = 200;
+double after_take_cubes = 460;
+double before_take_loops = 340;
+double after_take_loops = 440;
+double up = 200;
+
 void f1() {
     turn(speed, d90, 3);
 }
@@ -403,21 +410,23 @@ void f24() {
 }
 
 void f25() {
-    moveBC(speed, 340, 0);
+    moveBC(speed, 380, 0);
     stopB();
-    moveC(speed, 80, 1);
-    moveB(speed, 890, 1);
-    moveD(speedD, 520);
+    moveC(speed, 100, 1);
+    moveB(speed, 910, 1);
+    moveD(speedD, block_cubes);
     turn(speed, 60, -1);
     if (gclr(4) != 0) {
         gdeb = 4;
     }
     write(1, 1, gdeb);
+    moveD(speedD, up);
     moveBC(speed, 390, 0);
     goBC(speed);
     while (s2() > black);
     moveBC(speed, 100, 1);
     turn(speed, 160, 3);
+    moveD(speedD, block_cubes);
     line(speed, 200, 3);
 }
 
@@ -427,9 +436,9 @@ void f26() {
 }
 
 void f28() {
-    moveD(-speedD, 140);
+    moveD(speedD, before_take_cubes);
     moveBC(speed, 320, 1);
-    moveD(speedD, 110);
+    moveD(speedD, block_cubes);
     goD(0);
 }
 
@@ -445,7 +454,7 @@ void f30() {
 }
 
 void f31() {
-    turn(speed, d90 + 20, 3);
+    turn(speed, d90 + 40, 3);
     line(speed, 200, 4);
 }
 
@@ -469,6 +478,76 @@ void f33() {
 void f34() {
     turn(speed, d90, 0);
     line(speed, 300, 4);
+}
+
+void f35() {
+    turn(speed, d180, 2);
+    line(speed, degreesConstants[10] - dws * 2, 1);
+}
+
+void f36() {
+    turn(speed, d90, 3);
+    line(speed, 200, 1);
+}
+
+void f37() {
+    d3 = gtf();
+}
+
+void f38() {
+    moveBC(speed, 40);
+    turn(speed, d90, -2);
+}
+
+void f39() {
+    moveBC(speed, 50, 0);
+    line(speed, 460, 5);
+    goBC(speed);
+    while (s2() > black);
+}
+
+void f40() {
+    wait(30);
+    moveBC(-15, 60);
+    moveD(speedD, before_take_cubes);
+    line(speed, 130, 0);
+    moveBC(speed, 420);
+    moveD(speedD, block_cubes);
+}
+
+void f41() {
+    turn(speed, d90, -2);
+    moveBC(speed, 440, 0);
+    while (s2() > black);
+    moveBC(speed, dws);
+}
+
+void f42() {
+    turn(speed, d90, 0);
+    line(speed, 500, 2);
+}
+
+void f43() {
+    turn(speed, d90, 3);
+    line(speed, 200, 2);
+}
+
+void f44() {
+    moveBC(speed, dws - 20);
+}
+
+void f45() {
+    turn(speed, d90, 0);
+    turn(speed, 30, -1);
+}
+
+void f46() {
+    line(speed, degreesConstants[6]- dws, 8);
+    getRGB(2);
+    moveBC(speed, 55, 0);
+    while (getRGB(2).b < 100);
+    moveBC(speed, 70, 1);
+    s2();
 }
 
 void add(int from, int to, void (*def)(), double time = 1.0) {
@@ -581,6 +660,30 @@ void buildg() {
     add(117, 119, f33);
 
     add(119, 116, f34);
+
+    add(116, 59, f35);
+    add(119, 59, f36);
+
+    add(65, 121, f13);
+
+    add(121, 122, f37);
+    add(122, 123, f15);
+    add(123, 121, f15a);
+    add(123, 73, f15b);
+    add(121, 73, f26);
+
+    add(86, 75, f38);
+    add(75, 97, f39);
+    add(97, 87, f8);
+    add(87, 90, f1);
+    add(90, 124, f40);
+    add(124, 125, f41);
+    add(125, 60, f42);
+    add(125, 74, f43);
+
+    add(108, 99, f44);
+    add(99, 100, f45);
+    add(100, 112, f46);
 }
 
 signed EV3_main() {
@@ -588,73 +691,49 @@ signed EV3_main() {
     CreateThread(okonchanie, 0);
     buildDegreesConstants();
     buildg();
-    goD(-speed);
+    goD(speedD);
     wait(700);
     goD(0);
     go(speed, 0, 26);
     if (d1.first == 4 || d1.second == 4) {
         go(speed, 26, 25);
         stopBC();
-        moveD(speedD, 300);
+        moveD(speedD, before_take_cubes);
         moveBC(speed, 270);
         moveBC(-speed, 270);
-        moveD(speedD, 520);
-        go(speed, 25, 99);
+        moveD(speedD, block_cubes);
+        go(speed, 25, 114);
     }
     else
-        go(speed, 26, 99);
-    turn_bat();
-    return 0;
-    /*d1 = gtf();
-    gtb();
-    if (d1.first == 4 || d1.second == 4) {
-        stopBC();
-        turn(speed, d180, 2);
-        line(speed, 200, 4);
-        p1 = 1;
-        give4();
-        turn(speed, d180, 2);
-        line(speed, 250, 1);
-    }
-    ////go(speed, 2, 0, 6, 0, 0);
-    turn_bat();
-
-
-    turn(speed, d90, 3);
-    line(speed, 200, 4);
-    d2 = gtf();
- 
+        go(speed, 26, 114);
+    go(speed, 114, 117);
+    go(speed, 117, 119);
     if (d2.first == 4 || d2.second == 4) {
-        turn(speed, d90, 0);
-        line(speed, 300, 4);
-        if (p1)
-            give4();
-        else
-            give2();
-        p2 = 1;
-        turn(speed, d180, 2);
-        line(speed, 600, 1);
-    } else {
-        turn(speed, d90, 3);
-        line(speed, 200, 1);
+        go(speed, 119, 116);
+        stopBC();
+        moveD(speedD, before_take_cubes);
+        moveBC(speed, 270);
+        moveBC(-speed, 270);
+        moveD(speedD, block_cubes);
+        go(speed, 116, 122);
     }
-    ////go(speed, 12, 2, 15, 2, 0);
-    d3 = gtf();
-    gtb();
+    else {
+        go(speed, 119, 122);
+    }
+    go(speed, 122, 123);
     if (d3.first == 4 || d3.second == 4) {
-        turn(speed, d180, 2);
-        line(speed, 200, 4);
-        if (p1 || p2)
-            give4();
-        else
-            give2();
-        p3 = 1;
-        turn(speed, d180, 2);
-        line(speed, 250, 1);
+        go(speed, 123, 121);
+        stopBC();
+        moveD(speedD, before_take_cubes);
+        moveBC(speed, 270);
+        moveBC(-speed, 270);
+        moveD(speedD, block_cubes);
+        go(speed, 121, 124);
     }
-    moveBC(speed, dws, 1);
-    turn(speed, d90, 0);
-    line(speed, 100, 3);
-    get_4_blue();*/
+    else {
+        go(speed, 123, 124);
+    }
+    go(speed, 124, 25);
+    stopBC();
     return 0;
 }
