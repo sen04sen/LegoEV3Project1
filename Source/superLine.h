@@ -25,6 +25,8 @@
 using namespace ev3_c_api;
 using namespace std;
 
+
+
 void lineNEW(Speed p, int dist, int type) {
     // Просто надо помнить, что эта линия не предполагает движения назaд
 
@@ -37,7 +39,7 @@ void lineNEW(Speed p, int dist, int type) {
 
 
     int home =
-        GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) + GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+        GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 + GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
     double kUpDist = 0.5 * (p.maxS / p.sEnc), kDownDist = 0.5 * (p.maxS / p.eEnc);
 
     int upDist, downDist;
@@ -54,7 +56,7 @@ void lineNEW(Speed p, int dist, int type) {
     bool stop = 0; // флаг завершения
     for (int count = 0; !stop; count++) {
 
-        encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) +
+        encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 +
             GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
 
         int nowSpeed;
@@ -80,7 +82,6 @@ void lineNEW(Speed p, int dist, int type) {
                 }
                 else if (type == 3 && s2() < black) {
                     stop = 1;
-
                 }
                 else if (type == 4) {
                     ColorRGB color = getRGB(3);
@@ -113,6 +114,9 @@ void lineNEW(Speed p, int dist, int type) {
         case 7:
             error = (double)(s2() - grey) * 3 / 3;
             break;
+        case 8:
+            error = (double)(s2() - grey) * 3 / 3;
+            break;
         default:
             error = (double)(s3() - s2());
             break;
@@ -121,16 +125,17 @@ void lineNEW(Speed p, int dist, int type) {
         double kP = p.p * ((double)nowSpeed / (double)p.maxS);
         double kD = p.d * ((double)nowSpeed / (double)p.maxS);
 
-        SpeedMotor(E_Port_B, -1 * (nowSpeed + error * kP + (error - errors[count % lineArrayLen]) * kD));
-        SpeedMotor(E_Port_C, nowSpeed - error * kP - (error - errors[count % lineArrayLen]) * kD);
+        SpeedMotor(E_Port_B, -1 * (nowSpeed - error * kP - (error - errors[count % lineArrayLen]) * kD));
+        SpeedMotor(E_Port_C, nowSpeed + error * kP + (error - errors[count % lineArrayLen]) * kD);
 
         errors[count % lineArrayLen] = error; // для d составляющей
     }
     if (type == 4) s3(); // Какая-то типизация
 }
 
-void line(int speed, int dist, int type){
+void line(int speed, int dist, int type) {
     lineNEW(ZERO, dist, type);
 }
+
 
 #endif

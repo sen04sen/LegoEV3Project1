@@ -17,8 +17,8 @@
 #include "motors.h"
 #include "edge.h"
 #include "sensors.h"
-#include "line.h"
-//#include "superLine.h"
+//#include "line.h"
+#include "superLine.h"
 #include "constants.h"
 #include "turn.h"
 #include "field.h"
@@ -137,14 +137,11 @@ DoubleMarker gtf() {
     moveBC(-speed, 130);
     turn(speed, d90, -1);
     moveD(speedD, up);
-    moveBC(speed, 205);
-    GetColor(E_Port_4);
-    EV3_Sleep(500);
+    moveBC(speed, 205, 0);
     int fi = gclr(4);
     if (fi == 7)
         fi = 4;
     moveBC(speed, 120);
-    EV3_Sleep(500);
     int se = gclr(4);
     if (se == 7)
         se = 4;
@@ -269,17 +266,14 @@ void f25() {
     stopB();
     moveC(speed, 110, 1);
     moveB(speed, 920, 1);
-    moveD(speedD, block_cubes);
     turn(speed, 60, -1);
     if (gclr(4) != 0) {
         gdeb = 4;
     }
     write(1, 1, gdeb);
-    moveD(speedD, up);
     moveBC(speed, 430, 0);
-    goBC(speed);
     while (s2() > black);
-    moveBC(speed, 120, 1);
+    moveBC(speed, dws + 20);
     turn(speed, 160, 3);
     moveD(speedD, block_cubes);
     line(speed, 200, 3);
@@ -365,7 +359,7 @@ void f39() {
 void f40() {
     wait(30);
     moveBC(-15, 60);
-    moveD(speedD, before_take_cubes);
+    moveD(speedD, up);
     line(speed, 130, 0);
     moveBC(speed, 420);
     moveD(speedD, block_cubes);
@@ -398,7 +392,7 @@ void f45() {
 }
 
 void f46() {
-    line(speed, grad[6]- dws, 8);
+    line(speed, grad[6] - dws, 8);
     getRGB(2);
     moveBC(speed, 55, 0);
     while (getRGB(2).b < 100);
@@ -484,7 +478,7 @@ void buildg() {
 
     add(25, 23, f26);
 
-    add(27, 99, f16);
+    add(27, 109, f16);
 
     add(28, 50, f17);
     add(32, 50, f18);

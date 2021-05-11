@@ -23,7 +23,7 @@ const int speedD = 40;
 
 const int lineArrayLen = 20;
 const int linePreviewLooking = 50;
-Speed ZERO = Speed(23, 20, 1.0, 1.0, 1, 1, 1);
+Speed ZERO = Speed(23, 20, 0.3, 0.3, 1, 1, 1);
 
 vector<int> grad;
 
