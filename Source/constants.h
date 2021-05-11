@@ -19,29 +19,29 @@ const int ndir = 0;
 const int speed = 23;
 const int speedD = 40;
 
-vector<int> grad;
+vector<int> degreesConstants;
 
 #define pb push_back
 
 void buildDegreesConstants() {
-    grad.pb(850);
-    grad.pb(390);
-    grad.pb(470);
-    grad.pb(820);
-    grad.pb(760);
-    grad.pb(580);
-    grad.pb(580);
-    grad.pb(270);
-    grad.pb(220);
-    grad.pb(990);
-    grad.pb(1100);
-    grad.pb(880);
-    grad.pb(470);
-    grad.pb(250);
-    grad.pb(670);
-    grad.pb(230);
-    grad.pb(210);
-    grad.pb(410);
+    degreesConstants.pb(850);
+    degreesConstants.pb(390);
+    degreesConstants.pb(470);
+    degreesConstants.pb(820);
+    degreesConstants.pb(760);
+    degreesConstants.pb(580);
+    degreesConstants.pb(580);
+    degreesConstants.pb(270);
+    degreesConstants.pb(220);
+    degreesConstants.pb(990);
+    degreesConstants.pb(1100);
+    degreesConstants.pb(880);
+    degreesConstants.pb(470);
+    degreesConstants.pb(250);
+    degreesConstants.pb(670);
+    degreesConstants.pb(230);
+    degreesConstants.pb(210);
+    degreesConstants.pb(410);
 }
 
 vector<vector<Edge> > g(maxv);
