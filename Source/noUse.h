@@ -27,13 +27,13 @@ void give2() {
     wait(30);
     moveD(-speedD, 400);
     moveBC(speed, 200);
-    moveBC(-speed, 110);
+    moveBC(speed, -110);
     moveD(speedD, 400);
     moveDTime(1, 500);
     stopD();
     moveD(-5, 8);
     wait(100);
-    moveBC(-speed, 150);
+    moveBC(speed, -150);
     moveD(-speedD, 100);
     moveBC(speed, 60);
     moveD(speedD, 120);
@@ -42,11 +42,11 @@ void give2() {
 
 void end_4_green() {
     line(speed, 170, 2);
-    moveBC(-speed, 50, 1);
+    moveBC(speed, -50, 1);
     turn(speed, d90, -1);
     moveBC(10, 140, 1);
     moveD(-speedD, 70);
-    moveBC(-speed, 140, 1);
+    moveBC(speed, -140, 1);
     turn(speed, d90, 3);
     line(speed, 30, 2);
     moveBC(speed, dsl, 1);
@@ -57,7 +57,7 @@ void end_4_green() {
     EV3_Sleep(1000);
     moveBC(10, 140, 1);
     moveD(-speedD, 65);
-    moveBC(-speed, 140, 1);
+    moveBC(speed, -140, 1);
     turn(speed, d90, 3);
     line(speed, 400, 3);
     if (d1.first == 3 || d1.second == 3) {
@@ -73,7 +73,7 @@ void end_4_green() {
         line(speed, 200, 4);
         moveBC(speed, 50, 1);
         moveD(10, 110);
-        moveBC(-speed, 400, 1);
+        moveBC(speed, -400, 1);
         turn(speed, d90, 0);
         SpeedMotor_Time(E_Port_D, -30, 2000);
         wait(2000);
@@ -88,7 +88,7 @@ void end_4_green() {
         line(speed, 200, 4);
         moveBC(speed, 50, 1);
         moveD(10, 110);
-        moveBC(-speed, 400, 1);
+        moveBC(speed, -400, 1);
         turn(speed, d90, 0);
         SpeedMotor_Time(E_Port_D, -30, 2000);
         wait(2000);
@@ -119,13 +119,13 @@ void get_4_blue() {
     goBC(speed);
     while (s2() > black);
     stopBC();
-    moveBC(-speed, 30, 1);
+    moveBC(speed, -30, 1);
     turn(speed, d90, -1);
-    moveBC(-speed, 50, 1);
+    moveBC(speed, -50, 1);
     moveD(speedD, 395);
     moveBC(speed, 90, 1);
     moveD(speedD, 280);
-    moveBC(-speed, 30, 1);
+    moveBC(speed, -30, 1);
     turn(speed, d90, -2);
     moveBC(speed, 130, 1);
     goBC(speed, 2);
@@ -134,11 +134,11 @@ void get_4_blue() {
     line(speed, 150, 6);
     stopBC();
     turn(speed, d90, -1);
-    moveBC(-speed, 50, 1);
+    moveBC(speed, -50, 1);
     moveD(speedD, 395);
     moveBC(speed, 90, 1);
     moveD(speedD, 280);
-    moveBC(-speed, 60, 1);
+    moveBC(speed, -60, 1);
     turn(speed, d90, -1);
     moveBC(speed, 600, 0);
     goBC(speed);
