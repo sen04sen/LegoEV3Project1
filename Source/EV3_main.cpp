@@ -262,18 +262,16 @@ void f24() {
 }
 
 void f25() {
-    moveBC(speed, 370, 0);
-    stopB();
-    moveC(speed, 110, 1);
-    moveB(speed, 920, 1);
-    turn(speed, 60, -1);
+    moveBC(speed, 480, 0);
+    stopC();
+    moveB(speed, 890, 1);
     if (gclr(4) != 0) {
         gdeb = 4;
     }
     write(1, 1, gdeb);
     moveBC(speed, 430, 0);
     while (s2() > black);
-    moveBC(speed, dws + 20);
+    moveBC(speed, dws + 10);
     turn(speed, 160, 3);
     moveD(speedD, block_cubes);
     line(speed, 200, 3);
@@ -285,7 +283,7 @@ void f26() {
 }
 
 void f28() {
-    moveD(speedD, before_take_cubes);
+    moveD(speedD, up);
     moveBC(speed, 320, 1);
     moveD(speedD, block_cubes);
     goD(0);
@@ -383,16 +381,16 @@ void f43() {
 }
 
 void f44() {
-    moveBC(speed, dws - 20);
+    moveBC(speed, dws - 30);
 }
 
 void f45() {
-    turn(speed, d90, 0);
+    turn(speed, d90 - 30, 0);
     turn(speed, 30, -1);
 }
 
 void f46() {
-    line(speed, grad[6] - dws, 8);
+    line(speed, grad[6] - dws + 20, 8);
     getRGB(2);
     moveBC(speed, 55, 0);
     while (getRGB(2).b < 100);
@@ -442,13 +440,13 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v + 2].pb(Edge(v + 3, f6));
     }
     g[v + 8].pb(Edge(v + 2, f8));
-    g[v + 8].pb(Edge(v + 6, f7));
+    g[v + 8].pb(Edge(v + 6, f7, 0.9));
     g[v + 10].pb(Edge(v, f8));
-    g[v + 10].pb(Edge(v + 4, f7));
+    g[v + 10].pb(Edge(v + 4, f7, 0.9));
     g[v + 11].pb(Edge(v + 1, f8));
-    g[v + 11].pb(Edge(v + 5, f7));
+    g[v + 11].pb(Edge(v + 5, f7, 0.9));
     g[v + 9].pb(Edge(v + 3, f8));
-    g[v + 9].pb(Edge(v + 7, f7));
+    g[v + 9].pb(Edge(v + 7, f7, 0.9));
 }
 
 void buildg() {
@@ -560,10 +558,9 @@ signed EV3_main() {
     if (d2.left == 4 || d2.right == 4) {
         go(speed, 119, 116);
         stopBC();
-        moveD(speedD, before_take_cubes);
-        moveBC(speed, 270);
-        moveBC(-speed, 270);
-        moveD(speedD, block_cubes);
+        moveD(speedD, up);
+        moveBC(speed, 150);
+        moveBC(-speed, 150);
         go(speed, 116, 122);
     }
     else {
@@ -573,10 +570,9 @@ signed EV3_main() {
     if (d3.left == 4 || d3.right == 4) {
         go(speed, 123, 121);
         stopBC();
-        moveD(speedD, before_take_cubes);
-        moveBC(speed, 270);
-        moveBC(-speed, 270);
-        moveD(speedD, block_cubes);
+        moveD(speedD, up);
+        moveBC(speed, 150);
+        moveBC(-speed, 150);
         go(speed, 121, 124);
     }
     else {
