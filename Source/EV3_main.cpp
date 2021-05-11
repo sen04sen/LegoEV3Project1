@@ -28,8 +28,6 @@ using namespace std;
 #define pb push_back
 
 
-
-
 int go(int sp, int from, int toto) {
     pair<pair<double, int>, Edge> msgo[maxv];
     for (int i = 0; i < maxv; i++) {
@@ -74,48 +72,6 @@ int go(int sp, int from, int toto) {
     return way.size();
 }
 
-void vivod_4() {
-    for (int i = 0; i < 100; i++) {
-        const void *a = GetData_UART(E_Port_3, E_UART_Type_Color, 4);
-        unsigned char *d = reinterpret_cast<unsigned char *>(const_cast<void *>(a));
-        int r = d[0];
-        int g = d[2];
-        int b = d[4];
-        Clear_Display();
-        write(1, 1, r);
-        write(41, 1, g);
-        write(81, 1, b);
-        EV3_Sleep(200);
-    }
-}
-
-void vivod_clr() {
-    for (int i = 0; i < 100; i++) {
-        Clear_Display();
-        write(1, 1, GetColor(E_Port_3));
-        EV3_Sleep(200);
-    }
-}
-
-void give2() {
-    stopBC();
-    stopD();
-    wait(30);
-    moveD(-speedD, 400);
-    moveBC(speed, 200);
-    moveBC(-speed, 110);
-    moveD(speedD, 400);
-    moveDTime(1, 500);
-    stopD();
-    moveD(-5, 8);
-    wait(100);
-    moveBC(-speed, 150);
-    moveD(-speedD, 100);
-    moveBC(speed, 60);
-    moveD(speedD, 120);
-    goD(3);
-}
-
 pair<int, int> d1;
 pair<int, int> d2;
 pair<int, int> d3;
@@ -123,75 +79,7 @@ bool p1 = 0, p2 = 0, p3 = 0;
 double st;
 int gdeb = 3;
 
-void end_4_green() {
-    line(speed, 170, 2);
-    moveBC(-speed, 50, 1);
-    turn(speed, d90, -1);
-    moveBC(10, 140, 1);
-    moveD(-speedD, 70);
-    moveBC(-speed, 140, 1);
-    turn(speed, d90, 3);
-    line(speed, 30, 2);
-    moveBC(speed, dsl, 1);
-    line(speed, 220, 0);
-    stopBC();
-    turn(speed, d90, -1);
-    moveD(10, 65);
-    EV3_Sleep(1000);
-    moveBC(10, 140, 1);
-    moveD(-speedD, 65);
-    moveBC(-speed, 140, 1);
-    turn(speed, d90, 3);
-    line(speed, 400, 3);
-    if (d1.first == 3 || d1.second == 3) {
-        moveBC(speed, dws, 1);
-        turn(speed, d180, 1);
-        line(speed, 780, 3);
-        moveBC(speed, dsl, 0);
-        line(speed, 170, 2);
-        moveBC(speed, dsl, 0);
-        line(speed, 590, 3);
-        moveBC(speed, dws, 1);
-        turn(speed, d90, 3);
-        line(speed, 200, 4);
-        moveBC(speed, 50, 1);
-        moveD(10, 110);
-        moveBC(-speed, 400, 1);
-        turn(speed, d90, 0);
-        SpeedMotor_Time(E_Port_D, -30, 2000);
-        wait(2000);
-        stopD();
-        line(speed, 270, 2);
-        moveBC(speed, dws, 1);
-    } else {
-        moveBC(speed, dsl, 0);
-        line(speed, 760, 2);
-        moveBC(speed, dws, 1);
-        turn(speed, d90, 0);
-        line(speed, 200, 4);
-        moveBC(speed, 50, 1);
-        moveD(10, 110);
-        moveBC(-speed, 400, 1);
-        turn(speed, d90, 0);
-        SpeedMotor_Time(E_Port_D, -30, 2000);
-        wait(2000);
-        stopD();
-        line(speed, 760, 2);
-        moveBC(speed, dsl, 0);
-        line(speed, 780, 3);
-        moveBC(speed, dsl, 0);
-        line(speed, 170, 2);
-        moveBC(speed, dsl, 0);
-        line(speed, 590, 3);
-        moveBC(speed, dsl, 0);
-        line(speed, 270, 2);
-        moveBC(speed, dws, 1);
-        turn(speed, d90, 0);
-        line(speed, 750, 0);
-        moveBC(speed, 300, 1);
-        wait(10000);
-    }
-}
+
 
 void turn_bat() {
     stopBC();
@@ -236,40 +124,7 @@ void turn_bat() {
     turn(speed, d90, -2);
 }
 
-void get_4_blue() {
-    moveBC(speed, 40, 1);
-    turn(speed, d90, -2);
-    moveBC(speed, 50, 0);
-    line(speed, 460, 5);
-    goBC(speed);
-    while (s2() > black);
-    stopBC();
-    moveBC(-speed, 30, 1);
-    turn(speed, d90, -1);
-    moveBC(-speed, 50, 1);
-    moveD(speedD, 395);
-    moveBC(speed, 90, 1);
-    moveD(speedD, 280);
-    moveBC(-speed, 30, 1);
-    turn(speed, d90, -2);
-    moveBC(speed, 130, 1);
-    goBC(speed, 2);
-    while (s3() > bluck);
-    stopBC();
-    line(speed, 150, 6);
-    stopBC();
-    turn(speed, d90, -1);
-    moveBC(-speed, 50, 1);
-    moveD(speedD, 395);
-    moveBC(speed, 90, 1);
-    moveD(speedD, 280);
-    moveBC(-speed, 60, 1);
-    turn(speed, d90, -1);
-    moveBC(speed, 600, 0);
-    goBC(speed);
-    while (s2() > black);
-    stopBC();
-}
+
 
 
 pair<int, int> gtf() {
