@@ -1,9 +1,7 @@
 #ifndef speed_h
 #define speed_h
 
-#include <map>
 
-using namespace ev3_c_api;
 using namespace std;
 
 struct Speed {
