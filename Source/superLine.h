@@ -32,13 +32,6 @@ void line(int speed, int dist, int type){
 void lineNEW(SpeedProfileName speed, int dist, int type) {
     // Просто надо помнить, что эта линия не предполагает движения назaд
 
-    Speed p; // Извлечение настроек
-    try {
-        p = Speed::speeds[speed];
-    } catch (...) {
-        throw Exception("No speed Profile");
-    }
-
     // Какая-то типизация
     if (type == 4) {
         getRGB(3);
