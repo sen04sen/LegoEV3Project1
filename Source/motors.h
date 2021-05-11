@@ -99,7 +99,7 @@ void moveD(int sp, int dist) {
 void moveBCNEW(Speed p, int dist, bool stop = true) {
 
     if (dist > 0) {
-        int home = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) +
+        int home = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 +
                    GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
 
         double kUpDist = 0.5 * (p.maxS / p.sEnc), kDownDist = 0.5 * (p.maxS / p.eEnc);
@@ -115,7 +115,7 @@ void moveBCNEW(Speed p, int dist, bool stop = true) {
         bool stop = 0; // флаг завершения
         for (int count = 0; !stop; count++) {
 
-            encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) +
+            encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 +
                        GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
 
             int nowSpeed;
