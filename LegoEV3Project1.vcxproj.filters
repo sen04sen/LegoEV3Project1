@@ -12,5 +12,6 @@
     <ClCompile Include="Source\EV3_main.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="Source\constants.cpp" />
   </ItemGroup>
 </Project>
