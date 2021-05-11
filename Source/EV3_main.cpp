@@ -185,23 +185,23 @@ void f8() {
 }
 
 void f9() {
-    line(speed, degreesConstants[1] - dws, 2);
+    line(speed, grad[1] - dws, 2);
 }
 
 void f10() {
-    line(speed, degreesConstants[1] - dsl, 2);
+    line(speed, grad[1] - dsl, 2);
 }
 
 void f11() {
-    line(speed, degreesConstants[3] - dws, 3);
+    line(speed, grad[3] - dws, 3);
 }
 
 void f12() {
-    line(speed, degreesConstants[3] - dsl, 3);
+    line(speed, grad[3] - dsl, 3);
 }
 
 void f13() {
-    line(speed, degreesConstants[2] - dws, 4);
+    line(speed, grad[2] - dws, 4);
 }
 
 void f14() {
@@ -223,39 +223,39 @@ void f15b() {
 }
 
 void f16() {
-    line(speed, degreesConstants[4] - dws, 1);
+    line(speed, grad[4] - dws, 1);
 }
 
 void f17() {
-    line(speed, degreesConstants[7] - dws, 2);
+    line(speed, grad[7] - dws, 2);
 }
 
 void f18() {
-    line(speed, degreesConstants[7] - dsl, 2);
+    line(speed, grad[7] - dsl, 2);
 }
 
 void f19() {
-    line(speed, degreesConstants[9] - dws, 3);
+    line(speed, grad[9] - dws, 3);
 }
 
 void f20() {
-    line(speed, degreesConstants[9] - dsl, 3);
+    line(speed, grad[9] - dsl, 3);
 }
 
 void f21() {
-    line(speed, degreesConstants[11] - dws, 2);
+    line(speed, grad[11] - dws, 2);
 }
 
 void f22() {
-    line(speed, degreesConstants[11] - dsl, 2);
+    line(speed, grad[11] - dsl, 2);
 }
 
 void f23() {
-    line(speed, degreesConstants[13] - dws, 3);
+    line(speed, grad[13] - dws, 3);
 }
 
 void f24() {
-    line(speed, degreesConstants[13] - dsl, 3);
+    line(speed, grad[13] - dsl, 3);
 }
 
 void f25() {
@@ -279,7 +279,7 @@ void f25() {
 
 void f26() {
     turn(speed, d180, 2);
-    line(speed, degreesConstants[2] - 2 * dws, 1);
+    line(speed, grad[2] - 2 * dws, 1);
 }
 
 void f28() {
