@@ -1,19 +1,18 @@
 #ifndef utils_h
 #define utils_h
 
+#include <EV3_Motor.h>
+#include "EV3_LCDDisplay.h"
+#include "EV3_Sensor_Color.h"
+#include "EV3_Sensor_UART.h"
 #include <iostream>
 #include <vector>
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
+#include "EV3_Thread.h"
 #include <sstream>
 #include <set>
-
-#include "EV3_Motor.h"
-#include "EV3_LCDDisplay.h"
-#include "EV3_Sensor_Color.h"
-#include "EV3_Sensor_UART.h"
-#include "EV3_Thread.h"
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 
@@ -58,29 +57,6 @@ void write(int x, int y, int uy) {
     string a;
     s >> a;
     Draw_Text(x, y, E_Font_Normal, 0, &(a[0]));
-}
-
-void vivod_4() {
-    for (int i = 0; i < 100; i++) {
-        const void *a = GetData_UART(E_Port_3, E_UART_Type_Color, 4);
-        unsigned char *d = reinterpret_cast<unsigned char *>(const_cast<void *>(a));
-        int r = d[0];
-        int g = d[2];
-        int b = d[4];
-        Clear_Display();
-        write(1, 1, r);
-        write(41, 1, g);
-        write(81, 1, b);
-        EV3_Sleep(200);
-    }
-}
-
-void vivod_clr() {
-    for (int i = 0; i < 100; i++) {
-        Clear_Display();
-        write(1, 1, GetColor(E_Port_3));
-        EV3_Sleep(200);
-    }
 }
 
 #endif

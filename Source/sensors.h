@@ -1,19 +1,18 @@
 #ifndef sensors_h
 #define sensors_h
 
+#include <EV3_Motor.h>
+#include "EV3_LCDDisplay.h"
+#include "EV3_Sensor_Color.h"
+#include "EV3_Sensor_UART.h"
 #include <iostream>
 #include <vector>
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
+#include "EV3_Thread.h"
 #include <sstream>
 #include <set>
-
-#include "EV3_Motor.h"
-#include "EV3_LCDDisplay.h"
-#include "EV3_Sensor_Color.h"
-#include "EV3_Sensor_UART.h"
-#include "EV3_Thread.h"
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 
@@ -29,14 +28,14 @@ int s3() {
 }
 
 
-struct ColorRGB {
+struct Color {
     int r, g, b;
 
-    ColorRGB(int newR, int newG, int newB) : r(newR), g(newG), b(newB) {}
+    Color(int newR, int newG, int newB) : r(newR), g(newG), b(newB) {}
 };
 
 
-ColorRGB getRGB(int port) {
+Color getRGB(int port) {
     const void *a;
     switch (port) {
         case 3:
@@ -56,7 +55,7 @@ ColorRGB getRGB(int port) {
     int r = d[0];
     int g = d[2];
     int b = d[4];
-    ColorRGB color = ColorRGB(r, g, b);
+    Color color = Color(r, g, b);
     return color;
 }
 
