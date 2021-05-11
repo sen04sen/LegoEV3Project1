@@ -34,7 +34,6 @@ double before_take_loops = 340;
 double after_take_loops = 440;
 double up = 10;
 
-
 int go(int sp, int from, int toto) {
     pair<pair<double, int>, Edge> msgo[maxv];
     for (int i = 0; i < maxv; i++) {
@@ -79,124 +78,15 @@ int go(int sp, int from, int toto) {
     return way.size();
 }
 
-void vivod_4() {
-    for (int i = 0; i < 100; i++) {
-        const void *a = GetData_UART(E_Port_3, E_UART_Type_Color, 4);
-        unsigned char *d = reinterpret_cast<unsigned char *>(const_cast<void *>(a));
-        int r = d[0];
-        int g = d[2];
-        int b = d[4];
-        Clear_Display();
-        write(1, 1, r);
-        write(41, 1, g);
-        write(81, 1, b);
-        EV3_Sleep(200);
-    }
-}
-
-void vivod_clr() {
-    for (int i = 0; i < 100; i++) {
-        Clear_Display();
-        write(1, 1, GetColor(E_Port_3));
-        EV3_Sleep(200);
-    }
-}
-
-void give2() {
-    stopBC();
-    stopD();
-    wait(30);
-    moveD(-speedD, 400);
-    moveBC(speed, 200);
-    moveBC(-speed, 110);
-    moveD(speedD, 400);
-    moveDTime(1, 500);
-    stopD();
-    moveD(-5, 8);
-    wait(100);
-    moveBC(-speed, 150);
-    moveD(-speedD, 100);
-    moveBC(speed, 60);
-    moveD(speedD, 120);
-    goD(3);
-}
-
-pair<int, int> d1;
-pair<int, int> d2;
-pair<int, int> d3;
+Field field = StandartInit();
+DoubleMarker& d1 = field.house1;
+DoubleMarker& d2 = field.house2;
+DoubleMarker& d3 = field.house3;
 bool p1 = 0, p2 = 0, p3 = 0;
 double st;
 int gdeb = 3;
 
-void end_4_green() {
-    line(speed, 170, 2);
-    moveBC(-speed, 50, 1);
-    turn(speed, d90, -1);
-    moveBC(10, 140, 1);
-    moveD(-speedD, 70);
-    moveBC(-speed, 140, 1);
-    turn(speed, d90, 3);
-    line(speed, 30, 2);
-    moveBC(speed, dsl, 1);
-    line(speed, 220, 0);
-    stopBC();
-    turn(speed, d90, -1);
-    moveD(10, 65);
-    EV3_Sleep(1000);
-    moveBC(10, 140, 1);
-    moveD(-speedD, 65);
-    moveBC(-speed, 140, 1);
-    turn(speed, d90, 3);
-    line(speed, 400, 3);
-    if (d1.first == 3 || d1.second == 3) {
-        moveBC(speed, dws, 1);
-        turn(speed, d180, 1);
-        line(speed, 780, 3);
-        moveBC(speed, dsl, 0);
-        line(speed, 170, 2);
-        moveBC(speed, dsl, 0);
-        line(speed, 590, 3);
-        moveBC(speed, dws, 1);
-        turn(speed, d90, 3);
-        line(speed, 200, 4);
-        moveBC(speed, 50, 1);
-        moveD(10, 110);
-        moveBC(-speed, 400, 1);
-        turn(speed, d90, 0);
-        SpeedMotor_Time(E_Port_D, -30, 2000);
-        wait(2000);
-        stopD();
-        line(speed, 270, 2);
-        moveBC(speed, dws, 1);
-    } else {
-        moveBC(speed, dsl, 0);
-        line(speed, 760, 2);
-        moveBC(speed, dws, 1);
-        turn(speed, d90, 0);
-        line(speed, 200, 4);
-        moveBC(speed, 50, 1);
-        moveD(10, 110);
-        moveBC(-speed, 400, 1);
-        turn(speed, d90, 0);
-        SpeedMotor_Time(E_Port_D, -30, 2000);
-        wait(2000);
-        stopD();
-        line(speed, 760, 2);
-        moveBC(speed, dsl, 0);
-        line(speed, 780, 3);
-        moveBC(speed, dsl, 0);
-        line(speed, 170, 2);
-        moveBC(speed, dsl, 0);
-        line(speed, 590, 3);
-        moveBC(speed, dsl, 0);
-        line(speed, 270, 2);
-        moveBC(speed, dws, 1);
-        turn(speed, d90, 0);
-        line(speed, 750, 0);
-        moveBC(speed, 300, 1);
-        wait(10000);
-    }
-}
+
 
 void turn_bat() {
     stopBC();
@@ -241,47 +131,14 @@ void turn_bat() {
     turn(speed, d90, -2);
 }
 
-void get_4_blue() {
-    moveBC(speed, 40, 1);
-    turn(speed, d90, -2);
-    moveBC(speed, 50, 0);
-    line(speed, 460, 5);
-    goBC(speed);
-    while (s2() > black);
-    stopBC();
-    moveBC(-speed, 30, 1);
-    turn(speed, d90, -1);
-    moveBC(-speed, 50, 1);
-    moveD(speedD, 395);
-    moveBC(speed, 90, 1);
-    moveD(speedD, 280);
-    moveBC(-speed, 30, 1);
-    turn(speed, d90, -2);
-    moveBC(speed, 130, 1);
-    goBC(speed, 2);
-    while (s3() > bluck);
-    stopBC();
-    line(speed, 150, 6);
-    stopBC();
-    turn(speed, d90, -1);
-    moveBC(-speed, 50, 1);
-    moveD(speedD, 395);
-    moveBC(speed, 90, 1);
-    moveD(speedD, 280);
-    moveBC(-speed, 60, 1);
-    turn(speed, d90, -1);
-    moveBC(speed, 600, 0);
-    goBC(speed);
-    while (s2() > black);
-    stopBC();
-}
 
-
-pair<int, int> gtf() {
-    moveBC(-speed, 120);
-    turn(speed, d90, -1);
-    moveD(speedD, up);
-    moveBC(speed, 215);
+DoubleMarker gtf() {
+    moveBC(speed, 35);
+    SpeedMotor(E_Port_C, -speed);
+    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < turn1wheel);
+    stopC();
+    moveBC(speed, 365);
     GetColor(E_Port_4);
     EV3_Sleep(500);
     int fi = gclr(4);
@@ -293,11 +150,9 @@ pair<int, int> gtf() {
     if (se == 7)
         se = 4;
     stopBC();
-    d1 = make_pair(fi, se);
     Clear_Display();
     write(1, 1, fi);
     write(51, 1, se);
-    moveD(speedD, block_cubes);
     return make_pair(fi, se);
 }
 
@@ -334,23 +189,23 @@ void f8() {
 }
 
 void f9() {
-    line(speed, degreesConstants[1] - dws, 2);
+    line(speed, grad[1] - dws, 2);
 }
 
 void f10() {
-    line(speed, degreesConstants[1] - dsl, 2);
+    line(speed, grad[1] - dsl, 2);
 }
 
 void f11() {
-    line(speed, degreesConstants[3] - dws, 3);
+    line(speed, grad[3] - dws, 3);
 }
 
 void f12() {
-    line(speed, degreesConstants[3] - dsl, 3);
+    line(speed, grad[3] - dsl, 3);
 }
 
 void f13() {
-    line(speed, degreesConstants[2] - dws, 4);
+    line(speed, grad[2] - dws, 4);
 }
 
 void f14() {
@@ -374,39 +229,39 @@ void f15b() {
 }
 
 void f16() {
-    line(speed, degreesConstants[4] - dws, 1);
+    line(speed, grad[4] - dws, 1);
 }
 
 void f17() {
-    line(speed, degreesConstants[7] - dws, 2);
+    line(speed, grad[7] - dws, 2);
 }
 
 void f18() {
-    line(speed, degreesConstants[7] - dsl, 2);
+    line(speed, grad[7] - dsl, 2);
 }
 
 void f19() {
-    line(speed, degreesConstants[9] - dws, 3);
+    line(speed, grad[9] - dws, 3);
 }
 
 void f20() {
-    line(speed, degreesConstants[9] - dsl, 3);
+    line(speed, grad[9] - dsl, 3);
 }
 
 void f21() {
-    line(speed, degreesConstants[11] - dws, 2);
+    line(speed, grad[11] - dws, 2);
 }
 
 void f22() {
-    line(speed, degreesConstants[11] - dsl, 2);
+    line(speed, grad[11] - dsl, 2);
 }
 
 void f23() {
-    line(speed, degreesConstants[13] - dws, 3);
+    line(speed, grad[13] - dws, 3);
 }
 
 void f24() {
-    line(speed, degreesConstants[13] - dsl, 3);
+    line(speed, grad[13] - dsl, 3);
 }
 
 void f25() {
@@ -432,7 +287,7 @@ void f25() {
 
 void f26() {
     turn(speed, d180, 2);
-    line(speed, degreesConstants[2] - 2 * dws, 1);
+    line(speed, grad[2] - 2 * dws, 1);
 }
 
 void f28() {
@@ -695,7 +550,7 @@ signed EV3_main() {
     wait(700);
     goD(0);
     go(speed, 0, 26);
-    if (d1.first == 4 || d1.second == 4) {
+    if (d1.left == 4 || d1.right == 4) {
         go(speed, 26, 25);
         stopBC();
         moveD(speedD, before_take_cubes);
