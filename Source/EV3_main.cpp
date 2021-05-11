@@ -17,8 +17,7 @@
 #include "motors.h"
 #include "edge.h"
 #include "sensors.h"
-//#include "line.h"
-#include "superLine.h"
+#include "line.h"
 #include "constants.h"
 #include "turn.h"
 #include "field.h"
@@ -98,21 +97,21 @@ void turn_bat() {
     moveD(15, 230);
     moveB(-speed, 30, 1);
     moveD(speedD, 250);
-    moveBC(-speed, 60, 1);
+    moveBC(speed, -60, 1);
     moveD(speedD, 520);
     turn(speed, d90 - 20, 3);
     line(speed, 320, 0);
     stopBC();
     turn(speed, d90, -1);
-    moveBC(-speed, 60, 1);
+    moveBC(speed, -60, 1);
     moveD(speedD, 20);
     moveBC(speed, 180, 1);
     moveD(15, 230);
     moveB(-speed, 30, 1);
     moveD(speedD, 250);
-    moveBC(-speed, 90, 1);
+    moveBC(speed, -90, 1);
     moveD(speedD, 520);
-    moveBC(-speed, 60, 1);
+    moveBC(speed, -60, 1);
     turn(speed, d90 - 30, 0);
     turn(speed, 60, -1);
     line(speed, 50, 7);
@@ -134,7 +133,7 @@ void turn_bat() {
 
 
 DoubleMarker gtf() {
-    moveBC(-speed, 130);
+    moveBC(speed, -130);
     turn(speed, d90, -1);
     moveD(speedD, up);
     moveBC(speed, 205, 0);
@@ -209,9 +208,9 @@ void f14() {
 }
 
 void f15() {
-    moveBC(-speed, 60);
+    moveBC(speed, -60);
     moveD(speedD, block_cubes);
-    moveBC(-speed, 270);
+    moveBC(speed, -270);
 }
 
 void f15a() {
@@ -292,7 +291,7 @@ void f28() {
 }
 
 void f29() {
-    moveBC(-speed, 320, 1);
+    moveBC(speed, -320, 1);
 }
 
 void f30() {
@@ -313,7 +312,7 @@ void f32() {
 
 void f33() {
     moveD(speedD, block_cubes);
-    moveBC(-speed, 20, 1);
+    moveBC(speed, -20, 1);
     turn(speed, d90, -1);
     moveBC(speed, 10, 1);
     if (gclr(4) != 0) {
@@ -358,7 +357,7 @@ void f39() {
 
 void f40() {
     wait(30);
-    moveBC(-15, 60);
+    moveBC(15, -60);
     moveD(speedD, up);
     line(speed, 130, 0);
     moveBC(speed, 420);
@@ -550,7 +549,7 @@ signed EV3_main() {
         stopBC();
         moveD(speedD, up);
         moveBC(speed, 150);
-        moveBC(-speed, 150);
+        moveBC(speed, -150);
         go(speed, 25, 114);
     }
     else
@@ -562,7 +561,7 @@ signed EV3_main() {
         stopBC();
         moveD(speedD, before_take_cubes);
         moveBC(speed, 270);
-        moveBC(-speed, 270);
+        moveBC(speed, -270);
         moveD(speedD, block_cubes);
         go(speed, 116, 122);
     }
@@ -575,7 +574,7 @@ signed EV3_main() {
         stopBC();
         moveD(speedD, before_take_cubes);
         moveBC(speed, 270);
-        moveBC(-speed, 270);
+        moveBC(speed, -270);
         moveD(speedD, block_cubes);
         go(speed, 121, 124);
     }

@@ -20,13 +20,15 @@ public:
                                                                                                              def(newDef),
                                                                                                              time(newTime),
                                                                                                              active(newActive),
-                                                                                                             index(newIndex) {}
+                                                                                                             index(newIndex) {
+
+    }
 
     void operator()(bool reWriteTime = true) {
         if (reWriteTime) {
             T_TimerId id = Timer_Start();
             def();
-            time = Timer_GetTime(id);
+            time = Timer_Destroy(id);
         } else def();
     }
 
