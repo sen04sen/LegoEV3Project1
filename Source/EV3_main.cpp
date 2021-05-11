@@ -18,6 +18,7 @@
 #include "edge.h"
 #include "sensors.h"
 #include "line.h"
+//#include "superLine.h"
 #include "constants.h"
 #include "turn.h"
 #include "field.h"
@@ -153,7 +154,7 @@ DoubleMarker gtf() {
     Clear_Display();
     write(1, 1, fi);
     write(51, 1, se);
-    return make_pair(fi, se);
+    return DoubleMarker(Color(fi), Color(se));
 }
 
 void f1() {
@@ -337,7 +338,7 @@ void f34() {
 
 void f35() {
     turn(speed, d180, 2);
-    line(speed, degreesConstants[10] - dws * 2, 1);
+    line(speed, grad[10] - dws * 2, 1);
 }
 
 void f36() {
@@ -397,7 +398,7 @@ void f45() {
 }
 
 void f46() {
-    line(speed, degreesConstants[6]- dws, 8);
+    line(speed, grad[6]- dws, 8);
     getRGB(2);
     moveBC(speed, 55, 0);
     while (getRGB(2).b < 100);
@@ -546,6 +547,7 @@ signed EV3_main() {
     CreateThread(okonchanie, 0);
     buildDegreesConstants();
     buildg();
+    buildSpeedConstants();
     goD(speedD);
     wait(700);
     goD(0);
@@ -563,7 +565,7 @@ signed EV3_main() {
         go(speed, 26, 114);
     go(speed, 114, 117);
     go(speed, 117, 119);
-    if (d2.first == 4 || d2.second == 4) {
+    if (d2.left == 4 || d2.right == 4) {
         go(speed, 119, 116);
         stopBC();
         moveD(speedD, before_take_cubes);
@@ -576,7 +578,7 @@ signed EV3_main() {
         go(speed, 119, 122);
     }
     go(speed, 122, 123);
-    if (d3.first == 4 || d3.second == 4) {
+    if (d3.left == 4 || d3.right == 4) {
         go(speed, 123, 121);
         stopBC();
         moveD(speedD, before_take_cubes);

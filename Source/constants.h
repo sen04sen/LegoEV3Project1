@@ -1,6 +1,8 @@
 #ifndef constants_h
 #define constants_h
 
+#include "speed.h"
+
 const int maxv = 500;
 const int ce = 21 * 2;
 const int ver = 22;
@@ -18,6 +20,8 @@ const int turn1wheel = 525;
 const int ndir = 0;
 const int speed = 23;
 const int speedD = 40;
+const int lineArrayLen = 20;
+const int linePreviewLooking = 50;
 
 vector<int> grad;
 
@@ -45,5 +49,9 @@ void buildDegreesConstants() {
 }
 
 vector<vector<Edge> > g(maxv);
+
+void buildSpeedConstants() {
+    Speed::add(ZERO, 23, 20, 1.0, 1.0, 1, 1, 1);
+}
 
 #endif
