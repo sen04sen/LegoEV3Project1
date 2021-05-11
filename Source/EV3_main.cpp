@@ -27,7 +27,7 @@ using namespace std;
 
 #define pb push_back
 
-double block_cubes = 330;
+double block_cubes = 340;
 double before_take_cubes = 200;
 double after_take_cubes = 460;
 double before_take_loops = 340;
@@ -133,12 +133,10 @@ void turn_bat() {
 
 
 DoubleMarker gtf() {
-    moveBC(speed, 35);
-    SpeedMotor(E_Port_C, -speed);
-    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < turn1wheel);
-    stopC();
-    moveBC(speed, 365);
+    moveBC(-speed, 130);
+    turn(speed, d90, -1);
+    moveD(speedD, up);
+    moveBC(speed, 205);
     GetColor(E_Port_4);
     EV3_Sleep(500);
     int fi = gclr(4);
@@ -153,7 +151,7 @@ DoubleMarker gtf() {
     Clear_Display();
     write(1, 1, fi);
     write(51, 1, se);
-    return make_pair(fi, se);
+    return DoubleMarker(Color(fi), Color(se));
 }
 
 void f1() {
@@ -220,6 +218,7 @@ void f15() {
 
 void f15a() {
     turn(speed, d90, 3);
+    moveD(speedD, up);
     line(speed, 50, 4);
 }
 
@@ -265,10 +264,10 @@ void f24() {
 }
 
 void f25() {
-    moveBC(speed, 380, 0);
+    moveBC(speed, 370, 0);
     stopB();
-    moveC(speed, 120, 1);
-    moveB(speed, 930, 1);
+    moveC(speed, 110, 1);
+    moveB(speed, 920, 1);
     moveD(speedD, block_cubes);
     turn(speed, 60, -1);
     if (gclr(4) != 0) {
@@ -276,10 +275,10 @@ void f25() {
     }
     write(1, 1, gdeb);
     moveD(speedD, up);
-    moveBC(speed, 390, 0);
+    moveBC(speed, 430, 0);
     goBC(speed);
     while (s2() > black);
-    moveBC(speed, 100, 1);
+    moveBC(speed, 120, 1);
     turn(speed, 160, 3);
     moveD(speedD, block_cubes);
     line(speed, 200, 3);
@@ -318,6 +317,7 @@ void f32() {
 }
 
 void f33() {
+    moveD(speedD, block_cubes);
     moveBC(-speed, 20, 1);
     turn(speed, d90, -1);
     moveBC(speed, 10, 1);
@@ -337,7 +337,7 @@ void f34() {
 
 void f35() {
     turn(speed, d180, 2);
-    line(speed, degreesConstants[10] - dws * 2, 1);
+    line(speed, grad[10] - dws * 2, 1);
 }
 
 void f36() {
@@ -397,7 +397,7 @@ void f45() {
 }
 
 void f46() {
-    line(speed, degreesConstants[6]- dws, 8);
+    line(speed, grad[6]- dws, 8);
     getRGB(2);
     moveBC(speed, 55, 0);
     while (getRGB(2).b < 100);
@@ -536,7 +536,7 @@ void buildg() {
     add(125, 60, f42);
     add(125, 74, f43);
 
-    add(108, 99, f44);
+    add(109, 99, f44);
     add(99, 100, f45);
     add(100, 112, f46);
 }
@@ -553,17 +553,16 @@ signed EV3_main() {
     if (d1.left == 4 || d1.right == 4) {
         go(speed, 26, 25);
         stopBC();
-        moveD(speedD, before_take_cubes);
-        moveBC(speed, 270);
-        moveBC(-speed, 270);
-        moveD(speedD, block_cubes);
+        moveD(speedD, up);
+        moveBC(speed, 150);
+        moveBC(-speed, 150);
         go(speed, 25, 114);
     }
     else
         go(speed, 26, 114);
     go(speed, 114, 117);
     go(speed, 117, 119);
-    if (d2.first == 4 || d2.second == 4) {
+    if (d2.left == 4 || d2.right == 4) {
         go(speed, 119, 116);
         stopBC();
         moveD(speedD, before_take_cubes);
@@ -576,7 +575,7 @@ signed EV3_main() {
         go(speed, 119, 122);
     }
     go(speed, 122, 123);
-    if (d3.first == 4 || d3.second == 4) {
+    if (d3.left == 4 || d3.right == 4) {
         go(speed, 123, 121);
         stopBC();
         moveD(speedD, before_take_cubes);
