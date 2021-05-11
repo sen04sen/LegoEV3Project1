@@ -27,7 +27,12 @@ using namespace std;
 
 #define pb push_back
 
-
+double block_cubes = 330;
+double before_take_cubes = 200;
+double after_take_cubes = 460;
+double before_take_loops = 340;
+double after_take_loops = 440;
+double up = 10;
 
 
 int go(int sp, int from, int toto) {
@@ -273,12 +278,10 @@ void get_4_blue() {
 
 
 pair<int, int> gtf() {
-    moveBC(speed, 35);
-    SpeedMotor(E_Port_C, -speed);
-    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < turn1wheel);
-    stopC();
-    moveBC(speed, 365);
+    moveBC(-speed, 120);
+    turn(speed, d90, -1);
+    moveD(speedD, up);
+    moveBC(speed, 215);
     GetColor(E_Port_4);
     EV3_Sleep(500);
     int fi = gclr(4);
@@ -294,15 +297,9 @@ pair<int, int> gtf() {
     Clear_Display();
     write(1, 1, fi);
     write(51, 1, se);
+    moveD(speedD, block_cubes);
     return make_pair(fi, se);
 }
-
-int block_cubes = 330;
-double before_take_cubes = 200;
-double after_take_cubes = 460;
-double before_take_loops = 340;
-double after_take_loops = 440;
-double up = 200;
 
 void f1() {
     turn(speed, d90, 3);
@@ -361,7 +358,9 @@ void f14() {
 }
 
 void f15() {
-    moveBC(-speed, 330);
+    moveBC(-speed, 60);
+    moveD(speedD, block_cubes);
+    moveBC(-speed, 270);
 }
 
 void f15a() {
@@ -413,8 +412,8 @@ void f24() {
 void f25() {
     moveBC(speed, 380, 0);
     stopB();
-    moveC(speed, 100, 1);
-    moveB(speed, 910, 1);
+    moveC(speed, 120, 1);
+    moveB(speed, 930, 1);
     moveD(speedD, block_cubes);
     turn(speed, 60, -1);
     if (gclr(4) != 0) {
