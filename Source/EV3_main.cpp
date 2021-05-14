@@ -21,6 +21,7 @@
 #include "constants.h"
 #include "turn.h"
 #include "field.h"
+#include "noUse.h"
 
 using namespace ev3_c_api;
 using namespace std;
@@ -28,10 +29,10 @@ using namespace std;
 #define pb push_back
 
 double block_cubes = 334;
-double before_take_cubes = 200;
-double after_take_cubes = 460;
-double before_take_loops = 340;
-double after_take_loops = 440;
+double after_take_cubes = 200;
+double before_take_cubes = 460;
+double after_take_loops = 340;
+double before_take_loops = 440;
 double up = 10;
 
 int go(int sp, int from, int toto) {
@@ -85,8 +86,24 @@ DoubleMarker& d3 = field.house3;
 bool p1 = 0, p2 = 0, p3 = 0;
 double st;
 int gdeb = 3;
+int nv = 0;
 
-
+void unloading_cubes(int cnt){
+    stopBC();
+    if (cnt == 4) {
+        moveD(speedD, up);
+        moveBC(speed, 150);
+        moveBC(speed, -150);
+    }
+    else {
+        moveD(speedD, up);
+        moveBC(speed, 150);
+        moveBC(-speed, 50);
+        moveD(speedD, before_take_cubes);
+        moveBC(-speed, 100);
+        moveD(speedD, up);
+    }
+}
 
 void turn_bat() {
     stopBC();
@@ -132,10 +149,11 @@ void turn_bat() {
 }
 
 
-DoubleMarker gtf() {
+DoubleMarker gtf(bool uy = 1) {
     moveBC(speed, -130);
     turn(speed, d90, -1);
-    moveD(speedD, up);
+    if (uy) moveD(speedD, up);
+    else moveD(speedD, block_cubes);
     moveBC(speed, 205, 0);
     int fi = gclr(4);
     if (fi == 7)
@@ -263,19 +281,19 @@ void f24() {
 void f25() {
     moveB(speed, 20);
     moveC(speed, 10);
-    moveBC(speed, 480, 0);
+    moveBC(speed, 440, 0);
     stopC();
-    moveB(speed, 890, 1);
+    moveB(speed, 860, 1);
     if (gclr(4) != 0) {
         gdeb = 4;
     }
     write(1, 1, gdeb);
-    moveBC(speed, 430, 0);
+    moveBC(speed, 390, 0);
     while (s2() > black);
-    moveBC(speed, dws - 10);
-    turn(speed, 160, 3);
+    stopB();
+    moveC(speed, 340);
     moveD(speedD, block_cubes);
-    line(speed, 200, 3);
+    line(speed, 150, 3);
 }
 
 void f26() {
@@ -307,7 +325,7 @@ void f31() {
 }
 
 void f32() {
-    d2 = gtf();
+    d2 = gtf(0);
 }
 
 void f33() {
@@ -397,6 +415,54 @@ void f46() {
     while (getRGB(2).b < 100);
     moveBC(speed, 70, 1);
     s2();
+}
+
+void f47() {
+    line(speed, 280, 0);
+    stopBC();
+    turn(speed, d90, -2);
+}
+
+void f48() {
+    moveD(speedD, before_take_cubes);
+    moveBC(speed, 540);
+    moveD(speedD, block_cubes);
+}
+
+void f49() {
+    turn(speed, d90, -2);
+    moveBC(speed, 160, 0);
+    while (s2() > black);
+    moveBC(speed, dws, 1);
+}
+
+void f50() {
+    turn(speed, d90, 0);
+    line(speed, 290, 3);
+}
+
+void f51() {
+    turn(speed, d90, 3);
+    line(speed, 540, 3);
+}
+
+void f52() {
+    stopBC();
+    moveD(speedD, up);
+    moveBC(speed, 260 - dsl);
+    moveD(speedD, before_take_cubes);
+}
+
+void f53() {
+    stopBC();
+    moveD(speedD, up);
+    moveBC(speed, 260 - dws);
+    moveD(speedD, before_take_cubes);
+}
+
+void f54() {
+    moveBC(-speed, 260 - dws);
+    moveD(speedD, up);
 }
 
 void add(int from, int to, void (*def)(), double time = 1.0) {
@@ -533,7 +599,19 @@ void buildg() {
     add(109, 99, f44);
     add(99, 100, f45);
     add(100, 112, f46);
+
+    add(51, 126, f47);
+    add(126, 127, f48);
+    add(127, 128, f49);
+    add(128, 48, f50);
+    add(128, 62, f51);
+
+    add(59, 131, f52);
+    add(53, 131, f53);
+    add(131, 53, f54);
 }
+
+int c_cubes = 2;
 
 signed EV3_main() {
     Clear_Display();
@@ -545,24 +623,35 @@ signed EV3_main() {
     wait(1500);
     goD(0);
     go(speed, 0, 26);
+    nv = 26;
     if (d1.left == 4 || d1.right == 4) {
         go(speed, 26, 25);
         stopBC();
-        moveD(speedD, up);
-        moveBC(speed, 150);
-        moveBC(speed, -150);
+        unloading_cubes(4);
+        c_cubes -= 2;
         go(speed, 25, 114);
     }
-    else
+    else {
         go(speed, 26, 114);
+    }
+    c_cubes += 2;
     go(speed, 114, 117);
     go(speed, 117, 119);
-    if (d2.left == 4 || d2.right == 4) {
+    if (d2.left == 4 && d2.right == 4) {
         go(speed, 119, 116);
-        stopBC();
-        moveD(speedD, up);
-        moveBC(speed, 150);
-        moveBC(-speed, 150);
+        unloading_cubes(4);
+        c_cubes -= 4;
+        go(speed, 116, 122);
+    }
+    else if (d2.left == 4 || d2.right == 4) {
+        go(speed, 119, 116);
+        if (c_cubes == 2)
+            unloading_cubes(4);
+        else {
+            unloading_cubes(2);
+        }
+        c_cubes -= 2;
+        moveBC(speed, -150);
         go(speed, 116, 122);
     }
     else {
@@ -571,16 +660,75 @@ signed EV3_main() {
     go(speed, 122, 123);
     if (d3.left == 4 || d3.right == 4) {
         go(speed, 123, 121);
-        stopBC();
-        moveD(speedD, up);
-        moveBC(speed, 150);
-        moveBC(-speed, 150);
-        go(speed, 121, 124);
+        if (c_cubes == 2) {
+            unloading_cubes(4);
+        }
+        else {
+            unloading_cubes(2);
+        }
+        c_cubes -= 2;
+        nv = 121;
     }
     else {
-        go(speed, 123, 124);
+        nv = 123;
     }
-    go(speed, 124, 25);
-    stopBC();
+    if (c_cubes == 2) {
+        go(speed, nv, 131);
+        c_cubes = 0;
+        nv = 131;
+    }
+    int gg = 127;
+    if (gdeb == 4)
+        gg = 130;
+    else if (gdeb == 2)
+        gg = 124;
+    go(speed, nv, gg);
+    nv = gg;
+    if (gdeb != 4) {
+        if ((d1.left == gdeb && d1.right == gdeb) || (d1.left == gdeb && d1.right == 0) || (d1.right == gdeb && d1.left == 0)) {
+            go(speed, nv, 25);
+            nv = 25;
+            c_cubes -= 4;
+            unloading_cubes(4);
+        }
+        else if (d1.left == gdeb || d1.right == gdeb || d1.left == 0 || d1.right == 0) {
+            go(speed, nv, 25);
+            c_cubes -= 2;
+            nv = 25;
+            unloading_cubes(2);
+        }
+        if ((d2.left == gdeb && d2.right == gdeb) || (d2.left == gdeb && d2.right == 0) || (d2.right == gdeb && d2.left == 0)) {
+            go(speed, nv, 116);
+            nv = 116;
+            c_cubes = 0;
+            unloading_cubes(4);
+        }
+        else if (c_cubes != 0 && (d2.left == gdeb || d2.right == gdeb || d2.left == 0 || d2.right == 0)) {
+            go(speed, nv, 116);
+            c_cubes -= 2;
+            nv = 116;
+            if (c_cubes == 0)
+                unloading_cubes(4);
+            else
+                unloading_cubes(2);
+        }
+        if ((d3.left == gdeb && d3.right == gdeb) || (d3.left == gdeb && d3.right == 0) || (d3.right == gdeb && d3.left == 0)) {
+            go(speed, nv, 121);
+            nv = 121;
+            c_cubes = 0;
+            unloading_cubes(4);
+        }
+        else if (c_cubes != 0 && (d3.left == gdeb || d3.right == gdeb || d3.left == 0 || d3.right == 0)) {
+            go(speed, nv, 121);
+            nv = 121;
+            c_cubes -= 2;
+            if (c_cubes == 0)
+                unloading_cubes(4);
+            else
+                unloading_cubes(2);
+        }
+    }
+    go(speed, nv, 97);
+    get_4_blue();
     return 0;
 }

@@ -141,13 +141,17 @@ void moveBCNEW(Speed p, int dist, bool stop = true) {
 }
 
 void moveBC(int s, int dist, bool stop = true){
-    if (dist > 0) {
+    if (dist > 0 && s > 0) {
         moveBCNEW(Speed(23, 20, 0.3, 0.3, 1, 1, 1), dist, stop);
     } else{
+        if (dist < 0) {
+            dist *= -1;
+            s *= -1;
+        }
         SpeedMotor(E_Port_B, -1 * s);
         SpeedMotor(E_Port_C, s);
         double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-        while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dist);
+        while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(dist));
 
         if (stop) stopBC(); // финальное торможение
     }

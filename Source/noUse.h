@@ -40,7 +40,7 @@ void give2() {
     goD(3);
 }
 
-void end_4_green() {
+/*void end_4_green() {
     line(speed, 170, 2);
     moveBC(speed, -50, 1);
     turn(speed, d90, -1);
@@ -108,20 +108,15 @@ void end_4_green() {
         moveBC(speed, 300, 1);
         wait(10000);
     }
-}
+}*/
 
 
 void get_4_blue() {
-    moveBC(speed, 40, 1);
-    turn(speed, d90, -2);
-    moveBC(speed, 50, 0);
-    line(speed, 460, 5);
-    goBC(speed);
-    while (s2() > black);
     stopBC();
     moveBC(speed, -30, 1);
     turn(speed, d90, -1);
     moveBC(speed, -50, 1);
+    return;
     moveD(speedD, 395);
     moveBC(speed, 90, 1);
     moveD(speedD, 280);
