@@ -279,11 +279,9 @@ void f24() {
 }
 
 void f25() {
-    moveB(speed, 20);
-    moveC(speed, 10);
     moveBC(speed, 440, 0);
     stopC();
-    moveB(speed, 860, 1);
+    moveB(speed, 890, 1);
     if (gclr(4) != 0) {
         gdeb = 4;
     }
@@ -291,7 +289,7 @@ void f25() {
     moveBC(speed, 390, 0);
     while (s2() > black);
     stopB();
-    moveC(speed, 340);
+    moveC(speed, 360);
     moveD(speedD, block_cubes);
     line(speed, 150, 3);
 }
