@@ -79,6 +79,8 @@ ColorRGB getRGB(int port) {
     return color;
 }
 
+ColorHSV getHSV(int port) { return ColorHSV(getRGB(port)); }
+
 int gclr(int uy) {
     if (uy == 4) {
         return GetColor(E_Port_4);
