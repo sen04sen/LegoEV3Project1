@@ -17,6 +17,8 @@
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 
+#include "field.h"
+
 using namespace ev3_c_api;
 using namespace std;
 
@@ -33,6 +35,23 @@ struct ColorRGB {
     int r, g, b;
 
     ColorRGB(int newR, int newG, int newB) : r(newR), g(newG), b(newB) {}
+};
+
+
+struct ColorHSV {
+    int h, s, v;
+
+    ColorHSV(ColorRGB a) {
+        v = max(max(a.r, a.g), a.b);
+        if (a.b <= a.r && a.b <= a.g) h = (a.r - a.b) / ((a.r - a.b) + (a.g - a.b)) * 100;
+        if (a.r <= a.b && a.r <= a.g) h = (a.g - a.r) / ((a.g - a.r) + (a.b - a.r)) * 100;
+        if (a.g <= a.r && a.g <= a.b) h = (a.r - a.g) / ((a.r - a.g) + (a.b - a.g)) * 100;
+        int temp = min(min(a.r, a.g), a.b);
+        if (v == 0) s = 0;
+        else s = (v - temp) / v;
+    }
+
+    operator Color() {}
 };
 
 
