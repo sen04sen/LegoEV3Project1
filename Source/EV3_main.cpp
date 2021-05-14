@@ -649,7 +649,6 @@ signed EV3_main() {
             unloading_cubes(2);
         }
         c_cubes -= 2;
-        moveBC(speed, -150);
         go(speed, 116, 122);
     }
     else {
