@@ -121,9 +121,16 @@ void lineNEW(Speed p, int dist, int type) {
             error = (double)(s3() - s2());
             break;
         } // подсчет ошибки
-
-        double kP = p.p * ((double)nowSpeed / (double)p.maxS);
-        double kD = p.d * ((double)nowSpeed / (double)p.maxS);
+        double kP;
+        double kD;
+        if (type >= 4 && type <= 8) {
+            kP = 0.5 * ((double)nowSpeed / (double)p.maxS);
+            kD = 0.3 * ((double)nowSpeed / (double)p.maxS);
+        }
+        else {
+            kP = p.p * ((double)nowSpeed / (double)p.maxS);
+            kD = p.d * ((double)nowSpeed / (double)p.maxS);
+        }
 
         SpeedMotor(E_Port_B, -1 * (nowSpeed - error * kP - (error - errors[count % lineArrayLen]) * kD));
         SpeedMotor(E_Port_C, nowSpeed + error * kP + (error - errors[count % lineArrayLen]) * kD);

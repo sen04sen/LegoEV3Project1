@@ -30,6 +30,10 @@ int s3() {
     return GetReflect(E_Port_3);
 }
 
+int s4() {
+    return GetReflect(E_Port_4);
+}
+
 
 struct ColorRGB {
     int r, g, b;
