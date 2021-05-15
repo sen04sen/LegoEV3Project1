@@ -1,35 +1,40 @@
+/*!
+\file
+\brief Файл содержит константы, используемые в программе
+*/
+
 #ifndef constants_h
 #define constants_h
 
 #include "speed.h"
 
-const int maxv = 500;
-const int ce = 21 * 2;
-const int ver = 22;
-const int black = 25;
-const int bluck = 35;
-const int bley = 45;
-const double Pr = 0.3;
-const int grey = 35;
-const double dws = 130; // ���������� ����� ��������� � �������
-const double dsl = 50; //����� �������� � �����
-const int d90 = 270;
-const int d180 = 540;
-const int dovorot = 40;
-const int turn1wheel = 550;
-const int ndir = 0;
-const int speed = 23;
-const int speedD = 40;
+const int maxv = 500;         ///< \todo Описать
+const int ce = 21 * 2;        ///< \todo Описать
+const int ver = 22;           ///< \todo Описать
+const int black = 25;         ///< \todo Описать
+const int bluck = 35;         ///< \todo Описать
+const int bley = 45;          ///< \todo Описать
+const double Pr = 0.3;        ///< \todo Описать
+const int grey = 35;          ///< \todo Описать
+const double dws = 130;       ///< \todo Описать
+const double dsl = 50;        ///< \todo Описать
+const int d90 = 270;          ///< \todo Описать
+const int d180 = 540;         ///< \todo Описать
+const int dovorot = 40;       ///< \todo Описать
+const int turn1wheel = 550;   ///< \todo Описать
+const int ndir = 0;           ///< \todo Описать
+const int speed = 23;         ///< \todo Описать
+const int speedD = 40;        ///< \todo Описать
 
-const int lineArrayLen = 20;
-const int linePreviewLooking = 50;
-Speed ZERO = Speed(23, 20, 0.3, 0.3, 1, 1, 1);
-
-vector<int> grad;
+const int lineArrayLen = 20;                      ///< Длинна массива задержек для линии
+const int linePreviewLooking = 50;                ///< За это расстояние до конца линии робот начинает чекать датчиком конец
+Speed ZERO = Speed(23, 20, 0.3, 0.3, 1, 1, 1);    ///< Настройка линии (функция lineNew) класс Speed
 
 #define pb push_back
 
-void buildDegreesConstants() {
+vector<int> grad; ///< Длины основных элементов поля
+
+void buildDegreesConstants() { /// Заполнение вектора grad
     grad.pb(850);
     grad.pb(390);
     grad.pb(470);
@@ -50,7 +55,6 @@ void buildDegreesConstants() {
     grad.pb(410);
 }
 
-vector<vector<Edge> > g(maxv);
-
+vector<vector<Edge> > g(maxv); ///< Вектор для деикстры
 
 #endif
