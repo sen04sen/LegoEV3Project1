@@ -1,0 +1,79 @@
+\hypertarget{group__field}{}\doxysection{Поле}
+\label{group__field}\index{Поле@{Поле}}
+
+
+Модуль, содержащей в себе класс поля и сопутствующие ему элементы  
+
+
+\doxysubsection*{Классы}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_double_marker}{Double\+Marker}}
+\begin{DoxyCompactList}\small\item\em Хранит 2 объекта Color. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_field}{Field}}
+\begin{DoxyCompactList}\small\item\em Структура для хранения поля \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Перечисления}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{group__field_gab87bacfdad76e61b9412d7124be44c1c}{Color}} \{ \newline
+\mbox{\hyperlink{group__field_ggab87bacfdad76e61b9412d7124be44c1ca03c6bc7d50823aa74d2ae51e575c8e3e}{NOREAD}} = -\/1
+, \mbox{\hyperlink{group__field_ggab87bacfdad76e61b9412d7124be44c1cac157bdf0b85a40d2619cbc8bc1ae5fe2}{NONE}} = 0
+, \mbox{\hyperlink{group__field_ggab87bacfdad76e61b9412d7124be44c1cae735a848bf82163a19236ead1c3ef2d2}{YELLOW}} = 4
+, \mbox{\hyperlink{group__field_ggab87bacfdad76e61b9412d7124be44c1ca35d6719cb4d7577c031b3d79057a1b79}{BLUE}} = 2
+, \newline
+\mbox{\hyperlink{group__field_ggab87bacfdad76e61b9412d7124be44c1caa60bd322f93178d68184e30e162571ca}{GREEN}} = 3
+ \}
+\begin{DoxyCompactList}\small\item\em Набор возможных состояний места для како-\/го либо элемента на поле, например маркера ли кубика Имеет обратную совместимость с твоими номерами цветов. Пример ииспользования\+: \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Функции}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group__field_ga3e98fb3ac6c29b0dcbe61594a43fef0f}\label{group__field_ga3e98fb3ac6c29b0dcbe61594a43fef0f}} 
+\mbox{\hyperlink{struct_field}{Field}} {\bfseries Standart\+Init} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Подробное описание}
+Модуль, содержащей в себе класс поля и сопутствующие ему элементы 
+
+
+
+\doxysubsection{Перечисления}
+\mbox{\Hypertarget{group__field_gab87bacfdad76e61b9412d7124be44c1c}\label{group__field_gab87bacfdad76e61b9412d7124be44c1c}} 
+\index{Поле@{Поле}!Color@{Color}}
+\index{Color@{Color}!Поле@{Поле}}
+\doxysubsubsection{\texorpdfstring{Color}{Color}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{group__field_gab87bacfdad76e61b9412d7124be44c1c}{Color}}}
+
+
+
+Набор возможных состояний места для како-\/го либо элемента на поле, например маркера ли кубика Имеет обратную совместимость с твоими номерами цветов. Пример ииспользования\+: 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{group__field_gab87bacfdad76e61b9412d7124be44c1c}{Color}} a = \mbox{\hyperlink{group__field_ggab87bacfdad76e61b9412d7124be44c1ca03c6bc7d50823aa74d2ae51e575c8e3e}{NOREAD}};}
+\DoxyCodeLine{\textcolor{keywordflow}{if} (a == \mbox{\hyperlink{group__field_ggab87bacfdad76e61b9412d7124be44c1cae735a848bf82163a19236ead1c3ef2d2}{YELLOW}}) ...;}
+\DoxyCodeLine{a = \mbox{\hyperlink{group__field_ggab87bacfdad76e61b9412d7124be44c1caa60bd322f93178d68184e30e162571ca}{GREEN}};}
+
+\end{DoxyCode}
+ \begin{DoxyEnumFields}{Элементы перечислений}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NOREAD@{NOREAD}!Поле@{Поле}}\index{Поле@{Поле}!NOREAD@{NOREAD}}}\mbox{\Hypertarget{group__field_ggab87bacfdad76e61b9412d7124be44c1ca03c6bc7d50823aa74d2ae51e575c8e3e}\label{group__field_ggab87bacfdad76e61b9412d7124be44c1ca03c6bc7d50823aa74d2ae51e575c8e3e}} 
+NOREAD&Не читали, не знаем что там \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NONE@{NONE}!Поле@{Поле}}\index{Поле@{Поле}!NONE@{NONE}}}\mbox{\Hypertarget{group__field_ggab87bacfdad76e61b9412d7124be44c1cac157bdf0b85a40d2619cbc8bc1ae5fe2}\label{group__field_ggab87bacfdad76e61b9412d7124be44c1cac157bdf0b85a40d2619cbc8bc1ae5fe2}} 
+NONE&Там пусто \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{YELLOW@{YELLOW}!Поле@{Поле}}\index{Поле@{Поле}!YELLOW@{YELLOW}}}\mbox{\Hypertarget{group__field_ggab87bacfdad76e61b9412d7124be44c1cae735a848bf82163a19236ead1c3ef2d2}\label{group__field_ggab87bacfdad76e61b9412d7124be44c1cae735a848bf82163a19236ead1c3ef2d2}} 
+YELLOW&Желтый \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BLUE@{BLUE}!Поле@{Поле}}\index{Поле@{Поле}!BLUE@{BLUE}}}\mbox{\Hypertarget{group__field_ggab87bacfdad76e61b9412d7124be44c1ca35d6719cb4d7577c031b3d79057a1b79}\label{group__field_ggab87bacfdad76e61b9412d7124be44c1ca35d6719cb4d7577c031b3d79057a1b79}} 
+BLUE&Голубой \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{GREEN@{GREEN}!Поле@{Поле}}\index{Поле@{Поле}!GREEN@{GREEN}}}\mbox{\Hypertarget{group__field_ggab87bacfdad76e61b9412d7124be44c1caa60bd322f93178d68184e30e162571ca}\label{group__field_ggab87bacfdad76e61b9412d7124be44c1caa60bd322f93178d68184e30e162571ca}} 
+GREEN&Зеленый \\
+\hline
+
+\end{DoxyEnumFields}

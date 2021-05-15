@@ -665,8 +665,7 @@ signed EV3_main() {
     wait(1100);
     goD(0);
     moveA(1);
-    go(speed, 0, 131);
-    return 0;
+    go(speed, 0, 26);
     nv = 26;
     if (d1.left == 4 || d1.right == 4) {
         go(speed, 26, 25);

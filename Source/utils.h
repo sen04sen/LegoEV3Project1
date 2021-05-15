@@ -1,3 +1,8 @@
+/*!
+\file
+\brief Файл содержит модуль utils
+*/
+
 #ifndef utils_h
 #define utils_h
 
@@ -20,11 +25,24 @@
 using namespace ev3_c_api;
 using namespace std;
 
+/*!
+    \defgroup utils Полезные функции
+    \brief Модуль, содержащей куче полезных функций для работы и отладки
+*/
+
+///@{
+
+/// \brief Задержка
 void wait(int time) {
     // время сна в миллисекундах
     EV3_Sleep(time);
 }
 
+/*!
+\brief Делает string из чего угодно
+\param forConvert Что-то, что можно через << выводить
+\return string
+*/
 template<class T>
 string str(T forConvert) {
     ostringstream ss;
@@ -32,26 +50,38 @@ string str(T forConvert) {
     return ss.str();
 }
 
+/*!
+	\brief Просто класс наших исключений (не пытайся разобраться)
+*/
 class Exception {
-    // Тут просто класс наших исключений
 private:
-    std::string m_error;
-
+    string m_error;
 public:
+
     Exception(string error) : m_error(error) {}
+
+    Exception(char *error) : m_error(str(error)) {}
 
     Exception(int line) : m_error(str(line)) {}
 
     const char *what() { return m_error.c_str(); }
 };
 
-void* okonchanie(void *lpvoid) {
+/*!
+\brief Функция, которая запускается потоком и завершает работу программы по кнопке
+*/
+void *okonchanie(void *lpvoid) {
     while (!isBrickButtonPressed(E_BTN_ESC));
     StopMotorAll();
     wait(500);
     exit(0);
 }
 
+/*!
+\brief Выводит что угодно на экран
+\param uy Что-то для вывода
+Работает аналогично str()
+*/
 template<class T>
 void write(int x, int y, T uy) {
     string a = str(uy);
@@ -80,5 +110,7 @@ void vivod_clr() {
         EV3_Sleep(200);
     }
 }
+
+///}@
 
 #endif

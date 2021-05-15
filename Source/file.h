@@ -1,3 +1,9 @@
+/*!
+\file
+\brief Модуль для работы с файлами (в разработке)
+\todo Допилить файлы
+*/
+
 #ifndef file_H
 #define file_H
 

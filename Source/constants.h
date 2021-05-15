@@ -1,3 +1,9 @@
+/*!
+\file
+\brief Файл содержит константы
+*/
+
+
 #ifndef constants_h
 #define constants_h
 
