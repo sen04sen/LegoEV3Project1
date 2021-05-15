@@ -1,0 +1,112 @@
+\hypertarget{group__motors}{}\doxysection{Моторы}
+\label{group__motors}\index{Моторы@{Моторы}}
+
+
+Модуль, содержащий Функции по работе с моторами  
+
+
+\doxysubsection*{Функции}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group__motors_gaf7fe079554f67d0619fe94c051b28943}\label{group__motors_gaf7fe079554f67d0619fe94c051b28943}} 
+void {\bfseries moveA} (bool uy)
+\item 
+\mbox{\Hypertarget{group__motors_ga98e3599bd2bfdbfdcc6a29286135c725}\label{group__motors_ga98e3599bd2bfdbfdcc6a29286135c725}} 
+void {\bfseries stopB} ()
+\item 
+\mbox{\Hypertarget{group__motors_ga50c1307095c4661fcebbedefc201f2e5}\label{group__motors_ga50c1307095c4661fcebbedefc201f2e5}} 
+void {\bfseries stopC} ()
+\item 
+\mbox{\Hypertarget{group__motors_ga2a3081cbe26f7380ea14c1760e416ffa}\label{group__motors_ga2a3081cbe26f7380ea14c1760e416ffa}} 
+void {\bfseries stopD} ()
+\item 
+\mbox{\Hypertarget{group__motors_ga08ef4e0bf4ff913c418be414af7839e6}\label{group__motors_ga08ef4e0bf4ff913c418be414af7839e6}} 
+void {\bfseries stop\+BC} ()
+\item 
+\mbox{\Hypertarget{group__motors_ga66f6403103322de0783ea555d55c5dc0}\label{group__motors_ga66f6403103322de0783ea555d55c5dc0}} 
+void {\bfseries goB} (int sp)
+\item 
+\mbox{\Hypertarget{group__motors_gac0b9802be82303e408c0fa423e1a9f21}\label{group__motors_gac0b9802be82303e408c0fa423e1a9f21}} 
+void {\bfseries goC} (int sp)
+\item 
+\mbox{\Hypertarget{group__motors_gad1c3e6421d64134666d289843bb62110}\label{group__motors_gad1c3e6421d64134666d289843bb62110}} 
+void {\bfseries goD} (int sp)
+\item 
+\mbox{\Hypertarget{group__motors_ga60bb84805e55c209037b119ccc99497f}\label{group__motors_ga60bb84805e55c209037b119ccc99497f}} 
+void {\bfseries go\+BC} (int sp, int uy=0)
+\item 
+\mbox{\Hypertarget{group__motors_ga4a479a1053c4baa8a5fdff2c0d7e5fca}\label{group__motors_ga4a479a1053c4baa8a5fdff2c0d7e5fca}} 
+void {\bfseries moveB} (int sp, int dist, bool stop=true)
+\item 
+\mbox{\Hypertarget{group__motors_ga450fef726711c5f29d2b0f557d405ede}\label{group__motors_ga450fef726711c5f29d2b0f557d405ede}} 
+void {\bfseries moveC} (int sp, int dist, bool stop=true)
+\item 
+\mbox{\Hypertarget{group__motors_ga0aa76aabb4c46caf1e6ec029d1ac72f4}\label{group__motors_ga0aa76aabb4c46caf1e6ec029d1ac72f4}} 
+void {\bfseries moveD} (int sp, int dist)
+\item 
+void \mbox{\hyperlink{group__motors_ga2789eedb3418d0a45362184e07127b5d}{move\+BCNEW}} (\mbox{\hyperlink{struct_speed}{Speed}} p, int dist, bool stop=true)
+\begin{DoxyCompactList}\small\item\em Основная функция проезда вперед с разгоном и торможением \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__motors_ga7c52089e1da288007eb28bfe32479c29}{move\+BC}} (int s, int dist, bool stop=true)
+\begin{DoxyCompactList}\small\item\em Обертка для функции проезда вперед \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group__motors_ga98ed3bae1b3942231fc28feeb9adecc7}\label{group__motors_ga98ed3bae1b3942231fc28feeb9adecc7}} 
+void {\bfseries move\+BTime} (int sp, int time)
+\item 
+\mbox{\Hypertarget{group__motors_gad424e9b752c0fd59eb9a45d54bc1c4fe}\label{group__motors_gad424e9b752c0fd59eb9a45d54bc1c4fe}} 
+void {\bfseries move\+CTime} (int sp, int time)
+\item 
+\mbox{\Hypertarget{group__motors_ga586203d22070073bd29451bb47ff5bd2}\label{group__motors_ga586203d22070073bd29451bb47ff5bd2}} 
+void {\bfseries move\+DTime} (int sp, int time)
+\item 
+\mbox{\Hypertarget{group__motors_gacc86b87e5e39104ab8d3da8ad133db43}\label{group__motors_gacc86b87e5e39104ab8d3da8ad133db43}} 
+void {\bfseries move\+BCTime} (int sp, int time)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Подробное описание}
+Модуль, содержащий Функции по работе с моторами 
+
+
+
+\doxysubsection{Функции}
+\mbox{\Hypertarget{group__motors_ga7c52089e1da288007eb28bfe32479c29}\label{group__motors_ga7c52089e1da288007eb28bfe32479c29}} 
+\index{Моторы@{Моторы}!moveBC@{moveBC}}
+\index{moveBC@{moveBC}!Моторы@{Моторы}}
+\doxysubsubsection{\texorpdfstring{moveBC()}{moveBC()}}
+{\footnotesize\ttfamily void move\+BC (\begin{DoxyParamCaption}\item[{int}]{s,  }\item[{int}]{dist,  }\item[{bool}]{stop = {\ttfamily true} }\end{DoxyParamCaption})}
+
+
+
+Обертка для функции проезда вперед 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em s} & Скорость (на данный момент параметр фиктивный и ни на что не влияеет) \\
+\hline
+{\em dist} & Расстояние \\
+\hline
+{\em stop} & Тормозить ли моторы в конце (по умолчанию true) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyRefDesc}{Необходимо сделать}
+\item[\mbox{\hyperlink{todo__todo000023}{Необходимо сделать}}]Убрать это костыль (после вторника) Вперед едет с ускорением, назад без него \end{DoxyRefDesc}
+\mbox{\Hypertarget{group__motors_ga2789eedb3418d0a45362184e07127b5d}\label{group__motors_ga2789eedb3418d0a45362184e07127b5d}} 
+\index{Моторы@{Моторы}!moveBCNEW@{moveBCNEW}}
+\index{moveBCNEW@{moveBCNEW}!Моторы@{Моторы}}
+\doxysubsubsection{\texorpdfstring{moveBCNEW()}{moveBCNEW()}}
+{\footnotesize\ttfamily void move\+BCNEW (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_speed}{Speed}}}]{p,  }\item[{int}]{dist,  }\item[{bool}]{stop = {\ttfamily true} }\end{DoxyParamCaption})}
+
+
+
+Основная функция проезда вперед с разгоном и торможением 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em p} & Настройка скорости (класс \mbox{\hyperlink{struct_speed}{Speed}}) \\
+\hline
+{\em dist} & Расстояние \\
+\hline
+{\em stop} & Тормозить ли моторы в конце (по умолчанию true)\\
+\hline
+\end{DoxyParams}
+Идея в том, что и движение вперед и линия и поворот могли работать из одного и того же объекто класс \mbox{\hyperlink{struct_speed}{Speed}} \begin{DoxyRefDesc}{Необходимо сделать}
+\item[\mbox{\hyperlink{todo__todo000022}{Необходимо сделать}}]воплотить ее (полсе вторника) \end{DoxyRefDesc}

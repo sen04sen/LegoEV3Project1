@@ -1,0 +1,68 @@
+\hypertarget{motors_8h}{}\doxysection{Файл Source/motors.h}
+\label{motors_8h}\index{Source/motors.h@{Source/motors.h}}
+
+
+Файл содержит модуль motors.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$set$>$}\newline
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include \char`\"{}EV3\+\_\+\+Motor.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}EV3\+\_\+\+Thread.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}EV3\+\_\+\+LCDDisplay.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}EV3\+\_\+\+Sensor\+\_\+\+Color.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}EV3\+\_\+\+Sensor\+\_\+\+UART.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}EV3\+\_\+\+Timer.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}EV3\+\_\+\+Brick\+UI.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}utils.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}speed.\+h\char`\"{}}\newline
+\doxysubsection*{Функции}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries moveA} (bool uy)
+\item 
+void {\bfseries stopB} ()
+\item 
+void {\bfseries stopC} ()
+\item 
+void {\bfseries stopD} ()
+\item 
+void {\bfseries stop\+BC} ()
+\item 
+void {\bfseries goB} (int sp)
+\item 
+void {\bfseries goC} (int sp)
+\item 
+void {\bfseries goD} (int sp)
+\item 
+void {\bfseries go\+BC} (int sp, int uy=0)
+\item 
+void {\bfseries moveB} (int sp, int dist, bool stop=true)
+\item 
+void {\bfseries moveC} (int sp, int dist, bool stop=true)
+\item 
+void {\bfseries moveD} (int sp, int dist)
+\item 
+void \mbox{\hyperlink{group__motors_ga2789eedb3418d0a45362184e07127b5d}{move\+BCNEW}} (\mbox{\hyperlink{struct_speed}{Speed}} p, int dist, bool stop=true)
+\begin{DoxyCompactList}\small\item\em Основная функция проезда вперед с разгоном и торможением \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__motors_ga7c52089e1da288007eb28bfe32479c29}{move\+BC}} (int s, int dist, bool stop=true)
+\begin{DoxyCompactList}\small\item\em Обертка для функции проезда вперед \end{DoxyCompactList}\item 
+void {\bfseries move\+BTime} (int sp, int time)
+\item 
+void {\bfseries move\+CTime} (int sp, int time)
+\item 
+void {\bfseries move\+DTime} (int sp, int time)
+\item 
+void {\bfseries move\+BCTime} (int sp, int time)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Подробное описание}
+Файл содержит модуль motors. 
+

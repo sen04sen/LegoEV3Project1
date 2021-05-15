@@ -20,14 +20,20 @@
 #include "line.h"
 #include "constants.h"
 #include "turn.h"
+#include "field.h"
+#include "noUse.h"
 
 using namespace ev3_c_api;
 using namespace std;
 
 #define pb push_back
 
-
-
+double block_cubes = 334;
+double after_take_cubes = 150;
+double before_take_cubes = 460;
+double after_take_loops = 260;
+double before_take_loops = 440;
+double up = 10;
 
 int go(int sp, int from, int toto) {
     pair<pair<double, int>, Edge> msgo[maxv];
@@ -73,162 +79,29 @@ int go(int sp, int from, int toto) {
     return way.size();
 }
 
-void vivod_4() {
-    for (int i = 0; i < 100; i++) {
-        const void *a = GetData_UART(E_Port_3, E_UART_Type_Color, 4);
-        unsigned char *d = reinterpret_cast<unsigned char *>(const_cast<void *>(a));
-        int r = d[0];
-        int g = d[2];
-        int b = d[4];
-        Clear_Display();
-        write(1, 1, r);
-        write(41, 1, g);
-        write(81, 1, b);
-        EV3_Sleep(200);
-    }
-}
-
-void vivod_clr() {
-    for (int i = 0; i < 100; i++) {
-        Clear_Display();
-        write(1, 1, GetColor(E_Port_3));
-        EV3_Sleep(200);
-    }
-}
-
-void give2() {
-    stopBC();
-    stopD();
-    wait(30);
-    moveD(-speedD, 400);
-    moveBC(speed, 200);
-    moveBC(-speed, 110);
-    moveD(speedD, 400);
-    moveDTime(1, 500);
-    stopD();
-    moveD(-5, 8);
-    wait(100);
-    moveBC(-speed, 150);
-    moveD(-speedD, 100);
-    moveBC(speed, 60);
-    moveD(speedD, 120);
-    goD(3);
-}
-
-void give4() {
-    stopBC();
-    stopD();
-    wait(30);
-    moveD(-speedD, 400);
-    moveBC(speed, 200);
-    moveBC(-speed, 200);
-    moveD(speedD, 400);
-}
-
-pair<int, int> gtf() {
-    moveBC(speed, 35);
-    SpeedMotor(E_Port_C, -speed);
-    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < turn1wheel);
-    stopC();
-    moveBC(speed, 365);
-    GetColor(E_Port_4);
-    EV3_Sleep(500);
-    int fi = gclr(4);
-    if (fi == 7)
-        fi = 4;
-    moveBC(speed, 120);
-    EV3_Sleep(500);
-    int se = gclr(4);
-    if (se == 7)
-        se = 4;
-    stopBC();
-    Clear_Display();
-    write(1, 1, fi);
-    write(51, 1, se);
-    return make_pair(fi, se);
-}
-
-void gtb() {
-    moveBC(-speed, 330);
-    turn(speed, d90, 0);
-    line(speed, 50, 1);
-}
-
-pair<int, int> d1;
-pair<int, int> d2;
-pair<int, int> d3;
+Field field = StandartInit();
+DoubleMarker& d1 = field.house1;
+DoubleMarker& d2 = field.house2;
+DoubleMarker& d3 = field.house3;
 bool p1 = 0, p2 = 0, p3 = 0;
 double st;
 int gdeb = 3;
+int nv = 0;
 
-void end_4_green() {
-    line(speed, 170, 2);
-    moveBC(-speed, 50, 1);
-    turn(speed, d90, -1);
-    moveBC(10, 140, 1);
-    moveD(-speedD, 70);
-    moveBC(-speed, 140, 1);
-    turn(speed, d90, 3);
-    line(speed, 30, 2);
-    moveBC(speed, dsl, 1);
-    line(speed, 220, 0);
+void unloading_cubes(int cnt){
     stopBC();
-    turn(speed, d90, -1);
-    moveD(10, 65);
-    EV3_Sleep(1000);
-    moveBC(10, 140, 1);
-    moveD(-speedD, 65);
-    moveBC(-speed, 140, 1);
-    turn(speed, d90, 3);
-    line(speed, 400, 3);
-    if (d1.first == 3 || d1.second == 3) {
-        moveBC(speed, dws, 1);
-        turn(speed, d180, 1);
-        line(speed, 780, 3);
-        moveBC(speed, dsl, 0);
-        line(speed, 170, 2);
-        moveBC(speed, dsl, 0);
-        line(speed, 590, 3);
-        moveBC(speed, dws, 1);
-        turn(speed, d90, 3);
-        line(speed, 200, 4);
-        moveBC(speed, 50, 1);
-        moveD(10, 110);
-        moveBC(-speed, 400, 1);
-        turn(speed, d90, 0);
-        SpeedMotor_Time(E_Port_D, -30, 2000);
-        wait(2000);
-        stopD();
-        line(speed, 270, 2);
-        moveBC(speed, dws, 1);
-    } else {
-        moveBC(speed, dsl, 0);
-        line(speed, 760, 2);
-        moveBC(speed, dws, 1);
-        turn(speed, d90, 0);
-        line(speed, 200, 4);
-        moveBC(speed, 50, 1);
-        moveD(10, 110);
-        moveBC(-speed, 400, 1);
-        turn(speed, d90, 0);
-        SpeedMotor_Time(E_Port_D, -30, 2000);
-        wait(2000);
-        stopD();
-        line(speed, 760, 2);
-        moveBC(speed, dsl, 0);
-        line(speed, 780, 3);
-        moveBC(speed, dsl, 0);
-        line(speed, 170, 2);
-        moveBC(speed, dsl, 0);
-        line(speed, 590, 3);
-        moveBC(speed, dsl, 0);
-        line(speed, 270, 2);
-        moveBC(speed, dws, 1);
-        turn(speed, d90, 0);
-        line(speed, 750, 0);
-        moveBC(speed, 300, 1);
-        wait(10000);
+    if (cnt == 4) {
+        moveA(1);
+        moveBC(speed, 150);
+        moveBC(speed, -150);
+        moveA(0);
+    }
+    else {
+        moveA(1);
+        moveBC(speed, 150);
+        moveBC(-speed, 50);
+        moveA(0);
+        moveBC(-speed, 100);
     }
 }
 
@@ -241,28 +114,33 @@ void turn_bat() {
     moveD(15, 230);
     moveB(-speed, 30, 1);
     moveD(speedD, 250);
-    moveBC(-speed, 80, 1);
+    moveBC(speed, -60, 1);
     moveD(speedD, 520);
     turn(speed, d90 - 20, 3);
     line(speed, 320, 0);
     stopBC();
     turn(speed, d90, -1);
-    moveBC(-speed, 60, 1);
+    moveBC(speed, -60, 1);
     moveD(speedD, 20);
     moveBC(speed, 180, 1);
     moveD(15, 230);
     moveB(-speed, 30, 1);
     moveD(speedD, 250);
-    moveBC(-speed, 90, 1);
+    moveBC(speed, -90, 1);
     moveD(speedD, 520);
-    moveBC(-speed, 60, 1);
+    moveBC(speed, -60, 1);
     turn(speed, d90 - 30, 0);
     turn(speed, 60, -1);
     line(speed, 50, 7);
     moveBC(speed, dsl, 0);
-    line(speed, 535, 8);
+    line(speed, 510, 8);
+    stopBC();
+    wait(5000);
     getRGB(2);
-    moveBC(speed, 75, 0); 
+    moveBC(speed, 70, 1); 
+    stopBC();
+    wait(5000);
+    return;
     goBC(speed);
     while (getRGB(2).b < 100);
     s2();
@@ -270,41 +148,24 @@ void turn_bat() {
     turn(speed, d90, -2);
 }
 
-void get_4_blue() {
-    moveBC(speed, 40, 1);
-    turn(speed, d90, -2);
-    moveBC(speed, 50, 0);
-    line(speed, 460, 5);
-    goBC(speed);
-    while (s2() > black);
-    stopBC();
-    moveBC(-speed, 30, 1);
-    turn(speed, d90, -1);
-    moveBC(-speed, 50, 1);
-    moveD(speedD, 395);
-    moveBC(speed, 90, 1);
-    moveD(speedD, 280);
-    moveBC(-speed, 30, 1);
-    turn(speed, d90, -2);
-    moveBC(speed, 130, 1);
-    goBC(speed, 2);
-    while (s3() > bluck);
-    stopBC();
-    line(speed, 150, 6);
-    stopBC();
-    turn(speed, d90, -1);
-    moveBC(-speed, 50, 1);
-    moveD(speedD, 395);
-    moveBC(speed, 90, 1);
-    moveD(speedD, 280);
-    moveBC(-speed, 60, 1);
-    turn(speed, d90, -1);
-    moveBC(speed, 600, 0);
-    goBC(speed);
-    while (s2() > black);
-    stopBC();
-}
 
+DoubleMarker gtf() {
+    moveBC(speed, -130);
+    turn(speed, d90, -1);
+    moveBC(speed, 205, 0);
+    int fi = gclr(4);
+    if (fi == 7)
+        fi = 4;
+    moveBC(speed, 120);
+    int se = gclr(4);
+    if (se == 7)
+        se = 4;
+    stopBC();
+    Clear_Display();
+    write(1, 1, fi);
+    write(51, 1, se);
+    return DoubleMarker(Color(fi), Color(se));
+}
 
 void f1() {
     turn(speed, d90, 3);
@@ -359,31 +220,20 @@ void f13() {
 }
 
 void f14() {
-    moveBC(speed, 35);
-    SpeedMotor(E_Port_C, -speed);
-    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < turn1wheel);
-    stopC();
-    moveBC(speed, 365);
-    GetColor(E_Port_4);
-    EV3_Sleep(500);
-    int fi = gclr(4);
-    if (fi == 7)
-        fi = 4;
-    moveBC(speed, 120);
-    EV3_Sleep(500);
-    int se = gclr(4);
-    if (se == 7)
-        se = 4;
-    stopBC();
-    d1 = make_pair(fi, se);
-    Clear_Display();
-    write(1, 1, fi);
-    write(51, 1, se);
+    d1 = gtf();
 }
 
 void f15() {
-    moveBC(-speed, 330);
+    moveBC(speed, -330);
+}
+
+void f15a() {
+    turn(speed, d90, 3);
+    moveD(speedD, up);
+    line(speed, 50, 4);
+}
+
+void f15b() {
     turn(speed, d90, 0);
     line(speed, 50, 1);
 }
@@ -425,39 +275,227 @@ void f24() {
 }
 
 void f25() {
-    moveBC(speed, 340, 0);
-    stopB();
-    moveC(speed, 80, 1);
-    moveB(speed, 890, 1);
-    moveD(speedD, 520);
-    turn(speed, 60, -1);
-    if (gclr(4) != 0) {
+    moveC(speed, 50);
+    moveB(speed, 40);
+    moveBC(speed, 410, 0);
+    stopC();
+    moveB(speed, 850, 1);
+    turn(speed, 50, -1);
+    moveA(0);
+    if (s4() > 1) {
         gdeb = 4;
     }
     write(1, 1, gdeb);
-    moveBC(speed, 390, 0);
-    goBC(speed);
+    moveBC(speed, 440, 0);
     while (s2() > black);
-    moveBC(speed, 100, 1);
-    turn(speed, 160, 3);
-    line(speed, 200, 3);
+    stopB();
+    moveC(speed, 370);
+    line(speed, 300, 3);
 }
 
 void f26() {
-    stopBC();
-    stopD();
+    turn(speed, d180, 2);
+    line(speed, grad[2] - 2 * dws, 1);
+}
+
+void f28() {
+    moveA(1);
+    moveBC(speed, 340, 1);
+    moveA(0);
+}
+
+void f29() {
+    moveBC(speed, -340, 1);
+}
+
+void f30() {
+    turn(speed, d90 + 30, -1);
+    goBC(speed);
+    while (s2() > black);
+    moveBC(speed, dws + 10, 1);
+}
+
+void f31() {
+    turn(speed, d90 + 40, 3);
+    line(speed, 200, 4); 
+}
+
+void f32() {
+    d2 = gtf();
+}
+
+void f33() {
+    moveBC(speed, -40, 1);
+    turn(speed, d90, -1);
+    if (gclr(4) != 0) {
+        gdeb = 2;
+    }
+    moveB(speed, turn1wheel, 1);
+    goBC(speed);
+    while (s3() > black);
+    moveBC(speed, dws, 1);
+}
+
+void f34() {
+    turn(speed, d90, 0);
+    line(speed, 300, 4);
+}
+
+void f35() {
+    turn(speed, d180, 2);
+    line(speed, grad[10] - dws * 2, 1);
+}
+
+void f36() {
+    turn(speed, d90, 3);
+    line(speed, 200, 1);
+}
+
+void f37() {
+    d3 = gtf();
+}
+
+void f38() {
+    moveBC(speed, 40);
+    turn(speed, d90, -2);
+}
+
+void f39() {
+    moveBC(speed, 50, 0);
+    line(speed, 460, 5);
+    goBC(speed);
+    while (s2() > black);
+}
+
+void f40() {
     wait(30);
-    moveD(speedD, 420);
-    moveBC(speed, 200);
-    moveBC(-speed, 200);
-    moveD(speedD, 520);
+    moveBC(15, -60);
+    moveA(1);
+    line(speed, 130, 0);
+    moveBC(speed, 420);
+    moveA(0);
 }
 
-void f27() {
-    turn(speed, 180, 2);
-    line(speed, grad[2] - dws, 1);
+void f41() {
+    turn(speed, d90, -2);
+    moveBC(speed, 460, 0);
+    while (s2() > black);
+    moveBC(speed, dws);
 }
 
+void f42() {
+    turn(speed, d90, 0);
+    line(speed, 500, 2);
+}
+
+void f43() {
+    turn(speed, d90, 3);
+    line(speed, 200, 2);
+}
+
+void f44() {
+    moveBC(speed, dws - 30);
+}
+
+void f45() {
+    turn(speed, d90 - 30, 0);
+    turn(speed, 50, -1);
+}
+
+void f46() {
+    line(speed, grad[6] - dws + 20, 8);
+    getRGB(2);
+    moveBC(speed, 55, 0);
+    while (getRGB(2).b < 100);
+    moveBC(speed, 80, 1);
+    s2();
+}
+
+void f47() {
+    line(speed, 280, 0);
+    stopBC();
+    turn(speed, d90, -2);
+}
+
+void f48() {
+    moveA(1);
+    moveBC(speed, 540);
+    moveA(0);
+}
+
+void f49() {
+    turn(speed, d90, -2);
+    moveBC(speed, 160, 0);
+    while (s2() > black);
+    moveBC(speed, dws, 1);
+}
+
+void f50() {
+    turn(speed, d90, 0);
+    line(speed, 290, 3);
+}
+
+void f51() {
+    turn(speed, d90, 3);
+    line(speed, 540, 3);
+}
+
+void f52() {
+    stopBC();
+    moveD(speedD, before_take_cubes);
+    moveBC(-speed, 70);
+    moveA(1);
+    moveBC(-speed, 70);
+    moveA(0);
+    wait(3000);
+    moveD(speedD, after_take_cubes);
+    moveBC(speed, 380 - dsl);
+    moveD(speedD, before_take_cubes);
+}
+
+void f53() {
+    stopBC();
+    moveD(speedD, before_take_cubes);
+    moveBC(-10, 70);
+    moveA(1);
+    moveBC(-10, 50);
+    moveA(0);
+    moveBC(-10, 40);
+    moveD(speedD, after_take_cubes);
+    moveA(1);
+    moveBC(speed, 440 - dws);
+    moveD(speedD, before_take_cubes);
+}
+
+void f54() {
+    moveBC(-speed, 360 - dws);  
+    moveD(speedD, up);
+}
+
+void f55() {
+    moveBC(-speed, 110);
+    turn(speed, d90, -1);
+}
+
+void f56() {
+    moveA(1);
+    moveBC(speed, 520);
+    moveA(0);
+}
+
+void f57() {
+    moveBC(-speed, 520);
+}
+
+void f58() {
+    turn(speed, d90, 3);
+    line(speed, 110, 3);
+}
+
+void f59() {
+    turn(speed, d90, 0);
+    line(speed, 490, 3);
+}
 
 void add(int from, int to, void (*def)(), double time = 1.0) {
     g[from].pb(Edge(to, def, time));
@@ -487,8 +525,8 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v + 1].pb(Edge(v + 2, f3));
         g[v + 3].pb(Edge(v + 2, f1));
     } else {
-        g[v].pb(Edge(v + 2, f6));
-        g[v + 1].pb(Edge(v + 2, f5));
+        g[v].pb(Edge(v + 2, f5));
+        g[v + 1].pb(Edge(v + 2, f6));
         g[v + 3].pb(Edge(v + 2, f4));
     }
     if (l == 1) {
@@ -501,13 +539,13 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v + 2].pb(Edge(v + 3, f6));
     }
     g[v + 8].pb(Edge(v + 2, f8));
-    g[v + 8].pb(Edge(v + 6, f7));
+    g[v + 8].pb(Edge(v + 6, f7, 0.9));
     g[v + 10].pb(Edge(v, f8));
-    g[v + 10].pb(Edge(v + 4, f7));
+    g[v + 10].pb(Edge(v + 4, f7, 0.9));
     g[v + 11].pb(Edge(v + 1, f8));
-    g[v + 11].pb(Edge(v + 5, f7));
+    g[v + 11].pb(Edge(v + 5, f7, 0.9));
     g[v + 9].pb(Edge(v + 3, f8));
-    g[v + 9].pb(Edge(v + 7, f7));
+    g[v + 9].pb(Edge(v + 7, f7, 0.9));
 }
 
 void buildg() {
@@ -531,12 +569,13 @@ void buildg() {
 
     add(25, 26, f14);
 
-    add(26, 23, f15);
+    add(26, 120, f15);
+    add(120, 25, f15a);
+    add(120, 23, f15b);
 
-    add(23, 111, f26);
-    add(111, 23, f27);
+    add(25, 23, f26);
 
-    add(27, 99, f16);
+    add(27, 109, f16);
 
     add(28, 50, f17);
     add(32, 50, f18);
@@ -548,6 +587,7 @@ void buildg() {
     add(54, 48, f19);
     add(58, 48, f20);
 
+
     add(52, 74, f21);
     add(56, 74, f22);
     add(66, 60, f21);
@@ -557,91 +597,176 @@ void buildg() {
     add(68, 86, f24);
 
     add(0, 9, f25);
+
+    add(112, 113, f4);
+    add(113, 114, f28);
+    add(114, 113, f29);
+    add(113, 115, f30);
+    add(115, 116, f31);
+
+    add(116, 117, f32);
+    add(117, 119, f33);
+
+    add(119, 116, f34);
+
+    add(116, 59, f35);
+    add(119, 59, f36);
+
+    add(65, 121, f13);
+
+    add(121, 122, f37);
+    add(122, 123, f15);
+    add(123, 121, f15a);
+    add(123, 73, f15b);
+    add(121, 73, f26);
+
+    add(86, 75, f38);
+    add(75, 97, f39);
+    add(97, 87, f8);
+    add(87, 90, f1);
+    add(90, 124, f40);
+    add(124, 125, f41);
+    add(125, 60, f42);
+    add(125, 74, f43);
+
+    add(109, 99, f44);
+    add(99, 100, f45);
+    add(100, 112, f46);
+
+    add(51, 126, f47);
+    add(126, 127, f48);
+    add(127, 128, f49);
+    add(128, 48, f50);
+    add(128, 62, f51);
+
+    add(59, 131, f52);
+    add(53, 131, f53);
+    add(131, 53, f54);
+
+    add(22, 129, f55);
+    add(129, 130, f56);
+    add(130, 129, f57);
+
+    add(129, 22, f58);
+    add(129, 38, f59);
 }
+
+int c_cubes = 2;
 
 signed EV3_main() {
     Clear_Display();
     CreateThread(okonchanie, 0);
     buildDegreesConstants();
     buildg();
-    goD(-speed);
-    wait(700);
+    s2();
+    s3();
+    s4();
+    goD(speedD);
+    wait(1100);
     goD(0);
+    moveA(1);
     go(speed, 0, 26);
-    if (d1.first == 4 || d1.second == 4) {
-        go(speed, 26, 111);
-        go(speed, 11, 99);
-    }
-    else
-        go(speed, 26, 99);
-    turn_bat();
-    return 0;
-    /*d1 = gtf();
-    gtb();
-    if (d1.first == 4 || d1.second == 4) {
+    nv = 26;
+    if (d1.left == 4 || d1.right == 4) {
+        go(speed, 26, 25);
         stopBC();
-        turn(speed, d180, 2);
-        line(speed, 200, 4);
-        p1 = 1;
-        give4();
-        turn(speed, d180, 2);
-        line(speed, 250, 1);
+        unloading_cubes(4);
+        c_cubes -= 2;
+        go(speed, 25, 114);
     }
-    ////go(speed, 2, 0, 6, 0, 0);
-    turn_bat();
-    moveD(-speedD, 140);
-    moveBC(speed, 320, 1);
-    moveD(speedD, 110);
-    goD(0);
-    moveBC(-speed, 320, 1);
-    turn(speed, d90 + 40, -1);
-    goBC(speed);
-    while (s2() > black);
-    moveBC(speed, dws + 10, 1);
-    turn(speed, d90, 3);
-    line(speed, 200, 4);
-    d2 = gtf();
-    moveBC(-speed, 20, 1);
-    turn(speed, d90, -1);
-    moveBC(speed, 10, 1);
-    if (gclr(4) != 0) {
-        gdeb = 2;
+    else {
+        go(speed, 26, 114);
     }
-    moveB(speed, turn1wheel, 1);
-    goBC(speed);
-    while (s3() > black);
-    moveBC(speed, dws, 1);
-    if (d2.first == 4 || d2.second == 4) {
-        turn(speed, d90, 0);
-        line(speed, 300, 4);
-        if (p1)
-            give4();
-        else
-            give2();
-        p2 = 1;
-        turn(speed, d180, 2);
-        line(speed, 600, 1);
-    } else {
-        turn(speed, d90, 3);
-        line(speed, 200, 1);
+    c_cubes += 2;
+    go(speed, 114, 117);
+    go(speed, 117, 119);
+    if (d1.left == 4 && d1.right == 4) {
+        c_cubes -= 2;
+        go(speed, 119, 131);
+        go(speed, 131, 122);
     }
-    ////go(speed, 12, 2, 15, 2, 0);
-    d3 = gtf();
-    gtb();
-    if (d3.first == 4 || d3.second == 4) {
-        turn(speed, d180, 2);
-        line(speed, 200, 4);
-        if (p1 || p2)
-            give4();
-        else
-            give2();
-        p3 = 1;
-        turn(speed, d180, 2);
-        line(speed, 250, 1);
+    else if (d2.left == 4 && d2.right == 4) {
+        go(speed, 119, 116);
+        unloading_cubes(4);
+        c_cubes -= 4;
+        go(speed, 116, 122);
     }
-    moveBC(speed, dws, 1);
-    turn(speed, d90, 0);
-    line(speed, 100, 3);
-    get_4_blue();*/
+    else if (d2.left == 4 || d2.right == 4) {
+        go(speed, 119, 116);
+        if (c_cubes == 2)
+            unloading_cubes(4);
+        else {
+            unloading_cubes(2);
+        }
+        c_cubes -= 2;
+        go(speed, 116, 122);
+    }
+    else {
+        go(speed, 119, 122);
+    }
+    go(speed, 122, 123);
+    if (d3.left == 4 || d3.right == 4) {
+        go(speed, 123, 121);
+        if (c_cubes == 2) {
+            unloading_cubes(4);
+        }
+        else {
+            unloading_cubes(2);
+        }
+        c_cubes -= 2;
+        nv = 121;
+    }
+    else {
+        nv = 123;
+    }
+    if (c_cubes == 2) {
+        go(speed, nv, 131);
+        c_cubes = 0;
+        nv = 131;
+    }
+    int gg = 127;
+    if (gdeb == 4)
+        gg = 130;
+    else if (gdeb == 2)
+        gg = 124;
+    go(speed, nv, gg);
+    nv = gg;
+    if (d1.left == 4 && d1.right == 4) {
+        go(speed, nv, 25);
+        unloading_cubes(2);
+        nv = 25;
+        if (d2.left == 0 || d2.right == 0) {
+            go(speed, nv, 116);
+            unloading_cubes(4);
+            nv = 116;
+        }
+        else {
+            go(speed, nv, 121);
+            unloading_cubes(4);
+            nv = 121;
+        }
+    }
+    else {
+        if (d1.left == 0 || d1.right == 0) {
+            go(speed, nv, 25);
+            unloading_cubes(2);
+            nv = 25;
+        }
+        else if (d2.left == 0 || d2.right == 0) {
+            go(speed, nv, 116);
+            unloading_cubes(2);
+            nv = 116;
+        }
+        else {
+            go(speed, nv, 121);
+            unloading_cubes(2);
+            nv = 121;
+        }
+        go(speed, nv, 131);
+        nv = 131;
+    }
+    go(speed, nv, 97);
+    get_4_blue();
+
     return 0;
 }

@@ -1,0 +1,122 @@
+\hypertarget{class_edge}{}\doxysection{Класс Edge}
+\label{class_edge}\index{Edge@{Edge}}
+
+
+Ребро  
+
+
+
+
+{\ttfamily \#include $<$edge.\+h$>$}
+
+\doxysubsection*{Открытые члены}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_edge_a3106b11d60125009dbf7a738ce540fdf}\label{class_edge_a3106b11d60125009dbf7a738ce540fdf}} 
+\mbox{\hyperlink{class_edge_a3106b11d60125009dbf7a738ce540fdf}{Edge}} ()
+\begin{DoxyCompactList}\small\item\em Конструктор без параметров (не используй) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_edge_ad455a3240fdb29c53755f1056e947169}{Edge}} (int \+\_\+to, void($\ast$const \+\_\+def)(), double \+\_\+time=1.\+0, bool \+\_\+active=true, int \+\_\+index=0)
+\item 
+void \mbox{\hyperlink{class_edge_a6809ce52d812d0367d7350e6364ea5cc}{operator()}} (bool re\+Write\+Time=true)
+\begin{DoxyCompactList}\small\item\em Запускает функцию проезда по ребру с перезаписью времени ребра \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_edge_ad27c73485ee386b8be0b982d432b9c6f}\label{class_edge_ad27c73485ee386b8be0b982d432b9c6f}} 
+int \mbox{\hyperlink{class_edge_ad27c73485ee386b8be0b982d432b9c6f}{get\+To}} ()
+\begin{DoxyCompactList}\small\item\em Возвращет то, куда ведет ребро \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_edge_adf7d4d07c7ba79f096f5844645dcad4f}\label{class_edge_adf7d4d07c7ba79f096f5844645dcad4f}} 
+double \mbox{\hyperlink{class_edge_adf7d4d07c7ba79f096f5844645dcad4f}{get\+Time}} ()
+\begin{DoxyCompactList}\small\item\em Возвращает время ребра (если ребро неактивно, то возвращает 100000000.\+0) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_edge_aca0b3a463f101b38d7a772de20a71fe6}\label{class_edge_aca0b3a463f101b38d7a772de20a71fe6}} 
+double \mbox{\hyperlink{class_edge_aca0b3a463f101b38d7a772de20a71fe6}{get\+Index}} ()
+\begin{DoxyCompactList}\small\item\em Возвращает индекс ребра \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_edge_af12cbb551ebbb328e27b2a19b60225ae}\label{class_edge_af12cbb551ebbb328e27b2a19b60225ae}} 
+void \mbox{\hyperlink{class_edge_af12cbb551ebbb328e27b2a19b60225ae}{open}} ()
+\begin{DoxyCompactList}\small\item\em Делает ребро активным \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_edge_af3adb2c129a8552dccd480bbf02baead}\label{class_edge_af3adb2c129a8552dccd480bbf02baead}} 
+void \mbox{\hyperlink{class_edge_af3adb2c129a8552dccd480bbf02baead}{close}} ()
+\begin{DoxyCompactList}\small\item\em Делает ребро неактивным \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Подробное описание}
+Ребро 
+
+\begin{DoxyWarning}{Предупреждения}
+Тут не к чему не надо обращаться через точку. Так нельзя\+: 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{class_edge}{Edge}} e = \mbox{\hyperlink{class_edge_a3106b11d60125009dbf7a738ce540fdf}{Edge}}(...);}
+\DoxyCodeLine{e.to}
+
+\end{DoxyCode}
+ 
+
+Только через методы\+: 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{class_edge}{Edge}} e = \mbox{\hyperlink{class_edge_a3106b11d60125009dbf7a738ce540fdf}{Edge}}(...);}
+\DoxyCodeLine{e.\mbox{\hyperlink{class_edge_ad27c73485ee386b8be0b982d432b9c6f}{getTo}}()}
+
+\end{DoxyCode}
+ 
+\end{DoxyWarning}
+
+
+\doxysubsection{Конструктор(ы)}
+\mbox{\Hypertarget{class_edge_ad455a3240fdb29c53755f1056e947169}\label{class_edge_ad455a3240fdb29c53755f1056e947169}} 
+\index{Edge@{Edge}!Edge@{Edge}}
+\index{Edge@{Edge}!Edge@{Edge}}
+\doxysubsubsection{\texorpdfstring{Edge()}{Edge()}}
+{\footnotesize\ttfamily Edge\+::\+Edge (\begin{DoxyParamCaption}\item[{int}]{\+\_\+to,  }\item[{void($\ast$)()}]{\+\_\+def,  }\item[{double}]{\+\_\+time = {\ttfamily 1.0},  }\item[{bool}]{\+\_\+active = {\ttfamily true},  }\item[{int}]{\+\_\+index = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+\begin{DoxyParams}{Аргументы}
+{\em \+\_\+to} & Номер вершины, куда ведет ребро \\
+\hline
+{\em \+\_\+def} & Указатель на функцию \\
+\hline
+{\em \+\_\+time} & Время проезда по ребру (по умолчанию 1.\+0) \\
+\hline
+{\em \+\_\+active} & Активно ли ребро (по умолчанию true) \\
+\hline
+{\em \+\_\+index} & Специальное число, которое позволяет объединять ребра в гупппы и одновременно их блокировать, делая длинну очень большой, похволяет, так же разблокировать ребра обратно (по умолчанию 0) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+Возвращает ребро 
+\end{DoxyReturn}
+
+
+\doxysubsection{Методы}
+\mbox{\Hypertarget{class_edge_a6809ce52d812d0367d7350e6364ea5cc}\label{class_edge_a6809ce52d812d0367d7350e6364ea5cc}} 
+\index{Edge@{Edge}!operator()@{operator()}}
+\index{operator()@{operator()}!Edge@{Edge}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily void Edge\+::operator() (\begin{DoxyParamCaption}\item[{bool}]{re\+Write\+Time = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Запускает функцию проезда по ребру с перезаписью времени ребра 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em re\+Write\+Time} & Надо ли переписывать время (по умолчанию true)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyWarning}{Предупреждения}
+Успользуй так\+: 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{class_edge}{Edge}} e = \mbox{\hyperlink{class_edge_a3106b11d60125009dbf7a738ce540fdf}{Edge}}(...);}
+\DoxyCodeLine{e();}
+\DoxyCodeLine{e(0);}
+
+\end{DoxyCode}
+ 
+\end{DoxyWarning}
+
+
+Объявления и описания членов класса находятся в файле\+:\begin{DoxyCompactItemize}
+\item 
+Source/\mbox{\hyperlink{edge_8h}{edge.\+h}}\end{DoxyCompactItemize}

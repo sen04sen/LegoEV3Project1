@@ -1,0 +1,49 @@
+\hypertarget{sensors_8h}{}\doxysection{Файл Source/sensors.h}
+\label{sensors_8h}\index{Source/sensors.h@{Source/sensors.h}}
+
+
+Файл содержит модуль sensors.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$set$>$}\newline
+{\ttfamily \#include \char`\"{}EV3\+\_\+\+Motor.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}EV3\+\_\+\+LCDDisplay.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}EV3\+\_\+\+Sensor\+\_\+\+Color.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}EV3\+\_\+\+Sensor\+\_\+\+UART.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}EV3\+\_\+\+Thread.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}EV3\+\_\+\+Timer.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}EV3\+\_\+\+Brick\+UI.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}field.\+h\char`\"{}}\newline
+\doxysubsection*{Классы}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_color_r_g_b}{Color\+RGB}}
+\begin{DoxyCompactList}\small\item\em Цвет в формате RGB. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_color_h_s_v}{Color\+HSV}}
+\begin{DoxyCompactList}\small\item\em Цвет по моделе HSV Подробнее \href{https://ru.wikipedia.org/wiki/HSV_(\%D1\%86\%D0\%B2\%D0\%B5\%D1\%82\%D0\%BE\%D0\%B2\%D0\%B0\%D1\%8F_\%D0\%BC\%D0\%BE\%D0\%B4\%D0\%B5\%D0\%BB\%D1\%8C)}{\texttt{ https\+://ru.\+wikipedia.\+org/wiki/\+HSV\+\_\+(цветовая\+\_\+модель)}} \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Функции}
+\begin{DoxyCompactItemize}
+\item 
+int {\bfseries s2} ()
+\item 
+int {\bfseries s3} ()
+\item 
+int {\bfseries s4} ()
+\item 
+\mbox{\hyperlink{struct_color_r_g_b}{Color\+RGB}} \mbox{\hyperlink{group__sensors_ga96ae5b9bf570c00d9622811db3796987}{get\+RGB}} (int port)
+\begin{DoxyCompactList}\small\item\em Возвращает цвет с датчика в RGB. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_color_h_s_v}{Color\+HSV}} \mbox{\hyperlink{group__sensors_ga6a6ee63d3e1576027bd5b5f3e4cfcca8}{get\+HSV}} (int port)
+\begin{DoxyCompactList}\small\item\em Возвращает цвет с датчика в HSV. \end{DoxyCompactList}\item 
+int {\bfseries gclr} (int uy)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Подробное описание}
+Файл содержит модуль sensors. 
+
