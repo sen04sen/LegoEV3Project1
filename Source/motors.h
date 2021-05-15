@@ -24,6 +24,27 @@
 using namespace ev3_c_api;
 using namespace std;
 
+void moveA(bool uy) {
+    static double stadegd = GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
+    double dist;
+    if (uy) {
+        dist = stadegd - 60;
+    }
+    else {
+        dist = stadegd - 6;
+    }
+    double st = dist - GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
+    if (st >= 0) {
+        SpeedMotor(E_Port_A, 10);
+        while (GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium) < dist);
+    }
+    else {
+        SpeedMotor(E_Port_A, -10);
+        while (GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium) > dist);
+    }
+
+    SpeedMotor(E_Port_A, 0);
+}
 
 void stopB() {
     StopMotor(E_Port_B, 1);

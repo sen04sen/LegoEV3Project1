@@ -7,15 +7,15 @@ const int maxv = 500;
 const int ce = 21 * 2;
 const int ver = 22;
 const int black = 25;
-const int bluck = 35;
-const int bley = 45;
+const int bluck = 25;
+const int bley = 40;
 const double Pr = 0.3;
 const int grey = 35;
 const double dws = 130; // ���������� ����� ��������� � �������
 const double dsl = 50; //����� �������� � �����
 const int d90 = 270;
 const int d180 = 540;
-const int dovorot = 40;
+const int dovorot = 45;
 const int turn1wheel = 550;
 const int ndir = 0;
 const int speed = 23;
@@ -23,7 +23,7 @@ const int speedD = 40;
 
 const int lineArrayLen = 20;
 const int linePreviewLooking = 50;
-Speed ZERO = Speed(23, 20, 0.3, 0.3, 1, 1, 1);
+Speed ZERO = Speed(23, 20, 0.3, 0.4, 1, 1, 1);
 
 vector<int> grad;
 
