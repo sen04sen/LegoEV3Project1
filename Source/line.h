@@ -77,8 +77,7 @@ void lineNEW(Speed p, int dist, int type) {
         int encoders;
         encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 +
             GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-
-
+        
         int nowSpeed;
         if (encoders > way - linePreviewLooking * 2) nowSpeed = p.minS;
         else if (encoders > downDist) nowSpeed = (double)p.maxS - ((double)encoders - (double)downDist) * kDownDist;
