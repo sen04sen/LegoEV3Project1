@@ -1,0 +1,134 @@
+\hypertarget{group__sensors}{}\doxysection{Датчики}
+\label{group__sensors}\index{Датчики@{Датчики}}
+
+
+Модуль, содержащий функци и классы для работы с датчиками  
+
+
+\doxysubsection*{Классы}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_color_r_g_b}{Color\+RGB}}
+\begin{DoxyCompactList}\small\item\em Цвет в формате RGB. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_color_h_s_v}{Color\+HSV}}
+\begin{DoxyCompactList}\small\item\em Цвет по моделе HSV Подробнее \href{https://ru.wikipedia.org/wiki/HSV_(\%D1\%86\%D0\%B2\%D0\%B5\%D1\%82\%D0\%BE\%D0\%B2\%D0\%B0\%D1\%8F_\%D0\%BC\%D0\%BE\%D0\%B4\%D0\%B5\%D0\%BB\%D1\%8C)}{\texttt{ https\+://ru.\+wikipedia.\+org/wiki/\+HSV\+\_\+(цветовая\+\_\+модель)}} \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Функции}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group__sensors_gaa089ef11706d2032c9ae0058dc65b30a}\label{group__sensors_gaa089ef11706d2032c9ae0058dc65b30a}} 
+int {\bfseries s2} ()
+\item 
+\mbox{\Hypertarget{group__sensors_ga31b58b367a5edeb85aaa957a34185966}\label{group__sensors_ga31b58b367a5edeb85aaa957a34185966}} 
+int {\bfseries s3} ()
+\item 
+\mbox{\Hypertarget{group__sensors_ga00566364cb9f37635e4920d34574c43b}\label{group__sensors_ga00566364cb9f37635e4920d34574c43b}} 
+int {\bfseries s4} ()
+\item 
+\mbox{\hyperlink{group__sensors_gaf646a1ce4e4e1f9e6f5e665c65fe597c}{Color\+RGB\+::\+Color\+RGB}} (int \+\_\+r, int \+\_\+g, int \+\_\+b)
+\item 
+\mbox{\hyperlink{group__sensors_ga446dda2b3f7940085efe01d3be7d97db}{Color\+HSV\+::\+Color\+HSV}} (\mbox{\hyperlink{struct_color_r_g_b}{Color\+RGB}} col)
+\item 
+\mbox{\hyperlink{struct_color_r_g_b}{Color\+RGB}} \mbox{\hyperlink{group__sensors_ga96ae5b9bf570c00d9622811db3796987}{get\+RGB}} (int port)
+\begin{DoxyCompactList}\small\item\em Возвращает цвет с датчика в RGB. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_color_h_s_v}{Color\+HSV}} \mbox{\hyperlink{group__sensors_ga6a6ee63d3e1576027bd5b5f3e4cfcca8}{get\+HSV}} (int port)
+\begin{DoxyCompactList}\small\item\em Возвращает цвет с датчика в HSV. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group__sensors_gaf467b11b6ac5d5a3a17fe811b5b2af23}\label{group__sensors_gaf467b11b6ac5d5a3a17fe811b5b2af23}} 
+int {\bfseries gclr} (int uy)
+\end{DoxyCompactItemize}
+\doxysubsection*{Переменные}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group__sensors_gad529947358e3809074cc1622f85b09c9}\label{group__sensors_gad529947358e3809074cc1622f85b09c9}} 
+int \mbox{\hyperlink{group__sensors_gad529947358e3809074cc1622f85b09c9}{Color\+RGB\+::r}}
+\begin{DoxyCompactList}\small\item\em Красная составляющая \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group__sensors_gaac500dda1b4cfbef8020b852c009701b}\label{group__sensors_gaac500dda1b4cfbef8020b852c009701b}} 
+int \mbox{\hyperlink{group__sensors_gaac500dda1b4cfbef8020b852c009701b}{Color\+RGB\+::g}}
+\begin{DoxyCompactList}\small\item\em Зеленая составляющая \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group__sensors_gabb2a88c27277bda8a442472f397dcb27}\label{group__sensors_gabb2a88c27277bda8a442472f397dcb27}} 
+int \mbox{\hyperlink{group__sensors_gabb2a88c27277bda8a442472f397dcb27}{Color\+RGB\+::b}}
+\begin{DoxyCompactList}\small\item\em Голубая составляющая \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group__sensors_gaab547e2f6160e36338f4ae2953908109}\label{group__sensors_gaab547e2f6160e36338f4ae2953908109}} 
+int \mbox{\hyperlink{group__sensors_gaab547e2f6160e36338f4ae2953908109}{Color\+HSV\+::h}}
+\begin{DoxyCompactList}\small\item\em Цвет \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group__sensors_ga0bee4a74579c9c66a6f499c7a6ce4ded}\label{group__sensors_ga0bee4a74579c9c66a6f499c7a6ce4ded}} 
+int \mbox{\hyperlink{group__sensors_ga0bee4a74579c9c66a6f499c7a6ce4ded}{Color\+HSV\+::s}}
+\begin{DoxyCompactList}\small\item\em Насыщенность \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group__sensors_ga31f93369c5a19fec881a27ccf4ae9809}\label{group__sensors_ga31f93369c5a19fec881a27ccf4ae9809}} 
+int \mbox{\hyperlink{group__sensors_ga31f93369c5a19fec881a27ccf4ae9809}{Color\+HSV\+::v}}
+\begin{DoxyCompactList}\small\item\em Яркость \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Подробное описание}
+Модуль, содержащий функци и классы для работы с датчиками 
+
+
+
+\doxysubsection{Функции}
+\mbox{\Hypertarget{group__sensors_ga446dda2b3f7940085efe01d3be7d97db}\label{group__sensors_ga446dda2b3f7940085efe01d3be7d97db}} 
+\index{Датчики@{Датчики}!ColorHSV@{ColorHSV}}
+\index{ColorHSV@{ColorHSV}!Датчики@{Датчики}}
+\doxysubsubsection{\texorpdfstring{ColorHSV()}{ColorHSV()}}
+{\footnotesize\ttfamily Color\+HSV\+::\+Color\+HSV (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_color_r_g_b}{Color\+RGB}}}]{col }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+\begin{DoxyParams}{Аргументы}
+{\em col} & \mbox{\hyperlink{struct_color_r_g_b}{Color\+RGB}} для перевода \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+Возвращает \mbox{\hyperlink{struct_color_h_s_v}{Color\+HSV}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__sensors_gaf646a1ce4e4e1f9e6f5e665c65fe597c}\label{group__sensors_gaf646a1ce4e4e1f9e6f5e665c65fe597c}} 
+\index{Датчики@{Датчики}!ColorRGB@{ColorRGB}}
+\index{ColorRGB@{ColorRGB}!Датчики@{Датчики}}
+\doxysubsubsection{\texorpdfstring{ColorRGB()}{ColorRGB()}}
+{\footnotesize\ttfamily Color\+RGB\+::\+Color\+RGB (\begin{DoxyParamCaption}\item[{int}]{\+\_\+r,  }\item[{int}]{\+\_\+g,  }\item[{int}]{\+\_\+b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+\begin{DoxyParams}{Аргументы}
+{\em \+\_\+r} & Красная составляющая \\
+\hline
+{\em \+\_\+g} & Зеленая составляющая \\
+\hline
+{\em \+\_\+b} & Голубая составляющая \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+Возвращает \mbox{\hyperlink{struct_color_r_g_b}{Color\+RGB}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__sensors_ga6a6ee63d3e1576027bd5b5f3e4cfcca8}\label{group__sensors_ga6a6ee63d3e1576027bd5b5f3e4cfcca8}} 
+\index{Датчики@{Датчики}!getHSV@{getHSV}}
+\index{getHSV@{getHSV}!Датчики@{Датчики}}
+\doxysubsubsection{\texorpdfstring{getHSV()}{getHSV()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_color_h_s_v}{Color\+HSV}} get\+HSV (\begin{DoxyParamCaption}\item[{int}]{port }\end{DoxyParamCaption})}
+
+
+
+Возвращает цвет с датчика в HSV. 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em port} & Порт \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+\mbox{\hyperlink{struct_color_h_s_v}{Color\+HSV}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__sensors_ga96ae5b9bf570c00d9622811db3796987}\label{group__sensors_ga96ae5b9bf570c00d9622811db3796987}} 
+\index{Датчики@{Датчики}!getRGB@{getRGB}}
+\index{getRGB@{getRGB}!Датчики@{Датчики}}
+\doxysubsubsection{\texorpdfstring{getRGB()}{getRGB()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_color_r_g_b}{Color\+RGB}} get\+RGB (\begin{DoxyParamCaption}\item[{int}]{port }\end{DoxyParamCaption})}
+
+
+
+Возвращает цвет с датчика в RGB. 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em port} & Порт \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+\mbox{\hyperlink{struct_color_r_g_b}{Color\+RGB}} 
+\end{DoxyReturn}

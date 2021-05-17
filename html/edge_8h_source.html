@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WRO: Исходный файл Source/edge.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">WRO
+   </div>
+   <div id="projectbrief">Шедерв</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">edge.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="edge_8h.html">См. документацию.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#ifndef edge_h</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#define edge_h</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">using namespace </span>std;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_edge.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_edge.html">Edge</a> {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">int</span> to;       </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">int</span> index;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">double</span> time;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">bool</span> active;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    void (*def)(); </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="class_edge.html#a3106b11d60125009dbf7a738ce540fdf">   55</a></span>&#160;    <a class="code" href="class_edge.html#a3106b11d60125009dbf7a738ce540fdf">Edge</a>() {} </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="class_edge.html#ad455a3240fdb29c53755f1056e947169">   66</a></span>&#160;    <a class="code" href="class_edge.html#ad455a3240fdb29c53755f1056e947169">Edge</a>(<span class="keywordtype">int</span> _to, <span class="keywordtype">void</span> (*<span class="keyword">const</span> _def)(), <span class="keywordtype">double</span> _time = 1.0, <span class="keywordtype">bool</span> _active = <span class="keyword">true</span>, <span class="keywordtype">int</span> _index = 0) : to(_to),</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                                                                                                   def(_def),</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                                                                                                   time(_time),</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                                                                                                   active(_active),</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                                                                                                   index(_index) {}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="class_edge.html#a6809ce52d812d0367d7350e6364ea5cc">   83</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_edge.html#a6809ce52d812d0367d7350e6364ea5cc">operator()</a>(<span class="keywordtype">bool</span> reWriteTime = <span class="keyword">true</span>) {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">if</span> (reWriteTime) {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            T_TimerId <span class="keywordtype">id</span> = Timer_Start();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            def();</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            time = Timer_Destroy(<span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        } <span class="keywordflow">else</span> def();</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="class_edge.html#ad27c73485ee386b8be0b982d432b9c6f">   94</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="class_edge.html#ad27c73485ee386b8be0b982d432b9c6f">getTo</a>() { <span class="keywordflow">return</span> to; }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="class_edge.html#adf7d4d07c7ba79f096f5844645dcad4f">   99</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_edge.html#adf7d4d07c7ba79f096f5844645dcad4f">getTime</a>() { <span class="keywordflow">return</span> active ? time : 100000000.0; }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="class_edge.html#aca0b3a463f101b38d7a772de20a71fe6">  101</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_edge.html#aca0b3a463f101b38d7a772de20a71fe6">getIndex</a>() { <span class="keywordflow">return</span> index; } </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="class_edge.html#af12cbb551ebbb328e27b2a19b60225ae">  103</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_edge.html#af12cbb551ebbb328e27b2a19b60225ae">open</a>() { active = <span class="keyword">true</span>; }      </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="class_edge.html#af3adb2c129a8552dccd480bbf02baead">  105</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_edge.html#af3adb2c129a8552dccd480bbf02baead">close</a>() { active = <span class="keyword">false</span>; }    </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;};</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_edge_html"><div class="ttname"><a href="class_edge.html">Edge</a></div><div class="ttdoc">Ребро</div><div class="ttdef"><b>Definition:</b> edge.h:33</div></div>
+<div class="ttc" id="aclass_edge_html_a3106b11d60125009dbf7a738ce540fdf"><div class="ttname"><a href="class_edge.html#a3106b11d60125009dbf7a738ce540fdf">Edge::Edge</a></div><div class="ttdeci">Edge()</div><div class="ttdoc">Конструктор без параметров (не используй)</div><div class="ttdef"><b>Definition:</b> edge.h:55</div></div>
+<div class="ttc" id="aclass_edge_html_a6809ce52d812d0367d7350e6364ea5cc"><div class="ttname"><a href="class_edge.html#a6809ce52d812d0367d7350e6364ea5cc">Edge::operator()</a></div><div class="ttdeci">void operator()(bool reWriteTime=true)</div><div class="ttdoc">Запускает функцию проезда по ребру с перезаписью времени ребра</div><div class="ttdef"><b>Definition:</b> edge.h:83</div></div>
+<div class="ttc" id="aclass_edge_html_aca0b3a463f101b38d7a772de20a71fe6"><div class="ttname"><a href="class_edge.html#aca0b3a463f101b38d7a772de20a71fe6">Edge::getIndex</a></div><div class="ttdeci">double getIndex()</div><div class="ttdoc">Возвращает индекс ребра</div><div class="ttdef"><b>Definition:</b> edge.h:101</div></div>
+<div class="ttc" id="aclass_edge_html_ad27c73485ee386b8be0b982d432b9c6f"><div class="ttname"><a href="class_edge.html#ad27c73485ee386b8be0b982d432b9c6f">Edge::getTo</a></div><div class="ttdeci">int getTo()</div><div class="ttdoc">Возвращет то, куда ведет ребро</div><div class="ttdef"><b>Definition:</b> edge.h:94</div></div>
+<div class="ttc" id="aclass_edge_html_ad455a3240fdb29c53755f1056e947169"><div class="ttname"><a href="class_edge.html#ad455a3240fdb29c53755f1056e947169">Edge::Edge</a></div><div class="ttdeci">Edge(int _to, void(*const _def)(), double _time=1.0, bool _active=true, int _index=0)</div><div class="ttdef"><b>Definition:</b> edge.h:66</div></div>
+<div class="ttc" id="aclass_edge_html_adf7d4d07c7ba79f096f5844645dcad4f"><div class="ttname"><a href="class_edge.html#adf7d4d07c7ba79f096f5844645dcad4f">Edge::getTime</a></div><div class="ttdeci">double getTime()</div><div class="ttdoc">Возвращает время ребра (если ребро неактивно, то возвращает 100000000.0)</div><div class="ttdef"><b>Definition:</b> edge.h:99</div></div>
+<div class="ttc" id="aclass_edge_html_af12cbb551ebbb328e27b2a19b60225ae"><div class="ttname"><a href="class_edge.html#af12cbb551ebbb328e27b2a19b60225ae">Edge::open</a></div><div class="ttdeci">void open()</div><div class="ttdoc">Делает ребро активным</div><div class="ttdef"><b>Definition:</b> edge.h:103</div></div>
+<div class="ttc" id="aclass_edge_html_af3adb2c129a8552dccd480bbf02baead"><div class="ttname"><a href="class_edge.html#af3adb2c129a8552dccd480bbf02baead">Edge::close</a></div><div class="ttdeci">void close()</div><div class="ttdoc">Делает ребро неактивным</div><div class="ttdef"><b>Definition:</b> edge.h:105</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+</small></address>
+</body>
+</html>

@@ -1,3 +1,8 @@
+/*!
+\file
+\brief Файл содержит модуль line
+*/
+
 #ifndef line_h
 #define line_h
 
@@ -25,7 +30,20 @@
 using namespace ev3_c_api;
 using namespace std;
 
+/*!
+    \defgroup line Линия
+    \brief Модуль, содержащий функцию линии
+*/
 
+///@{
+
+/*!
+    \brief Основная функция моей линии
+    \param p Настройка скорости (класс Speed)
+    \param dist Предполагаемое расстояние до конца линии
+    \param type Тип линии (тут лучше шарит создатель)
+    \warning Просто надо помнить, что эта линия не предполагает движения назaд
+*/
 
 void lineNEW(Speed p, int dist, int type) {
     // Просто надо помнить, что эта линия не предполагает движения назaд
@@ -151,9 +169,17 @@ void lineNEW(Speed p, int dist, int type) {
     if (type == 4) s3(); // Какая-то типизациям - это переключение с ргб на обычный
 }
 
+/*!
+    \brief Обертка для функции линии
+    \param p Настройка скорости (класс Speed)
+    \param dist Предполагаемое расстояние до конца линии
+    \param type Тип линии (тут лучше шарит создатель)
+    \todo Убрать это костыль (после вторника)
+*/
 void line(int speed, int dist, int type) {
     lineNEW(ZERO, dist, type);
 }
 
+///}@
 
 #endif

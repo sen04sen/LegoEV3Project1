@@ -1,3 +1,8 @@
+/*!
+\file
+\brief Файл содержит модуль motors
+*/
+
 #ifndef motors_h
 #define motors_h
 
@@ -23,6 +28,13 @@
 
 using namespace ev3_c_api;
 using namespace std;
+
+/*!
+    \defgroup motors Моторы
+    \brief Модуль, содержащий Функции по работе с моторами
+*/
+
+///@{
 
 void moveA(bool uy) {
     static double stadegd = GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
@@ -126,6 +138,15 @@ void moveD(int sp, int dist) {
     goD(0);
 }
 
+/*!
+    \brief Основная функция проезда вперед с разгоном и торможением
+    \param p Настройка скорости (класс Speed)
+    \param dist Расстояние
+    \param stop Тормозить ли моторы в конце (по умолчанию true)
+
+    Идея в том, что и движение вперед и линия и поворот могли работать из одного и того же объекто класс Speed
+    \todo воплотить ее (полсе вторника)
+*/
 void moveBCNEW(Speed p, int dist, bool stop = true) {
 
     if (dist > 0) {
@@ -169,9 +190,17 @@ void moveBCNEW(Speed p, int dist, bool stop = true) {
     if (stop) stopBC(); // финальное торможение
 }
 
-void moveBC(int s, int dist, bool stop = true){
+/*!
+    \brief Обертка для функции проезда вперед
+    \param s Скорость (на данный момент параметр фиктивный и ни на что не влияеет)
+    \param dist Расстояние
+    \param stop Тормозить ли моторы в конце (по умолчанию true)
+    \todo Убрать это костыль (после вторника)
+    Вперед едет с ускорением, назад без него
+*/
+void moveBC(int s, int dist, bool stop = true) {
     if (dist > 0 && s > 0) {
-        moveBCNEW(Speed(23, 20, 0.3, 0.3, 1, 1, 1), dist, stop);
+        moveBCNEW(ZERO, dist, stop);
     } else{
         if (dist < 0) {
             dist *= -1;
@@ -211,5 +240,7 @@ void moveBCTime(int sp, int time) {
     wait(time);
     stopBC();
 }
+
+///}@
 
 #endif

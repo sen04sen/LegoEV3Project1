@@ -1,36 +1,105 @@
+/*!
+\file
+\brief Файл содержит модуль field и межмодульное преречисление Color
+*/
+
 #ifndef field_h
 #define field_h
 
+/*!
+    \defgroup field Поле
+    \brief Модуль, содержащей в себе класс поля и сопутствующие ему элементы
+*/
+
+///@{
+
+/*!
+    \brief Набор возможных состояний места для како-го либо элемента на поле, например маркера ли кубика
+    Имеет обратную совместимость с твоими номерами цветов.
+    Пример ииспользования:
+    \code
+    Color a = NOREAD;
+    if (a == YELLOW) ...;
+    a = GREEN;
+    \endcode
+*/
 enum Color {
-    NOREAD = -1,
-    NONE = 0,
-    YELLOW = 4,
-    BLUE = 2,
-    GREEN = 3,
+    NOREAD = -1,    ///< Не читали, не знаем что там
+    NONE = 0,       ///< Там пусто
+    YELLOW = 4,     ///< Желтый
+    BLUE = 2,       ///< Голубой
+    GREEN = 3,      ///< Зеленый
 };
 
+/*!
+    \brief Хранит 2 объекта Color
+*/
 struct DoubleMarker {
-    Color left, right;
+    Color left;  ///< Цвет левого маркера
+    Color right; ///< Цвет правого маркера
 
-    DoubleMarker() : left(NOREAD), right(NOREAD) {}
+    DoubleMarker() : left(NOREAD), right(NOREAD) {} ///< Конструктор без параметров (не используй) (задает оба NOREAD)
 
-    DoubleMarker(Color newLeft, Color newRight) : left(newLeft), right(newRight) {}
+    /*!
+    \param _left Цвет левого маркера
+    \param _right Цвет правого маркера
+    \return Возвращает Двойной маркер
+    */
+    DoubleMarker(Color _left, Color _right) : left(_left), right(_right) {}
 
+    /*!
+    \brief Для обратной совместимости с твоими уже сложившимися номерами цветов
+    \param _left Цыфра левого маркера
+    \param _right Цыфра правого маркера
+    \return Возвращает Двойной маркер
+    */
     DoubleMarker(int newLeft, int newRight) : left(Color(newLeft)), right(Color(newRight)) {}
 };
 
-
+/*!
+    \brief Структура для хранения поля
+    \todo Добавить хранение состояния робота
+    \todo Документация в разработке
+*/
 struct Field {
-    DoubleMarker house1, house2, house3;
-    int cnt1, cnt2, cnt3;
+    DoubleMarker house1;       ///< Двойной маркер у 1 дома
+    DoubleMarker house2;       ///< Двойной маркер у 2 дома
+    DoubleMarker house3;       ///< Двойной маркер у 3 дома
 
-    Color yellowA1, yellowA2, yellowA3, yellowA4;
-    Color greenA1, greenA2, greenA3, greenA4;
-    Color blueA1, blueA2, blueA3, blueA4;
+    int cnt1;                  ///< Количество кубиков в 1 доме
+    int cnt2;                  ///< Количество кубиков в 2 доме
+    int cnt3;                  ///< Количество кубиков в 3 доме
 
-    Color yellowB1, yellowB2, yellowB3, yellowB4;
-    Color greenB1, greenB2, greenB3, greenB4;
-    Color blueB1, blueB2, blueB3, blueB4;
+    Color yellowA1;            ///< Кубик в ближайшей желтой A зоне
+    Color yellowA2;
+    Color yellowA3;
+    Color yellowA4;
+
+    Color greenA1;
+    Color greenA2;
+    Color greenA3;
+    Color greenA4;
+
+    Color blueA1;
+    Color blueA2;
+    Color blueA3;
+    Color blueA4;
+
+
+    Color yellowB1;
+    Color yellowB2;
+    Color yellowB3;
+    Color yellowB4;
+
+    Color greenB1;
+    Color greenB2;
+    Color greenB3;
+    Color greenB4;
+
+    Color blueB1;
+    Color blueB2;
+    Color blueB3;
+    Color blueB4;
 
     enum Battery {
         DONOTKNOW = -1,
@@ -101,5 +170,6 @@ Field StandartInit() {
     f.setGreenA(GREEN);
     f.setBlueA(BLUE);
 }
+///@}
 
 #endif

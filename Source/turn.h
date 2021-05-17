@@ -1,5 +1,18 @@
+/*!
+\file
+\brief Файл содержит модуль turn
+*/
+
 #ifndef turn_h
 #define turn_h
+
+/*!
+    \defgroup turn Поворот
+    \brief Модуль, содержащий функцию поворота на месте
+    \todo Дописать разгон
+*/
+
+///@{
 
 void turn(int sp, int dt, int tp) {
     if (tp > 0) {
@@ -42,5 +55,7 @@ void turn(int sp, int dt, int tp) {
         stopBC();
     }
 }
+
+///}@
 
 #endif

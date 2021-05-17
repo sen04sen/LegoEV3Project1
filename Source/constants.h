@@ -1,3 +1,9 @@
+/*!
+\file
+\brief Файл содержит константы
+*/
+
+
 #ifndef constants_h
 #define constants_h
 
@@ -32,15 +38,16 @@ double before_take_green_loops = 200;
 double after_take_green_loops = 60;
 double up = 10;
 
-const int lineArrayLen = 100;
-const int linePreviewLooking = 50;
-Speed ZERO = Speed(23, 20, 0.3, 0.4, 1, 1, 1);
 
-vector<int> grad;
+const int lineArrayLen = 20;                      ///< Длинна массива задержек для линии
+const int linePreviewLooking = 50;                ///< За это расстояние до конца линии робот начинает чекать датчиком конец
+Speed ZERO = Speed(23, 20, 0.3, 0.3, 1, 1, 1);    ///< Настройка линии (функция lineNew) класс Speed
 
 #define pb push_back
 
-void buildDegreesConstants() {
+vector<int> grad; ///< Длины основных элементов поля
+
+void buildDegreesConstants() { /// Заполнение вектора grad
     grad.pb(850);
     grad.pb(390);
     grad.pb(470);
@@ -61,7 +68,6 @@ void buildDegreesConstants() {
     grad.pb(410);
 }
 
-vector<vector<Edge> > g(maxv);
-
+vector<vector<Edge> > g(maxv); ///< Вектор для деикстры
 
 #endif
