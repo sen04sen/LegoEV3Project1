@@ -42,16 +42,14 @@ void moveA(bool uy) {
     double dist;
     if (uy) {
         dist = stadegd - 80;
-    }
-    else {
+    } else {
         dist = stadegd - 35;
     }
     double st = dist - GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
     if (st >= 0) {
         SpeedMotor(E_Port_A, 10);
         while (GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium) < dist);
-    }
-    else {
+    } else {
         SpeedMotor(E_Port_A, -10);
         while (GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium) > dist);
     }
@@ -108,10 +106,44 @@ void goBC(int sp, int uy = 0) {
     }
 }
 
-void moveB(int sp, int dist, bool stop = true) {
-    SpeedMotor(E_Port_B, -1 * (sp));
+void moveBNEW(Speed p, int dist, bool stop = true) {
+    int home = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium));
+
+    double kUpDist = (((double)p.maxS - (double)p.minS) / (double)p.sEnc);
+    double kDownDist = (((double)p.maxS - (double)p.minS) / (double)p.eEnc);
+
+    int upDist, downDist;
+    if (p.sEnc > 0) upDist = ((int)(p.sEnc)) + home;
+    else upDist = -2147483648;
+    if (p.eEnc > 0) downDist = ((int)((dist - p.zEnc - p.eEnc))) + home;
+    else downDist = 2147483647;
+
+    int way = dist + home;
+
     double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
-    while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < dist);
+    while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < dist) {
+
+        int encoders = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium));
+
+        int nowSpeed;
+        if (encoders > way - linePreviewLooking) nowSpeed = p.minS;
+        else if (encoders > downDist) nowSpeed = (double)p.maxS - ((double)encoders - (double)downDist) * kDownDist;
+        else if (encoders < upDist) nowSpeed = ((double)encoders - (double)home) * kUpDist + p.minS;
+        else nowSpeed = p.maxS;
+        if (nowSpeed < p.minS) nowSpeed = p.minS;
+
+        SpeedMotor(E_Port_B, -1 * nowSpeed);
+    }
+}
+
+void moveB(int sp, int dist, bool stop = true) {
+    if (sp * dist > 0) {
+        moveBNEW(ONEMOTOR, abs(dist), stop);
+    } else {
+        SpeedMotor(E_Port_B, -1 * (sp));
+        double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
+        while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < dist);
+    }
     if (stop)
         stopB();
 }
@@ -154,8 +186,8 @@ void moveBCNEW(Speed p, int dist, bool stop = true) {
         int home = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 +
                    GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
 
-        double kUpDist = 0.5 * (((double)p.maxS - (double)p.minS) / (double)p.sEnc);
-        double kDownDist = 0.5 * (((double)p.maxS - (double)p.minS) / (double)p.eEnc);
+        double kUpDist = 0.5 * (((double) p.maxS - (double) p.minS) / (double) p.sEnc);
+        double kDownDist = 0.5 * (((double) p.maxS - (double) p.minS) / (double) p.eEnc);
 
         int upDist, downDist;
         if (p.sEnc > 0) upDist = ((int) (p.sEnc * 2)) + home;
@@ -174,8 +206,9 @@ void moveBCNEW(Speed p, int dist, bool stop = true) {
 
             int nowSpeed;
             if (encoders > way - 100 * 2) nowSpeed = p.minS;
-            else if (encoders > downDist) nowSpeed = (double)p.maxS - ((double)encoders - (double)downDist) * kDownDist;
-            else if (encoders < upDist) nowSpeed = ((double)encoders - (double)home) * kUpDist + p.minS;
+            else if (encoders > downDist)
+                nowSpeed = (double) p.maxS - ((double) encoders - (double) downDist) * kDownDist;
+            else if (encoders < upDist) nowSpeed = ((double) encoders - (double) home) * kUpDist + p.minS;
             else nowSpeed = p.maxS;
             if (nowSpeed < p.minS) nowSpeed = p.minS;
 
@@ -205,7 +238,7 @@ void moveBCNEW(Speed p, int dist, bool stop = true) {
 void moveBC(int s, int dist, bool stop = true) {
     if (dist > 0 && s > 0) {
         moveBCNEW(Speed(100, 20, 0, 0, 250, 250, 70), dist, stop);
-    } else{
+    } else {
         if (dist < 0) {
             dist *= -1;
             s *= -1;

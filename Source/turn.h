@@ -41,7 +41,6 @@ void turn(int sp, int dt, int tp) {
         }
         st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
         while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dovorot);
-        stopBC();
     } else {
         if (tp == -1) {
             SpeedMotor(E_Port_B, -1 * (sp));
@@ -52,8 +51,8 @@ void turn(int sp, int dt, int tp) {
         }
         double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
         while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dt);
-        stopBC();
     }
+    stopBC();
 }
 
 ///}@

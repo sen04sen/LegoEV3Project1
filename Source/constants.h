@@ -49,6 +49,7 @@ Speed ONE1 = Speed(80, 20, 0.45, 1, 300, 300, 100);     ///< Для одного
 Speed MIN = Speed(23, 20, 0.3, 0.3, 1, 1, 1);
 Speed ONE = Speed(30, 20, 0.5, 0.3, 50, 50, 30);        ///< Для одного
 Speed ZERO = Speed(80, 20, 0.45, 1, 250, 250, 50);      ///< Настройка линии (функция lineNew) класс Speed
+Speed ONEMOTOR = Speed(100, 20, 0, 0, 100, 150, 50);  ///< Для moveB или moveС
 
 #define pb push_back
 
