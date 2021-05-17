@@ -156,8 +156,9 @@ void get_4_blue() {
     goBC(7, 1);
     while (s2() > bley);
     stopBC();
+    wait(5000);
     line(speed, 370, 9);
-    moveBC(speed, 80);
+    moveBC(speed, 20);
     moveB(speed, turn1wheel);
     speedD = lala;
 }
@@ -878,6 +879,9 @@ signed EV3_main() {
     wait(500);
     stopA();
     moveA(1);
+    go(speed, 51, 97);
+    get_4_blue();
+    return 0;
     go(speed, 0, 26);
     nv = 26;
     if (d1.left == 4 || d1.right == 4) {
