@@ -87,38 +87,39 @@ $(function() {
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        }</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keywordtype">double</span> st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordflow">while</span> (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) &lt; dt - 60);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordflow">if</span> (tp == 4)</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <span class="keywordflow">while</span> (s3() &gt; <a class="code" href="constants_8h.html#ada52bf37d99d21d44b3829001c6c5375">bluck</a>);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tp == 5)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordflow">while</span> (s2() &gt; <a class="code" href="constants_8h.html#ada52bf37d99d21d44b3829001c6c5375">bluck</a>);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tp &lt; 2) {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <span class="keywordflow">while</span> (s3() &gt; <a class="code" href="constants_8h.html#a526b84ff467bb3f48d4092d207e20041">black</a>);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keywordflow">while</span> (s2() &gt; <a class="code" href="constants_8h.html#a526b84ff467bb3f48d4092d207e20041">black</a>);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        }</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordflow">while</span> (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) &lt; <a class="code" href="constants_8h.html#a48357e8357805096f5bdf44061dade23">dovorot</a>);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        stopBC();</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordflow">if</span> (tp == -1 || tp == 0) {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            SpeedMotor(E_Port_B, -1 * (sp));</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            SpeedMotor(E_Port_C, -1 * (sp));</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            SpeedMotor(E_Port_B, sp);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            SpeedMotor(E_Port_C, sp);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        }</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordtype">double</span> st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordflow">while</span> (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) &lt; dt);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        stopBC();</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aconstants_8h_html_a48357e8357805096f5bdf44061dade23"><div class="ttname"><a href="constants_8h.html#a48357e8357805096f5bdf44061dade23">dovorot</a></div><div class="ttdeci">const int dovorot</div><div class="ttdef"><b>Definition:</b> constants.h:24</div></div>
-<div class="ttc" id="aconstants_8h_html_a526b84ff467bb3f48d4092d207e20041"><div class="ttname"><a href="constants_8h.html#a526b84ff467bb3f48d4092d207e20041">black</a></div><div class="ttdeci">const int black</div><div class="ttdef"><b>Definition:</b> constants.h:15</div></div>
-<div class="ttc" id="aconstants_8h_html_ada52bf37d99d21d44b3829001c6c5375"><div class="ttname"><a href="constants_8h.html#ada52bf37d99d21d44b3829001c6c5375">bluck</a></div><div class="ttdeci">const int bluck</div><div class="ttdef"><b>Definition:</b> constants.h:16</div></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordflow">while</span> (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) &lt; dt - 100);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordflow">if</span> (tp == 4) {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <span class="keywordflow">while</span> (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) &lt; dt - 50);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <span class="keywordflow">while</span> (s3() &gt; bluck);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        }</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tp == 5) {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <span class="keywordflow">while</span> (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) &lt; dt - 50);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordflow">while</span> (s2() &gt; bluck);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tp &lt; 2) {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keywordflow">while</span> (s3() &gt; black);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordflow">while</span> (s2() &gt; black);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordflow">while</span> (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) &lt; dovorot);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        stopBC();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">if</span> (tp == -1 || tp == 0) {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            SpeedMotor(E_Port_B, -1 * (sp));</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            SpeedMotor(E_Port_C, -1 * (sp));</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            SpeedMotor(E_Port_B, sp);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            SpeedMotor(E_Port_C, sp);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordtype">double</span> st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">while</span> (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) &lt; dt);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        stopBC();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

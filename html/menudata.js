@@ -51,22 +51,7 @@ var menudata={children:[
 {text:"Файлы",url:"files.html",children:[
 {text:"Файлы",url:"files.html"},
 {text:"Список членов всех файлов",url:"globals.html",children:[
-{text:"Указатель",url:"globals.html",children:[
-{text:"b",url:"globals.html#index_b"},
-{text:"c",url:"globals.html#index_c"},
-{text:"d",url:"globals.html#index_d"},
-{text:"g",url:"globals.html#index_g"},
-{text:"l",url:"globals.html#index_l"},
-{text:"m",url:"globals.html#index_m"},
-{text:"n",url:"globals.html#index_n"},
-{text:"o",url:"globals.html#index_o"},
-{text:"p",url:"globals.html#index_p"},
-{text:"s",url:"globals.html#index_s"},
-{text:"t",url:"globals.html#index_t"},
-{text:"v",url:"globals.html#index_v"},
-{text:"w",url:"globals.html#index_w"},
-{text:"y",url:"globals.html#index_y"},
-{text:"z",url:"globals.html#index_z"}]},
+{text:"Указатель",url:"globals.html"},
 {text:"Функции",url:"globals_func.html"},
 {text:"Переменные",url:"globals_vars.html"},
 {text:"Перечисления",url:"globals_enum.html"},
