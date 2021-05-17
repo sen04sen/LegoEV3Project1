@@ -38,6 +38,7 @@ double after_take_blue_loops = 100;
 double before_take_green_loops = 200;
 double after_take_green_loops = 60;
 double up = 10;
+double near_put_loops = 200;
 double xren_loops = 450;
 
 
@@ -48,7 +49,7 @@ Speed DOP1 = Speed(80, 20, 0.35, 0.7, 300, 300, 100);   ///< Для двух
 Speed ONE1 = Speed(80, 20, 0.45, 1, 300, 300, 100);     ///< Для одного
 Speed MIN = Speed(23, 20, 0.3, 0.3, 1, 1, 1);
 Speed ONE = Speed(30, 20, 0.5, 0.3, 50, 50, 30);        ///< Для одного
-Speed ZERO = Speed(80, 20, 0.45, 1, 250, 250, 50);      ///< Настройка линии (функция lineNew) класс Speed
+Speed ZERO = Speed(80, 20, 0.45, 1, 300, 300, 100);      ///< Настройка линии (функция lineNew) класс Speed
 
 #define pb push_back
 
