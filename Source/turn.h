@@ -12,11 +12,15 @@ void turn(int sp, int dt, int tp) {
         }
 
         double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-        while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dt - 60);
-        if (tp == 4)
+        while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dt - 100);
+        if (tp == 4) {
+            while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dt - 50);
             while (s3() > bluck);
-        else if (tp == 5)
+        }
+        else if (tp == 5) {
+            while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dt - 50);
             while (s2() > bluck);
+        }
         else if (tp < 2) {
             while (s3() > black);
         } else {

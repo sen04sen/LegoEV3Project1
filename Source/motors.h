@@ -28,10 +28,10 @@ void moveA(bool uy) {
     static double stadegd = GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
     double dist;
     if (uy) {
-        dist = stadegd - 60;
+        dist = stadegd - 80;
     }
     else {
-        dist = stadegd - 6;
+        dist = stadegd - 35;
     }
     double st = dist - GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
     if (st >= 0) {
@@ -62,6 +62,10 @@ void stopBC() {
     StopMotor(E_Port_BC, 1);
 }
 
+void stopA() {
+    StopMotor(E_Port_A, 1);
+}
+
 void goB(int sp) {
     SpeedMotor(E_Port_B, -1 * (sp));
 }
@@ -72,6 +76,10 @@ void goC(int sp) {
 
 void goD(int sp) {
     SpeedMotor(E_Port_D, sp);
+}
+
+void goA(int sp) {
+    SpeedMotor(E_Port_A, sp);
 }
 
 void goBC(int sp, int uy = 0) {

@@ -6,22 +6,33 @@
 const int maxv = 500;
 const int ce = 21 * 2;
 const int ver = 22;
-const int black = 25;
+const int black = 13;
 const int bluck = 25;
 const int bley = 40;
 const double Pr = 0.3;
-const int grey = 35;
+const int grey = 40;
 const double dws = 130; // ���������� ����� ��������� � �������
 const double dsl = 50; //����� �������� � �����
-const int d90 = 270;
-const int d180 = 540;
+const int d90 = 275;
+const int d180 = 550;
 const int dovorot = 45;
 const int turn1wheel = 550;
 const int ndir = 0;
 const int speed = 23;
-const int speedD = 40;
+int speedD = 40;
 
-const int lineArrayLen = 20;
+double put_loops = 230;
+double up_loops = 100;
+double block_cubes = 334;
+double after_take_cubes = 150;
+double before_take_cubes = 460;
+double before_take_blue_loops = 230;
+double after_take_blue_loops = 100;
+double before_take_green_loops = 200;
+double after_take_green_loops = 60;
+double up = 10;
+
+const int lineArrayLen = 100;
 const int linePreviewLooking = 50;
 Speed ZERO = Speed(23, 20, 0.3, 0.4, 1, 1, 1);
 

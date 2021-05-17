@@ -52,9 +52,10 @@ void lineNEW(Speed p, int dist, int type) {
 
     for (int i = 0; i < lineArrayLen; i++) errors[i] = error; // заполнить массив ошибок
 
-
+    T_TimerId taa = Timer_Start();
     bool stop = 0; // флаг завершения
-    for (int count = 0; !stop; count++) {
+    int count = 0;
+    for (; !stop; count++) {
 
         encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 +
             GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
@@ -65,7 +66,7 @@ void lineNEW(Speed p, int dist, int type) {
         else nowSpeed = p.maxS;
         if (encoders > way - linePreviewLooking * 2 || nowSpeed < p.minS) nowSpeed = p.minS;
 
-        if (type == 0 || type == 6 || type == 8) {
+        if (type == 0 || type == 6 || type == 8 || type == 9) {
             if (encoders >= way) {
                 stop = 1;
             }
@@ -102,20 +103,29 @@ void lineNEW(Speed p, int dist, int type) {
         }
 
         switch (type) {
+        case 2:
+            error = (double)(grey - s2());
+            break;
+        case 3:
+            error = (double)(s3() - grey);
+            break;
         case 5:
-            error = (double)(s3() - bley) * 3 / 3;
+            error = (double)(s3() - bley);
             break;
         case 6:
-            error = (double)(s3() - bley) * 3 / 3;
+            error = (double)(s3() - bley);
             break;
         case 4:
-            error = (double)(grey - s2()) * 2 / 3;
+            error = (double)(grey - s2());
             break;
         case 7:
-            error = (double)(s2() - grey) * 3 / 3;
+            error = (double)(s2() - grey);
             break;
         case 8:
-            error = (double)(s2() - grey) * 3 / 3;
+            error = (double)(s2() - grey);
+            break;
+        case 9:
+            error = (double)(bley - s2());
             break;
         default:
             error = (double)(s3() - s2());
@@ -123,8 +133,8 @@ void lineNEW(Speed p, int dist, int type) {
         } // подсчет ошибки
         double kP;
         double kD;
-        if (type >= 4 && type <= 8) {
-            kP = 0.5 * ((double)nowSpeed / (double)p.maxS);
+        if (type >= 2 && type <= 8) {
+            kP = 0.3 * ((double)nowSpeed / (double)p.maxS);
             kD = 0.3 * ((double)nowSpeed / (double)p.maxS);
         }
         else {
@@ -137,7 +147,8 @@ void lineNEW(Speed p, int dist, int type) {
 
         errors[count % lineArrayLen] = error; // для d составляющей
     }
-    if (type == 4) s3(); // Какая-то типизация
+    write(1, 1, Timer_Destroy(taa) / count);
+    if (type == 4) s3(); // Какая-то типизациям - это переключение с ргб на обычный
 }
 
 void line(int speed, int dist, int type) {
