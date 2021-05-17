@@ -30,12 +30,12 @@ using namespace std;
 int go(int sp, int from, int toto) {
     pair<pair<double, int>, Edge> msgo[maxv];
     for (int i = 0; i < maxv; i++) {
-        msgo[i].first.first = (double) 1000000000;
+        msgo[i].first.first = (double)1000000000;
         msgo[i].first.second = -1;
     }
-    msgo[from].first.first = (double) 0;
+    msgo[from].first.first = (double)0;
     set<pair<double, int> > st;
-    st.insert(make_pair((double) 0, from));
+    st.insert(make_pair((double)0, from));
     bool end = 0;
     while (!st.empty()) {
         double dd = st.begin()->first;
@@ -82,20 +82,22 @@ int nv = 0;
 int c_cubes = 0;
 int c_loops = 0;
 
-void unloading_cubes(int cnt){
+void unloading_cubes(int cnt) {
     stopBC();
     if (cnt == 4) {
         moveA(1);
-        moveBC(speed, 170);
-        moveBC(speed, -170);
+        moveBC(speed, 150);
+        moveBC(speed, -150);
         moveA(0);
+        moveBC(speed, 100);
+        moveBC(speed, -100);
     }
     else {
         moveA(1);
-        moveBC(speed, 170);
+        moveBC(speed, 150);
         moveBC(-speed, 50);
         moveA(0);
-        moveBC(-speed, 120);
+        moveBC(-speed, 100);
     }
 }
 
@@ -107,16 +109,17 @@ void unloading_loops(int cnt) {
         moveBC(speed, 80);
         moveBC(-speed, 180);
         moveD(speedD, up_loops);
+        moveA(0);
+        moveBC(speed, 450);
+        moveBC(-speed, 100);
     }
     else {
         moveBC(-speed, 250);
-        moveD(speedD, put_loops);
-        turn(10, 20, -1);
-        turn(10, 40, -2);
-        turn(10, 20, -1);
-        moveBC(speed, 50);
+        moveD(speedD, xren_loops);
         moveBC(-speed, 50);
         moveD(speedD, up_loops);
+        moveA(0);
+        moveBC(speed, 400);
         moveBC(-speed, 100);
     }
 }
@@ -128,16 +131,13 @@ void get_4_blue() {
     wait(50);
     moveBC(speed, -30, 1);
     turn(speed, d90, -1);
-    moveBC(speed, -140, 1);
+    moveBC(speed, -170, 1);
     moveD(speedD, before_take_blue_loops);
-    wait(3000);
-    moveBC(10, 80, 1);
-    wait(3000);
+    moveBC(10, 90, 1);
     moveD(speedD, after_take_blue_loops);
-    wait(3000);
     c_loops += 2;
-    moveBC(10, 60, 1);
-    turn(speed, d90, -2);
+    moveBC(10, 50, 1);
+    turn(speed, d90 - 20, -2);
     moveBC(10, 130);
     goBC(7, 2);
     while (s3() > bley);
@@ -145,10 +145,11 @@ void get_4_blue() {
     line(speed, 160, 6);
     stopBC();
     turn(speed, d90, -1);
-    moveBC(speed, -140, 1);
+    moveBC(speed, -200, 1);
     moveD(speedD, before_take_blue_loops);
-    moveBC(10, 80, 1);
+    moveBC(10, 110, 1);
     moveD(speedD, after_take_blue_loops);
+    moveBC(speed, 30);
     c_loops += 2;
     turn(speed, d90 - 20, -1);
     moveBC(speed, 210);
@@ -193,7 +194,7 @@ void turn_bat() {
     stopBC();
     wait(5000);
     getRGB(2);
-    moveBC(speed, 70, 1); 
+    moveBC(speed, 70, 1);
     stopBC();
     wait(5000);
     return;
@@ -380,7 +381,7 @@ void f30() {
 
 void f31() {
     turn(speed, d90 + 40, 3);
-    line(speed, 200, 4); 
+    line(speed, 200, 4);
 }
 
 void f32() {
@@ -522,7 +523,7 @@ void f52() {
         moveD(speedD, before_take_cubes);
     }
     else if (c_loops > 0) {
-            
+
     }
 }
 
@@ -542,7 +543,7 @@ void f53() {
 }
 
 void f54() {
-    moveBC(-speed, 280 - dws);  
+    moveBC(-speed, 280 - dws);
     moveD(speedD, up);
 }
 
@@ -566,7 +567,7 @@ void f58() {
     line(speed, 110, 3);
 }
 
-void f59() {    
+void f59() {
     turn(speed, d90, 0);
     line(speed, 490, 3);
 }
@@ -583,14 +584,14 @@ void f61() {
 }
 
 void f62() {
-    moveBC(-speed, 130);
+    moveBC(-speed, 150);
     moveD(10, before_take_green_loops);
-    moveBC(10, 130);
+    moveBC(10, 100);
     moveD(10, after_take_green_loops);
 }
 
 void f63() {
-    moveBC(speed, 0);
+    moveBC(speed, 50);
 }
 
 void f64() {
@@ -609,21 +610,20 @@ void f66() {
 }
 
 void f67() {
-    line(speed, 230, 0);
+    line(speed, 210, 0);
     stopBC();
     turn(speed, d90, -1);
 }
 
 void f68() {
-    moveBC(-speed, 130);
+    moveBC(-speed, 150);
     moveD(10, before_take_green_loops);
-    wait(5000);
-    moveBC(10, 130);
+    moveBC(10, 100);
     moveD(10, after_take_green_loops);
 }
 
 void f69() {
-    moveBC(speed, 0);
+    moveBC(speed, 50);
 }
 
 void f70() {
@@ -645,7 +645,8 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v + 1].pb(Edge(v, f1));
         g[v + 2].pb(Edge(v, f2));
         g[v + 3].pb(Edge(v, f3));
-    } else {
+    }
+    else {
         g[v + 1].pb(Edge(v, f4));
         g[v + 2].pb(Edge(v, f5));
         g[v + 3].pb(Edge(v, f6));
@@ -654,7 +655,8 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v].pb(Edge(v + 1, f3));
         g[v + 2].pb(Edge(v + 1, f1));
         g[v + 3].pb(Edge(v + 1, f2));
-    } else {
+    }
+    else {
         g[v].pb(Edge(v + 1, f6));
         g[v + 2].pb(Edge(v + 1, f4));
         g[v + 3].pb(Edge(v + 1, f5));
@@ -663,7 +665,8 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v].pb(Edge(v + 2, f2));
         g[v + 1].pb(Edge(v + 2, f3));
         g[v + 3].pb(Edge(v + 2, f1));
-    } else {
+    }
+    else {
         g[v].pb(Edge(v + 2, f5));
         g[v + 1].pb(Edge(v + 2, f6));
         g[v + 3].pb(Edge(v + 2, f4));
@@ -672,7 +675,8 @@ void addcrossroad(int v, int u, int r, int d, int l) {
         g[v].pb(Edge(v + 3, f1));
         g[v + 1].pb(Edge(v + 3, f2));
         g[v + 2].pb(Edge(v + 3, f3));
-    } else {
+    }
+    else {
         g[v].pb(Edge(v + 3, f4));
         g[v + 1].pb(Edge(v + 3, f5));
         g[v + 2].pb(Edge(v + 3, f6));
@@ -685,6 +689,51 @@ void addcrossroad(int v, int u, int r, int d, int l) {
     g[v + 11].pb(Edge(v + 5, f7, 0.9));
     g[v + 9].pb(Edge(v + 3, f8));
     g[v + 9].pb(Edge(v + 7, f7, 0.9));
+}
+
+void put_loops_4(int clr) {
+    if (d3.left == clr && d3.right == clr) {
+        go(speed, nv, 121);
+        unloading_loops(4);
+        c_loops -= 4;
+        nv = 121;
+    }
+    else if (d3.left == clr || d3.right == clr) {
+        go(speed, nv, 121);
+        unloading_loops(2);
+        c_loops -= 2;
+        nv = 121;
+    }
+    if (d2.left == clr && d2.right == clr) {
+        go(speed, nv, 116);
+        unloading_loops(4);
+        c_loops -= 4;
+        nv = 116;
+    }
+    else if (d2.left == clr || d2.right == clr) {
+        go(speed, nv, 116);
+        if (c_loops == 2)
+            unloading_loops(4);
+        else
+            unloading_loops(2);
+        c_loops -= 2;
+        nv = 116;
+    }
+    if (d1.left == clr && d1.right == clr) {
+        go(speed, nv, 25);
+        unloading_loops(4);
+        c_loops -= 4;
+        nv = 25;
+    }
+    else if (d1.left == clr || d1.right == clr) {
+        go(speed, nv, 25);
+        if (c_loops == 2)
+            unloading_loops(4);
+        else
+            unloading_loops(2);
+        c_loops -= 2;
+        nv = 25;
+    }
 }
 
 void buildg() {
@@ -820,13 +869,9 @@ signed EV3_main() {
     wait(500);
     stopA();
     moveA(1);
-    go(speed, 51, 133);
-    go(speed, 133, 135);
-    go(speed, 135, 116);
-    return 0;
     go(speed, 0, 26);
     nv = 26;
-    if (d1.left == 4 || d1.right == 4) {    
+    if (d1.left == 4 || d1.right == 4) {
         go(speed, 26, 25);
         stopBC();
         unloading_cubes(4);
@@ -924,68 +969,54 @@ signed EV3_main() {
         go(speed, nv, 131);
         nv = 131;
     }
-    go(speed, nv, 97);
-    get_4_blue();
-    nv = 66;
-    if (d3.left == 2 && d3.right == 2) {
-        go(speed, nv, 65);
-        unloading_loops(4);
-        c_loops -= 4;
-        nv = 65;
-    }
-    else if (d3.left == 2 || d3.right == 2) {
-        go(speed, nv, 65);
-        unloading_loops(2);
-        c_loops -= 2;
-        nv = 65;
-    }
-    if (d2.left == 2 && d2.right == 2) {
-        go(speed, nv, 116);
-        unloading_loops(4);
-        c_loops -= 4;
-        nv = 59;
-        turn(speed, d180, 2);
-        line(speed, 200, 1);
-    }
-    else if (d2.left == 2 || d2.right == 2) {
-        go(speed, nv, 116);
-        if (c_loops == 2)
-            unloading_loops(4);
-        else
-            unloading_loops(2);
-        c_loops -= 2;
-        turn(speed, d180, 2);
-        line(speed, 200, 1);
-        nv = 59;
-    }
-    if (d1.left == 2 && d1.right == 2) {
-        go(speed, nv, 25);
-        unloading_loops(4);
-        c_loops -= 4;
-        nv = 15;
-    }
-    else if (d1.left == 2 || d1.right == 2) {
-        go(speed, nv, 25);
-        if (c_loops == 2)
-            unloading_loops(4);
-        else
-            unloading_loops(2);
-        c_loops -= 2;
-        nv = 15;
-    }
-    if (c_loops == 2) {
-        go(speed, nv, 131);
-        nv = 131;
-    }
-    if (nv == 15) {
-        go(speed, nv, 133);
-        go(speed, 133, 135);
-        nv = 135;
+    int cc = 0;
+    if (d1.left == 2)
+        cc++;
+    if (d1.right == 2)
+        cc++;
+    if (d2.left == 2)
+        cc++;
+    if (d2.right == 2)
+        cc++;
+    if (d2.left == 2)
+        cc++;
+    if (d2.right == 2)
+        cc++;
+    if (cc == 2) {
+        go(speed, nv, 97);
+        get_4_blue();
+        nv = 66;
+        put_loops_4(2);
+        if (nv == 25) {
+            go(speed, nv, 133);
+            go(speed, 133, 135);
+            nv = 135;
+        }
+        else {
+            go(speed, nv, 135);
+            go(speed, 135, 133);
+            nv = 133;
+        }
+        c_loops += 4;
+        put_loops_4(3);
     }
     else {
-        go(speed, nv, 135);
-        go(speed, 135, 133);
-        nv = 133;
+        if (nv == 25) {
+            go(speed, nv, 133);
+            go(speed, 133, 135);
+            nv = 135;
+        }
+        else {
+            go(speed, nv, 135);
+            go(speed, 135, 133);
+            nv = 133;
+        }
+        c_loops += 4;
+        put_loops_4(3);
+        go(speed, nv, 97);
+        get_4_blue();
+        nv = 66;
+        put_loops_4(2);
     }
     return 0;
 }
