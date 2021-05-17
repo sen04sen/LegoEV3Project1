@@ -25,6 +25,7 @@
 
 #include "utils.h"
 #include "speed.h"
+#include "constants.h"
 
 using namespace ev3_c_api;
 using namespace std;
@@ -203,7 +204,7 @@ void moveBCNEW(Speed p, int dist, bool stop = true) {
 */
 void moveBC(int s, int dist, bool stop = true) {
     if (dist > 0 && s > 0) {
-        moveBCNEW(Speed(80, 20, 0.45, 1, 300, 300, 100), dist, stop);
+        moveBCNEW(Speed(100, 20, 0, 0, 250, 250, 70), dist, stop);
     } else{
         if (dist < 0) {
             dist *= -1;

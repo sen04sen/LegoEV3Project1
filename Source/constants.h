@@ -7,6 +7,7 @@
 #ifndef constants_h
 #define constants_h
 
+#include "edge.h"
 #include "speed.h"
 
 const int maxv = 500;
@@ -40,14 +41,14 @@ double up = 10;
 double xren_loops = 450;
 
 
-const int lineArrayLen = 20;                      ///< Длинна массива задержек для линии
-const int linePreviewLooking = 100;                ///< За это расстояние до конца линии робот начинает чекать датчиком конец
-const int deltaSensors = 6;                       ///< Разность показаний датчиков
-Speed DOP1 = Speed(80, 20, 0.35, 0.7, 300, 300, 100); ///< Для двух
-Speed ONE1 = Speed(80, 20, 0.45, 1, 300, 300, 100); ///< Для одного 
+const int lineArrayLen = 20;                            ///< Длинна массива задержек для линии
+const int linePreviewLooking = 100;                     ///< За это расстояние до конца линии робот начинает чекать датчиком конец
+const int deltaSensors = 6;                             ///< Разность показаний датчиков
+Speed DOP1 = Speed(80, 20, 0.35, 0.7, 300, 300, 100);   ///< Для двух
+Speed ONE1 = Speed(80, 20, 0.45, 1, 300, 300, 100);     ///< Для одного
 Speed MIN = Speed(23, 20, 0.3, 0.3, 1, 1, 1);
-Speed ONE = Speed(30, 20, 0.5, 0.3, 50, 50, 30); ///< Для одного 
-Speed ZERO = Speed(80, 20, 0.45, 1, 250, 250, 50);    ///< Настройка линии (функция lineNew) класс Speed
+Speed ONE = Speed(30, 20, 0.5, 0.3, 50, 50, 30);        ///< Для одного
+Speed ZERO = Speed(80, 20, 0.45, 1, 250, 250, 50);      ///< Настройка линии (функция lineNew) класс Speed
 
 #define pb push_back
 
