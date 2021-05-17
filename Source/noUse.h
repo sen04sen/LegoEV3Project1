@@ -120,10 +120,9 @@ void get_4_blue() {
     stopBC();
     moveBC(speed, -30, 1);
     turn(speed, d90, -1);
-    moveBC(speed, -50, 1);
-    return;
-    moveD(speedD, 395);
-    moveBC(speed, 90, 1);
+    moveBC(speed, -100, 1);
+    moveD(speedD, put_loops);
+    moveBC(speed, 140, 1);
     moveD(speedD, 280);
     moveBC(speed, -30, 1);
     turn(speed, d90, -2);

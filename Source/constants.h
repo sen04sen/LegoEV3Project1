@@ -9,23 +9,35 @@
 
 #include "speed.h"
 
-const int maxv = 500;         ///< \todo Описать
-const int ce = 21 * 2;        ///< \todo Описать
-const int ver = 22;           ///< \todo Описать
-const int black = 25;         ///< \todo Описать
-const int bluck = 25;         ///< \todo Описать
-const int bley = 40;          ///< \todo Описать
-const double Pr = 0.3;        ///< \todo Описать
-const int grey = 35;          ///< \todo Описать
-const double dws = 130;       ///< \todo Описать
-const double dsl = 50;        ///< \todo Описать
-const int d90 = 270;          ///< \todo Описать
-const int d180 = 540;         ///< \todo Описать
-const int dovorot = 45;       ///< \todo Описать
-const int turn1wheel = 550;   ///< \todo Описать
-const int ndir = 0;           ///< \todo Описать
-const int speed = 23;         ///< \todo Описать
-const int speedD = 40;        ///< \todo Описать
+const int maxv = 500;
+const int ce = 21 * 2;
+const int ver = 22;
+const int black = 13;
+const int bluck = 25;
+const int bley = 40;
+const double Pr = 0.3;
+const int grey = 40;
+const double dws = 130; // ���������� ����� ��������� � �������
+const double dsl = 50; //����� �������� � �����
+const int d90 = 275;
+const int d180 = 550;
+const int dovorot = 45;
+const int turn1wheel = 550;
+const int ndir = 0;
+const int speed = 23;
+int speedD = 40;
+
+double put_loops = 230;
+double up_loops = 100;
+double block_cubes = 334;
+double after_take_cubes = 150;
+double before_take_cubes = 460;
+double before_take_blue_loops = 230;
+double after_take_blue_loops = 100;
+double before_take_green_loops = 200;
+double after_take_green_loops = 60;
+double up = 10;
+
 
 const int lineArrayLen = 20;                      ///< Длинна массива задержек для линии
 const int linePreviewLooking = 50;                ///< За это расстояние до конца линии робот начинает чекать датчиком конец
