@@ -71,8 +71,10 @@ void lineNEW(Speed p, int dist, int type) {
 
     vector <int> errors = vector<int>(lineArrayLen, 0);
 
+    long long sum = 0;
+    long long count = 0;
     bool stop = 0; // флаг завершения
-    for (int count = 0; !stop; count++) {
+    for (; !stop; count++) {
 
         int encoders;
         encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 +
@@ -86,9 +88,8 @@ void lineNEW(Speed p, int dist, int type) {
         if (nowSpeed < p.minS) nowSpeed = p.minS;
 
         if (type == 0 || type == 6 || type == 8) {
-            if (encoders >= way) {
-                stop = 1;
-            }
+            if (encoders >= way)        stop = 1;
+            
         }
         else {
             if (encoders >= way - linePreviewLooking * 2) {
@@ -118,6 +119,7 @@ void lineNEW(Speed p, int dist, int type) {
                     stop = 1;
 
                 }
+                else if (type == 9 && s3() > bluck) stop = 1;
             }
         }
 
@@ -138,26 +140,25 @@ void lineNEW(Speed p, int dist, int type) {
         case 8:
             error = (double)(s2() - grey) * 3 / 3;
             break;
+        case 9:
+            error = (double)(s2() - bley) * 3 / 3;
+            break;
         default:
-            error = (double)(s3() - s2());
+            error = (double)(s3() - s2() - deltaSensors);
             break;
         } // подсчет ошибки
         double kP;
         double kD;
-        if (type >= 4 && type <= 8) {
-            kP = 0.5 * ((double)nowSpeed / (double)p.maxS);
-            kD = 0.3 * ((double)nowSpeed / (double)p.maxS);
-        }
-        else {
             kP = p.p * ((double)nowSpeed / (double)p.maxS);
             kD = p.d * ((double)nowSpeed / (double)p.maxS);
-        }
 
+        sum += abs( error - errors[count % lineArrayLen]);
         SpeedMotor(E_Port_B, -1 * (nowSpeed - error * kP - (error - errors[count % lineArrayLen]) * kD));
         SpeedMotor(E_Port_C, nowSpeed + error * kP + (error - errors[count % lineArrayLen]) * kD);
 
         errors[count % lineArrayLen] = error; // для d составляющей
     }
+    write(1, 1, sum / count);
     if (type == 4) s3(); // Какая-то типизация
 }
 

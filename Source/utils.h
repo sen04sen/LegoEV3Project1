@@ -68,16 +68,6 @@ public:
 };
 
 /*!
-\brief Функция, которая запускается потоком и завершает работу программы по кнопке
-*/
-void *okonchanie(void *lpvoid) {
-    while (!isBrickButtonPressed(E_BTN_ESC));
-    StopMotorAll();
-    wait(500);
-    exit(0);
-}
-
-/*!
 \brief Выводит что угодно на экран
 \param uy Что-то для вывода
 Работает аналогично str()
@@ -87,6 +77,21 @@ void write(int x, int y, T uy) {
     string a = str(uy);
     Draw_Text(x, y, E_Font_Normal, 0, &(a[0]));
 }
+
+/*!
+\brief Функция, которая запускается потоком и завершает работу программы по кнопке
+*/
+void *okonchanie(void *lpvoid) {
+    T_TimerId t = Timer_Start();
+    while (!isBrickButtonPressed(E_BTN_ESC));
+    StopMotorAll();
+    Clear_Display();
+    write(30, 30, Timer_Destroy(t));
+    wait(5000);
+    exit(0);
+}
+
+
 
 void vivod_4() {
     for (int i = 0; i < 100; i++) {

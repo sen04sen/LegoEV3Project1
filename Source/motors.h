@@ -153,7 +153,8 @@ void moveBCNEW(Speed p, int dist, bool stop = true) {
         int home = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 +
                    GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
 
-        double kUpDist = 0.5 * (p.maxS / p.sEnc), kDownDist = 0.5 * (p.maxS / p.eEnc);
+        double kUpDist = 0.5 * (((double)p.maxS - (double)p.minS) / (double)p.sEnc);
+        double kDownDist = 0.5 * (((double)p.maxS - (double)p.minS) / (double)p.eEnc);
 
         int upDist, downDist;
         if (p.sEnc > 0) upDist = ((int) (p.sEnc * 2)) + home;
@@ -161,19 +162,21 @@ void moveBCNEW(Speed p, int dist, bool stop = true) {
         if (p.eEnc > 0) downDist = ((int) ((dist - p.zEnc - p.eEnc) * 2)) + home;
         else downDist = 2147483647;
 
-        int way = dist * 2 + home, encoders = home;
+        int way = dist * 2 + home;
 
         bool stop = 0; // флаг завершения
         for (int count = 0; !stop; count++) {
 
+            int encoders;
             encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 +
                        GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
 
             int nowSpeed;
-            if (encoders > downDist) nowSpeed = p.maxS - (encoders - downDist) * kDownDist;
-            else if (encoders < upDist) nowSpeed = (encoders - home) * kUpDist;
+            if (encoders > way - 100 * 2) nowSpeed = p.minS;
+            else if (encoders > downDist) nowSpeed = (double)p.maxS - ((double)encoders - (double)downDist) * kDownDist;
+            else if (encoders < upDist) nowSpeed = ((double)encoders - (double)home) * kUpDist + p.minS;
             else nowSpeed = p.maxS;
-            if (encoders > way || nowSpeed < p.minS) nowSpeed = p.minS;
+            if (nowSpeed < p.minS) nowSpeed = p.minS;
 
             if (encoders >= way) stop = 1;
 
@@ -200,7 +203,7 @@ void moveBCNEW(Speed p, int dist, bool stop = true) {
 */
 void moveBC(int s, int dist, bool stop = true) {
     if (dist > 0 && s > 0) {
-        moveBCNEW(Speed(23, 20, 0.3, 0.3, 1, 1, 1), dist, stop);
+        moveBCNEW(Speed(80, 20, 0.45, 1, 300, 300, 100), dist, stop);
     } else{
         if (dist < 0) {
             dist *= -1;

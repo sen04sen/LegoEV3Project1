@@ -142,7 +142,7 @@ void get_4_blue() {
     goBC(7, 2);
     while (s3() > bley);
     stopBC();
-    line(speed, 160, 6);
+    lineNEW(ONE, 160, 6);
     stopBC();
     turn(speed, d90, -1);
     moveBC(speed, -200, 1);
@@ -188,9 +188,9 @@ void turn_bat() {
     moveBC(speed, -60, 1);
     turn(speed, d90 - 30, 0);
     turn(speed, 60, -1);
-    line(speed, 50, 7);
+    lineNEW(ONE, 50, 7);
     moveBC(speed, dsl, 0);
-    line(speed, 510, 8);
+    lineNEW(ONE, 510, 8);
     stopBC();
     wait(5000);
     getRGB(2);
@@ -225,7 +225,7 @@ DoubleMarker gtf() {
 }
 
 void f228() {
-    line(speed, grad[10] - dws, 4);
+    lineNEW(ONE, grad[10] - dws, 4);
 }
 
 void f1() {
@@ -277,12 +277,12 @@ void f12() {
 }
 
 void f13() {
-    line(speed, grad[2] - dws, 4);
+    lineNEW(ONE, grad[2] - dws, 4);
 }
 
 void f14() {
     d1 = gtf();
-    d1 = DoubleMarker(Color(2), Color(4));
+    d1 = DoubleMarker(Color(2), Color(4)); //ÊÎÑÒÛËÜ-------------------------------------------------------------------------------------------
 }
 
 void f15() {
@@ -292,7 +292,7 @@ void f15() {
 void f15a() {
     turn(speed, d90, 3);
     moveD(speedD, up);
-    line(speed, 50, 4);
+    lineNEW(ONE, 50, 4);
 }
 
 void f15b() {
@@ -381,12 +381,12 @@ void f30() {
 
 void f31() {
     turn(speed, d90 + 40, 3);
-    line(speed, 200, 4);
+    lineNEW(ONE, 200, 4);
 }
 
 void f32() {
     d2 = gtf();
-    d2 = DoubleMarker(Color(3), Color(2));
+    d2 = DoubleMarker(Color(3), Color(2)); //ÊÎÑÒÛËÜ-------------------------------------------------------------------
 }
 
 void f33() {
@@ -403,7 +403,7 @@ void f33() {
 
 void f34() {
     turn(speed, d90, 0);
-    line(speed, 300, 4);
+    lineNEW(ONE, 300, 4);
 }
 
 void f35() {
@@ -418,7 +418,7 @@ void f36() {
 
 void f37() {
     d3 = gtf();
-    d3 = DoubleMarker(Color(4), Color(0));
+    d3 = DoubleMarker(Color(4), Color(0)); //ÊÎÑÒÛËÜ----------------------------------------------------------------------------------------
 }
 
 void f38() {
@@ -428,7 +428,7 @@ void f38() {
 
 void f39() {
     moveBC(speed, 50, 0);
-    line(speed, 460, 5);
+    lineNEW(ONE, 460, 5);
     goBC(speed);
     while (s2() > black);
 }
@@ -469,7 +469,7 @@ void f45() {
 }
 
 void f46() {
-    line(speed, grad[6] - dws + 20, 8);
+    lineNEW(ONE, grad[6] - dws + 20, 8);
     getRGB(2);
     moveBC(speed, 55, 0);
     while (getRGB(2).b < 100);
@@ -854,11 +854,20 @@ void buildg() {
     add(134, 62, f71);
 }
 
+void vivod_h() {
+    while (1) {
+        Clear_Display();
+        write(10, 10, getHSV(4).h);
+        wait(50);
+    }
+}
+
 signed EV3_main() {
     Clear_Display();
     CreateThread(okonchanie, 0);
     buildDegreesConstants();
     buildg();
+    //vivod_h();
     s2();
     s3();
     s4();
@@ -978,9 +987,9 @@ signed EV3_main() {
         cc++;
     if (d2.right == 2)
         cc++;
-    if (d2.left == 2)
+    if (d3.left == 2)
         cc++;
-    if (d2.right == 2)
+    if (d3.right == 2)
         cc++;
     if (cc == 2) {
         go(speed, nv, 97);
