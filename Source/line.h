@@ -55,10 +55,11 @@ void lineNEW(Speed p, int dist, int type) {
     }
     if (type == 4) getRGB(3);
 
-
     int home =
         GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 + GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    double kUpDist = 0.5 * (p.maxS / p.sEnc), kDownDist = 0.5 * (p.maxS / p.eEnc);
+
+    double kUpDist = 0.5 * (((double)p.maxS - (double)p.minS) / (double)p.sEnc);
+    double kDownDist = 0.5 * (((double)p.maxS - (double)p.minS) / (double)p.eEnc);
 
     int upDist, downDist;
     if (p.sEnc > 0) upDist = ((int)(p.sEnc * 2)) + home;
@@ -66,22 +67,23 @@ void lineNEW(Speed p, int dist, int type) {
     if (p.eEnc > 0) downDist = ((int)((dist - p.zEnc - p.eEnc) * 2)) + home;
     else downDist = 2147483647;
 
-    int way = dist * 2 + home, encoders = home, error = 0, errors[lineArrayLen];
+    int way = dist * 2 + home;
 
-    for (int i = 0; i < lineArrayLen; i++) errors[i] = error; // заполнить массив ошибок
-
+    vector <int> errors = vector<int>(lineArrayLen, 0);
 
     bool stop = 0; // флаг завершения
     for (int count = 0; !stop; count++) {
 
+        int encoders;
         encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 +
             GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
 
         int nowSpeed;
-        if (encoders > downDist) nowSpeed = p.maxS - (encoders - downDist) * kDownDist;
-        else if (encoders < upDist) nowSpeed = (encoders - home) * kUpDist;
+        if (encoders > way - linePreviewLooking * 2) nowSpeed = p.minS;
+        else if (encoders > downDist) nowSpeed = (double)p.maxS - ((double)encoders - (double)downDist) * kDownDist;
+        else if (encoders < upDist) nowSpeed = ((double)encoders - (double)home) * kUpDist + p.minS;
         else nowSpeed = p.maxS;
-        if (encoders > way - linePreviewLooking * 2 || nowSpeed < p.minS) nowSpeed = p.minS;
+        if (nowSpeed < p.minS) nowSpeed = p.minS;
 
         if (type == 0 || type == 6 || type == 8) {
             if (encoders >= way) {
@@ -119,6 +121,7 @@ void lineNEW(Speed p, int dist, int type) {
             }
         }
 
+        int error = 0;
         switch (type) {
         case 5:
             error = (double)(s3() - bley) * 3 / 3;
