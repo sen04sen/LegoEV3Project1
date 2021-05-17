@@ -200,7 +200,7 @@ void moveBCNEW(Speed p, int dist, bool stop = true) {
 */
 void moveBC(int s, int dist, bool stop = true) {
     if (dist > 0 && s > 0) {
-        moveBCNEW(ZERO, dist, stop);
+        moveBCNEW(Speed(23, 20, 0.3, 0.3, 1, 1, 1), dist, stop);
     } else{
         if (dist < 0) {
             dist *= -1;
