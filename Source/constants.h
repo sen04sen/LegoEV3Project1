@@ -20,6 +20,7 @@ const double Pr = 0.3;
 const int grey = 40;
 const double dws = 130; // ���������� ����� ��������� � �������
 const double dsl = 50; //����� �������� � �����
+const double dtw = 170;
 const int d90 = 275;
 const int d180 = 550;
 const int dovorot = 45;

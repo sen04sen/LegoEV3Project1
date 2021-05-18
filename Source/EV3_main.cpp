@@ -1,3 +1,5 @@
+// docs https://sen04sen.github.io/LegoEV3Project1/html/index.html
+
 #include <EV3_Motor.h>
 #include "EV3_LCDDisplay.h"
 #include "EV3_Sensor_Color.h"
@@ -223,7 +225,7 @@ DoubleMarker gtf() {
 }
 
 void f228() {
-    lineNEW(ONE, grad[10] - dws, 4);
+    line(speed, grad[10] - dws, 4);
 }
 
 void f1() {
@@ -635,6 +637,48 @@ void f71() {
     line(speed, 700, 3);
 }
 
+void f72(){
+    line(speed, grad[2] - dtw, 4);
+}
+
+void f73() {
+    line(speed, grad[3] - dtw, 3);
+}
+
+void f74() {
+    line(speed, grad[10] - dtw, 4);
+}
+
+void f75() {
+    line(speed, grad[9] - dtw, 3);
+}
+
+void f76() {
+    line(speed, grad[11] - dtw, 2);
+}
+
+void f77() {
+    line(speed, grad[12] - dtw, 4);
+}
+
+void f78() {
+    line(speed, grad[11] - dtw, 2);
+}
+
+void twb() {
+    stopC();
+    moveB(speed, turn1wheel - 100, 0);
+    while (s3() > black);
+    moveB(speed, 50);
+}
+
+void twc() {
+    stopB();
+    moveC(speed, turn1wheel - 100, 0);
+    while (s2() > black);
+    moveC(speed, 50);
+}
+
 void add(int from, int to, void (*def)(), double time = 1.0) {
     g[from].pb(Edge(to, def, time));
 }
@@ -844,6 +888,24 @@ void buildg() {
     add(135, 134, f69);
     add(134, 48, f70);
     add(134, 62, f71);
+
+    add(22, 137, twc);
+    add(23, 136, twb);
+    add(137, 25, f72);
+    add(136, 38, f73);
+
+    add(60, 138, twb);
+    add(59, 139, twc);
+    add(62, 138, twc);
+    add(59, 140, twb);
+    add(138, 116, f74);
+    add(140, 48, f75);
+    add(139, 74, f76);
+
+    add(73, 142, twc);
+    add(74, 141, twb);
+    add(141, 121, f77);
+    add(142, 60, f78);
 }
 
 void vivod_h() {
@@ -870,14 +932,6 @@ signed EV3_main() {
     wait(500);
     stopA();
     moveA(1);
-    go(speed, 51, 97);
-    get_4_blue();
-    wait(2000);
-    moveD(speedD, near_put_loops);
-    wait(1000);
-    moveD(speedD, xren_loops);
-    wait(10000);
-    return 0;
     go(speed, 0, 26);
     nv = 26;
     if (d1.left == 4 || d1.right == 4) {
