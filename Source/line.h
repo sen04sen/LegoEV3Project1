@@ -87,24 +87,17 @@ void lineNEW(Speed p, int dist, int type) {
             if (encoders >= way - linePreviewLooking * 2) {
                 if (type == 1 && s2() < black && s3() < black) {
                     stop = 1;
-
                 } else if (type == 2 && s3() < black) {
                     stop = 1;
-
                 } else if (type == 3 && s2() < black) {
                     stop = 1;
                 } else if (type == 4) {
                     ColorRGB color = getRGB(3);
-                    if (color.r - color.g > 70) {
-                        stop = 1;
-
-                    }
+                    if (color.r - color.g > 70) stop = 1;
                 } else if (type == 5 && s2() > bluck) {
                     stop = 1;
-
                 } else if (type == 7 && s3() < black) {
                     stop = 1;
-
                 } else if (type == 9 && s3() > bluck) stop = 1;
             }
         }

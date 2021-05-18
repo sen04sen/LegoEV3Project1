@@ -41,7 +41,11 @@ double up = 10;
 double near_put_loops = 200;
 double xren_loops = 450;
 
+/*!
+    \ingroup line
+*/
 
+///@{
 const int lineArrayLen = 20;                            ///< Длинна массива задержек для линии
 const int linePreviewLooking = 100;                     ///< За это расстояние до конца линии робот начинает чекать датчиком конец
 const int deltaSensors = 6;                             ///< Разность показаний датчиков
@@ -52,12 +56,15 @@ Speed ONE = Speed(30, 20, 0.5, 0.3, 50, 50, 30);        ///< Для одного
 Speed ZERO = Speed(80, 20, 0.45, 1, 300, 300, 100);     ///< Настройка линии (функция lineNew) класс Speed
 Speed ONEMOTOR = Speed(100, 20, 0, 0, 100, 150, 50);    ///< Для moveB или moveС
 Speed TURN = Speed(100, 15, 0, 0, 300, 300, 50);        ///< Для turn
+///}@
+
+vector<vector<Edge> > g(maxv);                          ///< Вектор для деикстры
 
 #define pb push_back
 
-vector<int> grad; ///< Длины основных элементов поля
+vector<int> grad;                                       ///< Длины основных элементов поля
 
-void buildDegreesConstants() { /// Заполнение вектора grad
+void buildDegreesConstants() {                          /// Заполнение вектора grad
     grad.pb(850);
     grad.pb(390);
     grad.pb(470);
@@ -77,7 +84,5 @@ void buildDegreesConstants() { /// Заполнение вектора grad
     grad.pb(210);
     grad.pb(410);
 }
-
-vector<vector<Edge> > g(maxv); ///< Вектор для деикстры
 
 #endif
