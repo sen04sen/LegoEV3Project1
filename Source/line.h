@@ -141,7 +141,7 @@ void lineNEW(Speed p, int dist, int type) {
             error = (double)(s2() - grey) * 3 / 3;
             break;
         case 9:
-            error = (double)(s2() - bley) * 3 / 3;
+            error = (double)(bley - s2()) * 3 / 3;
             break;
         default:
             error = (double)(s3() - s2() - deltaSensors);
