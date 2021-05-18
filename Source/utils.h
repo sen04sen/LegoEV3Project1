@@ -82,13 +82,10 @@ void write(int x, int y, T uy) {
 \brief Функция, которая запускается потоком и завершает работу программы по кнопке
 */
 void *okonchanie(void *lpvoid) {
-    T_TimerId t = Timer_Start();
+    wait(1000);
     while (!isBrickButtonPressed(E_BTN_ESC));
     StopMotorAll();
-    Clear_Display();
-    write(30, 30, Timer_Destroy(t));
-    StopMotorAll();
-    exit(0);
+    throw Exception("exit");
 }
 
 
