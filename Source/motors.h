@@ -43,7 +43,7 @@ void moveA(bool uy) {
     if (uy) {
         dist = stadegd - 80;
     } else {
-        dist = stadegd - 35;
+        dist = stadegd - 45;
     }
     double st = dist - GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
     if (st >= 0) {
