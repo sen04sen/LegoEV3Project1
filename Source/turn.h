@@ -62,7 +62,7 @@ void turn(int sp, int dt, int tp) {
                 int encoders = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium));
 
                 int nowSpeed;
-                if (encoders > way - linePreviewLooking) nowSpeed = p.minS;
+                if (encoders > way) nowSpeed = p.minS;
                 else if (encoders > downDist) nowSpeed = (double) p.maxS -
                                                          ((double) encoders - (double) downDist) * kDownDist;
                 else if (encoders < upDist) nowSpeed = ((double) encoders - (double) home) * kUpDist + p.minS;
@@ -98,7 +98,7 @@ void turn(int sp, int dt, int tp) {
                 int encoders = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium));
 
                 int nowSpeed;
-                if (encoders > way - linePreviewLooking) nowSpeed = p.minS;
+                if (encoders > way) nowSpeed = p.minS;
                 else if (encoders > downDist) nowSpeed = (double) p.maxS -
                                                          ((double) encoders - (double) downDist) * kDownDist;
                 else if (encoders < upDist) nowSpeed = ((double) encoders - (double) home) * kUpDist + p.minS;
@@ -134,7 +134,7 @@ void turn(int sp, int dt, int tp) {
                 int encoders = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium));
 
                 int nowSpeed;
-                if (encoders > way - linePreviewLooking) nowSpeed = p.minS;
+                if (encoders > way) nowSpeed = p.minS;
                 else if (encoders > downDist) nowSpeed = (double) p.maxS -
                                                          ((double) encoders - (double) downDist) * kDownDist;
                 else if (encoders < upDist) nowSpeed = ((double) encoders - (double) home) * kUpDist + p.minS;
@@ -164,7 +164,7 @@ void turn(int sp, int dt, int tp) {
                 int encoders = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium));
 
                 int nowSpeed;
-                if (encoders > way - linePreviewLooking) nowSpeed = p.minS;
+                if (encoders > way) nowSpeed = p.minS;
                 else if (encoders > downDist) nowSpeed = (double) p.maxS -
                                                          ((double) encoders - (double) downDist) * kDownDist;
                 else if (encoders < upDist) nowSpeed = ((double) encoders - (double) home) * kUpDist + p.minS;
