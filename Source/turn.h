@@ -30,8 +30,7 @@ void turn(int sp, int dt, int tp) {
             while (s3() > bluck);
             st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
             while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dovorot);
-        }
-        else if (tp == 5) {
+        } else if (tp == 5) {
             SpeedMotor(E_Port_B, sp);
             SpeedMotor(E_Port_C, sp);
             double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
@@ -41,19 +40,18 @@ void turn(int sp, int dt, int tp) {
             while (s2() > bluck);
             st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
             while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dovorot);
-        }
-        else if (tp < 2) {
+        } else if (tp < 2) {
             dt -= 100;
 
             int home = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium));
 
-            double kUpDist = (((double)p.maxS - (double)p.minS) / (double)p.sEnc);
-            double kDownDist = (((double)p.maxS - (double)p.minS) / (double)p.eEnc);
+            double kUpDist = (((double) p.maxS - (double) p.minS) / (double) p.sEnc);
+            double kDownDist = (((double) p.maxS - (double) p.minS) / (double) p.eEnc);
 
             int upDist, downDist;
-            if (p.sEnc > 0) upDist = ((int)(p.sEnc)) + home;
+            if (p.sEnc > 0) upDist = ((int) (p.sEnc)) + home;
             else upDist = -2147483648;
-            if (p.eEnc > 0) downDist = ((int)((dt - p.zEnc - p.eEnc))) + home;
+            if (p.eEnc > 0) downDist = ((int) ((dt - p.zEnc - p.eEnc))) + home;
             else downDist = 2147483647;
 
             int way = dt + home;
@@ -65,8 +63,9 @@ void turn(int sp, int dt, int tp) {
 
                 int nowSpeed;
                 if (encoders > way - linePreviewLooking) nowSpeed = p.minS;
-                else if (encoders > downDist) nowSpeed = (double)p.maxS - ((double)encoders - (double)downDist) * kDownDist;
-                else if (encoders < upDist) nowSpeed = ((double)encoders - (double)home) * kUpDist + p.minS;
+                else if (encoders > downDist) nowSpeed = (double) p.maxS -
+                                                         ((double) encoders - (double) downDist) * kDownDist;
+                else if (encoders < upDist) nowSpeed = ((double) encoders - (double) home) * kUpDist + p.minS;
                 else nowSpeed = p.maxS;
                 if (nowSpeed < p.minS) nowSpeed = p.minS;
 
@@ -82,13 +81,13 @@ void turn(int sp, int dt, int tp) {
 
             int home = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium));
 
-            double kUpDist = (((double)p.maxS - (double)p.minS) / (double)p.sEnc);
-            double kDownDist = (((double)p.maxS - (double)p.minS) / (double)p.eEnc);
+            double kUpDist = (((double) p.maxS - (double) p.minS) / (double) p.sEnc);
+            double kDownDist = (((double) p.maxS - (double) p.minS) / (double) p.eEnc);
 
             int upDist, downDist;
-            if (p.sEnc > 0) upDist = ((int)(p.sEnc)) + home;
+            if (p.sEnc > 0) upDist = ((int) (p.sEnc)) + home;
             else upDist = -2147483648;
-            if (p.eEnc > 0) downDist = ((int)((dt - p.zEnc - p.eEnc))) + home;
+            if (p.eEnc > 0) downDist = ((int) ((dt - p.zEnc - p.eEnc))) + home;
             else downDist = 2147483647;
 
             int way = dt + home;
@@ -100,8 +99,9 @@ void turn(int sp, int dt, int tp) {
 
                 int nowSpeed;
                 if (encoders > way - linePreviewLooking) nowSpeed = p.minS;
-                else if (encoders > downDist) nowSpeed = (double)p.maxS - ((double)encoders - (double)downDist) * kDownDist;
-                else if (encoders < upDist) nowSpeed = ((double)encoders - (double)home) * kUpDist + p.minS;
+                else if (encoders > downDist) nowSpeed = (double) p.maxS -
+                                                         ((double) encoders - (double) downDist) * kDownDist;
+                else if (encoders < upDist) nowSpeed = ((double) encoders - (double) home) * kUpDist + p.minS;
                 else nowSpeed = p.maxS;
                 if (nowSpeed < p.minS) nowSpeed = p.minS;
 
@@ -117,13 +117,13 @@ void turn(int sp, int dt, int tp) {
         if (tp == -1) {
             int home = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium));
 
-            double kUpDist = (((double)p.maxS - (double)p.minS) / (double)p.sEnc);
-            double kDownDist = (((double)p.maxS - (double)p.minS) / (double)p.eEnc);
+            double kUpDist = (((double) p.maxS - (double) p.minS) / (double) p.sEnc);
+            double kDownDist = (((double) p.maxS - (double) p.minS) / (double) p.eEnc);
 
             int upDist, downDist;
-            if (p.sEnc > 0) upDist = ((int)(p.sEnc)) + home;
+            if (p.sEnc > 0) upDist = ((int) (p.sEnc)) + home;
             else upDist = -2147483648;
-            if (p.eEnc > 0) downDist = ((int)((dt - p.zEnc - p.eEnc))) + home;
+            if (p.eEnc > 0) downDist = ((int) ((dt - p.zEnc - p.eEnc))) + home;
             else downDist = 2147483647;
 
             int way = dt + home;
@@ -135,8 +135,9 @@ void turn(int sp, int dt, int tp) {
 
                 int nowSpeed;
                 if (encoders > way - linePreviewLooking) nowSpeed = p.minS;
-                else if (encoders > downDist) nowSpeed = (double)p.maxS - ((double)encoders - (double)downDist) * kDownDist;
-                else if (encoders < upDist) nowSpeed = ((double)encoders - (double)home) * kUpDist + p.minS;
+                else if (encoders > downDist) nowSpeed = (double) p.maxS -
+                                                         ((double) encoders - (double) downDist) * kDownDist;
+                else if (encoders < upDist) nowSpeed = ((double) encoders - (double) home) * kUpDist + p.minS;
                 else nowSpeed = p.maxS;
                 if (nowSpeed < p.minS) nowSpeed = p.minS;
 
@@ -146,13 +147,13 @@ void turn(int sp, int dt, int tp) {
         } else {
             int home = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium));
 
-            double kUpDist = (((double)p.maxS - (double)p.minS) / (double)p.sEnc);
-            double kDownDist = (((double)p.maxS - (double)p.minS) / (double)p.eEnc);
+            double kUpDist = (((double) p.maxS - (double) p.minS) / (double) p.sEnc);
+            double kDownDist = (((double) p.maxS - (double) p.minS) / (double) p.eEnc);
 
             int upDist, downDist;
-            if (p.sEnc > 0) upDist = ((int)(p.sEnc)) + home;
+            if (p.sEnc > 0) upDist = ((int) (p.sEnc)) + home;
             else upDist = -2147483648;
-            if (p.eEnc > 0) downDist = ((int)((dt - p.zEnc - p.eEnc))) + home;
+            if (p.eEnc > 0) downDist = ((int) ((dt - p.zEnc - p.eEnc))) + home;
             else downDist = 2147483647;
 
             int way = dt + home;
@@ -164,8 +165,9 @@ void turn(int sp, int dt, int tp) {
 
                 int nowSpeed;
                 if (encoders > way - linePreviewLooking) nowSpeed = p.minS;
-                else if (encoders > downDist) nowSpeed = (double)p.maxS - ((double)encoders - (double)downDist) * kDownDist;
-                else if (encoders < upDist) nowSpeed = ((double)encoders - (double)home) * kUpDist + p.minS;
+                else if (encoders > downDist) nowSpeed = (double) p.maxS -
+                                                         ((double) encoders - (double) downDist) * kDownDist;
+                else if (encoders < upDist) nowSpeed = ((double) encoders - (double) home) * kUpDist + p.minS;
                 else nowSpeed = p.maxS;
                 if (nowSpeed < p.minS) nowSpeed = p.minS;
 
