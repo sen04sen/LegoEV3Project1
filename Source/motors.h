@@ -37,20 +37,23 @@ using namespace std;
 
 ///@{
 
-void moveA(bool uy) {
+void moveA(int uy) {
     static double stadegd = GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
     double dist;
-    if (uy) {
+    if (uy == 1) {
         dist = stadegd - 80;
-    } else {
+    } else if (uy == 0) {
         dist = stadegd - 45;
+    }
+    else {
+        dist = stadegd - 120;
     }
     double st = dist - GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
     if (st >= 0) {
-        SpeedMotor(E_Port_A, 10);
+        SpeedMotor(E_Port_A, 20);
         while (GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium) < dist);
     } else {
-        SpeedMotor(E_Port_A, -10);
+        SpeedMotor(E_Port_A, -20);
         while (GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium) > dist);
     }
 
@@ -91,6 +94,15 @@ void goD(int sp) {
 
 void goA(int sp) {
     SpeedMotor(E_Port_A, sp);
+}
+
+void bacup(int sp, int dist, bool stop = true) {
+    SpeedMotor(E_Port_B, -1 * (sp));
+    SpeedMotor(E_Port_C, sp);
+    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dist);
+    if (stop)
+        stopBC();
 }
 
 void goBC(int sp, int uy = 0) {
@@ -257,8 +269,6 @@ void moveBCNEW(Speed p, int dist, bool stop = true) {
         double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
         while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dist);
     }
-
-    if (stop) stopBC(); // финальное торможение
 }
 
 /*!
@@ -281,10 +291,8 @@ void moveBC(int s, int dist, bool stop = true) {
         SpeedMotor(E_Port_C, s);
         double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
         while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(dist));
-
-        if (stop) stopBC(); // финальное торможение
     }
-
+    if (stop) stopBC(); // финальное торможение
 }
 
 

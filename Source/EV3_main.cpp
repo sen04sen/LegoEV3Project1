@@ -107,33 +107,34 @@ void unloading_loops(int cnt) {
     if (cnt == 4) {
         moveBC(-speed, 250);
         moveD(20, near_put_loops);
-        wait(100);
+        wait(300);
         moveD(speedD, put_loops);
         moveBC(speed, 80);
-        moveBC(-speed, 200);
-        moveD(speedD, up_loops);
+        moveBC(-speed, 250);
+        moveD(20, up_loops);
         moveA(0);
-        moveBC(speed, 470);
+        moveBC(speed, 520);
         moveBC(-speed, 100);
     } else {
         moveBC(-speed, 250);
         moveD(20, near_put_loops);
-        wait(100);
+        wait(300);
         moveD(speedD, xren_loops);
         moveBC(-speed, 80);
-        moveD(speedD, up_loops);
+        moveD(20, up_loops);
         moveA(0);
-        moveBC(speed, 430);
+        moveBC(speed, 430); 
         moveBC(-speed, 100);
     }
 }
 
 void get_4_blue() {
     int lala = speedD;
+    moveA(2);
     speedD = 15;
     stopBC();
-    wait(50);
-    moveBC(speed, -30, 1);
+    wait(200);
+    moveBC(speed, -30, 1);  
     turn(speed, d90, -1);
     moveBC(speed, -170, 1);
     moveD(speedD, before_take_blue_loops);
@@ -200,8 +201,6 @@ void turn_bat() {
     getRGB(2);
     moveBC(speed, 70, 1);
     stopBC();
-    wait(5000);
-    return;
     goBC(speed);
     while (getRGB(2).b < 100);
     s2();
@@ -211,18 +210,21 @@ void turn_bat() {
 
 
 DoubleMarker gtf() {
-    moveBC(speed, -130);
-    turn(15, d90 - 10, -1);
-    moveBC(20, 195, 1);
-    wait(300);
+    moveBC(20, -140);
+    gclr(4);
+    turn(speed, d90, -1);
+    moveBC(speed, 185, 1);
     int fi = gclr(4);
     if (fi == 7)
         fi = 4;
-    moveBC(20, 120);
-    wait(300);
+    if (fi == 1)
+        fi = 2;
+    moveBC(speed, 120);
     int se = gclr(4);
     if (se == 7)
         se = 4;
+    if (se == 1)
+        se = 2;
     stopBC();
     Clear_Display();
     write(1, 1, fi);
@@ -267,7 +269,7 @@ void f8() {
 }
 
 void f9() {
-    line(speed, grad[1] - dws, 2);
+    lineNEW(MIN1, grad[1] - dws, 2);
 }
 
 void f10() {
@@ -283,16 +285,16 @@ void f12() {
 }
 
 void f13() {
-    lineNEW(ONE, grad[2] - dws, 4);
+    lineNEW(MIN1, grad[2] - dws, 4);
 }
 
 void f14() {
     d1 = gtf();
-    //d1 = DoubleMarker(Color(2), Color(4)); //�������-------------------------------------------------------------------------------------------
+    d1 = DoubleMarker(Color(2), Color(4)); //�������-------------------------------------------------------------------------------------------
 }
 
 void f15() {
-    moveBC(speed, -340);
+    moveBC(speed, -320);
 }
 
 void f15a() {
@@ -351,9 +353,12 @@ void f25() {
     c_cubes += 2;
     turn(speed, 65, -1);
     moveA(0);
-    if (s4() > 1) {
+    getRGB(4);
+    wait(100);
+    /*if (getRGB(4).r > 15 || getRGB(4).g > 15) {
         gdeb = 4;
-    }
+    }*/
+    
     write(1, 1, gdeb);
     moveBC(speed, 425, 0);
     while (s2() > black);
@@ -369,7 +374,7 @@ void f26() {
 
 void f28() {
     moveA(1);
-    moveBC(speed, 340, 1);
+    moveBCNEW(MIN, 340, 1);
     c_cubes += 2;
     moveA(0);
 }
@@ -392,16 +397,19 @@ void f31() {
 
 void f32() {
     d2 = gtf();
-    //d2 = DoubleMarker(Color(3), Color(2)); //�������-------------------------------------------------------------------
+    d2 = DoubleMarker(Color(4), Color(0)); //�������-------------------------------------------------------------------
 }
 
 void f33() {
     moveBC(speed, -20, 1);
     turn(speed, d90, -1);
-    if (gclr(4) != 0) {
+    getRGB(4);
+    wait(100);
+    /*if (getRGB(4).r > 15 || getRGB(4).g > 15) {
         gdeb = 2;
-    }
+    }*/
     moveB(speed, turn1wheel, 1);
+    moveBC(-speed, 30);
     goBC(speed);
     while (s3() > black);
     moveBC(speed, dws, 1);
@@ -423,8 +431,8 @@ void f36() {
 }
 
 void f37() {
-    d3 = gtf();
-   // d3 = DoubleMarker(Color(4), Color(0)); //�������----------------------------------------------------------------------------------------
+   d3 = gtf();
+   d3 = DoubleMarker(Color(3), Color(2)); //�������----------------------------------------------------------------------------------------
 }
 
 void f38() {
@@ -434,7 +442,7 @@ void f38() {
 
 void f39() {
     moveBC(speed, 50, 0);
-    lineNEW(ONE, 460, 5);
+    lineNEW(ONE, 430, 5);
     goBC(speed);
     while (s2() > black);
 }
@@ -444,13 +452,13 @@ void f40() {
     moveBC(15, -50);
     moveA(1);
     line(10, 120, 0);
-    moveBC(speed, 420);
+    moveBCNEW(MIN, 420);
     moveA(0);
 }
 
 void f41() {
     turn(speed, d90, -2);
-    moveBC(speed, 460, 0);
+    moveBC(speed, 430, 0);
     while (s2() > black);
     moveBC(speed, dws);
 }
@@ -484,14 +492,14 @@ void f46() {
 }
 
 void f47() {
-    line(speed, 280, 0);
+    line(speed, 290, 0);
     stopBC();
     turn(speed, d90, -2);
 }
 
 void f48() {
     moveA(1);
-    moveBC(speed, 540);
+    moveBCNEW(MIN, 540);
     moveA(0);
 }
 
@@ -513,15 +521,18 @@ void f51() {
 }
 
 void f52() {
-    if (c_cubes > 0) {
-        stopBC();
-        moveA(1);
-        moveBC(-10, 100);
-        moveA(0);
-        moveD(speedD, before_take_cubes);
-    } else if (c_loops > 0) {
-
-    }
+    stopBC();
+    moveA(0);
+    moveBC(-10, 70);
+    moveD(speedD, before_take_cubes);
+    moveA(1);
+    moveBC(-10, 50);
+    moveA(0);
+    moveBC(-10, 40);
+    moveD(speedD, after_take_cubes);
+    moveA(1);
+    moveBC(speed, 440);
+    moveD(speedD, before_take_cubes);
 }
 
 void f53() {
@@ -551,7 +562,7 @@ void f55() {
 
 void f56() {
     moveA(1);
-    moveBC(speed, 520);
+    moveBCNEW(MIN, 520);
     moveA(0);
 }
 
@@ -571,24 +582,24 @@ void f59() {
 
 void f60() {
     stopBC();
-    moveBC(-speed, 50);
-    turn(speed, d90, -1);
+    moveBC(-speed, 60);
+    turn(15, d90, -1);
 }
 
 void f61() {
     stopBC();
-    turn(speed, d90, -2);
+    turn(15, d90, -2);
 }
 
 void f62() {
     moveBC(-speed, 150);
     moveD(10, before_take_green_loops);
-    moveBC(10, 80);
+    moveBC(10, 70);
     moveD(10, after_take_green_loops);
 }
 
 void f63() {
-    moveBC(speed, 70);
+    moveBC(speed, 80);
 }
 
 void f64() {
@@ -602,25 +613,25 @@ void f65() {
 
 void f66() {
     stopBC();
-    moveBC(-speed, 50);
-    turn(speed, d90, -2);
+    moveBC(-speed, 60);
+    turn(15, d90, -2);
 }
 
 void f67() {
     line(speed, 210, 0);
     stopBC();
-    turn(speed, d90, -1);
+    turn(15, d90, -1);
 }
 
 void f68() {
-    moveBC(-speed, 150);
+    moveBC(-speed, 170);
     moveD(10, before_take_green_loops);
-    moveBC(10, 80);
+    moveBC(10, 70);
     moveD(10, after_take_green_loops);
 }
 
 void f69() {
-    moveBC(speed, 70);
+    moveBC(speed, 80);
 }
 
 void f70() {
@@ -887,8 +898,7 @@ void buildg() {
     add(134, 48, f70);
     add(134, 62, f71);
 
-    add(22, 137, twc);
-    add(23, 136, twb);
+    /*add(23, 136, twb);
     add(137, 25, f72);
     add(136, 38, f73);
 
@@ -901,15 +911,14 @@ void buildg() {
     add(139, 74, f76);
 
     add(73, 142, twc);
-    add(74, 141, twb);
     add(141, 121, f77);
-    add(142, 60, f78);
+    add(142, 60, f78);*/
 }
 
 void vivod_h() {
     while (10000) {
         Clear_Display();
-        write(10, 10, getHSV(4).h);
+        write(10, 10, getHSV(4).    h);
         wait(50);
     }
 }
@@ -922,12 +931,12 @@ signed EV3_main() {
     //vivod_h();
     s2();
     s3();
-    s4();
+    gclr(4);
     goD(speedD);
-    wait(900);
+    wait(300);
     goD(0);
     goA(20);
-    wait(500);
+    wait(200);
     stopA();
     moveA(1);
     go(speed, 0, 26);
@@ -977,12 +986,17 @@ signed EV3_main() {
     } else {
         nv = 123;
     }
-    if (c_cubes == 2) {
-        go(speed, nv, 131);
-        c_cubes = 0;
-        nv = 131;
+    if (c_cubes == 2) { 
+        go(speed, nv, 121);
+        stopBC();
+        turn(speed, d90, -2);
+        moveA(1);
+        moveBC(speed, 210);
+        moveBC(-speed, 210);
+        turn(speed, d90, -1);
+        nv = 121;
     }
-    gdeb = 3; //�����������������������������������-----------------------------------------------------------------------------------------
+    gdeb = 4; //�����������������������������������-----------------------------------------------------------------------------------------
     int gg = 127;
     if (gdeb == 4)
         gg = 130;
@@ -1020,8 +1034,8 @@ signed EV3_main() {
         moveA(0);
         turn(speed, d90, -2);
         moveA(1);
-        moveBC(speed, 190);
-        moveBC(-speed, 190);
+        moveBC(speed, 210);
+        moveBC(-speed, 210);
         turn(speed, d90, -1);
     }
     int cc = 0;

@@ -87,7 +87,7 @@ void *okonchanie(void *lpvoid) {
     StopMotorAll();
     Clear_Display();
     write(30, 30, Timer_Destroy(t));
-    wait(5000);
+    StopMotorAll();
     exit(0);
 }
 
