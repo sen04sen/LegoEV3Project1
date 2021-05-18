@@ -13,13 +13,14 @@
 const int maxv = 500;
 const int ce = 21 * 2;
 const int ver = 22;
-const int black = 13;
-const int bluck = 25;
+const int black = 18;
+const int bluck = 30;
 const int bley = 40;
 const double Pr = 0.3;
 const int grey = 40;
 const double dws = 130; // ���������� ����� ��������� � �������
 const double dsl = 50; //����� �������� � �����
+const double dtw = 360;
 const int d90 = 275;
 const int d180 = 550;
 const int dovorot = 45;
@@ -33,13 +34,13 @@ double up_loops = 100;
 double block_cubes = 334;
 double after_take_cubes = 150;
 double before_take_cubes = 460;
-double before_take_blue_loops = 230;
+double before_take_blue_loops = 240;
 double after_take_blue_loops = 100;
-double before_take_green_loops = 200;
+double before_take_green_loops = 204;
 double after_take_green_loops = 60;
 double up = 10;
-double near_put_loops = 200;
-double xren_loops = 450;
+double near_put_loops = 180;
+double xren_loops = 490;
 
 /*!
     \ingroup line
@@ -52,8 +53,9 @@ const int deltaSensors = 6;                             ///< Разность п
 Speed DOP1 = Speed(80, 20, 0.35, 0.7, 300, 300, 100);   ///< Для двух
 Speed ONE1 = Speed(80, 20, 0.45, 1, 300, 300, 100);     ///< Для одного
 Speed MIN = Speed(23, 20, 0.3, 0.3, 1, 1, 1);
+Speed MIN1 = Speed(12, 12, 0.3, 0, 0, 0, 0);
 Speed ONE = Speed(30, 20, 0.5, 0.3, 50, 50, 30);        ///< Для одного
-Speed ZERO = Speed(80, 20, 0.45, 1, 300, 300, 100);     ///< Настройка линии (функция lineNew) класс Speed
+Speed ZERO = Speed(90, 20, 0.45, 1, 300, 300, 100);     ///< Настройка линии (функция lineNew) класс Speed
 Speed ONEMOTOR = Speed(100, 20, 0, 0, 100, 150, 50);    ///< Для moveB или moveС
 Speed TURN = Speed(100, 15, 0, 0, 300, 300, 50);        ///< Для turn
 ///}@
