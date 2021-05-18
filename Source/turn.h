@@ -6,6 +6,9 @@
 #ifndef turn_h
 #define turn_h
 
+#include "speed.h"
+#include "motors.h"
+
 /*!
     \defgroup turn Поворот
     \brief Модуль, содержащий функцию поворота на месте
@@ -54,16 +57,65 @@ void turn(int sp, int dt, int tp) {
             while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dovorot);
         }
     } else {
+        Speed p = TURN;
         if (tp == -1) {
-            SpeedMotor(E_Port_B, -1 * (sp));
-            SpeedMotor(E_Port_C, -1 * (sp));
+            int home = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium));
+
+            double kUpDist = (((double)p.maxS - (double)p.minS) / (double)p.sEnc);
+            double kDownDist = (((double)p.maxS - (double)p.minS) / (double)p.eEnc);
+
+            int upDist, downDist;
+            if (p.sEnc > 0) upDist = ((int)(p.sEnc)) + home;
+            else upDist = -2147483648;
+            if (p.eEnc > 0) downDist = ((int)((dt - p.zEnc - p.eEnc))) + home;
+            else downDist = 2147483647;
+
+            int way = dt + home;
+
             double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-            while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dt);
+            while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dt) {
+
+                int encoders = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium));
+
+                int nowSpeed;
+                if (encoders > way - linePreviewLooking) nowSpeed = p.minS;
+                else if (encoders > downDist) nowSpeed = (double)p.maxS - ((double)encoders - (double)downDist) * kDownDist;
+                else if (encoders < upDist) nowSpeed = ((double)encoders - (double)home) * kUpDist + p.minS;
+                else nowSpeed = p.maxS;
+                if (nowSpeed < p.minS) nowSpeed = p.minS;
+
+                SpeedMotor(E_Port_B, -1 * nowSpeed);
+                SpeedMotor(E_Port_C, -1 * nowSpeed);
+            }
         } else {
-            SpeedMotor(E_Port_B, sp);
-            SpeedMotor(E_Port_C, sp);
-            double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-            while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dt);
+            int home = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium));
+
+            double kUpDist = (((double)p.maxS - (double)p.minS) / (double)p.sEnc);
+            double kDownDist = (((double)p.maxS - (double)p.minS) / (double)p.eEnc);
+
+            int upDist, downDist;
+            if (p.sEnc > 0) upDist = ((int)(p.sEnc)) + home;
+            else upDist = -2147483648;
+            if (p.eEnc > 0) downDist = ((int)((dt - p.zEnc - p.eEnc))) + home;
+            else downDist = 2147483647;
+
+            int way = dt + home;
+
+            double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
+            while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < dt) {
+
+                int encoders = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium));
+
+                int nowSpeed;
+                if (encoders > way - linePreviewLooking) nowSpeed = p.minS;
+                else if (encoders > downDist) nowSpeed = (double)p.maxS - ((double)encoders - (double)downDist) * kDownDist;
+                else if (encoders < upDist) nowSpeed = ((double)encoders - (double)home) * kUpDist + p.minS;
+                else nowSpeed = p.maxS;
+                if (nowSpeed < p.minS) nowSpeed = p.minS;
+
+                SpeedMotor(E_Port_B, nowSpeed);
+                SpeedMotor(E_Port_C, nowSpeed);
+            }
         }
     }
     stopBC();
