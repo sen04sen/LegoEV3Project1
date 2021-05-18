@@ -49,6 +49,20 @@ struct Speed {
         eEnc = _eEnc;
         zEnc = _zEnc;
     }
+
+    Speed change_maxS(int _maxS) { return Speed(_maxS, minS, p, d, sEnc, eEnc, zEnc); }
+
+    Speed change_minS(int _minS) { return Speed(maxS, _minS, p, d, sEnc, eEnc, zEnc); }
+
+    Speed change_p(double _p) { return Speed(maxS, minS, _p, d, sEnc, eEnc, zEnc); }
+
+    Speed change_d(double _d) { return Speed(maxS, minS, p, _d, sEnc, eEnc, zEnc); }
+
+    Speed change_sEnc(int _sEnc) { return Speed(maxS, minS, p, d, _sEnc, eEnc, zEnc); }
+
+    Speed change_eEnc(int _eEnc) { return Speed(maxS, minS, p, d, sEnc, _eEnc, zEnc); }
+
+    Speed change_zEnc(int _zEnc) { return Speed(maxS, minS, p, d, sEnc, eEnc, _zEnc); }
 };
 
 ///}@
