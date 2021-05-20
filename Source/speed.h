@@ -18,51 +18,64 @@ using namespace std;
 /*!
 	\brief Настройки скорости
 */
+
 struct Speed {
-    int maxS;    ///< Максимальная скорость
-    int minS;    ///< Минимальная скорость
-    double p;    ///< P коэффициент
-    double d;    ///< D коэффициент
-    int sEnc;    ///< Расстояние, которое робот разгоняется
-    int eEnc;    ///< Расстояние, которое робот тормозит
-    int zEnc;    ///< Сверх иновационное финишное движение (с минимальной скоростью) Столько последних он едет максимальное медленнно
+    int max_sp;
+    int min_sp;
+    double p;
+    double d;
+    int normal_enc;
+    int up_enc;
+    int down_enc;
+    int zero_enc;
 
+    Speed() {}
 
-    Speed() {} ///< Конструктор без параметров (не используй)
-
-    /*!
-    \param _maxS Максимальная скорость
-    \param _minS Минимальная скорость
-    \param _p P коэффициент
-    \param _d D коэффициент
-    \param _sEnc Расстояние, которое робот разгоняется
-    \param _eEnc Расстояние, которое робот тормозит
-    \param _zEnc Финишное медленное движение
-    \return Возвращает Speed
-    */
-    Speed(int _maxS, int _minS, double _p, double _d, int _sEnc, int _eEnc, int _zEnc) {
-        maxS = _maxS;
-        minS = _minS;
+    Speed(int _max_sp, int _min_sp, double _p, double _d, int _normal_enc, int _up_enc, int _end_enc, int _zero_enc) {
+        max_sp = _max_sp;
+        min_sp = _min_sp;
         p = _p;
         d = _d;
-        sEnc = _sEnc;
-        eEnc = _eEnc;
-        zEnc = _zEnc;
+        normal_enc = _normal_enc;
+        up_enc = _up_enc;
+        down_enc = _end_enc;
+        zero_enc = _zero_enc;
+    }
+};
+
+class Speed_compiled {
+    Speed p;
+    bool uping, downing;
+    int way;
+public:
+    Speed_compiled(Speed _p, int _way, bool _uping = true, bool _downing = true) {
+        p = _p;
+        way = _way;
+        uping = _uping;
+        downing = _downing;
     }
 
-    Speed change_maxS(int _maxS) { return Speed(_maxS, minS, p, d, sEnc, eEnc, zEnc); }
+    int operator()(int now_dist) {
+        int speed;
+        if (now_dist > way - p.zero_enc && downing) speed = p.min_sp;
+        else if (now_dist < p.normal_enc && uping) speed = p.min_sp;
+        else {
+            int down_sp = p.max_sp, up_sp = p.max_sp;
+            if (now_dist > way - p.zero_enc - p.down_enc && downing) {
+                down_sp = double(p.max_sp) -
+                          double(now_dist - (way - p.zero_enc - p.down_enc)) * double(p.max_sp - p.min_sp) /
+                          double(p.down_enc);
+            }
+            if (now_dist < p.normal_enc + p.up_enc && uping) {
+                up_sp = double(now_dist - p.normal_enc) * double(p.max_sp - p.min_sp) / double(p.up_enc) +
+                        double(p.min_sp);
+            }
+            speed = min(down_sp, up_sp);
+        }
+        if (speed < p.min_sp) speed = p.min_sp;
 
-    Speed change_minS(int _minS) { return Speed(maxS, _minS, p, d, sEnc, eEnc, zEnc); }
-
-    Speed change_p(double _p) { return Speed(maxS, minS, _p, d, sEnc, eEnc, zEnc); }
-
-    Speed change_d(double _d) { return Speed(maxS, minS, p, _d, sEnc, eEnc, zEnc); }
-
-    Speed change_sEnc(int _sEnc) { return Speed(maxS, minS, p, d, _sEnc, eEnc, zEnc); }
-
-    Speed change_eEnc(int _eEnc) { return Speed(maxS, minS, p, d, sEnc, _eEnc, zEnc); }
-
-    Speed change_zEnc(int _zEnc) { return Speed(maxS, minS, p, d, sEnc, eEnc, _zEnc); }
+        return speed;
+    }
 };
 
 ///}@

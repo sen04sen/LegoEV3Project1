@@ -48,16 +48,17 @@ double xren_loops = 490;
 
 ///@{
 const int lineArrayLen = 20;                            ///< Длинна массива задержек для линии
-const int linePreviewLooking = 100;                     ///< За это расстояние до конца линии робот начинает чекать датчиком конец
+const int standart_line_preview_looking = 50;           ///< За это расстояние до конца линии робот начинает чекать датчиком конец
 const int deltaSensors = 6;                             ///< Разность показаний датчиков
-Speed DOP1 = Speed(80, 20, 0.35, 0.7, 300, 300, 100);   ///< Для двух
-Speed ONE1 = Speed(80, 20, 0.45, 1, 300, 300, 100);     ///< Для одного
-Speed MIN = Speed(23, 20, 0.3, 0.3, 1, 1, 1);
-Speed MIN1 = Speed(12, 12, 0.3, 0, 0, 0, 0);
-Speed ONE = Speed(30, 20, 0.5, 0.3, 50, 50, 30);        ///< Для одного
-Speed ZERO = Speed(90, 20, 0.45, 1, 300, 300, 100);     ///< Настройка линии (функция lineNew) класс Speed
-Speed ONEMOTOR = Speed(100, 20, 0, 0, 100, 150, 50);    ///< Для moveB или moveС
-Speed TURN = Speed(100, 15, 0, 0, 300, 300, 50);        ///< Для turn
+Speed DOP1 = Speed(80, 20, 0.35, 0.7, 100, 300, 300, 100);   ///< Для двух
+Speed ONE1 = Speed(80, 20, 0.45, 1, 100, 300, 300, 100);     ///< Для одного
+Speed MIN = Speed(23, 20, 0.3, 0.3, 1, 1, 1, 1);
+Speed MIN1 = Speed(12, 12, 0.3, 0, 0, 0, 0, 0);
+Speed ONE = Speed(30, 20, 0.5, 0.3, 100, 50, 50, 30);        ///< Для одного
+Speed ZERO = Speed(90, 20, 0.45, 1, 100, 300, 300, 100);     ///< Настройка линии (функция lineNew) класс Speed
+Speed ONEMOTOR = Speed(100, 20, 0, 0, 100, 100, 150, 50);    ///< Для moveB или moveС
+Speed MOVEBC = Speed(100, 20, 0, 0, 100, 250, 250, 70);      ///< Для moveBC
+Speed TURN = Speed(100, 15, 0, 0, 100, 300, 300, 50);        ///< Для turn
 ///}@
 
 vector<vector<Edge> > g(maxv);                          ///< Вектор для деикстры

@@ -56,6 +56,20 @@ struct DoubleMarker {
     DoubleMarker(int newLeft, int newRight) : left(Color(newLeft)), right(Color(newRight)) {}
 };
 
+struct Robot {
+    Color front, back;
+    int how_front, how_back, now_position;
+
+    Robot() {
+        front = NONE;
+        how_front = 0;
+        back = NONE;
+        how_back = 0;
+        now_position = -1;
+    }
+};
+
+
 /*!
     \brief Структура для хранения поля
     \todo Добавить хранение состояния робота
@@ -100,6 +114,8 @@ struct Field {
     Color blueB2;
     Color blueB3;
     Color blueB4;
+
+    Robot robot;
 
     enum Battery {
         DONOTKNOW = -1,

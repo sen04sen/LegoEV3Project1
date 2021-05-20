@@ -134,14 +134,14 @@ void get_4_blue() {
     speedD = 15;
     stopBC();
     wait(50);
-    moveBC(speed, -30, 1);
+    moveBC(speed, -30);
     turn(speed, d90, -1);
-    moveBC(speed, -170, 1);
+    moveBC(speed, -170);
     moveD(speedD, before_take_blue_loops);
-    moveBC(speed, 90, 1);
+    moveBC(speed, 90);
     moveD(speedD, after_take_blue_loops);
     c_loops += 2;
-    moveBC(speed, 70, 1);
+    moveBC(speed, 70);
     turn(speed, d90 - 20, -2);
     moveBC(speed, 130);
     goBC(7, 2);
@@ -150,9 +150,9 @@ void get_4_blue() {
     lineNEW(ONE, 150, 6);
     stopBC();
     turn(speed, d90, -1);
-    moveBC(speed, -200, 1);
+    moveBC(speed, -200);
     moveD(speedD, before_take_blue_loops);
-    moveBC(speed, 110, 1);
+    moveBC(speed, 110);
     moveD(speedD, after_take_blue_loops);
     moveBC(speed, 30);
     c_loops += 2;
@@ -170,43 +170,43 @@ void get_4_blue() {
 void turn_bat() {
     stopBC();
     moveD(speedD, 0);
-    moveC(speed, 70, 1);
-    moveB(speed, 70, 1);
-    moveBC(10, 130, 1);
+    moveC(speed, 70);
+    moveB(speed, 70);
+    moveBC(10, 130);
     moveD(15, 230);
-    moveB(-speed, 30, 1);
+    moveB(-speed, 30);
     moveD(speedD, 250);
-    moveBC(speed, -60, 1);
+    moveBC(speed, -60);
     moveD(speedD, 520);
     turn(speed, d90 - 20, 3);
     line(speed, 320, 0);
     stopBC();
     turn(speed, d90, -1);
-    moveBC(speed, -60, 1);
+    moveBC(speed, -60);
     moveD(speedD, 20);
-    moveBC(speed, 180, 1);
+    moveBC(speed, 180);
     moveD(15, 230);
-    moveB(-speed, 30, 1);
+    moveB(-speed, 30);
     moveD(speedD, 250);
-    moveBC(speed, -90, 1);
+    moveBC(speed, -90);
     moveD(speedD, 520);
-    moveBC(speed, -60, 1);
+    moveBC(speed, -60);
     turn(speed, d90 - 30, 0);
     turn(speed, 60, -1);
     lineNEW(ONE, 50, 7);
-    moveBC(speed, dsl, 0);
+    moveBC(speed, dsl);
     lineNEW(ONE, 510, 8);
     stopBC();
     wait(5000);
     getRGB(2);
-    moveBC(speed, 70, 1);
+    moveBC(speed, 70);
     stopBC();
     wait(5000);
     return;
     goBC(speed);
     while (getRGB(2).b < 100);
     s2();
-    moveBC(speed, 70, 1);
+    moveBC(speed, 70);
     turn(speed, d90, -2);
 }
 
@@ -215,14 +215,16 @@ DoubleMarker gtf() {
     moveBC(15, -140);
     gclr(4);
     turn(15, d90, -1);
-    moveBCNEW(MIN1, 185, 1);
+    moveBCNEW(MIN1, 185);
+    stopBC();
     wait(500);
     int fi = gclr(4);
     if (fi == 7)
         fi = 4;
     if (fi == 1)
         fi = 2;
-    moveBCNEW(MIN1, 120, 1);
+    moveBCNEW(MIN1, 120);
+    stopBC();
     wait(500);
     int se = gclr(4);
     if (se == 7)
@@ -265,11 +267,11 @@ void f6() {
 }
 
 void f7() {
-    moveBC(speed, dsl, 0);
+    moveBC(speed, dsl);
 }
 
 void f8() {
-    moveBC(speed, dws, 1);
+    moveBC(speed, dws);
 }
 
 void f9() {
@@ -351,9 +353,9 @@ void f24() {
 void f25() {
     moveC(speed, 50);
     moveB(speed, 40);
-    moveBC(speed, 410, 0);
+    moveBC(speed, 410);
     stopC();
-    moveB(speed, 850, 1);
+    moveB(speed, 850);
     c_cubes += 2;
     turn(speed, 65, -1);
     moveA(0);
@@ -362,9 +364,9 @@ void f25() {
     /*if (getRGB(4).r > 15 || getRGB(4).g > 15) {
         gdeb = 4;
     }*/
-    
+
     write(1, 1, gdeb);
-    moveBC(speed, 425, 0);
+    moveBC(speed, 425);
     while (s2() > black);
     stopB();
     moveC(speed, 370);
@@ -378,20 +380,21 @@ void f26() {
 
 void f28() {
     moveA(1);
-    moveBCNEW(MIN, 340, 1);
+    moveBCNEW(MIN, 340);
+    stopBC();
     c_cubes += 2;
     moveA(0);
 }
 
 void f29() {
-    moveBC(speed, -340, 1);
+    moveBC(speed, -340);
 }
 
 void f30() {
     turn(speed, d90 + 30, -1);
     goBC(speed);
     while (s2() > black);
-    moveBC(speed, dws + 10, 1);
+    moveBC(speed, dws + 10);
 }
 
 void f31() {
@@ -405,18 +408,18 @@ void f32() {
 }
 
 void f33() {
-    moveBC(speed, -20, 1);
+    moveBC(speed, -20);
     turn(speed, d90, -1);
     getRGB(4);
     wait(100);
     /*if (getRGB(4).r > 15 || getRGB(4).g > 15) {
         gdeb = 2;
     }*/
-    moveB(speed, turn1wheel, 1);
+    moveB(speed, turn1wheel);
     moveBC(-speed, 30);
     goBC(speed);
     while (s3() > black);
-    moveBC(speed, dws, 1);
+    moveBC(speed, dws);
 }
 
 void f34() {
@@ -445,7 +448,7 @@ void f38() {
 }
 
 void f39() {
-    moveBC(speed, 50, 0);
+    moveBC(speed, 50);
     lineNEW(ONE, 460, 5);
     goBC(speed);
     while (s2() > black);
@@ -462,7 +465,7 @@ void f40() {
 
 void f41() {
     turn(speed, d90, -2);
-    moveBC(speed, 460, 0);
+    moveBC(speed, 460);
     while (s2() > black);
     moveBC(speed, dws);
 }
@@ -489,9 +492,9 @@ void f45() {
 void f46() {
     lineNEW(ONE, grad[6] - dws + 20, 8);
     getRGB(2);
-    moveBC(speed, 55, 0);
+    moveBC(speed, 55);
     while (getRGB(2).b < 100);
-    moveBC(speed, 80, 1);
+    moveBC(speed, 80);
     s2();
 }
 
@@ -509,9 +512,9 @@ void f48() {
 
 void f49() {
     turn(speed, d90, -2);
-    moveBC(speed, 140, 0);
+    moveBC(speed, 140);
     while (s2() > black);
-    moveBC(speed, dws, 1);
+    moveBC(speed, dws);
 }
 
 void f50() {
@@ -679,7 +682,7 @@ void f78() {
 void twb() {
     stopBC();
     moveBC(-speed, 50);
-    moveB(speed, turn1wheel - 180, 0);
+    moveB(speed, turn1wheel - 180);
     while (s3() > black);
     moveB(speed, 100);
 }
@@ -687,7 +690,7 @@ void twb() {
 void twc() {
     stopBC();
     moveBC(-speed, 50);
-    moveC(speed, turn1wheel - 180, 0);
+    moveC(speed, turn1wheel - 180);
     while (s2() > black);
     moveC(speed, 100);
 }
