@@ -13,21 +13,24 @@
 const int maxv = 500;
 const int ce = 21 * 2;
 const int ver = 22;
-const int black = 18;
+const int black = 21;
 const int bluck = 30;
 const int bley = 40;
 const double Pr = 0.3;
 const int grey = 40;
-const double dws = 130; // ���������� ����� ��������� � �������
-const double dsl = 50; //����� �������� � �����
+const double dws = 160; // ���������� ����� ��������� � �������
+const double dsl = 70; //����� �������� � �����
 const double dtw = 360;
-const int d90 = 275;
-const int d180 = 550;
-const int dovorot = 45;
+const int d90 = 265;
+const int d180 = 545;
+const int dovorot = 30;
 const int turn1wheel = 550;
 const int ndir = 0;
 const int speed = 23;
 int speedD = 40;
+
+int get_deg_line_B = 0;
+bool isend = 0;
 
 double put_loops = 230;
 double up_loops = 100;
@@ -52,6 +55,7 @@ Speed MIN = Speed(23, 20, 0.3, 0.3, 1, 1, 1);
 Speed MIN1 = Speed(12, 12, 0.3, 0, 0, 0, 0);
 Speed ONE = Speed(30, 20, 0.5, 0.3, 50, 50, 30);        ///< Для одного
 Speed ZERO = Speed(90, 20, 0.45, 1, 300, 300, 100);     ///< Настройка линии (функция lineNew) класс Speed
+Speed Fort2c = Speed(30, 30, 0.25, 0.01, 100, 100, 100);
 Speed ONEMOTOR = Speed(100, 20, 0, 0, 100, 150, 50);    ///< Для moveB или moveС
 Speed TURN = Speed(30, 20, 0, 0, 100, 500, 100);        ///< Для turn
 

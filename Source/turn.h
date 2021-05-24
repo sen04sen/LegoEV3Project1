@@ -26,7 +26,7 @@ void turn(int sp, int dt, int tp) {
         }
 
         double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-        while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dt - 100);
+        while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dt - 140);
         if (tp == 4) {
             while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dt - 50);
             while (s3() > bluck);
@@ -54,7 +54,7 @@ void turn(int sp, int dt, int tp) {
             SpeedMotor(E_Port_C, sp);
         }
         double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-        while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dt);
+        while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(dt));
     }
     stopBC();
 }

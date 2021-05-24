@@ -47,9 +47,8 @@ using namespace std;
 
 void lineNEW(Speed p, int dist, int type) {
     // Просто надо помнить, что эта линия не предполагает движения назaд
-
     // Какая-то типизация
-    if (type == 4) {
+    /*if (type == 4) {
         getRGB(3);
         EV3_Sleep(50);
     }
@@ -58,6 +57,8 @@ void lineNEW(Speed p, int dist, int type) {
     int home =
             -1 * GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) +
             GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+
+    int homeB = -1 * GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
 
     double kUpDist = 0.5 * (((double) p.maxS - (double) p.minS) / (double) p.sEnc);
     double kDownDist = 0.5 * (((double) p.maxS - (double) p.minS) / (double) p.eEnc);
@@ -74,9 +75,11 @@ void lineNEW(Speed p, int dist, int type) {
 
     long long sum = 0;
     long long count = 0;
-    bool stop = 0; // флаг завершения
-    for (; !stop; count++) {
-
+    int stop = 0; // флаг завершения
+    for (; stop == 0; count++) {
+        if (s4() < 10) {
+            isend = 1;
+        }
         int encoders;
         encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 +
                    GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
@@ -85,30 +88,39 @@ void lineNEW(Speed p, int dist, int type) {
             if (encoders >= way) stop = 1;
         } else {
             if (encoders >= way - linePreviewLooking * 2) {
-                if (type == 1 && s2() < black && s3() < black) {
+                if (type == 10) {
+                    if (s2() < black && s3() < black) {
+                        stop = 1;
+                    }
+                }
+                else if (type == 1 && s2() < black && s3() < black) {
+                    stop = 1;
+                }
+                else if (type == 2 && s3() < black) {
                     stop = 1;
 
-                } else if (type == 2 && s3() < black) {
+                }
+                else if (type == 3 && s2() < black) {
                     stop = 1;
-
-                } else if (type == 3 && s2() < black) {
-                    stop = 1;
-                } else if (type == 4) {
+                }
+                else if (type == 4) {
                     ColorRGB color = getRGB(3);
                     if (color.r - color.g > 70) {
                         stop = 1;
 
                     }
-                } else if (type == 5 && s2() > bluck) {
+                }
+                else if (type == 5 && s2() > bluck) {
                     stop = 1;
 
-                } else if (type == 7 && s3() < black) {
+                }
+                else if (type == 7 && s3() < black) {
                     stop = 1;
 
-                } else if (type == 9 && s3() > bluck) stop = 1;
+                }
+                else if (type == 9 && s3() > bluck) stop = 1;
             }
         }
-
         int nowSpeed;
         if (encoders > way) nowSpeed = p.minS;
         else if (encoders > downDist) nowSpeed = (double) p.maxS - ((double) encoders - (double) downDist) * kDownDist;
@@ -118,6 +130,9 @@ void lineNEW(Speed p, int dist, int type) {
 
         int error = 0;
         switch (type) {
+            case 10:
+                error = (double)(s3() - s2() - deltaSensors);
+                break;
             case 5:
                 error = (double) (s3() - bley) * 3 / 3;
                 break;
@@ -151,8 +166,19 @@ void lineNEW(Speed p, int dist, int type) {
 
         errors[count % lineArrayLen] = error; // для d составляющей
     }
+    get_deg_line_B = -1 * GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - homeB;
     write(1, 1, sum / count);
-    if (type == 4) s3(); // Какая-то типизация
+    if (type == 4) s3(); // Какая-то типизация*/
+    int homeB = -1 * GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
+    while (s2() > black || s3() > black) {
+        if (s4() < 20) {
+            isend = 1;
+        }
+        int error = (s3() - s2() - deltaSensors);
+        SpeedMotor(E_Port_B, -1 * (p.minS - error * p.p));
+        SpeedMotor(E_Port_C, p.minS + error * p.p);
+    }
+    get_deg_line_B = -1 * GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - homeB;
 }
 
 /*!
@@ -163,7 +189,7 @@ void lineNEW(Speed p, int dist, int type) {
     \todo Убрать это костыль (после вторника)
 */
 void line(int speed, int dist, int type) {
-    lineNEW(ZERO, dist, type);
+    lineNEW(Fort2c, dist, type);
 }
 
 ///}@

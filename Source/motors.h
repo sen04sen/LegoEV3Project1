@@ -280,9 +280,9 @@ void moveBCNEW(Speed p, int dist, bool stop = true) {
     Вперед едет с ускорением, назад без него
 */
 void moveBC(int s, int dist, bool stop = true) {
-    if (dist > 0 && s > 0) {
+    /*if (dist > 0 && s > 0) {
         moveBCNEW(Speed(100, 20, 0, 0, 250, 250, 70), dist, stop);
-    } else {
+    } else {*/
         if (dist < 0) {
             dist *= -1;
             s *= -1;
@@ -291,7 +291,7 @@ void moveBC(int s, int dist, bool stop = true) {
         SpeedMotor(E_Port_C, s);
         double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
         while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(dist));
-    }
+    //}
     if (stop) stopBC(); // финальное торможение
 }
 

@@ -19,10 +19,12 @@
 #include "motors.h"
 #include "edge.h"
 #include "sensors.h"
+#include "turn.h"
 #include "line.h"
 #include "constants.h"
-#include "turn.h"
 #include "field.h"
+#include "EV3_Bluetooth.h"
+
 
 using namespace ev3_c_api;
 using namespace std;
@@ -135,7 +137,7 @@ void get_4_blue() {
     stopBC();
     wait(50);
     moveBC(speed, -30, 1);
-    turn(speed, d90, -1);
+    turn(speed, d90, 0);
     moveBC(speed, -170, 1);
     moveD(speedD, before_take_blue_loops);
     moveBC(speed, 90, 1);
@@ -149,7 +151,7 @@ void get_4_blue() {
     stopBC();
     lineNEW(ONE, 150, 6);
     stopBC();
-    turn(speed, d90, -1);
+    turn(speed, d90, 0);
     moveBC(speed, -200, 1);
     moveD(speedD, before_take_blue_loops);
     moveBC(speed, 110, 1);
@@ -181,7 +183,7 @@ void turn_bat() {
     turn(speed, d90 - 20, 3);
     line(speed, 320, 0);
     stopBC();
-    turn(speed, d90, -1);
+    turn(speed, d90, 0);
     moveBC(speed, -60, 1);
     moveD(speedD, 20);
     moveBC(speed, 180, 1);
@@ -207,14 +209,14 @@ void turn_bat() {
     while (getRGB(2).b < 100);
     s2();
     moveBC(speed, 70, 1);
-    turn(speed, d90, -2);
+    turn(speed, d90, 3);
 }
 
 
 DoubleMarker gtf() {
     moveBC(15, -140);
     gclr(4);
-    turn(15, d90, -1);
+    turn(15, d90, 0);
     moveBCNEW(MIN1, 185, 1);
     wait(500);
     int fi = gclr(4);
@@ -253,15 +255,15 @@ void f3() {
 }
 
 void f4() {
-    turn(speed, d90, -2);
+    turn(speed, d90, 3);
 }
 
 void f5() {
-    turn(speed, d180, -2);
+    turn(speed, d180, 3);
 }
 
 void f6() {
-    turn(speed, d90, -1);
+    turn(speed, d90, 0);
 }
 
 void f7() {
@@ -391,7 +393,7 @@ void f30() {
     turn(speed, d90 + 30, -1);
     goBC(speed);
     while (s2() > black);
-    moveBC(speed, dws + 10, 1);
+    moveBC(speed, dws, 1);
 }
 
 void f31() {
@@ -406,7 +408,7 @@ void f32() {
 
 void f33() {
     moveBC(speed, -20, 1);
-    turn(speed, d90, -1);
+    turn(speed, d90, 0);
     getRGB(4);
     wait(100);
     /*if (getRGB(4).r > 15 || getRGB(4).g > 15) {
@@ -441,7 +443,7 @@ void f37() {
 
 void f38() {
     moveBC(speed, 40);
-    turn(speed, d90, -2);
+    turn(speed, d90, 3);
 }
 
 void f39() {
@@ -461,7 +463,7 @@ void f40() {
 }
 
 void f41() {
-    turn(speed, d90, -2);
+    turn(speed, d90, 3);
     moveBC(speed, 460, 0);
     while (s2() > black);
     moveBC(speed, dws);
@@ -498,7 +500,7 @@ void f46() {
 void f47() {
     line(speed, 290, 0);
     stopBC();
-    turn(speed, d90, -2);
+    turn(speed, d90, 3);
 }
 
 void f48() {
@@ -508,7 +510,7 @@ void f48() {
 }
 
 void f49() {
-    turn(speed, d90, -2);
+    turn(speed, d90, 3);
     moveBC(speed, 140, 0);
     while (s2() > black);
     moveBC(speed, dws, 1);
@@ -561,7 +563,7 @@ void f54() {
 
 void f55() {
     moveBC(-speed, 110);
-    turn(speed, d90, -1);
+    turn(speed, d90, 0);
 }
 
 void f56() {
@@ -587,12 +589,12 @@ void f59() {
 void f60() {
     stopBC();
     moveBC(-speed, 50);
-    turn(speed, d90, -1);
+    turn(speed, d90, 0);
 }
 
 void f61() {
     stopBC();
-    turn(speed, d90, -2);
+    turn(speed, d90, 3);
 }
 
 void f62() {
@@ -618,13 +620,13 @@ void f65() {
 void f66() {
     stopBC();
     moveBC(-speed, 50);
-    turn(speed, d90, -2);
+    turn(speed, d90, 3);
 }
 
 void f67() {
     line(speed, 210, 0);
     stopBC();
-    turn(speed, d90, -1);
+    turn(speed, d90, 0);
 }
 
 void f68() {
@@ -690,6 +692,13 @@ void twc() {
     moveC(speed, turn1wheel - 180, 0);
     while (s2() > black);
     moveC(speed, 100);
+}
+
+void f79() {
+    turn(speed, 30, -1);
+    goBC(speed);
+    while (s2() > black);
+    moveBC(speed, dws, 1);
 }
 
 void add(int from, int to, void (*def)(), double time = 1.0) {
@@ -812,7 +821,7 @@ void buildg() {
     add(120, 25, f15a);
     add(120, 23, f15b);
 
-    add(25, 23, f26);
+    add(150, 23, f26);
 
     add(27, 109, f16);
 
@@ -848,7 +857,7 @@ void buildg() {
 
     add(119, 116, f34);
 
-    add(116, 59, f35);
+    add(151, 59, f35);
     add(119, 59, f36);
 
     add(65, 121, f13);
@@ -857,7 +866,7 @@ void buildg() {
     add(122, 123, f15);
     add(123, 121, f15a);
     add(123, 73, f15b);
-    add(121, 73, f26);
+    add(152, 73, f26a);
 
     add(86, 75, f38);
     add(75, 97, f39);
@@ -870,6 +879,9 @@ void buildg() {
 
     add(109, 99, f44);
     add(99, 100, f45);
+    add(99, 102, f45x);
+    add(108, 102, f45y);
+    add(110, 100, f45z);
     add(100, 112, f46);
 
     add(51, 126, f47);
@@ -917,6 +929,49 @@ void buildg() {
     add(73, 142, twc);
     add(141, 121, f77);
     add(142, 60, f78);*/
+
+    add(112, 115, f79);
+    add(0, 9, f80);
+    add(130, 146, f81);
+    add(146, 109, f82);
+    add(146, 35, f83);
+    add(27, 144, f84);
+    add(101, 144, f85);
+    add(144, 145, f86);
+    add(145, 147, f87);
+    add(147, 22, f88);
+    add(147, 38, f89);
+    add(41, 137, f90);
+    add(137, 41, f91);
+    add(40, 139, f92);
+    add(139, 140, f93);
+    add(140, 141, f94);
+    add(141, 116, f95);
+    add(141, 59, f96);
+    add(54, 139, f97);
+    add(54, 48, f98);
+    add(40, 62, f99);   
+    add(52, 142, f100);
+    add(142, 143, f101);
+    add(143, 138, f102);
+    add(143, 147, f103);
+    add(147, 116, f104);
+    add(147, 59, f105);
+    add(51, 148, f106);
+    add(148, 149, f107);
+    add(149, 138, f108);
+    add(149, 125, f109);
+    add(25, 150, f110);
+    add(116, 151, f111);
+    add(121, 152, f112);
+    add(151, 153, f113);
+    add(153, 154, f114);
+    add(154, 113, f115);
+    add(154, 108, f116);
+    add(102, 155, f117);
+    add(155, 156, f118);
+    add(156, 155, f119);
+    add(155, 110, f120);
 }
 
 void vivod_h() {
@@ -927,9 +982,156 @@ void vivod_h() {
     }
 }
 
+void t2c() {
+    goD(10);
+    wait(1000);
+    stopD();
+    while (1) {
+        isend = 0;
+        moveBC(speed, dsl, 0);
+        line(speed, 0, 10);
+        if (isend == 0)
+            break;
+    }
+    stopBC();
+    turn(speed, d180, 0);
+    line(speed, 0, 10);
+    moveBC(speed, dws, 0);
+    turn(speed, d90, 0);
+    int c = 0;
+    vector<int> degs;
+    while (1) {
+        isend = 0;
+        moveBC(speed, dsl, 0);
+        line(speed, 0, 10);
+        degs.push_back(get_deg_line_B);
+        c++;
+        if (isend == 0)
+            break;
+    }
+    stopBC();
+    int v = 0;
+    if (degs[c - 1] > 1500)
+        v = 2;
+    else if (c == 1)
+        v = 0;
+    else
+        v = 6;
+    write(10, 10, v);
+    if (v == 0) {
+        turn(speed, d180, 0);
+        line(speed, 0, 10);
+        moveBC(speed, dws);
+        turn(speed, d90, 0);
+        line(speed, 0, 10);
+        moveBC(speed, dsl, 0);
+        line(speed, 0, 10);
+        stopBC();
+    }
+    else if (v == 2) {
+        turn(speed, d180, 0);
+        line(speed, 0, 10);
+        moveBC(speed, dws);
+        turn(speed, d90, 0);
+        line(speed, 0, 10);
+        moveBC(speed, dsl, 0);
+        line(speed, 0, 10);
+        moveBC(speed, dws);
+        turn(speed, d90, 0);
+        line(speed, 0, 10);
+        moveBC(speed, dws);
+        turn(speed, d90, 3);
+        line(speed, 0, 10);
+        stopBC();
+    }
+    moveD(speedD, 0);
+    turn(speed, d180, 0);
+    line(speed, 0, 10);
+    moveBC(speed, dsl, 0);
+    line(speed, 0, 10);
+    moveBC(speed, dsl, 0);
+    line(speed, 0, 10);
+    turn(speed, d180, 0);
+    moveBC(-speed, 110);
+    moveD(speedD, 337);
+    line(speed, 0, 10);
+    moveBC(speed, dws);
+    turn(speed, d90, 0);
+    line(speed, 0, 10);
+    moveBC(-speed, 120);
+    turn(speed, d180, 0);
+    moveD(speedD, 0);
+    moveBC(-speed, 230);
+    moveD(speedD, 337);
+    line(speed, 0, 10);
+    moveBC(speed, dsl, 0);
+    line(speed, 0, 10);
+    moveBC(speed, dws);
+    turn(speed, d90, 3);
+    line(speed, 0, 10);
+    moveBC(speed, dsl, 0);
+    line(speed, 0, 10);
+    moveBC(-speed, 120);
+    turn(speed, d180, 0);
+    moveD(speedD, 0);
+    moveBC(-speed, 230);
+    moveD(speedD, 337);
+    line(speed, 0, 10);
+    moveBC(speed, dws);
+    turn(speed, d90, 0);
+    line(speed, 0, 10);
+    moveBC(-speed, 120);
+    turn(speed, d180, 0);
+    moveD(speedD, 0);
+    moveBC(-speed, 230);
+    moveD(speedD, 337);
+    line(speed, 0, 10);
+    moveBC(speed, dsl, -1);
+    line(speed, 0, 10);
+    moveBC(speed, dws);
+    turn(speed, d90, 3);
+    line(speed, 0, 10);
+    moveBC(-speed, 120);
+    turn(speed, d180, 0);
+    moveD(speedD, 0);
+    moveBC(-speed, 230);
+    moveD(speedD, 337);
+    line(speed, 0, 10);
+    moveBC(speed, dsl, 0);
+    line(speed, 0, 10);
+    moveBC(speed, dsl, 0);
+    line(speed, 0, 10);
+    moveBC(-speed, 120);
+    turn(speed, d180, 0);
+    moveD(speedD, 0);
+    moveBC(-speed, 230);
+    moveD(speedD, 337);
+    line(speed, 0, 10);
+    moveBC(speed, dws);
+    turn(speed, d90, 3);
+    line(speed, 0, 10);
+    moveBC(speed, dws);
+    turn(speed, d90, 3);
+    line(speed, 0, 10);
+    moveBC(speed, dws);
+    turn(speed, d90, 3);
+    line(speed, 0, 10);
+    turn(speed, d180, 3);
+    moveD(speedD, 0);
+    moveBC(-speed, 450);
+    wait(10000);
+}
+
 signed EV3_main() {
     Clear_Display();
     CreateThread(okonchanie, 0);
+    //s1();
+    s2();
+    s3();
+    s4();
+    wait(200);
+    t2c();
+    return 0;
     buildDegreesConstants();
     buildg();
     //vivod_h();
@@ -937,13 +1139,14 @@ signed EV3_main() {
     s3();
     gclr(4);
     goD(speedD);
-    wait(900);
+    wait(950);
     goD(0);
     goA(20);
     wait(500);
     stopA();
-
     moveA(1);
+    go(speed, 1, 26);
+    wait(10000);
     go(speed, 0, 26);
     nv = 26;
     if (d1.left == 4 || d1.right == 4) {
@@ -1032,11 +1235,11 @@ signed EV3_main() {
             nv = 121;
         }
         moveA(0);
-        turn(speed, d90, -2);
+        turn(speed, d90, 3);
         moveA(1);
         moveBC(speed, 210);
         moveBC(-speed, 210);
-        turn(speed, d90, -1);
+        turn(speed, d90, 0);
     }
     int cc = 0;
     if (d1.left == 2)

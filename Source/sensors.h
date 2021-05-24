@@ -34,6 +34,10 @@ using namespace std;
 
 ///@{
 
+int s1() {
+    return GetReflect(E_Port_1);
+}
+
 int s2() {
     return GetReflect(E_Port_2);
 }
@@ -104,6 +108,9 @@ ColorRGB getRGB(int port) {
             break;
         case 2:
             a = GetData_UART(E_Port_2, E_UART_Type_Color, 4);
+            break;
+        case 1:
+            a = GetData_UART(E_Port_1, E_UART_Type_Color, 4);
             break;
         default:
             throw Exception("invalid port parameter (need 2-4), you gave " + str(port));
