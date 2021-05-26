@@ -56,7 +56,7 @@ public:
     }
 
     int operator()(int now_dist) {
-        int speed;
+        int speed = p.max_sp;
         if (now_dist > way - p.zero_enc && downing) speed = p.min_sp;
         else if (now_dist < p.normal_enc && uping) speed = p.min_sp;
         else {

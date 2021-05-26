@@ -7,6 +7,7 @@
 #define edge_h
 
 using namespace std;
+using namespace ev3_c_api;
 
 /*!
     \defgroup edge Ребро
@@ -52,6 +53,8 @@ class Edge {
     void (*def)(); ///< Указатель на функцию проезда по ребру
 public:
 
+    static vector<vector<Edge> > g; ///< Вектор для деикстры
+
     Edge() {} ///< Конструктор без параметров (не используй)
 
     /*!
@@ -60,7 +63,7 @@ public:
     \param _time Время проезда по ребру (по умолчанию 1.0)
     \param _active Активно ли ребро (по умолчанию true)
     \param _index Специальное число, которое позволяет объединять ребра в гупппы и одновременно их блокировать,
-        делая длинну очень большой, похволяет, так же разблокировать ребра обратно (по умолчанию 0)
+        делая длинну очень большой, позволяет, также разблокировать ребра обратно (по умолчанию 0)
     \return Возвращает ребро
     */
     Edge(int _to, void (*const _def)(), double _time = 1.0, bool _active = true, int _index = 0) : to(_to),
@@ -88,10 +91,7 @@ public:
         } else def();
     }
 
-    /*!
-    \brief Возвращет то, куда ведет ребро
-    */
-    int getTo() { return to; }
+    int getTo() { return to; }          ///< \brief Возвращет то, куда ведет ребро
 
     /*!
     \brief Возвращает время ребра (если ребро неактивно, то возвращает 100000000.0)
@@ -103,6 +103,22 @@ public:
     void open() { active = true; }      ///< \brief Делает ребро активным
 
     void close() { active = false; }    ///< \brief Делает ребро неактивным
+
+    static void close(int index) {
+        for (auto &i : g)
+            for (auto &j : i) {
+                if (j.index == index)
+                    j.close();
+            }
+    }
+
+    static void open(int index) {
+        for (auto &i : g)
+            for (auto &j : i) {
+                if (j.index == index)
+                    j.open();
+            }
+    }
 };
 ///@}
 
