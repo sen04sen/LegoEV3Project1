@@ -110,26 +110,24 @@ void goBC(int sp, int uy = 0) {
 }
 
 void moveONEMOTOR(E_Motor_Port motor, Speed p, int dist) {
-    int home = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium));
+    int home = abs(GetMotor_RotationAngle(motor, E_MotorType_Medium));
 
     Speed_compiled speed = Speed_compiled(p, dist);
 
-    int way = dist + home;
+    double st = GetMotor_RotationAngle(motor, E_MotorType_Medium);
+    while (abs(GetMotor_RotationAngle(motor, E_MotorType_Medium) - st) < dist) {
 
-    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dist) {
+        int encoders = abs(GetMotor_RotationAngle(motor, E_MotorType_Medium));
 
-        int encoders = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium));
+        int nowSpeed = speed(encoders);
 
-        int nowSpeed = speed(encoders - home);
-
-        SpeedMotor(E_Port_C, nowSpeed);
+        SpeedMotor(motor, nowSpeed);
     }
 }
 
 void moveBNEW(Speed p, int dist) { moveONEMOTOR(E_Port_B, p, dist); }
 
-void moveB(int sp, int dist) {
+void moveB(int sp, int dist, bool stop = 1) {
     if (sp * dist > 0) {
         moveBNEW(ONEMOTOR, abs(dist));
     } else {
@@ -137,11 +135,13 @@ void moveB(int sp, int dist) {
         double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
         while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < dist);
     }
+    if (stop)
+        stopBC();
 }
 
 void moveCNEW(Speed p, int dist) { moveONEMOTOR(E_Port_C, p, dist); }
 
-void moveC(int sp, int dist) {
+void moveC(int sp, int dist, bool stop = 1) {
     if (sp * dist > 0) {
         moveCNEW(ONEMOTOR, abs(dist));
     } else {
@@ -149,6 +149,8 @@ void moveC(int sp, int dist) {
         double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
         while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dist);
     }
+    if (stop)
+        stopBC();
 }
 
 void moveD(int sp, int dist) {
@@ -166,6 +168,21 @@ void moveD(int sp, int dist) {
     goD(0);
 }
 
+void moveA(int sp, int dist) {
+    static double stadegd = GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
+    dist = (double)dist + stadegd;
+    double st = dist - GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
+    if (st >= 0) {
+        SpeedMotor(E_Port_A, sp);
+        while (GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium) < dist);
+    }
+    else {
+        SpeedMotor(E_Port_A, -sp);
+        while (GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium) > dist);
+    }
+    goA(0);
+}
+
 /*!
     \brief Основная функция проезда вперед с разгоном и торможением
     \param p Настройка скорости (класс Speed)
@@ -181,17 +198,15 @@ void moveBCNEW(Speed p, int dist) {
 
     Speed_compiled speed = Speed_compiled(p, dist);
 
-    int way = dist + home;
-
     bool stop = 0; // флаг завершения
     while (!stop) {
 
         int encoders = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                         GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home;
 
-        if (encoders >= way) stop = 1;
+        if (encoders >= dist) stop = 1;
 
-        int nowSpeed = speed(encoders - home);
+        int nowSpeed = speed(encoders);
 
         SpeedMotor(E_Port_B, -1 * nowSpeed);
         SpeedMotor(E_Port_C, nowSpeed);
@@ -206,7 +221,7 @@ void moveBCNEW(Speed p, int dist) {
     \todo Убрать это костыль (после вторника)
     Вперед едет с ускорением, назад без него
 */
-void moveBC(int s, int dist) {
+void moveBC(int s, int dist, bool stop = 1) {
     if (dist > 0 && s > 0) {
         moveBCNEW(MOVEBC, dist);
     } else {
@@ -219,6 +234,8 @@ void moveBC(int s, int dist) {
         double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
         while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(dist));
     }
+    if (stop)
+        stopBC();
 }
 
 

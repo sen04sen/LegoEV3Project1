@@ -167,7 +167,7 @@ void get_4_blue() {
     stopBC();
     lineNEW(ONE, 370, 9);
     moveBC(speed, 35);
-    moveB(speed, turn1wheel);
+    moveB(speed, w90);
     speedD = lala;
 }
 
@@ -219,14 +219,14 @@ DoubleMarker gtf() {
     moveBC(15, -140);
     gclr(4);
     turn(15, d90, 0);
-    moveBCNEW(MIN1, 185, 1);
+    moveBC(speed, 185);
     wait(500);
     int fi = gclr(4);
     if (fi == 7)
         fi = 4;
     if (fi == 1)
         fi = 2;
-    moveBCNEW(MIN1, 120, 1);
+    moveBC(speed, 120);
     wait(500);
     int se = gclr(4);
     if (se == 7)
@@ -240,48 +240,89 @@ DoubleMarker gtf() {
     return DoubleMarker(Color(fi), Color(se));
 }
 
-void f228() {
-    line(speed, grad[10] - dws, 4);
+
+vector<int> min_way;
+int min_time = 1000000000;
+
+
+
+void perebor() {
+
 }
 
-void f1() {
-    turn(speed, d90, 3);
-}
-
-void f2() {
-    turn(speed, d180, 2);
-}
-
-void f3() {
-    turn(speed, d90, 0);
-}
-
-void f4() {
-    turn(speed, d90, 3);
-}
-
-void f5() {
-    turn(speed, d180, 3);
-}
-
-void f6() {
-    turn(speed, d90, 0);
-}
-
-void f7() {
-    moveBC(speed, dsl, 0);
-}
-
-void f8() {
+void f1d() {
     moveBC(speed, dws, 1);
 }
 
+void f1l() {
+    moveBC(speed, dsl, 0);
+    line(speed, dws - dsl, 0);
+}
+
+void f2d() {
+    turn(speed, d90, -1);
+}
+
+void f2l() {
+    turn(speed, d90, 0);
+}
+
+void f3d() {
+    turn(speed, d180, -1);
+}
+
+void f3l() {
+    turn(speed, d180, 0);
+}
+
+void f4d() {
+    turn(speed, d90, -2);
+}
+
+void f4l() {
+    turn(speed, d90, 3);
+}
+
+void f5d() {
+    turn(speed, d180, -2);
+}
+
+void f5l() {
+    turn(speed, d180, 3);
+}
+
+void f6d() {
+    moveBC(speed, 20, 0);
+    t1w(speed, w90, -1);
+}
+
+void f6l() {
+    moveBC(speed, 20, 0);
+    t1w(speed, w90, 0);
+}
+
+void f7d() {
+    moveBC(speed, 20, 0);
+    t1w(speed, w90, -2);
+}
+
+void f7l() {
+    moveBC(speed, 20, 0);
+    t1w(speed, w90, 3);
+}
+
+void f8() {
+    moveBC(speed, 150, 0);
+    line(speed, grad[0] - 50, 3);
+}
+
 void f9() {
-    lineNEW(MIN1, grad[1] - dws, 2);
+    line(speed, grad[1] - dws, 2);
 }
 
 void f10() {
-    line(speed, grad[1] - dsl, 2);
+    line(speed, grad[1] - dtw, 2);
+    stopBC();
 }
 
 void f11() {
@@ -289,10 +330,439 @@ void f11() {
 }
 
 void f12() {
-    line(speed, grad[3] - dsl, 3);
+    line(speed, grad[3] - dtw, 3);
 }
 
 void f13() {
+    line(speed, grad[18] - dws, 0);
+}
+
+void f14() {
+    line(speed, grad[18] - dtw + dws, 0);
+}
+
+void f15() {
+    line(speed, grad[3] - grad[18] - dws, 0);
+}
+
+void f16() {
+    line(speed, grad[3] - grad[18] - dtw, 0);
+}
+
+void f17() {
+    line(speed, grad[2] - dws, 4);
+}
+
+void f18() {
+    line(speed, grad[2] - dtw, 4);
+}
+
+void f19() {
+    d1 = gtf();
+}
+
+void f20() {
+    moveBC(speed, -320);
+}
+
+void f21() {
+    turn(speed, d90, 3);
+    line(speed, 50, 4);
+}
+
+void f22() {
+    turn(speed, d90, 0);
+    line(speed, 50, 1);
+}
+
+void f23() {
+    line(speed, grad[7] - dws, 2);
+}
+
+void f24() {
+    line(speed, grad[7] - dtw, 2);
+}
+
+void f25() {
+    line(speed, grad[4] - dws, 1);
+}
+
+void f26() {
+    line(speed, grad[4] - dtw, 1);
+}
+
+void take4green() {
+    //moveA(speedA, 100);
+    moveBC(-speed, 130);
+    line(speed, grad[8] - dws + 130, 0);
+    stopBC();
+    //moveA(speedA, 200);
+}
+
+void f27() {
+    moveBC(-speed, grad[8] - dws);
+}
+
+void f28() {
+    line(speed, grad[19] - dws, 0);
+}
+
+void f29() {
+    line(speed, grad[19] - dtw, 0);
+}
+
+void f30() {
+    line(speed, grad[19] - dws, 1);
+}
+
+void f31() {
+    line(speed, grad[19] - dtw, 1);
+}
+
+void f32() {
+    line(speed, grad[18] - dws, 3);
+}
+
+void f33() {
+    line(speed, grad[3] - grad[18] - dws, 3);
+}
+
+void f34() {
+    line(speed, grad[3] - grad[18] - dtw, 3);
+}
+
+void f35() {
+    line(speed, 200, 1);
+}
+
+void f36() {
+    line(speed, grad[19] - dws, 1);
+}
+
+void f37() {
+    line(speed, grad[19] - dtw, 1);
+}
+
+void f38() {
+    line(speed, grad[4] - grad[19] - dws, 1);
+}
+
+void f39() {
+    line(speed, grad[4] - grad[19] - dtw, 1);
+}
+
+void f40() {
+    line(speed, grad[4] - grad[19] - dws, 0);
+}
+
+void f41() {
+    line(speed, grad[4] - grad[19] - dtw, 0);
+}
+
+void f42() {
+    line(speed, grad[7] - dws, 2);
+}
+
+void f43() {
+    turn(speed, w90, -2);
+    line(speed, dws - 60, 0);
+}
+
+void f44() {
+    line(speed, grad[9] - dws, 3);
+}
+
+void f45() {
+    line(speed, grad[9] - dtw, 3);
+}
+
+void f46() {
+    stopBC();
+    moveB(speed, 200);
+    moveC(speed, 200);
+    line(speed, grad[20] - dws - 200, 8);
+}
+
+void f47() {
+    stopBC();
+    moveB(speed, 200);
+    moveC(speed, 200);
+    line(speed, grad[20] - dtw - 200, 8);
+}
+
+void f48() {
+    line(speed, 350 - dws, 10);
+    stopBC();
+    turn(speed, 70, -1);
+    moveBC(speed, 90);
+    turn(speed, 70, 3);
+    line(speed, 40, 3);
+}
+
+void f49() {
+    line(speed, 350 - dtw, 10);
+    stopBC();
+    turn(speed, 70, -1);
+    moveBC(speed, 90);
+    turn(speed, 70, 3);
+    line(speed, 40, 3);
+}
+
+void f52() {
+    stopBC();
+    moveC(speed, 200);
+    moveB(speed, 200);
+    line(speed, grad[9] - grad[20] - dws - 200, 10);
+}
+
+void f53() {
+    stopBC();
+    moveC(speed, 200);
+    moveB(speed, 200);
+    line(speed, grad[9] - grad[20] - dtw - 200, 8);
+}
+
+void f50() {
+    line(speed, 350 - dws, 8);
+    stopBC();
+    turn(speed, 70, -2);
+    moveBC(speed, 90);
+    turn(speed, 70, 0);
+    line(speed, 40, 3);
+}
+
+void f51() {
+    line(speed, 350 - dtw, 8);
+    stopBC();
+    turn(speed, 70, -2);
+    moveBC(speed, 90);
+    turn(speed, 70, 0);
+    line(speed, 40, 3);
+}
+
+void f54() {
+    line(speed, 260 - dws, 0);
+}
+
+void f55() {
+    line(speed, 260 - dtw, 0);
+}
+
+void f56() {
+    line(speed, 260 - dws, 1);
+}
+
+void f57() {
+    line(speed, 260 - dtw, 1);
+}
+
+void f58() {
+    line(speed, 650 - dws, 0);
+}
+
+void f59() {
+    line(speed, 650 - dtw, 0);
+}
+
+void f60() {
+    line(speed, 650 - dws, 1);
+}
+
+void f61() {
+    line(speed, 650 - dtw, 1);
+}
+
+void f62() {
+    line(speed, 750 - dws, 0);
+}
+
+void f63() {
+    line(speed, 750 - dtw, 0);
+}
+
+void f64() {
+    line(speed, 750 - dws, 1);
+}
+
+void f65() {
+    line(speed, 750 - dtw, 1);
+}
+
+void f66() {
+    line(speed, grad[10] - dws, 4);
+}
+
+void f67() {
+    line(speed, grad[10] - dtw, 4);
+}
+
+void f68() {
+    d2 = gtf();
+}
+
+void f69() {
+    moveBC(speed, -20, 1);
+    turn(speed, d90, 0);
+    getRGB(4);
+    wait(100);
+    if (getRGB(4).r > 15 || getRGB(4).g > 15) {
+        gdeb = 2;
+    }
+    moveB(speed, w90, 1);
+    moveBC(-speed, 30);
+    goBC(speed);
+    while (s3() > black);
+    moveBC(speed, dws, 1);
+}
+
+void f70() {
+
+}
+
+void f71() {
+
+}
+
+void f72() {
+
+}
+
+void f73() {
+    moveBC(speed, 650, 0);
+}
+
+void f74() {
+    line(speed, grad[11] - dws, 2);
+}
+
+void f75() {
+    line(speed, grad[11] - dtw, 2);
+}
+
+void f76() {
+    line(speed, grad[11] - dws, 2);
+}
+
+void f77() {
+    line(speed, grad[11] - dtw, 2);
+}
+
+void f78() {
+    line(speed, 650 - dws, 0);
+}
+
+void f79() {
+    line(speed, 650 - dtw, 0);
+}
+
+void f80() {
+    line(speed, 650 - dws, 2);
+}
+
+void f81() {
+    line(speed, 650 - dtw, 2);
+}
+
+void f82() {
+    line(speed, 230 - dws, 2);
+}
+
+void f83() {
+    line(speed, 230 - dtw, 2);
+}
+
+void f84() {
+    line(speed, 230 - dws, 0);
+}
+
+void f85() {
+    line(speed, 230 - dtw, 0);
+}
+
+void f86() {
+    line(speed, grad[12] - dws, 4);
+}
+
+void f87() {
+    line(speed, grad[12] - dtw, 4);
+}
+
+void f88() {
+    d3 = gtf();
+}
+
+void f89() {
+    moveBC(speed, -320);
+}
+
+void f90() {
+    line(speed, grad[11] - dws, 2);
+}
+
+void f91() {
+    turn(speed, d90, 0);
+    line(speed, 50, 1);
+}
+
+void f92() {
+    line(speed, grad[13] - dws, 3);
+}
+
+void f93() {
+    line(speed, 365 - dsl, 0);
+}
+
+void f94() {
+    turn(speed, d90 - 40, 3);
+    turn(speed, 40, -2);
+}
+
+void f95() {
+    moveBC(speed, 50, 0);
+    line(speed, 460, 5);
+    goBC(speed);
+    while (s2() > black);
+}
+
+void f96() {
+    moveBC(speed, dws);
+}
+
+void f97() {
+    turn(speed, d90, -1);
+}
+
+void f98() {
+    turn(speed, d90, 3);
+}
+
+void get4blue1() {
+
+}
+
+void get4blue2() {
+
+}
+
+void f99() {
+    moveBC(-speed, 430);
+}
+
+void f100() {
+    moveBC(speed, 200, 0);
+    while (s2() > black);
+}
+
+void f101() {
+    moveBC(-speed, 590);
+}
+
+void f102() {
+    moveBC(speed, 340, 0);
+    while (s2() > black);
+}
+
+/*void f13() {
     lineNEW(MIN1, grad[2] - dws, 4);
 }
 
@@ -367,7 +837,7 @@ void f25() {
         gdeb = 4;
     }*/
 
-    write(1, 1, gdeb);
+ /*   write(1, 1, gdeb);
     moveBC(speed, 425, 0);
     while (s2() > black);
     stopB();
@@ -416,7 +886,7 @@ void f33() {
     /*if (getRGB(4).r > 15 || getRGB(4).g > 15) {
         gdeb = 2;
     }*/
-    moveB(speed, turn1wheel, 1);
+ /*   moveB(speed, turn1wheel, 1);
     moveBC(-speed, 30);
     goBC(speed);
     while (s3() > black);
@@ -701,7 +1171,7 @@ void f79() {
     goBC(speed);
     while (s2() > black);
     moveBC(speed, dws, 1);
-}
+}*/
 
 void add(int from, int to, void (*def)(), double time = 1.0) {
     g[from].pb(Edge(to, def, time));
@@ -709,56 +1179,72 @@ void add(int from, int to, void (*def)(), double time = 1.0) {
 
 void addcrossroad(int v, int u, int r, int d, int l) {
     if (u == 1) {
-        g[v + 1].pb(Edge(v, f1));
-        g[v + 2].pb(Edge(v, f2));
-        g[v + 3].pb(Edge(v, f3));
+        g[v + 2].pb(Edge(v + 1, f1l));
+        g[v + 11].pb(Edge(v, f6l));
+        g[v + 5].pb(Edge(v, f7l));
+        g[v + 4].pb(Edge(v + 1, f4l));
+        g[v + 10].pb(Edge(v + 1, f2l));
+        g[v + 7].pb(Edge(v + 1, f3l));
     }
     else {
-        g[v + 1].pb(Edge(v, f4));
-        g[v + 2].pb(Edge(v, f5));
-        g[v + 3].pb(Edge(v, f6));
+        g[v + 2].pb(Edge(v + 1, f1d));
+        g[v + 11].pb(Edge(v, f6d));
+        g[v + 5].pb(Edge(v, f7d));
+        g[v + 4].pb(Edge(v + 1, f4d));
+        g[v + 10].pb(Edge(v + 1, f2d));
+        g[v + 7].pb(Edge(v + 1, f3d));
     }
     if (r == 1) {
-        g[v].pb(Edge(v + 1, f3));
-        g[v + 2].pb(Edge(v + 1, f1));
-        g[v + 3].pb(Edge(v + 1, f2));
+        g[v + 5].pb(Edge(v + 4, f1l));
+        g[v + 2].pb(Edge(v + 3, f6l));
+        g[v + 8].pb(Edge(v + 3, f7l));
+        g[v + 7].pb(Edge(v + 4, f4l));
+        g[v + 10].pb(Edge(v + 4, f3l));
+        g[v + 1].pb(Edge(v + 4, f2l));
     }
     else {
-        g[v].pb(Edge(v + 1, f6));
-        g[v + 2].pb(Edge(v + 1, f4));
-        g[v + 3].pb(Edge(v + 1, f5));
+        g[v + 5].pb(Edge(v + 4, f1d));
+        g[v + 2].pb(Edge(v + 3, f6d));
+        g[v + 8].pb(Edge(v + 3, f7d));
+        g[v + 7].pb(Edge(v + 4, f4d));
+        g[v + 10].pb(Edge(v + 4, f3d));
+        g[v + 1].pb(Edge(v + 4, f2d));
     }
     if (d == 1) {
-        g[v].pb(Edge(v + 2, f2));
-        g[v + 1].pb(Edge(v + 2, f3));
-        g[v + 3].pb(Edge(v + 2, f1));
+        g[v + 8].pb(Edge(v + 7, f1l));
+        g[v + 5].pb(Edge(v + 6, f6l));
+        g[v + 11].pb(Edge(v + 6, f7l));
+        g[v + 4].pb(Edge(v + 7, f2l));
+        g[v + 1].pb(Edge(v + 7, f3l));
+        g[v + 10].pb(Edge(v + 7, f4l));
     }
     else {
-        g[v].pb(Edge(v + 2, f5));
-        g[v + 1].pb(Edge(v + 2, f6));
-        g[v + 3].pb(Edge(v + 2, f4));
+        g[v + 8].pb(Edge(v + 7, f1d));
+        g[v + 5].pb(Edge(v + 6, f6d));
+        g[v + 11].pb(Edge(v + 6, f7d));
+        g[v + 4].pb(Edge(v + 7, f2d));
+        g[v + 1].pb(Edge(v + 7, f3d));
+        g[v + 10].pb(Edge(v + 7, f4d));
     }
     if (l == 1) {
-        g[v].pb(Edge(v + 3, f1));
-        g[v + 1].pb(Edge(v + 3, f2));
-        g[v + 2].pb(Edge(v + 3, f3));
+        g[v + 11].pb(Edge(v + 10, f1l));
+        g[v + 8].pb(Edge(v + 9, f6l));
+        g[v + 2].pb(Edge(v + 9, f7l));
+        g[v + 7].pb(Edge(v + 10, f2l));
+        g[v + 4].pb(Edge(v + 10, f3l));
+        g[v + 1].pb(Edge(v + 10, f4l));
     }
     else {
-        g[v].pb(Edge(v + 3, f4));
-        g[v + 1].pb(Edge(v + 3, f5));
-        g[v + 2].pb(Edge(v + 3, f6));
+        g[v + 11].pb(Edge(v + 10, f1d));
+        g[v + 8].pb(Edge(v + 9, f6d));
+        g[v + 2].pb(Edge(v + 9, f7d));
+        g[v + 7].pb(Edge(v + 10, f2d));
+        g[v + 4].pb(Edge(v + 10, f3d));
+        g[v + 1].pb(Edge(v + 10, f4d));
     }
-    g[v + 8].pb(Edge(v + 2, f8));
-    g[v + 8].pb(Edge(v + 6, f7, 0.9));
-    g[v + 10].pb(Edge(v, f8));
-    g[v + 10].pb(Edge(v + 4, f7, 0.9));
-    g[v + 11].pb(Edge(v + 1, f8));
-    g[v + 11].pb(Edge(v + 5, f7, 0.9));
-    g[v + 9].pb(Edge(v + 3, f8));
-    g[v + 9].pb(Edge(v + 7, f7, 0.9));
 }
 
-void put_loops_4(int clr) {
+/*void put_loops_4(int clr) {
     if (d3.left == clr && d3.right == clr) {
         go(speed, nv, 121);
         unloading_loops(4);
@@ -801,28 +1287,210 @@ void put_loops_4(int clr) {
         c_loops -= 2;
         nv = 25;
     }
-}
+}*/
 
 void buildg() {
-    addcrossroad(1, 1, 1, 0, 0);
-    addcrossroad(13, 0, 1, 1, 1);
-    addcrossroad(27, 1, 1, 0, 1);
-    addcrossroad(39, 0, 1, 1, 1);
-    addcrossroad(51, 1, 1, 0, 1);
-    addcrossroad(63, 0, 1, 1, 1);
+    addcrossroad(0, 0, 0, 0, 0);
+    addcrossroad(12, 1, 1, 0, 0);
+    addcrossroad(24, 0, 1, 1, 1);
+    addcrossroad(36, 1, 0, 0, 0);
+    addcrossroad(48, 0, 1, 0, 1);
+    addcrossroad(60, 0, 0, 0, 0);
+    addcrossroad(72, 0, 1, 0, 0);
+    addcrossroad(84, 0, 1, 1, 1);
+    addcrossroad(96, 1, 0, 1, 0);
+    addcrossroad(108, 1, 1, 0, 1);
+    addcrossroad(120, 0, 1, 1, 1);
+    addcrossroad(132, 0, 0, 0, 0);
+    addcrossroad(144, 0, 0, 0, 0);
+    addcrossroad(156, 0, 0, 0, 1);
+    addcrossroad(168, 1, 1, 0, 1);
+    addcrossroad(180, 1, 0, 1, 0);
+    addcrossroad(192, 1, 0, 1, 0);
+    addcrossroad(204, 0, 0, 1, 0);
+    addcrossroad(216, 0, 1, 0, 1);
+    addcrossroad(228, 0, 0, 0, 0);
+    addcrossroad(240, 0, 1, 1, 1);
+    addcrossroad(252, 1, 0, 0, 0);
+    //addcrossroad(264, 1, 1, 0, 1);
+    addcrossroad(288, 1, 0, 1, 0);
+    addcrossroad(300, 1, 0, 1, 0);
+    addcrossroad(312, 1, 0, 1, 0);
+    addcrossroad(324, 1, 0, 1, 0);
+    addcrossroad(348, 0, 1, 0, 1);
 
-    add(2, 24, f9);
-    add(16, 10, f9);
-    add(20, 10, f10);
+    add(7, 20, f8);
 
-    add(14, 38, f11);
-    add(18, 38, f12);
-    add(30, 22, f11);
-    add(34, 22, f12);
+    add(16, 29, f9);
+    add(15, 29, f10);
+    add(34, 23, f9);
+    add(33, 23, f10);
 
-    add(51, 116, f228);
+    add(28, 113, f11);
+    add(27, 113, f12);
+    add(118, 59, f11);
+    add(117, 59, f12);
 
-    add(15, 25, f13);
+    add(28, 53, f13);
+    add(27, 52, f14);
+    add(58, 35, f32);
+
+    add(118, 59, f15);
+    add(117, 59, f16);
+    add(52, 113, f33);
+    add(51, 113, f34);
+
+    add(31, 44, f17);
+    add(30, 44, f18);
+
+    add(337, 26, f35);
+
+    add(44, 336, f19);
+
+    add(336, 298, f20);
+    add(295, 44, f21);
+    add(289, 25, f22);
+
+    add(112, 125, f23);
+    add(111, 125, f24);
+    add(130, 119, f23);
+    add(129, 119, f24);
+
+    add(109, 86, f25);
+    add(108, 86, f26);
+    add(91, 116, f25);
+    add(90, 116, f26);
+
+    add(109, 98, f28);
+    add(108, 98, f29);
+    add(103, 116, f36);
+    add(102, 116, f37);
+
+    add(97, 86, f38);
+    add(96, 86, f39);
+    add(91, 104, f40);
+    add(90, 104, f41);
+
+    add(112, 125, f42);
+    add(116, 124, f43);
+    add(130, 119, f42);
+    //add(129, 119, f43);
+
+    add(127, 343, take4green);
+    add(343, 127, f27);
+
+    add(124, 173, f44);
+    add(123, 173, f45);
+    add(178, 131, f44);
+    add(177, 131, f45);
+
+    add(124, 137, f46);
+    add(123, 137, f47);
+    add(142, 131, f48);
+    add(141, 131, f49);
+
+    add(136, 173, f50);
+    add(135, 173, f51);
+    add(178, 143, f52);
+    add(177, 143, f53);
+
+    add(169, 182, f54);
+    add(168, 182, f55); 
+    add(187, 176, f56);
+    add(186, 176, f57);
+
+    add(169, 194, f58);
+    add(168, 194, f59); 
+    add(199, 176, f60);
+    add(198, 176, f61);
+
+    add(169, 302, f62);
+    add(168, 302, f63);
+    add(307, 176, f64);
+    add(306, 176, f65);
+
+    add(169, 206, f66);
+    add(168, 206, f67);
+
+    add(206, 341, f68);
+
+    add(341, 203, f69);
+
+    add(342, 308, f70);
+
+    add(342, 200, f71);
+
+    add(342, 176, f72);
+
+    add(160, 305, f73);
+
+    add(172, 245, f74);
+    add(171, 245, f75);
+    add(250, 179, f76);
+    add(249, 179, f77);
+
+    add(172, 221, f78);
+    add(171, 221, f79);
+    add(226, 179, f80);
+    add(225, 179, f81);
+
+    add(220, 245, f82);
+    add(219, 245, f83);
+    add(250, 227, f84);
+    add(249, 227, f85);
+
+    add(247, 260, f86);
+    add(246, 260, f87);
+
+    add(260, 345, f88);
+    
+    add(345, 334, f89);
+
+    add(346, 242, f90);
+
+    add(325, 242, f91);
+
+    add(244, 269, f92);
+
+    add(269, 268, f93);
+
+    add(268, 265, f94);
+    add(265, 278, f95);
+
+    add(278, 277, f96);
+
+    add(277, 280, f97);
+    add(277, 286, f98);
+
+    add(280, 347, get4blue1);
+    add(281, 347, get4blue2);
+
+    add(55, 67, f99);
+    add(67, 56, f100);
+
+    add(100, 64, f101);
+    add(64, 101, f102);
+
+    /*add(280, 232, f101);
+
+    add(235, 224, f102);
+    add(238, 203, f103);
+    add(223, 235, f104);
+    add(202, 238, f105);
+
+    add(79, 338, f106);
+    add(338, 79, f107);
+    add(163, 340, f108);
+    add(340, 163, f109);
+
+    add(139, 151, f110);
+    add(151, 356, f111);
+    add(184, 148, f112);
+    add(148, 185, f113);*/
+
+
+
+   /* add(15, 25, f13);
 
     add(25, 26, f14);
 
@@ -939,7 +1607,7 @@ void buildg() {
     add(141, 121, f77);
     add(142, 60, f78);*/
 
-    add(112, 115, f79);
+    /*add(112, 115, f79);
     add(0, 9, f80);
     add(130, 146, f81);
     add(146, 109, f82);
@@ -980,7 +1648,7 @@ void buildg() {
     add(102, 155, f117);
     add(155, 156, f118);
     add(156, 155, f119);
-    add(155, 110, f120);
+    add(155, 110, f120);*/
 }
 
 void vivod_h() {
@@ -991,171 +1659,27 @@ void vivod_h() {
     }
 }
 
-void t2c() {
-    goD(10);
-    wait(1000);
-    stopD();
-    while (1) {
-        isend = 0;
-        moveBC(speed, dsl, 0);
-        line(speed, 0, 10);
-        if (isend == 0)
-            break;
-    }
-    stopBC();
-    turn(speed, d180, 0);
-    line(speed, 0, 10);
-    moveBC(speed, dws, 0);
-    turn(speed, d90, 0);
-    int c = 0;
-    vector<int> degs;
-    while (1) {
-        isend = 0;
-        moveBC(speed, dsl, 0);
-        line(speed, 0, 10);
-        degs.push_back(get_deg_line_B);
-        c++;
-        if (isend == 0)
-            break;
-    }
-    stopBC();
-    int v = 0;
-    if (degs[c - 1] > 1500)
-        v = 2;
-    else if (c == 1)
-        v = 0;
-    else
-        v = 6;
-    write(10, 10, v);
-    if (v == 0) {
-        turn(speed, d180, 0);
-        line(speed, 0, 10);
-        moveBC(speed, dws);
-        turn(speed, d90, 0);
-        line(speed, 0, 10);
-        moveBC(speed, dsl, 0);
-        line(speed, 0, 10);
-        stopBC();
-    }
-    else if (v == 2) {
-        turn(speed, d180, 0);
-        line(speed, 0, 10);
-        moveBC(speed, dws);
-        turn(speed, d90, 0);
-        line(speed, 0, 10);
-        moveBC(speed, dsl, 0);
-        line(speed, 0, 10);
-        moveBC(speed, dws);
-        turn(speed, d90, 0);
-        line(speed, 0, 10);
-        moveBC(speed, dws);
-        turn(speed, d90, 3);
-        line(speed, 0, 10);
-        stopBC();
-    }
-    moveD(speedD, 0);
-    turn(speed, d180, 0);
-    line(speed, 0, 10);
-    moveBC(speed, dsl, 0);
-    line(speed, 0, 10);
-    moveBC(speed, dsl, 0);
-    line(speed, 0, 10);
-    turn(speed, d180, 0);
-    moveBC(-speed, 110);
-    moveD(speedD, 337);
-    line(speed, 0, 10);
-    moveBC(speed, dws);
-    turn(speed, d90, 0);
-    line(speed, 0, 10);
-    moveBC(-speed, 120);
-    turn(speed, d180, 0);
-    moveD(speedD, 0);
-    moveBC(-speed, 230);
-    moveD(speedD, 337);
-    line(speed, 0, 10);
-    moveBC(speed, dsl, 0);
-    line(speed, 0, 10);
-    moveBC(speed, dws);
-    turn(speed, d90, 3);
-    line(speed, 0, 10);
-    moveBC(speed, dsl, 0);
-    line(speed, 0, 10);
-    moveBC(-speed, 120);
-    turn(speed, d180, 0);
-    moveD(speedD, 0);
-    moveBC(-speed, 230);
-    moveD(speedD, 337);
-    line(speed, 0, 10);
-    moveBC(speed, dws);
-    turn(speed, d90, 0);
-    line(speed, 0, 10);
-    moveBC(-speed, 120);
-    turn(speed, d180, 0);
-    moveD(speedD, 0);
-    moveBC(-speed, 230);
-    moveD(speedD, 337);
-    line(speed, 0, 10);
-    moveBC(speed, dsl, -1);
-    line(speed, 0, 10);
-    moveBC(speed, dws);
-    turn(speed, d90, 3);
-    line(speed, 0, 10);
-    moveBC(-speed, 120);
-    turn(speed, d180, 0);
-    moveD(speedD, 0);
-    moveBC(-speed, 230);
-    moveD(speedD, 337);
-    line(speed, 0, 10);
-    moveBC(speed, dsl, 0);
-    line(speed, 0, 10);
-    moveBC(speed, dsl, 0);
-    line(speed, 0, 10);
-    moveBC(-speed, 120);
-    turn(speed, d180, 0);
-    moveD(speedD, 0);
-    moveBC(-speed, 230);
-    moveD(speedD, 337);
-    line(speed, 0, 10);
-    moveBC(speed, dws);
-    turn(speed, d90, 3);
-    line(speed, 0, 10);
-    moveBC(speed, dws);
-    turn(speed, d90, 3);
-    line(speed, 0, 10);
-    moveBC(speed, dws);
-    turn(speed, d90, 3);
-    line(speed, 0, 10);
-    turn(speed, d180, 3);
-    moveD(speedD, 0);
-    moveBC(-speed, 450);
-    wait(10000);
-}
-
 signed EV3_main() {
     Clear_Display();
     CreateThread(okonchanie, 0);
     //s1();
     s2();
     s3();
-    s4();
-    wait(200);
-    t2c();
-    return 0;
+    gclr(4);
     buildDegreesConstants();
     buildg();
     //vivod_h();
-    s2();
-    s3();
-    gclr(4);
-    goD(speedD);
+    /*goD(speedD);
     wait(950);
     goD(0);
     goA(20);
     wait(500);
     stopA();
-    moveA(1);
-    go(speed, 1, 26);
-    wait(10000);
+    moveA(1);*/
+    go(speed, 7, 67);
+    go(speed, 67, 206);
+    stopBC();
+    return 0;
     go(speed, 0, 26);
     nv = 26;
     if (d1.left == 4 || d1.right == 4) {
@@ -1273,7 +1797,7 @@ signed EV3_main() {
         cc++;
     if (d3.right == 2)
         cc++;
-    if (cc == 2) {
+/*    if (cc == 2) {
         go(speed, nv, 97);
         get_4_blue();
         nv = 66;
@@ -1308,6 +1832,6 @@ signed EV3_main() {
         get_4_blue();
         nv = 66;
         put_loops_4(2);
-    }
+    }*/
     return 0;
 }

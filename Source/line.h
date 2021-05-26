@@ -7,6 +7,7 @@
 #define line_h
 
 #include <iostream>
+#include <math.h>
 #include <vector>
 #include <string>
 #include <sstream>
@@ -49,7 +50,7 @@ void lineNEW(Speed p, int dist, int type, bool uping = true, bool downing = true
              int end_preview = standart_line_preview_looking) {
     // Просто надо помнить, что эта линия не предполагает движения назaд
     // Какая-то типизация
-    /*if (type == 4) {
+    if (type == 4) {
         getRGB(3);
         EV3_Sleep(50);
     }
@@ -58,7 +59,7 @@ void lineNEW(Speed p, int dist, int type, bool uping = true, bool downing = true
     int home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                 GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
 
-    Speed_compiled speed = Speed_compiled(p, dist, uping, downing);
+    Speed_compiled speed_control = Speed_compiled(p, dist, uping, downing);
 
     int way = dist + home;
 
@@ -70,9 +71,9 @@ void lineNEW(Speed p, int dist, int type, bool uping = true, bool downing = true
         int encoders = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                         GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home;
 
-        if (encoders < way - end_preview) {
-            if (type == 0 || type == 6 || type == 8) {
-                if (encoders >= way) stop = 1;
+        if (encoders > dist - end_preview) {
+            if (type == 0 || type == 6 || type == 8 || type == 10) {
+                if (encoders >= dist) stop = 1;
             } else {
                 if (type == 1 && s2() < black && s3() < black) {
                     stop = 1;
@@ -95,7 +96,7 @@ void lineNEW(Speed p, int dist, int type, bool uping = true, bool downing = true
         int error = 0;
         switch (type) {
             case 10:
-                error = (double)(s3() - s2() - deltaSensors);
+                error = (double)(grey - s3()) * 3 / 3;
                 break;
             case 5:
                 error = (double) (s3() - bley) * 3 / 3;
@@ -104,7 +105,7 @@ void lineNEW(Speed p, int dist, int type, bool uping = true, bool downing = true
                 error = (double) (s3() - bley) * 3 / 3;
                 break;
             case 4:
-                error = (double) (grey - s2()) * 2 / 3;
+                error = (double) (grey - s2()) * 3 / 3;
                 break;
             case 7:
                 error = (double) (s2() - grey) * 3 / 3;
@@ -120,13 +121,13 @@ void lineNEW(Speed p, int dist, int type, bool uping = true, bool downing = true
                 break;
         } // подсчет ошибки
 
-        int nowSpeed = speed(encoders - home);
+        int nowSpeed = speed_control(encoders);
 
         double kP = p.p * ((double) nowSpeed / (double) p.max_sp);
         double kD = p.d * ((double) nowSpeed / (double) p.max_sp);
 
-        SpeedMotor(E_Port_B, -1 * (nowSpeed - error * kP - (error - errors[count % lineArrayLen]) * kD));
-        SpeedMotor(E_Port_C, nowSpeed + error * kP + (error - errors[count % lineArrayLen]) * kD);
+        SpeedMotor(E_Port_B, max(-100, int(-1 * (nowSpeed - error * kP - (error - errors[count % lineArrayLen]) * kD))));
+        SpeedMotor(E_Port_C, min(100, int(nowSpeed + error * kP + (error - errors[count % lineArrayLen]) * kD)));
 
         errors[count % lineArrayLen] = error; // для d составляющей
     }
@@ -140,8 +141,7 @@ void lineNEW(Speed p, int dist, int type, bool uping = true, bool downing = true
     \param type Тип линии (тут лучше шарит создатель)
     \todo Убрать это костыль (после вторника)
 */
-void line(int speed, int dist, int type, bool uping = true, bool downing = true,
-          int end_preview = standart_line_preview_looking) {
+void line(int speed, int dist, int type, bool uping = true, bool downing = true, int end_preview = standart_line_preview_looking) {
     lineNEW(ZERO, dist, type, uping, downing, end_preview);
 }
 

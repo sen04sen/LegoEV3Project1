@@ -85,6 +85,7 @@ void *okonchanie(void *lpvoid) {
     wait(1000);
     while (!isBrickButtonPressed(E_BTN_ESC));
     StopMotorAll();
+    wait(300);
     throw Exception("exit");
 }
 

@@ -56,9 +56,9 @@ public:
     }
 
     int operator()(int now_dist) {
-        int speed;
-        if (now_dist > way - p.zero_enc && downing) speed = p.min_sp;
-        else if (now_dist < p.normal_enc && uping) speed = p.min_sp;
+        int speed_Speed_compiled;
+        if (now_dist > way - p.zero_enc && downing) speed_Speed_compiled = p.min_sp;
+        else if (now_dist < p.normal_enc && uping) speed_Speed_compiled = p.min_sp;
         else {
             int down_sp = p.max_sp, up_sp = p.max_sp;
             if (now_dist > way - p.zero_enc - p.down_enc && downing) {
@@ -70,11 +70,11 @@ public:
                 up_sp = double(now_dist - p.normal_enc) * double(p.max_sp - p.min_sp) / double(p.up_enc) +
                         double(p.min_sp);
             }
-            speed = min(down_sp, up_sp);
+            speed_Speed_compiled = min(down_sp, up_sp);
         }
-        if (speed < p.min_sp) speed = p.min_sp;
+        if (speed_Speed_compiled < p.min_sp) speed_Speed_compiled = p.min_sp;
 
-        return speed;
+        return speed_Speed_compiled;
     }
 };
 

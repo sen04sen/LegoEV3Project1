@@ -13,21 +13,23 @@
 const int maxv = 500;
 const int ce = 21 * 2;
 const int ver = 22;
-const int black = 21;
+const int black = 25;
 const int bluck = 30;
 const int bley = 40;
 const double Pr = 0.3;
 const int grey = 40;
-const double dws = 160; // ���������� ����� ��������� � �������
-const double dsl = 70; //����� �������� � �����
-const double dtw = 360;
+const double dws = 170; // ���������� ����� ��������� � �������
+const double dsl = 60; //����� �������� � �����
+const double dtw = 340;
 const int d90 = 265;
 const int d180 = 545;
 const int dovorot = 30;
-const int turn1wheel = 550;
+const int d1w = 50;
+const int w90 = 550;
 const int ndir = 0;
 const int speed = 23;
 int speedD = 40;
+int speedA = 60;
 
 int get_deg_line_B = 0;
 bool isend = 0;
@@ -52,13 +54,13 @@ double xren_loops = 490;
 ///@{
 const int lineArrayLen = 20;                            ///< Длинна массива задержек для линии
 const int standart_line_preview_looking = 50;           ///< За это расстояние до конца линии робот начинает чекать датчиком конец
-const int deltaSensors = 6;                             ///< Разность показаний датчиков
+const int deltaSensors = 10;                             ///< Разность показаний датчиков
 Speed DOP1 = Speed(80, 20, 0.35, 0.7, 100, 300, 300, 100);   ///< Для двух
 Speed ONE1 = Speed(80, 20, 0.45, 1, 100, 300, 300, 100);     ///< Для одного
 Speed MIN = Speed(23, 20, 0.3, 0.3, 1, 1, 1, 1);
 Speed MIN1 = Speed(12, 12, 0.3, 0, 0, 0, 0, 0);
 Speed ONE = Speed(30, 20, 0.5, 0.3, 100, 50, 50, 30);        ///< Для одного
-Speed ZERO = Speed(90, 20, 0.45, 1, 100, 300, 300, 100);     ///< Настройка линии (функция lineNew) класс Speed
+Speed ZERO = Speed(80, 20, 0.5, 1.0, 100, 50, 150, 50);   ///< Настройка линии (функция lineNew) класс Speed
 Speed ONEMOTOR = Speed(100, 20, 0, 0, 100, 100, 150, 50);    ///< Для moveB или moveС
 Speed MOVEBC = Speed(100, 20, 0, 0, 100, 250, 250, 70);      ///< Для moveBC
 Speed TURN = Speed(100, 15, 0, 0, 100, 300, 300, 50);        ///< Для turn
@@ -76,11 +78,11 @@ void buildDegreesConstants() {                          /// Заполнение
     grad.pb(470);
     grad.pb(820);
     grad.pb(760);
-    grad.pb(580);
-    grad.pb(580);
+    grad.pb(570);
+    grad.pb(570);
     grad.pb(270);
     grad.pb(220);
-    grad.pb(990);
+    grad.pb(980);
     grad.pb(1100);
     grad.pb(880);
     grad.pb(470);
@@ -88,7 +90,9 @@ void buildDegreesConstants() {                          /// Заполнение
     grad.pb(670);
     grad.pb(230);
     grad.pb(210);
-    grad.pb(410);
+    grad.pb(220);
+    grad.pb(440);
+    grad.pb(500);
 }
 
 #endif

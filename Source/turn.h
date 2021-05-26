@@ -59,6 +59,44 @@ void turn(int sp, int dt, int tp) {
     stopBC();
 }
 
+void t1w(int sp, int dt, int tp) {
+    if (tp >= 0) {
+        if (tp < 2) {
+            stopC();
+            SpeedMotor(E_Port_B, -1 * (sp));
+            double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
+            while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < abs(dt - 140));
+            while (s3() > black);
+            st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
+            while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < abs(d1w));
+        }
+        else {
+            stopB();
+            SpeedMotor(E_Port_C, sp);
+            double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+            while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(dt - 140));
+            while (s2() > black);
+            st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+            while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(d1w));
+        }
+    }
+    else {
+        if (tp == -1) {
+            stopC();
+            SpeedMotor(E_Port_B, -1 * (sp));
+            double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
+            while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < abs(dt));
+        }
+        else {
+            stopB();
+            SpeedMotor(E_Port_C, sp);
+            double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+            while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(dt));
+        }
+    }
+    stopBC();
+}
+
 ///}@
 
 #endif
