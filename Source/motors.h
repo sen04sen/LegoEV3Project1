@@ -44,8 +44,7 @@ void moveA(int uy) {
         dist = stadegd - 80;
     } else if (uy == 0) {
         dist = stadegd - 45;
-    }
-    else {
+    } else {
         dist = stadegd - 120;
     }
     double st = dist - GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
@@ -96,14 +95,6 @@ void goA(int sp) {
     SpeedMotor(E_Port_A, sp);
 }
 
-void bacup(int sp, int dist, bool stop = true) {
-    SpeedMotor(E_Port_B, -1 * (sp));
-    SpeedMotor(E_Port_C, sp);
-    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dist);
-    if (stop)
-        stopBC();
-}
 
 void goBC(int sp, int uy = 0) {
     if (uy == 0) {
@@ -118,59 +109,10 @@ void goBC(int sp, int uy = 0) {
     }
 }
 
-void moveBNEW(Speed p, int dist) {
-    int home = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium));
-
-    double kUpDist = (((double)p.maxS - (double)p.minS) / (double)p.sEnc);
-    double kDownDist = (((double)p.maxS - (double)p.minS) / (double)p.eEnc);
-
-    int upDist, downDist;
-    if (p.sEnc > 0) upDist = ((int)(p.sEnc)) + home;
-    else upDist = -2147483648;
-    if (p.eEnc > 0) downDist = ((int)((dist - p.zEnc - p.eEnc))) + home;
-    else downDist = 2147483647;
-
-    int way = dist + home;
-
-    double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
-    while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < dist) {
-
-        int encoders = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium));
-
-        int nowSpeed;
-        if (encoders > way) nowSpeed = p.minS;
-        else if (encoders > downDist) nowSpeed = (double)p.maxS - ((double)encoders - (double)downDist) * kDownDist;
-        else if (encoders < upDist) nowSpeed = ((double)encoders - (double)home) * kUpDist + p.minS;
-        else nowSpeed = p.maxS;
-        if (nowSpeed < p.minS) nowSpeed = p.minS;
-
-        SpeedMotor(E_Port_B, -1 * nowSpeed);
-    }
-}
-
-void moveB(int sp, int dist, bool stop = true) {
-    if (sp * dist > 0) {
-        moveBNEW(ONEMOTOR, abs(dist));
-    } else {
-        SpeedMotor(E_Port_B, -1 * (sp));
-        double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
-        while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < dist);
-    }
-    if (stop)
-        stopB();
-}
-
-void moveCNEW(Speed p, int dist) {
+void moveONEMOTOR(E_Motor_Port motor, Speed p, int dist) {
     int home = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium));
 
-    double kUpDist = (((double)p.maxS - (double)p.minS) / (double)p.sEnc);
-    double kDownDist = (((double)p.maxS - (double)p.minS) / (double)p.eEnc);
-
-    int upDist, downDist;
-    if (p.sEnc > 0) upDist = ((int)(p.sEnc)) + home;
-    else upDist = -2147483648;
-    if (p.eEnc > 0) downDist = ((int)((dist - p.zEnc - p.eEnc))) + home;
-    else downDist = 2147483647;
+    Speed_compiled speed = Speed_compiled(p, dist);
 
     int way = dist + home;
 
@@ -179,18 +121,27 @@ void moveCNEW(Speed p, int dist) {
 
         int encoders = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium));
 
-        int nowSpeed;
-        if (encoders > way) nowSpeed = p.minS;
-        else if (encoders > downDist) nowSpeed = (double)p.maxS - ((double)encoders - (double)downDist) * kDownDist;
-        else if (encoders < upDist) nowSpeed = ((double)encoders - (double)home) * kUpDist + p.minS;
-        else nowSpeed = p.maxS;
-        if (nowSpeed < p.minS) nowSpeed = p.minS;
+        int nowSpeed = speed(encoders - home);
 
         SpeedMotor(E_Port_C, nowSpeed);
     }
 }
 
-void moveC(int sp, int dist, bool stop = true) {
+void moveBNEW(Speed p, int dist) { moveONEMOTOR(E_Port_B, p, dist); }
+
+void moveB(int sp, int dist) {
+    if (sp * dist > 0) {
+        moveBNEW(ONEMOTOR, abs(dist));
+    } else {
+        SpeedMotor(E_Port_B, -1 * (sp));
+        double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
+        while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < dist);
+    }
+}
+
+void moveCNEW(Speed p, int dist) { moveONEMOTOR(E_Port_C, p, dist); }
+
+void moveC(int sp, int dist) {
     if (sp * dist > 0) {
         moveCNEW(ONEMOTOR, abs(dist));
     } else {
@@ -198,8 +149,6 @@ void moveC(int sp, int dist, bool stop = true) {
         double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
         while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dist);
     }
-    if (stop)
-        stopC();
 }
 
 void moveD(int sp, int dist) {
@@ -226,48 +175,26 @@ void moveD(int sp, int dist) {
     Идея в том, что и движение вперед и линия и поворот могли работать из одного и того же объекто класс Speed
     \todo воплотить ее (полсе вторника)
 */
-void moveBCNEW(Speed p, int dist, bool stop = true) {
+void moveBCNEW(Speed p, int dist) {
+    int home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
+                GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
 
-    if (dist > 0) {
-        int home = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 +
-                   GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+    Speed_compiled speed = Speed_compiled(p, dist);
 
-        double kUpDist = 0.5 * (((double) p.maxS - (double) p.minS) / (double) p.sEnc);
-        double kDownDist = 0.5 * (((double) p.maxS - (double) p.minS) / (double) p.eEnc);
+    int way = dist + home;
 
-        int upDist, downDist;
-        if (p.sEnc > 0) upDist = ((int) (p.sEnc * 2)) + home;
-        else upDist = -2147483648;
-        if (p.eEnc > 0) downDist = ((int) ((dist - p.zEnc - p.eEnc) * 2)) + home;
-        else downDist = 2147483647;
+    bool stop = 0; // флаг завершения
+    while (!stop) {
 
-        int way = dist * 2 + home;
+        int encoders = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
+                        GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home;
 
-        bool stop = 0; // флаг завершения
-        for (int count = 0; !stop; count++) {
+        if (encoders >= way) stop = 1;
 
-            int encoders;
-            encoders = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) * -1 +
-                       GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+        int nowSpeed = speed(encoders - home);
 
-            int nowSpeed;
-            if (encoders > way - 100 * 2) nowSpeed = p.minS;
-            else if (encoders > downDist)
-                nowSpeed = (double) p.maxS - ((double) encoders - (double) downDist) * kDownDist;
-            else if (encoders < upDist) nowSpeed = ((double) encoders - (double) home) * kUpDist + p.minS;
-            else nowSpeed = p.maxS;
-            if (nowSpeed < p.minS) nowSpeed = p.minS;
-
-            if (encoders >= way) stop = 1;
-
-            SpeedMotor(E_Port_B, -1 * nowSpeed);
-            SpeedMotor(E_Port_C, nowSpeed);
-        }
-    } else if (dist < 0) {
-        SpeedMotor(E_Port_B, -1 * p.maxS);
-        SpeedMotor(E_Port_C, p.maxS);
-        double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-        while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dist);
+        SpeedMotor(E_Port_B, -1 * nowSpeed);
+        SpeedMotor(E_Port_C, nowSpeed);
     }
 }
 
@@ -279,10 +206,10 @@ void moveBCNEW(Speed p, int dist, bool stop = true) {
     \todo Убрать это костыль (после вторника)
     Вперед едет с ускорением, назад без него
 */
-void moveBC(int s, int dist, bool stop = true) {
-    /*if (dist > 0 && s > 0) {
-        moveBCNEW(Speed(100, 20, 0, 0, 250, 250, 70), dist, stop);
-    } else {*/
+void moveBC(int s, int dist) {
+    if (dist > 0 && s > 0) {
+        moveBCNEW(MOVEBC, dist);
+    } else {
         if (dist < 0) {
             dist *= -1;
             s *= -1;
@@ -291,8 +218,7 @@ void moveBC(int s, int dist, bool stop = true) {
         SpeedMotor(E_Port_C, s);
         double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
         while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(dist));
-    //}
-    if (stop) stopBC(); // финальное торможение
+    }
 }
 
 
