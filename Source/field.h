@@ -53,7 +53,7 @@ struct DoubleMarker {
     \param _right Цыфра правого маркера
     \return Возвращает Двойной маркер
     */
-    DoubleMarker(int newLeft, int newRight) : left(Color(newLeft)), right(Color(newRight)) {}
+    DoubleMarker(int _left, int _right) : left(Color(_left)), right(Color(_right)) {}
 };
 
 

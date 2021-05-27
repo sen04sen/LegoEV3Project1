@@ -938,7 +938,12 @@ int EV3_main()
 {
     CreateThread(okonchanie, 0);
     Clear_Display();
-    buildDegreesConstants();
+    DoubleMarker a = read_home();
+    write(10, 10, (int)a.left);
+    write(50, 50, (int)a.right);
+    wait(5000);
+    return 0;
+    /*buildDegreesConstants();
     buildg();
     int ender = 0;
     int* a[1000000];
@@ -1105,5 +1110,5 @@ int EV3_main()
         nv = 66;
         put_loops_4(2);
     }
-    return 0;
+    return 0;*/
 }

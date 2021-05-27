@@ -105,18 +105,18 @@ public:
     void close() { active = false; }    ///< \brief Делает ребро неактивным
 
     static void close(int index) {
-        for (auto &i : g)
-            for (auto &j : i) {
-                if (j.index == index)
-                    j.close();
+        for (int i = 0; i < g.size(); ++i)
+            for (int j = 0; j < g[i].size(); ++i) {
+                if (g[i][j].index == index)
+                    g[i][j].close();
             }
     }
 
     static void open(int index) {
-        for (auto &i : g)
-            for (auto &j : i) {
-                if (j.index == index)
-                    j.open();
+        for (int i = 0; i < g.size(); ++i)
+            for (int j = 0; j < g[i].size(); ++i) {
+                if (g[i][j].index == index)
+                    g[i][j].open();
             }
     }
 };

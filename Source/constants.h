@@ -59,6 +59,7 @@ Speed ZERO = Speed(90, 20, 0.45, 1, 100, 300, 300, 100);     ///< Настрой
 Speed ONEMOTOR = Speed(100, 20, 0, 0, 100, 100, 150, 50);    ///< Для moveB или moveС
 Speed MOVEBC = Speed(100, 20, 0, 0, 100, 250, 250, 70);      ///< Для moveBC
 Speed TURN = Speed(100, 15, 0, 0, 100, 300, 300, 50);        ///< Для turn
+Speed READ = Speed(30, 20, 0.5, 0.3, 100, 50, 50, 30);       ///< Для чтения
 ///}@
 
 #define pb push_back
