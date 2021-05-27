@@ -43,8 +43,8 @@ void wait(int time) {
 \param forConvert Что-то, что можно через << выводить
 \return string
 */
-template<class T>
-string str(T forConvert) {
+template<class IT>
+string str(IT forConvert) {
     ostringstream ss;
     ss << forConvert;
     return ss.str();
@@ -72,8 +72,8 @@ public:
 \param uy Что-то для вывода
 Работает аналогично str()
 */
-template<class T>
-void write(int x, int y, T uy) {
+template<class IT>
+void write(int x, int y, IT uy) {
     string a = str(uy);
     Draw_Text(x, y, E_Font_Normal, 0, &(a[0]));
 }

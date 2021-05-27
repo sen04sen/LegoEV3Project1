@@ -6,6 +6,7 @@
 #ifndef field_h
 #define field_h
 
+
 /*!
     \defgroup field Поле
     \brief Модуль, содержащей в себе класс поля и сопутствующие ему элементы
@@ -187,9 +188,21 @@ struct Field {
         return ans;
     }
 
-    int how_1(Color clr) { return count(hom1.begin(), hom1.end(), clr); }
-    int how_2(Color clr) { return count(hom2.begin(), hom2.end(), clr); }
-    int how_3(Color clr) { return count(hom3.begin(), hom3.end(), clr); }
+    int how_1(Color clr) { 
+        int ans = 0;
+        for (int i = 0; i < hom1.size(); ++i) if (hom1[i] = clr) ans++;
+        return  ans;
+    }
+    int how_2(Color clr) {
+        int ans = 0;
+        for (int i = 0; i < hom2.size(); ++i) if (hom2[i] = clr) ans++;
+        return  ans;
+    }
+    int how_3(Color clr) {
+        int ans = 0;
+        for (int i = 0; i < hom3.size(); ++i) if (hom3[i] = clr) ans++;
+        return  ans;
+    }
 };
 
 Field StandartInit() {
