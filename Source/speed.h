@@ -50,7 +50,7 @@ class Speed_compiled {
 public:
     Speed_compiled(Speed _p, int _way, bool _uping = true, bool _downing = true) {
         p = _p;
-        way = _way;
+        way = abs(_way);
         uping = _uping;
         downing = _downing;
     }

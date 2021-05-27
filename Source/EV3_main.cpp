@@ -2169,26 +2169,34 @@ int EV3_main()
 {
     CreateThread(okonchanie, 0);
     Clear_Display();
-    CreateThread(okonchanie, 0);
+    wait(5000);
+    moveC(0, -500);
+    wait(5000);
+    line(0, 300, 4);
+    stopBC();
+    wait(1000);
+    moveBC(0, 100);
+    stopBC();
+    wait(1000);
+    moveC(0, -500);
+    stopBC();
+    wait(1000);
+    DoubleMarker a = read_home();
+    stopBC();
+    wait(1000);
+    moveBC(0, -340);
+    stopBC();
+    wait(1000);
+    write(10, 10, int(a.left));
+    write(40, 40, int(a.right));
+    wait(5000);
+    return 0;
     //s1();
     s2();
     s3();
     gclr(4);
     buildDegreesConstants();
     buildg();
-    int ender = 0;
-    int* a[1000000];
-    try {
-        for (int i = 0; i < 1000000; ++i) {
-            a[i] = new int[how];
-            ender++;
-        }
-    }
-    catch (...) {
-        write(10, 10, ender);
-    }
-    write(90, 90, ender);
-    wait(5000);
     //vivod_h();
     /*goD(speedD);
     wait(950);
