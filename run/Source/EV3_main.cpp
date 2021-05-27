@@ -2168,8 +2168,8 @@ const int how = 100000;
 
 int EV3_main()
 {
-    CreateThread(okonchanie, 0);
-    CreateThread(control, 0);
+    CreateThread(okonchanie, nullptr);
+    CreateThread(control, nullptr);
     Clear_Display();
     while (true) {
         how_a = 50;
