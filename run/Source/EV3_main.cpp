@@ -2173,7 +2173,7 @@ int EV3_main()
     Clear_Display();
     while (true) {
         how_a = 50;
-        wait(500);
+        wait(5000);
         how_a = 100;
         wait(3000);
     }
