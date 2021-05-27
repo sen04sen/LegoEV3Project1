@@ -78,6 +78,8 @@ struct Field {
     int cnt3;                  ///< Количество кубиков в 3 доме
     int cntutils;
 
+    Color B;
+
     Color yellowA1;            ///< Кубик в ближайшей желтой A зоне
     Color yellowA2;
     Color yellowA3;
@@ -180,12 +182,12 @@ struct Field {
         batteryLeft = batteryRight = DONOTKNOW;
     }
 
-    int gdeb() {
-        int ans = 0;
-        if (yellowB1 == YELLOW || yellowB2 == YELLOW || yellowB3 == YELLOW || yellowB4 == YELLOW) ans = 4;
-        if (greenB1 == GREEN || greenB2 == GREEN || greenB3 == GREEN || greenB4 == GREEN) ans = 3;
-        if (blueB1 == BLUE || blueB2 == BLUE || blueB3 == BLUE || blueB4 == BLUE) ans = 2;
-        return ans;
+    void gdeb() {
+        Color ans = NONE;
+        if (yellowB1 == YELLOW || yellowB2 == YELLOW || yellowB3 == YELLOW || yellowB4 == YELLOW) ans = YELLOW;
+        if (greenB1 == GREEN || greenB2 == GREEN || greenB3 == GREEN || greenB4 == GREEN) ans = GREEN;
+        if (blueB1 == BLUE || blueB2 == BLUE || blueB3 == BLUE || blueB4 == BLUE) ans = BLUE;
+        B = ans;
     }
 
     int how_1(Color clr) { 

@@ -216,28 +216,14 @@ void get_4_blue() {
 
 
 DoubleMarker gtf() {
-    moveBC(15, -140);
-    gclr(4);
-    turn(15, d90, 0);
-    moveBC(speed, 185);
-    wait(500);
-    int fi = gclr(4);
-    if (fi == 7)
-        fi = 4;
-    if (fi == 1)
-        fi = 2;
-    moveBC(speed, 120);
-    wait(500);
-    int se = gclr(4);
-    if (se == 7)
-        se = 4;
-    if (se == 1)
-        se = 2;
+    moveBC(0, 125);
     stopBC();
-    Clear_Display();
-    write(1, 1, fi);
-    write(51, 1, se);
-    return DoubleMarker(Color(fi), Color(se));
+    moveC(0, -590);
+    stopBC();
+    DoubleMarker a = read_home();
+    moveBC(0, -530);
+    stopBC();
+    return(a);
 }
 
 
@@ -281,11 +267,69 @@ void buildplaces() {
     vertoplaces[31] = 337;
 }
 
+bool is_end(Field f) {
+    if (f.cnt1 == 4 && f.cnt2 == 4 && f.cnt3 == 4 && f.cntutils == 4) {
+        bool m1 = 0, m2 = 0;
+        bool bad = 0;
+        for (int i = 0; i < 4; i++) {
+            if (f.hom1[i] == f.house1.left)
+                m1 = 1;
+            if (f.hom1[i] == f.house1.right)
+                m2 = 1;
+            if (f.hom1[i] != f.B) {
+                bad = 1;
+                break;
+            }
+        }
+        if (bad || !m1 || !m2)
+            return 0;
+        m1 = 0, m2 = 0;
+        bad = 0;
+        for (int i = 0; i < 4; i++) {
+            if (f.hom2[i] == f.house2.left)
+                m1 = 1;
+            if (f.hom2[i] == f.house2.right)
+                m2 = 1;
+            if (f.hom2[i] != f.B) {
+                bad = 1;
+                break;
+            }
+        }
+        if (bad || !m1 || !m2)
+            return 0;
+        m1 = 0, m2 = 0;
+        bad = 0;
+        for (int i = 0; i < 4; i++) {
+            if (f.hom3[i] == f.house3.left)
+                m1 = 1;
+            if (f.hom3[i] == f.house3.right)
+                m2 = 1;
+            if (f.hom3[i] != f.B) {
+                bad = 1;
+                break;
+            }
+        }
+        if (bad || !m1 || !m2)
+            return 0;
+        return 1;
+    }
+    else
+        return 0;
+}
 
 void perebor(Field f, int ndist, vector<int> nway) {
     if (ndist > mindist)
         return;
     nway.pb(f.robot.now_position);
+    if (is_end(f)) {
+        int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[0]);
+        if (mindist < dt + ndist) {
+            nway.pb(0);
+            min_way = nway;
+            mindist = dt + ndist;
+        }
+        return;
+    }
     if (f.robot.how_front < 4) {
         if (f.yellowA1 == 4) {
             int pref = f.robot.now_position;
@@ -579,7 +623,7 @@ void perebor(Field f, int ndist, vector<int> nway) {
             f.robot.now_position = pref;
         }
     }
-    if (f.robot.how_back > 0) {
+    if (f.robot.how_back > 0){
         if (f.cnt1 < 4) {
             if (f.robot.how_back == 2) {
                 if (f.house1.left == f.robot.cback2 || f.house1.right == f.robot.cback2) {
@@ -746,9 +790,63 @@ void perebor(Field f, int ndist, vector<int> nway) {
             }
         }
     }
-    if (f.robot.how_front == 2) {
-        if (f.cntutils < 4) {
-
+    if (f.cntutils < 4) {
+        if (f.robot.how_front == 2) {
+            int pref = f.robot.now_position;
+            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[20]);
+            f.robot.now_position = 20;
+            f.robot.how_front -= 2;
+            f.cntutils += 2;
+            perebor(f, ndist + dt, nway);
+            f.cntutils -= 2;
+            f.robot.how_front += 2;
+            f.robot.now_position = pref;
+        }
+        else if (f.cntutils == 0) {
+            int pref = f.robot.now_position;
+            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[20]);
+            f.robot.now_position = 20;
+            f.robot.how_front -= 4;
+            f.cntutils += 4;
+            perebor(f, ndist + dt, nway);
+            f.cntutils -= 4;
+            f.robot.how_front += 4;
+            f.robot.now_position = pref;
+        }
+        if (f.robot.how_back == 2) {
+            int pref = f.robot.now_position;
+            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[33]);
+            f.robot.now_position = 33;
+            f.robot.how_back -= 2;
+            f.cntutils += 2;
+            perebor(f, ndist + dt, nway);
+            f.cntutils -= 2;
+            f.robot.how_back += 2;
+            f.robot.now_position = pref;
+        }
+        else {
+            if (f.cntutils == 2) {
+                int pref = f.robot.now_position;
+                int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[34]);
+                f.robot.now_position = 34;
+                f.robot.how_back -= 2;
+                f.cntutils += 2;
+                perebor(f, ndist + dt, nway);
+                f.cntutils -= 2;
+                f.robot.how_back += 2;
+                f.robot.now_position = pref;
+            }
+            else {
+                int pref = f.robot.now_position;
+                int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[35]);
+                f.robot.now_position = 35;
+                f.robot.how_back -= 4;
+                f.cntutils += 4;
+                perebor(f, ndist + dt, nway);
+                f.cntutils -= 4;
+                f.robot.how_back += 4;
+                f.robot.now_position = pref;
+            }
         }
     }
 }
@@ -1099,6 +1197,30 @@ void f67() {
     line(speed, grad[10] - dtw, 4);
 }
 
+void f66a() {
+    line(speed, 300 - dws, 4);
+}
+
+void f67a() {
+    line(speed, 300 - dtw, 4);
+}
+
+void f66b() {
+    line(speed, 430 - dws, 4);
+}
+
+void f67b() {
+    line(speed, 430 - dtw, 4);
+}
+
+void f66c() {
+    line(speed, 800 - dws, 4);
+}
+
+void f67c() {
+    line(speed, 800 - dtw, 4);
+}
+
 void f68() {
     d2 = gtf();
 }
@@ -1248,7 +1370,10 @@ void get4blue2() {
 }
 
 void f99() {
-    moveBC(-speed, 430);
+    moveD(speedD, before_take_cubes);
+    moveBC(speed, -300, 0);
+    moveBC(MIN, -100);
+    moveD(speedD, after_take_cubes);
 }
 
 void f100() {
@@ -1257,12 +1382,20 @@ void f100() {
 }
 
 void f101() {
-    moveBC(-speed, 590);
+    moveBC(speed, -590);
 }
 
 void f102() {
     moveBC(speed, 340, 0);
     while (s2() > black);
+}
+
+void f103() {
+    line(speed, grad[6] - dws, 0);
+}
+
+void f104() {
+    line(speed, grad[6] - dtw, 0);
 }
 
 /*void f13() {
@@ -1700,7 +1833,7 @@ void addcrossroad(int v, int u, int r, int d, int l) {
     }
     if (r == 1) {
         g[v + 5].pb(Edge(v + 4, f1l));
-        g[v + 2].pb(Edge(v + 3, f6l));
+        g[v + 2].pb(Edge(v + 3, f6l));  
         g[v + 8].pb(Edge(v + 3, f7l));
         g[v + 7].pb(Edge(v + 4, f4l));
         g[v + 10].pb(Edge(v + 4, f3l));
@@ -1832,12 +1965,13 @@ void buildg() {
 
     add(28, 113, f11);
     add(27, 113, f12);
-    add(118, 59, f11);
-    add(117, 59, f12);
+    add(118, 35, f11);
+    add(117, 35, f12);
 
     add(28, 53, f13);
-    add(27, 52, f14);
+    //add(27, 53, f14);
     add(58, 35, f32);
+    //add(57, 35, f32);
 
     add(118, 59, f15);
     add(117, 59, f16);
@@ -1869,9 +2003,9 @@ void buildg() {
     add(108, 98, f29);
     add(103, 116, f36);
     add(102, 116, f37);
-
+        
     add(97, 86, f38);
-    add(96, 86, f39);
+    //add(96, 86, f39);
     add(91, 104, f40);
     add(90, 104, f41);
 
@@ -1915,6 +2049,15 @@ void buildg() {
 
     add(169, 206, f66);
     add(168, 206, f67);
+
+    add(301, 206, f66a);
+    //add(300, 206, f67a);
+
+    add(193, 206, f66b);
+    add(192, 206, f67b);
+
+    add(181, 206, f66c);
+    add(180, 206, f67c);
 
     add(206, 341, f68);
 
@@ -1975,6 +2118,9 @@ void buildg() {
     add(100, 64, f101);
     add(64, 101, f102);
 
+    add(88, 161, f103);
+    add(87, 161, f104);
+
     /*add(280, 232, f101);
 
     add(235, 224, f102);
@@ -1991,168 +2137,6 @@ void buildg() {
     add(151, 356, f111);
     add(184, 148, f112);
     add(148, 185, f113);*/
-
-
-
-   /* add(15, 25, f13);
-
-    add(25, 26, f14);
-
-    add(26, 120, f15);
-    add(120, 25, f15a);
-    add(120, 23, f15b);
-
-    add(150, 23, f26);
-
-    add(27, 109, f16);
-
-    add(28, 50, f17);
-    add(32, 50, f18);
-    add(42, 36, f17);
-    add(46, 36, f18);
-
-    add(40, 62, f19);
-    add(44, 62, f20);
-    add(54, 48, f19);
-    add(58, 48, f20);
-
-
-    add(52, 74, f21);
-    add(56, 74, f22);
-    add(66, 60, f21);
-    add(70, 60, f22);
-
-    add(64, 86, f23);
-    add(68, 86, f24);
-
-    add(0, 9, f25);
-
-    add(112, 113, f4);
-    add(113, 114, f28);
-    add(114, 113, f29);
-    add(113, 115, f30);
-    add(115, 116, f31);
-
-    add(116, 117, f32);
-    add(117, 119, f33);
-
-    add(119, 116, f34);
-
-    add(151, 59, f35);
-    add(119, 59, f36);
-
-    add(65, 121, f13);
-
-    add(121, 122, f37);
-    add(122, 123, f15);
-    add(123, 121, f15a);
-    add(123, 73, f15b);
-    add(152, 73, f26a);
-
-    add(86, 75, f38);
-    add(75, 97, f39);
-    add(97, 87, f8);
-    add(87, 90, f1);
-    add(90, 124, f40);
-    add(124, 125, f41);
-    add(125, 60, f42);
-    add(125, 74, f43);
-
-    add(109, 99, f44);
-    add(99, 100, f45);
-    add(99, 102, f45x);
-    add(108, 102, f45y);
-    add(110, 100, f45z);
-    add(100, 112, f46);
-
-    add(51, 126, f47);
-    add(126, 127, f48);
-    add(127, 128, f49);
-    add(128, 48, f50);
-    add(128, 62, f51);
-
-    add(59, 131, f52);
-    add(53, 131, f53);
-    add(131, 53, f54);
-
-    add(22, 129, f55);
-    add(129, 130, f56);
-    add(130, 129, f57);
-
-    add(129, 22, f58);
-    add(129, 38, f59);
-
-    add(50, 132, f60);
-    add(36, 132, f61);
-    add(132, 133, f62);
-    add(133, 132, f63);
-    add(132, 50, f64);
-    add(132, 36, f65);
-    add(48, 134, f66);
-    add(44, 134, f67);
-    add(134, 135, f68);
-    add(135, 134, f69);
-    add(134, 48, f70);
-    add(134, 62, f71);
-
-    /*add(23, 136, twb);
-    add(137, 25, f72);
-    add(136, 38, f73);
-
-    add(60, 138, twb);
-    add(59, 139, twc);
-    add(62, 138, twc);
-    add(59, 140, twb);
-    add(138, 116, f74);
-    add(140, 48, f75);
-    add(139, 74, f76);
-
-    add(73, 142, twc);
-    add(141, 121, f77);
-    add(142, 60, f78);*/
-
-    /*add(112, 115, f79);
-    add(0, 9, f80);
-    add(130, 146, f81);
-    add(146, 109, f82);
-    add(146, 35, f83);
-    add(27, 144, f84);
-    add(101, 144, f85);
-    add(144, 145, f86);
-    add(145, 147, f87);
-    add(147, 22, f88);
-    add(147, 38, f89);
-    add(41, 137, f90);
-    add(137, 41, f91);
-    add(40, 139, f92);
-    add(139, 140, f93);
-    add(140, 141, f94);
-    add(141, 116, f95);
-    add(141, 59, f96);
-    add(54, 139, f97);
-    add(54, 48, f98);
-    add(40, 62, f99);
-    add(52, 142, f100);
-    add(142, 143, f101);
-    add(143, 138, f102);
-    add(143, 147, f103);
-    add(147, 116, f104);
-    add(147, 59, f105);
-    add(51, 148, f106);
-    add(148, 149, f107);
-    add(149, 138, f108);
-    add(149, 125, f109);
-    add(25, 150, f110);
-    add(116, 151, f111);
-    add(121, 152, f112);
-    add(151, 153, f113);
-    add(153, 154, f114);
-    add(154, 113, f115);
-    add(154, 108, f116);
-    add(102, 155, f117);
-    add(155, 156, f118);
-    add(156, 155, f119);
-    add(155, 110, f120);*/
 }
 
 void vivod_h() {
@@ -2171,42 +2155,19 @@ int EV3_main()
     CreateThread(okonchanie, 0);
     CreateThread(control, 0);
     Clear_Display();
-    while (true) {
-        how_a = 500;
-        waitA();
-        how_a = 100;
-        waitA();
-    }
-    return 0;
-    line(MIN, 300, 4);
-    moveBC(0, 125);
-    stopBC();
-    moveC(0, -590);
-    stopBC();
-    DoubleMarker a = read_home();
-    moveBC(0, -530);
-    stopBC();
-    write(10, 10, int(a.left));
-    write(40, 40, int(a.right));
-    wait(5000);
-    return 0;
-    //s1();
-    s2();
     s3();
+    s2();
     gclr(4);
     buildDegreesConstants();
     buildg();
     //vivod_h();
-    /*goD(speedD);
-    wait(950);
-    goD(0);
-    goA(20);
+    goD(-speedD);
     wait(500);
+    goD(0);
+    goA(-20);
+    wait(400);
     stopA();
-    moveA(1);*/
-    go(speed, 7, 67);
-    go(speed, 67, 206);
-    stopBC();
+    go(speed, 119, 44);
     return 0;
     go(speed, 0, 26);
     nv = 26;

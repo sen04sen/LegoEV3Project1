@@ -15,6 +15,7 @@
 ///@{
 
 void turn(int sp, int dt, int tp) {
+    stopBC();
     if (tp >= 0) {
         if (tp < 2 || tp == 4) {
             SpeedMotor(E_Port_B, -1 * (sp));

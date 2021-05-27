@@ -102,7 +102,7 @@ void line(Speed p, int dist, int type, bool uping = true, bool downing = true, i
                 error = (double) (s3() - bley) * 3 / 3;
                 break;
             case 4:
-                error = (double) (grey - s2()) * 3 / 3;
+                error = (double) (grey - s2()) * 5 / 3;
                 break;
             case 7:
                 error = s2() - grey;
