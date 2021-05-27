@@ -2120,6 +2120,19 @@ int EV3_main()
 {
     CreateThread(okonchanie, 0);
     Clear_Display();
+
+    line(MIN, 300, 4);
+    moveBC(0, 125);
+    stopBC();
+    moveC(0, -590);
+    stopBC();
+    DoubleMarker a = read_home();
+    moveBC(0, -530);
+    stopBC();
+    write(10, 10, int(a.left));
+    write(40, 40, int(a.right));
+    wait(5000);
+    return 0;
     s2();
     s3();
     gclr(4);
