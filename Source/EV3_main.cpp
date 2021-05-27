@@ -583,8 +583,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
             if (f.robot.how_back == 2) {
                 if (f.house1.left == f.robot.cback2 || f.house1.right == f.robot.cback2) {
                     int pref = f.robot.now_position;
-                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[30]);
-                    f.robot.now_position = 30;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[26]);
+                    f.robot.now_position = 26;
                     f.robot.how_back -= 2;
                     f.cnt1 += 2;
                     f.hom1.pb(f.robot.cback2);
@@ -638,8 +638,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
             if (f.robot.how_back == 2) {
                 if (f.house2.left == f.robot.cback2 || f.house2.right == f.robot.cback2) {
                     int pref = f.robot.now_position;
-                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[8]);
-                    f.robot.now_position = 8;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[4]);
+                    f.robot.now_position = 4;
                     f.robot.how_back -= 2;
                     f.cnt2 += 2;
                     f.hom2.pb(f.robot.cback2);
@@ -693,8 +693,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
             if (f.robot.how_back == 2) {
                 if (f.house3.left == f.robot.cback2 || f.house3.right == f.robot.cback2) {
                     int pref = f.robot.now_position;
-                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[18]);
-                    f.robot.now_position = 18;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[16]);
+                    f.robot.now_position = 14;
                     f.robot.how_back -= 2;
                     f.cnt3 += 2;
                     f.hom3.pb(f.robot.cback2);
