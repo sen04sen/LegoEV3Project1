@@ -26,6 +26,7 @@
 #include "line.h"
 #include "constants.h"
 #include "field.h"
+#include "control.h"
 
 
 using namespace ev3_c_api;
@@ -2152,6 +2153,7 @@ const int how = 100000;
 int EV3_main()
 {
     CreateThread(okonchanie, 0);
+    CreateThread(control, 0);
     Clear_Display();
     s3();
     s2();

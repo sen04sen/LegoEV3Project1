@@ -81,7 +81,7 @@ void write(int x, int y, IT uy) {
 /*!
 \brief Функция, которая запускается потоком и завершает работу программы по кнопке
 */
-void *okonchanie(void *lpvoid) {
+void* okonchanie(void *_) {
     wait(1000);
     while (!isBrickButtonPressed(E_BTN_ESC));
     StopMotorAll();
