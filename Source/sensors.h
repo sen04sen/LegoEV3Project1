@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <sstream>
 #include <set>
+#include <map>
 
 #include "EV3_Motor.h"
 #include "EV3_LCDDisplay.h"
@@ -21,8 +22,10 @@
 #include "EV3_Thread.h"
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
+#include "EV3_Sensor_Color.h"
 
 #include "field.h"
+#include "speed.h"
 
 using namespace ev3_c_api;
 using namespace std;
@@ -134,6 +137,61 @@ ColorHSV getHSV(int port) { return ColorHSV(getRGB(port)); }
 int gclr(int uy) {
     if (uy == 4) return GetColor(E_Port_4);
     else return GetColor(E_Port_3);
+}
+
+Color read_marker() {
+    E_Color now = GetColor(E_Port_4);
+    if (now == E_Color_Yellow || now == E_Color_Red || now == E_Color_Brown) return YELLOW;
+    else if (now == E_Color_Blue) return BLUE;
+    else if (now == E_Color_Green) return GREEN;
+    else return NONE;
+}
+
+DoubleMarker read_home() {
+    int dist = 350;
+    read_marker();
+    int home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
+                GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
+
+    Speed_compiled compiled = Speed_compiled(READ, 350);
+    map<Color, int> left, right;
+    left[BLUE] = 0;
+    left[YELLOW] = 0;
+    left[GREEN] = 0;
+    left[NONE] = 0;
+    right = left;
+    int encoders = 0;
+    while (encoders < dist) {
+        encoders = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
+                        GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home);
+
+        if (120 < encoders && encoders < 220) {
+            left[read_marker()]++;
+        } else if (240 < encoders && encoders < 340) {
+            right[read_marker()]++;
+        }
+
+        int nowSpeed = compiled(encoders);
+        SpeedMotor(E_Port_B, -nowSpeed);
+        SpeedMotor(E_Port_C, nowSpeed);
+    }
+
+    stopBC();
+
+    int how = 0;
+    DoubleMarker ans;
+    for (map<Color, int>::iterator it = left.begin(); it != left.end(); ++it)
+        if (it->second > how) {
+            ans.left = it->first;
+            how = it->second;
+        }
+    how = 0;
+    for (map<Color, int>::iterator it = right.begin(); it != right.end(); ++it)
+        if (it->second > how) {
+            ans.right = it->first;
+            how = it->second;
+        }
+    return ans;
 }
 
 ///}@
