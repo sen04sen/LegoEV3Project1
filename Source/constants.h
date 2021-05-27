@@ -10,6 +10,9 @@
 #include "edge.h"
 #include "speed.h"
 
+
+
+const int cntplaces = 32;
 const int maxv = 500;
 const int ce = 21 * 2;
 const int ver = 22;

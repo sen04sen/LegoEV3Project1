@@ -68,9 +68,14 @@ struct Field {
     DoubleMarker house2;       ///< Двойной маркер у 2 дома
     DoubleMarker house3;       ///< Двойной маркер у 3 дома
 
+    vector<Color> hom1;
+    vector<Color> hom2;
+    vector<Color> hom3;
+
     int cnt1;                  ///< Количество кубиков в 1 доме
     int cnt2;                  ///< Количество кубиков в 2 доме
     int cnt3;                  ///< Количество кубиков в 3 доме
+    int cntutils;
 
     Color yellowA1;            ///< Кубик в ближайшей желтой A зоне
     Color yellowA2;
@@ -86,7 +91,6 @@ struct Field {
     Color blueA2;
     Color blueA3;
     Color blueA4;
-
 
     Color yellowB1;
     Color yellowB2;
@@ -104,13 +108,15 @@ struct Field {
     Color blueB4;
 	
 	struct Robot {
-    Color front, back;
+    Color cfront1, cfront2, cback1, cback2;
     int how_front, how_back, now_position;
 
     Robot() {
-        front = NONE;
         how_front = 0;
-        back = NONE;
+        cfront1 = NONE;
+        cfront2 = NONE;
+        cback1 = NONE;
+        cback2 = NONE;
         how_back = 0;
         now_position = -1;
     }
@@ -160,7 +166,7 @@ struct Field {
 
     Field(Mode newMode) : mode(newMode) {
         house1 = house2 = house3 = DoubleMarker(NOREAD, NOREAD);
-        cnt1 = cnt2 = cnt3 = 0;
+        cnt1 = cnt2 = cnt3 = cntutils = 0;
 
         yellowA1 = yellowA2 = yellowA3 = yellowA4 = NOREAD;
         greenA1 = greenA2 = greenA3 = greenA4 = NOREAD;
@@ -180,6 +186,10 @@ struct Field {
         if (blueB1 == BLUE || blueB2 == BLUE || blueB3 == BLUE || blueB4 == BLUE) ans = 2;
         return ans;
     }
+
+    int how_1(Color clr) { return count(hom1.begin(), hom1.end(), clr); }
+    int how_2(Color clr) { return count(hom2.begin(), hom2.end(), clr); }
+    int how_3(Color clr) { return count(hom3.begin(), hom3.end(), clr); }
 };
 
 Field StandartInit() {

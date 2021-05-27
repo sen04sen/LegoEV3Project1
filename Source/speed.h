@@ -70,11 +70,11 @@ public:
                 up_sp = double(now_dist - p.normal_enc) * double(p.max_sp - p.min_sp) / double(p.up_enc) +
                         double(p.min_sp);
             }
-            speed_Speed_compiled = min(down_sp, up_sp);
+            speed = min(down_sp, up_sp);
         }
-        if (speed_Speed_compiled < p.min_sp) speed_Speed_compiled = p.min_sp;
+        if (speed < p.min_sp) speed = p.min_sp;
 
-        return speed_Speed_compiled;
+        return speed;
     }
 };
 

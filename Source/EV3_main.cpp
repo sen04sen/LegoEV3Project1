@@ -75,6 +75,46 @@ int go(int sp, int from, int toto) {
     return way.size();
 }
 
+int diist(int from, int toto) {
+    pair<pair<double, int>, Edge> msgo[maxv];
+    for (int i = 0; i < maxv; i++) {
+        msgo[i].first.first = (double)1000000000;
+        msgo[i].first.second = -1;
+    }
+    msgo[from].first.first = (double)0;
+    set<pair<double, int> > st;
+    st.insert(make_pair((double)0, from));
+    bool end = 0;
+    while (!st.empty()) {
+        double dd = st.begin()->first;
+        int v = st.begin()->second;
+        st.erase(st.begin());
+        for (int i = 0; i < g[v].size(); i++) {
+            int to = g[v][i].getTo();
+            if (dd + g[v][i].getTime() < msgo[to].first.first) {
+                st.erase(make_pair(msgo[to].first.first, to));
+                msgo[to].first.first = dd + g[v][i].getTime();
+                msgo[to].first.second = v;
+                msgo[to].second = g[v][i];
+                if (to == toto) {
+                    end = 1;
+                    break;
+                }
+                st.insert(make_pair(msgo[to].first.first, to));
+            }
+        }
+        if (end)
+            break;
+    }
+    vector<Edge> way;
+    int nv = toto;
+    while (nv != from) {
+        way.pb(msgo[nv].second);
+        nv = msgo[nv].first.second;
+    }
+    return way.size();
+}
+
 Field field = StandartInit();
 DoubleMarker& d1 = field.house1;
 DoubleMarker& d2 = field.house2;
@@ -171,49 +211,6 @@ void get_4_blue() {
     speedD = lala;
 }
 
-void turn_bat() {
-    stopBC();
-    moveD(speedD, 0);
-    moveC(speed, 70, 1);
-    moveB(speed, 70, 1);
-    moveBC(10, 130, 1);
-    moveD(15, 230);
-    moveB(-speed, 30, 1);
-    moveD(speedD, 250);
-    moveBC(speed, -60, 1);
-    moveD(speedD, 520);
-    turn(speed, d90 - 20, 3);
-    line(speed, 320, 0);
-    stopBC();
-    turn(speed, d90, 0);
-    moveBC(speed, -60, 1);
-    moveD(speedD, 20);
-    moveBC(speed, 180, 1);
-    moveD(15, 230);
-    moveB(-speed, 30, 1);
-    moveD(speedD, 250);
-    moveBC(speed, -90, 1);
-    moveD(speedD, 520);
-    moveBC(speed, -60, 1);
-    turn(speed, d90 - 30, 0);
-    turn(speed, 60, -1);
-    lineNEW(ONE, 50, 7);
-    moveBC(speed, dsl, 0);
-    lineNEW(ONE, 510, 8);
-    stopBC();
-    wait(5000);
-    getRGB(2);
-    moveBC(speed, 70, 1);
-    stopBC();
-    wait(5000);
-    return;
-    goBC(speed);
-    while (getRGB(2).b < 100);
-    s2();
-    moveBC(speed, 70, 1);
-    turn(speed, d90, 3);
-}
-
 
 DoubleMarker gtf() {
     moveBC(15, -140);
@@ -242,12 +239,515 @@ DoubleMarker gtf() {
 
 
 vector<int> min_way;
-int min_time = 1000000000;
+int mindist = 1000000000;
+int vertoplaces[cntplaces];
+int distplaces[cntplaces][cntplaces];
+
+void buildplaces() {
+    vertoplaces[0] = 7;
+    vertoplaces[1] = 338;
+    vertoplaces[2] = 339;
+    vertoplaces[3] = 340;
+    vertoplaces[4] = 206;
+    vertoplaces[5] = 347;
+    vertoplaces[6] = 348;
+    vertoplaces[7] = 349;
+    vertoplaces[8] = 350;
+    vertoplaces[9] = 342;
+    vertoplaces[10] = 238;
+    vertoplaces[11] = 235;
+    vertoplaces[12] = 232;
+    vertoplaces[13] = 347;
+    vertoplaces[14] = 260;
+    vertoplaces[15] = 351;
+    vertoplaces[16] = 352;
+    vertoplaces[17] = 353;
+    vertoplaces[18] = 354;
+    vertoplaces[19] = 346;
+    vertoplaces[20] = 344;
+    vertoplaces[21] = 151;
+    vertoplaces[22] = 148;
+    vertoplaces[23] = 343;
+    vertoplaces[24] = 67;
+    vertoplaces[25] = 64;
+    vertoplaces[26] = 44;
+    vertoplaces[27] = 355;
+    vertoplaces[28] = 356;
+    vertoplaces[29] = 357;
+    vertoplaces[30] = 358;
+    vertoplaces[31] = 337;
+}
 
 
+void perebor(Field f, int ndist, vector<int> nway) {
+    if (ndist > mindist)
+        return;
+    nway.pb(f.robot.now_position);
+    if (f.robot.how_front < 4) {
+        if (f.yellowA1 == 4) {
+            int pref = f.robot.now_position;
+            if (f.robot.how_front == 2) {
+                f.robot.cfront2 = YELLOW;
+            }
+            else {
+                f.robot.cfront1 = YELLOW;
+            }
+            f.robot.how_front += 2;
+            f.yellowA1 = NONE;
+            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[1]);
+            f.robot.now_position = 1;
+            perebor(f, ndist + dt, nway);
+            f.robot.how_front -= 2;
+            f.yellowA1 = YELLOW;
+            f.robot.now_position = pref;
+        }
+        if (f.yellowA3 == 4) {
+            int pref = f.robot.now_position;
+            if (f.robot.how_front == 2) {
+                f.robot.cfront2 = YELLOW;
+            }
+            else {
+                f.robot.cfront1 = YELLOW;
+            }
+            f.robot.how_front += 2;
+            f.yellowA3 = NONE;
+            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[3]);
+            f.robot.now_position = 3;
+            perebor(f, ndist + dt, nway);
+            f.robot.how_front -= 2;
+            f.yellowA3 = YELLOW;
+            f.robot.now_position = pref;
+        }
+    }
+    if (f.robot.how_front == 0) {
+        if (f.yellowB1 == 4) {
+            int pref = f.robot.now_position;
+            f.robot.how_front += 4;
+            f.robot.cfront1 = YELLOW;
+            f.robot.cfront2 = YELLOW;
+            f.yellowB1 = NONE;
+            int dt1 = diist(vertoplaces[f.robot.now_position], vertoplaces[24]);
+            int dt2 = diist(vertoplaces[f.robot.now_position], vertoplaces[25]);
+            if (dt1 > dt2) {
+                f.robot.now_position = 25;
+                perebor(f, ndist + dt2, nway);
+            }
+            else {
+                f.robot.now_position = 24;
+                perebor(f, ndist + dt1, nway);
+            }
+            f.yellowB1 = YELLOW;
+            f.robot.how_front = 0;
+            f.robot.now_position = pref;
+        }
+        if (f.greenB1 == 3) {
+            int pref = f.robot.now_position;
+            f.robot.how_front += 4;
+            f.robot.cfront1 = GREEN;
+            f.robot.cfront2 = GREEN;
+            f.greenB1 = NONE;
+            int dt1 = diist(vertoplaces[f.robot.now_position], vertoplaces[21]);
+            int dt2 = diist(vertoplaces[f.robot.now_position], vertoplaces[22]);
+            if (dt1 > dt2) {
+                f.robot.now_position = 22;
+                perebor(f, ndist + dt2, nway);
+            }
+            else {
+                f.robot.now_position = 21;
+                perebor(f, ndist + dt1, nway);
+            }
+            f.greenB1 = GREEN;
+            f.robot.how_front = 0;
+            f.robot.now_position = pref;
+        }
+        if (f.blueB1 == 2) {
+            int pref = f.robot.now_position;
+            f.robot.how_front += 4;
+            f.robot.cfront1 = BLUE;
+            f.robot.cfront2 = BLUE;
+            f.blueB1 = NONE;
+            int dt1 = diist(vertoplaces[f.robot.now_position], vertoplaces[10]);
+            int dt2 = diist(vertoplaces[f.robot.now_position], vertoplaces[11]);
+            if (dt1 > dt2) {
+                f.robot.now_position = 10;
+                perebor(f, ndist + dt2, nway);
+            }
+            else {
+                f.robot.now_position = 11;
+                perebor(f, ndist + dt1, nway);
+            }
+            f.blueB1 = BLUE;
+            f.robot.how_front = 0;
+            f.robot.now_position = pref;
+        }
+    }
+    if (f.robot.how_front > 0) {
+        if (f.cnt1 < 4) {
+            if (f.robot.how_front == 2) {
+                if (f.house1.left == f.robot.cfront1 || f.house1.right == f.robot.cfront1) {
+                    int pref = f.robot.now_position;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[28]);
+                    f.robot.now_position = 28;
+                    f.robot.how_front -= 2;
+                    f.cnt1 += 2;
+                    f.hom1.pb(f.robot.cfront1);
+                    f.hom1.pb(f.robot.cfront1);
+                    perebor(f, ndist + dt, nway);
+                    f.cnt1 -= 2;
+                    f.hom1.pop_back();
+                    f.hom1.pop_back();
+                    f.robot.how_front += 2;
+                    f.robot.now_position = pref;
+                }
+            }
+            else {
+                if (f.house1.left == f.robot.cfront2 || f.house1.right == f.robot.cfront2) {
+                    int pref = f.robot.now_position;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[27]);
+                    f.robot.now_position = 27;
+                    f.robot.how_front -= 2;
+                    f.cnt1 += 2;
+                    f.hom1.pb(f.robot.cfront2);
+                    f.hom1.pb(f.robot.cfront2);
+                    perebor(f, ndist + dt, nway);
+                    f.cnt1 -= 2;
+                    f.hom1.pop_back();
+                    f.hom1.pop_back();
+                    f.robot.how_front += 2;
+                    f.robot.now_position = pref;
+                    if ((f.house1.left == f.robot.cfront1 || f.house1.right == f.robot.cfront1) && f.cnt1 == 0) {
+                        int pref = f.robot.now_position;
+                        int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[28]);
+                        f.robot.now_position = 28;
+                        f.robot.how_front -= 4;
+                        f.cnt1 += 4;
+                        f.hom1.pb(f.robot.cfront1);
+                        f.hom1.pb(f.robot.cfront1);
+                        f.hom1.pb(f.robot.cfront2);
+                        f.hom1.pb(f.robot.cfront2);
+                        perebor(f, ndist + dt, nway);
+                        f.cnt1 -= 4;
+                        f.hom1.pop_back();
+                        f.hom1.pop_back();
+                        f.hom1.pop_back();
+                        f.hom1.pop_back();
+                        f.robot.how_front += 4;
+                        f.robot.now_position = pref;
+                    }
+                }
+            }
+        }
+        if (f.cnt2 < 4) {
+            if (f.robot.how_front == 2) {
+                if (f.house2.left == f.robot.cfront1 || f.house2.right == f.robot.cfront1) {
+                    int pref = f.robot.now_position;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[6]);
+                    f.robot.now_position = 6;
+                    f.robot.how_front -= 2;
+                    f.cnt2 += 2;
+                    f.hom2.pb(f.robot.cfront1);
+                    f.hom2.pb(f.robot.cfront1);
+                    perebor(f, ndist + dt, nway);
+                    f.cnt2 -= 2;
+                    f.hom2.pop_back();
+                    f.hom2.pop_back();
+                    f.robot.how_front += 2;
+                    f.robot.now_position = pref;
+                }
+            }
+            else {
+                if (f.house2.left == f.robot.cfront2 || f.house2.right == f.robot.cfront2) {
+                    int pref = f.robot.now_position;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[5]);
+                    f.robot.now_position = 5;
+                    f.robot.how_front -= 2;
+                    f.cnt2 += 2;
+                    f.hom2.pb(f.robot.cfront2);
+                    f.hom2.pb(f.robot.cfront2);
+                    perebor(f, ndist + dt, nway);
+                    f.cnt2 -= 2;
+                    f.hom2.pop_back();
+                    f.hom2.pop_back();
+                    f.robot.how_front += 2;
+                    f.robot.now_position = pref;
+                    if ((f.house2.left == f.robot.cfront1 || f.house2.right == f.robot.cfront1) && f.cnt2 == 0) {
+                        int pref = f.robot.now_position;
+                        int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[6]);
+                        f.robot.now_position = 6;
+                        f.robot.how_front -= 4;
+                        f.cnt2 += 4;
+                        f.hom2.pb(f.robot.cfront1);
+                        f.hom2.pb(f.robot.cfront1);
+                        f.hom2.pb(f.robot.cfront2);
+                        f.hom2.pb(f.robot.cfront2);
+                        perebor(f, ndist + dt, nway);
+                        f.cnt2 -= 4;
+                        f.hom2.pop_back();
+                        f.hom2.pop_back();
+                        f.hom2.pop_back();
+                        f.hom2.pop_back();
+                        f.robot.how_front += 4;
+                        f.robot.now_position = pref;
+                    }
+                }
+            }
+        }
+        if (f.cnt3 < 4) {
+            if (f.robot.how_front == 2) {
+                if (f.house3.left == f.robot.cfront1 || f.house3.right == f.robot.cfront1) {
+                    int pref = f.robot.now_position;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[16]);
+                    f.robot.now_position = 16;
+                    f.robot.how_front -= 2;
+                    f.cnt3 += 2;
+                    f.hom3.pb(f.robot.cfront1);
+                    f.hom3.pb(f.robot.cfront1);
+                    perebor(f, ndist + dt, nway);
+                    f.cnt3 -= 2;
+                    f.hom3.pop_back();
+                    f.hom3.pop_back();
+                    f.robot.how_front += 2;
+                    f.robot.now_position = pref;
+                }
+            }
+            else {
+                if (f.house3.left == f.robot.cfront2 || f.house3.right == f.robot.cfront2) {
+                    int pref = f.robot.now_position;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[15]);
+                    f.robot.now_position = 15;
+                    f.robot.how_front -= 2;
+                    f.cnt3 += 2;
+                    f.hom3.pb(f.robot.cfront2);
+                    f.hom3.pb(f.robot.cfront2);
+                    perebor(f, ndist + dt, nway);
+                    f.cnt3 -= 2;
+                    f.hom3.pop_back();
+                    f.hom3.pop_back();
+                    f.robot.how_front += 2;
+                    f.robot.now_position = pref;
+                    if ((f.house3.left == f.robot.cfront1 || f.house3.right == f.robot.cfront1) && f.cnt3 == 0) {
+                        int pref = f.robot.now_position;
+                        int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[16]);
+                        f.robot.now_position = 16;
+                        f.robot.how_front -= 4;
+                        f.cnt3 += 4;
+                        f.hom3.pb(f.robot.cfront1);
+                        f.hom3.pb(f.robot.cfront1);
+                        f.hom3.pb(f.robot.cfront2);
+                        f.hom3.pb(f.robot.cfront2);
+                        perebor(f, ndist + dt, nway);
+                        f.cnt3 -= 4;
+                        f.hom3.pop_back();
+                        f.hom3.pop_back();
+                        f.hom3.pop_back();
+                        f.hom3.pop_back();
+                        f.robot.how_front += 4;
+                        f.robot.now_position = pref;
+                    }
+                }
+            }
+        }
+    }
+    if (f.robot.how_back == 0) {
+        if (f.blueA1 == 2) {
+            int pref = f.robot.now_position;
+            f.robot.how_back += 4;
+            f.robot.cfront1 = BLUE;
+            f.robot.cfront2 = BLUE;
+            f.blueA1 = NONE;
+            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[13]);
+            f.robot.now_position = 13;
+            perebor(f, ndist + dt, nway);
+            f.blueA1 = BLUE;
+            f.robot.how_back = 0;
+            f.robot.now_position = pref;
+        }
+        if (f.greenA1 == 3) {
+            int pref = f.robot.now_position;
+            f.robot.how_back += 4;
+            f.robot.cfront1 = GREEN;
+            f.robot.cfront2 = GREEN;
+            f.greenA1 = NONE;
+            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[23]);
+            f.robot.now_position = 23;
+            perebor(f, ndist + dt, nway);
+            f.greenA1 = GREEN;
+            f.robot.how_back = 0;
+            f.robot.now_position = pref;
+        }
+    }
+    if (f.robot.how_back > 0) {
+        if (f.cnt1 < 4) {
+            if (f.robot.how_back == 2) {
+                if (f.house1.left == f.robot.cback2 || f.house1.right == f.robot.cback2) {
+                    int pref = f.robot.now_position;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[30]);
+                    f.robot.now_position = 30;
+                    f.robot.how_back -= 2;
+                    f.cnt1 += 2;
+                    f.hom1.pb(f.robot.cback2);
+                    f.hom1.pb(f.robot.cback2);
+                    perebor(f, ndist + dt, nway);
+                    f.cnt1 -= 2;
+                    f.hom1.pop_back();
+                    f.hom1.pop_back();
+                    f.robot.how_back += 2;
+                    f.robot.now_position = pref;
+                }
+            }
+            else {
+                if (f.house1.left == f.robot.cback1 || f.house1.right == f.robot.cback1) {
+                    int pref = f.robot.now_position;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[29]);
+                    f.robot.now_position = 29;
+                    f.robot.how_back -= 2;
+                    f.cnt1 += 2;
+                    f.hom1.pb(f.robot.cback1);
+                    f.hom1.pb(f.robot.cback1);
+                    perebor(f, ndist + dt, nway);
+                    f.cnt1 -= 2;
+                    f.hom1.pop_back();
+                    f.hom1.pop_back();
+                    f.robot.how_back += 2;
+                    f.robot.now_position = pref;
+                    if ((f.house1.left == f.robot.cback2 || f.house1.right == f.robot.cback2) && f.cnt1 == 0) {
+                        int pref = f.robot.now_position;
+                        int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[30]);
+                        f.robot.now_position = 30;
+                        f.robot.how_back -= 4;
+                        f.cnt1 += 4;
+                        f.hom1.pb(f.robot.cback1);
+                        f.hom1.pb(f.robot.cback1);
+                        f.hom1.pb(f.robot.cback2);
+                        f.hom1.pb(f.robot.cback2);
+                        perebor(f, ndist + dt, nway);
+                        f.cnt1 -= 4;
+                        f.hom1.pop_back();
+                        f.hom1.pop_back();
+                        f.hom1.pop_back();
+                        f.hom1.pop_back();
+                        f.robot.how_back += 4;
+                        f.robot.now_position = pref;
+                    }
+                }
+            }
+        }
+        if (f.cnt2 < 4) {
+            if (f.robot.how_back == 2) {
+                if (f.house2.left == f.robot.cback2 || f.house2.right == f.robot.cback2) {
+                    int pref = f.robot.now_position;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[8]);
+                    f.robot.now_position = 8;
+                    f.robot.how_back -= 2;
+                    f.cnt2 += 2;
+                    f.hom2.pb(f.robot.cback2);
+                    f.hom2.pb(f.robot.cback2);
+                    perebor(f, ndist + dt, nway);
+                    f.cnt2 -= 2;
+                    f.hom2.pop_back();
+                    f.hom2.pop_back();
+                    f.robot.how_back += 2;
+                    f.robot.now_position = pref;
+                }
+            }
+            else {
+                if (f.house2.left == f.robot.cback1 || f.house2.right == f.robot.cback1) {
+                    int pref = f.robot.now_position;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[7]);
+                    f.robot.now_position = 7;
+                    f.robot.how_back -= 2;
+                    f.cnt2 += 2;
+                    f.hom2.pb(f.robot.cback1);
+                    f.hom2.pb(f.robot.cback1);
+                    perebor(f, ndist + dt, nway);
+                    f.cnt2 -= 2;
+                    f.hom2.pop_back();
+                    f.hom2.pop_back();
+                    f.robot.how_back += 2;
+                    f.robot.now_position = pref;
+                    if ((f.house2.left == f.robot.cback2 || f.house2.right == f.robot.cback2) && f.cnt2 == 0) {
+                        int pref = f.robot.now_position;
+                        int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[8]);
+                        f.robot.now_position = 8;
+                        f.robot.how_back -= 4;
+                        f.cnt2 += 4;
+                        f.hom2.pb(f.robot.cback1);
+                        f.hom2.pb(f.robot.cback1);
+                        f.hom2.pb(f.robot.cback2);
+                        f.hom2.pb(f.robot.cback2);
+                        perebor(f, ndist + dt, nway);
+                        f.cnt2 -= 4;
+                        f.hom2.pop_back();
+                        f.hom2.pop_back();
+                        f.hom2.pop_back();
+                        f.hom2.pop_back();
+                        f.robot.how_back += 4;
+                        f.robot.now_position = pref;
+                    }
+                }
+            }
+        }
+        if (f.cnt3 < 4) {
+            if (f.robot.how_back == 2) {
+                if (f.house3.left == f.robot.cback2 || f.house3.right == f.robot.cback2) {
+                    int pref = f.robot.now_position;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[18]);
+                    f.robot.now_position = 18;
+                    f.robot.how_back -= 2;
+                    f.cnt3 += 2;
+                    f.hom3.pb(f.robot.cback2);
+                    f.hom3.pb(f.robot.cback2);
+                    perebor(f, ndist + dt, nway);
+                    f.cnt3 -= 2;
+                    f.hom3.pop_back();
+                    f.hom3.pop_back();
+                    f.robot.how_back += 2;
+                    f.robot.now_position = pref;
+                }
+            }
+            else {
+                if (f.house3.left == f.robot.cback1 || f.house3.right == f.robot.cback1) {
+                    int pref = f.robot.now_position;
+                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[17]);
+                    f.robot.now_position = 17;
+                    f.robot.how_back -= 2;
+                    f.cnt3 += 2;
+                    f.hom3.pb(f.robot.cback1);
+                    f.hom3.pb(f.robot.cback1);
+                    perebor(f, ndist + dt, nway);
+                    f.cnt3 -= 2;
+                    f.hom3.pop_back();
+                    f.hom3.pop_back();
+                    f.robot.how_back += 2;
+                    f.robot.now_position = pref;
+                    if ((f.house3.left == f.robot.cback2 || f.house3.right == f.robot.cback2) && f.cnt3 == 0) {
+                        int pref = f.robot.now_position;
+                        int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[18]);
+                        f.robot.now_position = 18;
+                        f.robot.how_back -= 4;
+                        f.cnt3 += 4;
+                        f.hom3.pb(f.robot.cback1);
+                        f.hom3.pb(f.robot.cback1);
+                        f.hom3.pb(f.robot.cback2);
+                        f.hom3.pb(f.robot.cback2);
+                        perebor(f, ndist + dt, nway);
+                        f.cnt3 -= 4;
+                        f.hom3.pop_back();
+                        f.hom3.pop_back();
+                        f.hom3.pop_back();
+                        f.hom3.pop_back();
+                        f.robot.how_back += 4;
+                        f.robot.now_position = pref;
+                    }
+                }
+            }
+        }
+    }
+    if (f.robot.how_front == 2) {
+        if (f.cntutils < 4) {
 
-void perebor() {
-
+        }
+    }
 }
 
 void f1d() {

@@ -109,7 +109,7 @@ void goBC(int sp, int uy = 0) {
     }
 }
 
-void moveB(Speed p, int dist, bool uping = true, bool downing = true) {
+void moveB(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = true) {
     Speed_compiled compiled = Speed_compiled(p, dist, uping, downing);
 
     double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
@@ -123,9 +123,9 @@ void moveB(Speed p, int dist, bool uping = true, bool downing = true) {
         stopBC();
 }
 
-void moveB(int _, int dist, bool uping = true, bool downing = true) { moveB(ONEMOTOR, dist, uping, downing); }
+void moveB(int _, int dist, bool stop = 1, bool uping = true, bool downing = true) { moveB(ONEMOTOR, dist, stop, uping, downing); }
 
-void moveC(Speed p, int dist, bool uping = true, bool downing = true) {
+void moveC(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = true) {
     Speed_compiled compiled = Speed_compiled(p, dist, uping, downing);
 
     double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
@@ -139,7 +139,7 @@ void moveC(Speed p, int dist, bool uping = true, bool downing = true) {
         stopBC();
 }
 
-void moveC(int _, int dist, bool uping = true, bool downing = true) { moveC(ONEMOTOR, dist, uping, downing); }
+void moveC(int _, int dist, bool stop = 1, bool uping = true, bool downing = true) { moveC(ONEMOTOR, dist, stop, uping, downing); }
 
 void moveD(int sp, int dist) {
     dist *= -1;
@@ -180,7 +180,7 @@ void moveA(int sp, int dist) {
     Идея в том, что и движение вперед и линия и поворот могли работать из одного и того же объекто класс Speed
     \todo воплотить ее (полсе вторника)
 */
-void moveBC(Speed p, int dist, bool uping = true, bool downing = true) {
+void moveBC(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = true) {
     int home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                 GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
 
@@ -200,6 +200,8 @@ void moveBC(Speed p, int dist, bool uping = true, bool downing = true) {
             SpeedMotor(E_Port_C, -nowSpeed);
         }
     }
+    if (stop)
+        stopBC();
 }
 
 /*!
@@ -210,7 +212,7 @@ void moveBC(Speed p, int dist, bool uping = true, bool downing = true) {
     \todo Убрать это костыль (после вторника)
     Вперед едет с ускорением, назад без него
 */
-void moveBC(int _, int dist, bool uping = true, bool downing = true) { moveBC(MOVEBC, dist, uping, downing); }
+void moveBC(int _, int dist, bool stop = 1, bool uping = true, bool downing = true) { moveBC(MOVEBC, dist, stop, uping, downing); }
 
 void moveBTime(int sp, int time) {
     SpeedMotor_Time(E_Port_B, sp, time);
