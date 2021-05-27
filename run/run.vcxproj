@@ -12,8 +12,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{33ff7e39-8881-43bd-a38a-2fe6c5264206}</ProjectGuid>
-    <RootNamespace>LegoEV3Project1</RootNamespace>
+    <ProjectGuid>{965df35c-c74b-4ada-b774-26181d5f0b40}</ProjectGuid>
+    <RootNamespace>run</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -46,7 +46,6 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\constants.cpp" />
     <ClCompile Include="Source\EV3_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
