@@ -151,7 +151,7 @@ void get_4_blue() {
     goBC(7, 2);
     while (s3() > bley);
     stopBC();
-    lineNEW(ONE, 150, 6);
+    line(ONE, 150, 6);
     stopBC();
     turn(speed, d90, 0);
     moveBC(speed, -200, 1);
@@ -165,7 +165,7 @@ void get_4_blue() {
     goBC(7, 1);
     while (s2() > bley);
     stopBC();
-    lineNEW(ONE, 370, 9);
+    line(ONE, 370, 9);
     moveBC(speed, 35);
     moveB(speed, w90);
     speedD = lala;
@@ -778,7 +778,7 @@ void f15() {
 void f15a() {
     turn(speed, d90, 3);
     moveD(speedD, up);
-    lineNEW(ONE, 50, 4);
+    line(ONE, 50, 4);
 }
 
 void f15b() {
@@ -870,7 +870,7 @@ void f30() {
 
 void f31() {
     turn(speed, d90 + 40, 3);
-    lineNEW(ONE, 200, 4);
+    line(ONE, 200, 4);
 }
 
 void f32() {
@@ -895,7 +895,7 @@ void f33() {
 
 void f34() {
     turn(speed, d90, 0);
-    lineNEW(ONE, 300, 4);
+    line(ONE, 300, 4);
 }
 
 void f35() {
@@ -961,7 +961,7 @@ void f45() {
 }
 
 void f46() {
-    lineNEW(ONE, grad[6] - dws + 20, 8);
+    line(ONE, grad[6] - dws + 20, 8);
     getRGB(2);
     moveBC(speed, 55, 0);
     while (getRGB(2).b < 100);
@@ -977,7 +977,7 @@ void f47() {
 
 void f48() {
     moveA(1);
-    moveBCNEW(MIN, 540);
+    moveBC(MIN, 540);
     moveA(0);
 }
 
@@ -1040,7 +1040,8 @@ void f55() {
 
 void f56() {
     moveA(1);
-    moveBCNEW(MIN, 520);
+    moveBC
+    (MIN, 520);
     moveA(0);
 }
 
@@ -1659,7 +1660,12 @@ void vivod_h() {
     }
 }
 
-signed EV3_main() {
+
+const int how = 100000;
+
+int EV3_main()
+{
+    CreateThread(okonchanie, 0);
     Clear_Display();
     CreateThread(okonchanie, 0);
     //s1();
@@ -1668,6 +1674,19 @@ signed EV3_main() {
     gclr(4);
     buildDegreesConstants();
     buildg();
+    int ender = 0;
+    int* a[1000000];
+    try {
+        for (int i = 0; i < 1000000; ++i) {
+            a[i] = new int[how];
+            ender++;
+        }
+    }
+    catch (...) {
+        write(10, 10, ender);
+    }
+    write(90, 90, ender);
+    wait(5000);
     //vivod_h();
     /*goD(speedD);
     wait(950);

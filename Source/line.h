@@ -46,8 +46,7 @@ using namespace std;
     \warning Просто надо помнить, что эта линия не предполагает движения назaд
 */
 
-void lineNEW(Speed p, int dist, int type, bool uping = true, bool downing = true,
-             int end_preview = standart_line_preview_looking) {
+void line(Speed p, int dist, int type, bool uping = true, bool downing = true, int end_preview = standart_line_preview_looking) {
     // Просто надо помнить, что эта линия не предполагает движения назaд
     // Какая-то типизация
     if (type == 4) {
@@ -60,8 +59,6 @@ void lineNEW(Speed p, int dist, int type, bool uping = true, bool downing = true
                 GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
 
     Speed_compiled speed_control = Speed_compiled(p, dist, uping, downing);
-
-    int way = dist + home;
 
     vector<int> errors = vector<int>(lineArrayLen, 0);
 
@@ -99,7 +96,7 @@ void lineNEW(Speed p, int dist, int type, bool uping = true, bool downing = true
                 error = (double)(grey - s3()) * 3 / 3;
                 break;
             case 5:
-                error = (double) (s3() - bley) * 3 / 3;
+                error = s3() - bley;
                 break;
             case 6:
                 error = (double) (s3() - bley) * 3 / 3;
@@ -108,16 +105,16 @@ void lineNEW(Speed p, int dist, int type, bool uping = true, bool downing = true
                 error = (double) (grey - s2()) * 3 / 3;
                 break;
             case 7:
-                error = (double) (s2() - grey) * 3 / 3;
+                error = s2() - grey;
                 break;
             case 8:
-                error = (double) (s2() - grey) * 3 / 3;
+                error = s2() - grey;
                 break;
             case 9:
-                error = (double) (bley - s2()) * 3 / 3;
+                error = bley - s2();
                 break;
             default:
-                error = (double) (s3() - s2() - deltaSensors);
+                error = s3() - s2() - deltaSensors;
                 break;
         } // подсчет ошибки
 
@@ -139,10 +136,9 @@ void lineNEW(Speed p, int dist, int type, bool uping = true, bool downing = true
     \param p Настройка скорости (класс Speed)
     \param dist Предполагаемое расстояние до конца линии
     \param type Тип линии (тут лучше шарит создатель)
-    \todo Убрать это костыль (после вторника)
 */
-void line(int speed, int dist, int type, bool uping = true, bool downing = true, int end_preview = standart_line_preview_looking) {
-    lineNEW(ZERO, dist, type, uping, downing, end_preview);
+void line(int _, int dist, int type, bool uping = true, bool downing = true, int end_preview = standart_line_preview_looking) {
+    line(ZERO, dist, type, uping, downing, end_preview);
 }
 
 ///}@

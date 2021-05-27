@@ -66,8 +66,6 @@ Speed MOVEBC = Speed(100, 20, 0, 0, 100, 250, 250, 70);      ///< Для moveBC
 Speed TURN = Speed(100, 15, 0, 0, 100, 300, 300, 50);        ///< Для turn
 ///}@
 
-vector<vector<Edge> > g(maxv);                          ///< Вектор для деикстры
-
 #define pb push_back
 
 vector<int> grad;                                       ///< Длины основных элементов поля
@@ -94,5 +92,9 @@ void buildDegreesConstants() {                          /// Заполнение
     grad.pb(440);
     grad.pb(500);
 }
+
+vector<vector<Edge> > Edge::g = vector<vector<Edge> >(maxv);
+
+vector<vector<Edge> > &g = Edge::g;
 
 #endif
