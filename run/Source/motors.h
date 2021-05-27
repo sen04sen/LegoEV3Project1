@@ -142,7 +142,6 @@ void moveC(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = t
 void moveC(int _, int dist, bool stop = 1, bool uping = true, bool downing = true) { moveC(ONEMOTOR, dist, stop, uping, downing); }
 
 void moveD(int sp, int dist) {
-    dist *= -1;
     static double stadegd = GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
     dist = (double) dist + stadegd;
     double st = dist - GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);

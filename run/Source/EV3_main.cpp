@@ -215,28 +215,14 @@ void get_4_blue() {
 
 
 DoubleMarker gtf() {
-    moveBC(15, -140);
-    gclr(4);
-    turn(15, d90, 0);
-    moveBC(speed, 185);
-    wait(500);
-    int fi = gclr(4);
-    if (fi == 7)
-        fi = 4;
-    if (fi == 1)
-        fi = 2;
-    moveBC(speed, 120);
-    wait(500);
-    int se = gclr(4);
-    if (se == 7)
-        se = 4;
-    if (se == 1)
-        se = 2;
+    moveBC(0, 125);
     stopBC();
-    Clear_Display();
-    write(1, 1, fi);
-    write(51, 1, se);
-    return DoubleMarker(Color(fi), Color(se));
+    moveC(0, -590);
+    stopBC();
+    DoubleMarker a = read_home();
+    moveBC(0, -530);
+    stopBC();
+    return(a);
 }
 
 
@@ -1210,6 +1196,30 @@ void f67() {
     line(speed, grad[10] - dtw, 4);
 }
 
+void f66a() {
+    line(speed, 300 - dws, 4);
+}
+
+void f67a() {
+    line(speed, 300 - dtw, 4);
+}
+
+void f66b() {
+    line(speed, 430 - dws, 4);
+}
+
+void f67b() {
+    line(speed, 430 - dtw, 4);
+}
+
+void f66c() {
+    line(speed, 800 - dws, 4);
+}
+
+void f67c() {
+    line(speed, 800 - dtw, 4);
+}
+
 void f68() {
     d2 = gtf();
 }
@@ -1359,7 +1369,10 @@ void get4blue2() {
 }
 
 void f99() {
-    moveBC(-speed, 430);
+    moveD(speedD, before_take_cubes);
+    moveBC(speed, -300, 0);
+    moveBC(MIN, -100);
+    moveD(speedD, after_take_cubes);
 }
 
 void f100() {
@@ -1368,12 +1381,20 @@ void f100() {
 }
 
 void f101() {
-    moveBC(-speed, 590);
+    moveBC(speed, -590);
 }
 
 void f102() {
     moveBC(speed, 340, 0);
     while (s2() > black);
+}
+
+void f103() {
+    line(speed, grad[6] - dws, 0);
+}
+
+void f104() {
+    line(speed, grad[6] - dtw, 0);
 }
 
 /*void f13() {
@@ -1811,7 +1832,7 @@ void addcrossroad(int v, int u, int r, int d, int l) {
     }
     if (r == 1) {
         g[v + 5].pb(Edge(v + 4, f1l));
-        g[v + 2].pb(Edge(v + 3, f6l));
+        g[v + 2].pb(Edge(v + 3, f6l));  
         g[v + 8].pb(Edge(v + 3, f7l));
         g[v + 7].pb(Edge(v + 4, f4l));
         g[v + 10].pb(Edge(v + 4, f3l));
@@ -1943,8 +1964,8 @@ void buildg() {
 
     add(28, 113, f11);
     add(27, 113, f12);
-    add(118, 59, f11);
-    add(117, 59, f12);
+    add(118, 35, f11);
+    add(117, 35, f12);
 
     add(28, 53, f13);
     //add(27, 53, f14);
@@ -1981,9 +2002,9 @@ void buildg() {
     add(108, 98, f29);
     add(103, 116, f36);
     add(102, 116, f37);
-
+        
     add(97, 86, f38);
-    add(96, 86, f39);
+    //add(96, 86, f39);
     add(91, 104, f40);
     add(90, 104, f41);
 
@@ -2027,6 +2048,15 @@ void buildg() {
 
     add(169, 206, f66);
     add(168, 206, f67);
+
+    add(301, 206, f66a);
+    //add(300, 206, f67a);
+
+    add(193, 206, f66b);
+    add(192, 206, f67b);
+
+    add(181, 206, f66c);
+    add(180, 206, f67c);
 
     add(206, 341, f68);
 
@@ -2087,6 +2117,9 @@ void buildg() {
     add(100, 64, f101);
     add(64, 101, f102);
 
+    add(88, 161, f103);
+    add(87, 161, f104);
+
     /*add(280, 232, f101);
 
     add(235, 224, f102);
@@ -2120,36 +2153,19 @@ int EV3_main()
 {
     CreateThread(okonchanie, 0);
     Clear_Display();
-
-    line(MIN, 300, 4);
-    moveBC(0, 125);
-    stopBC();
-    moveC(0, -590);
-    stopBC();
-    DoubleMarker a = read_home();
-    moveBC(0, -530);
-    stopBC();
-    write(10, 10, int(a.left));
-    write(40, 40, int(a.right));
-    wait(5000);
-    return 0;
-    s2();
     s3();
+    s2();
     gclr(4);
     buildDegreesConstants();
     buildg();
     //vivod_h();
-    /*goD(speedD);
-    wait(950);
-    goD(0);
-    goA(20);
+    goD(-speedD);
     wait(500);
+    goD(0);
+    goA(-20);
+    wait(400);
     stopA();
-    moveA(1);*/
-    go(speed, 7, 67);
-    return 0;
-    go(speed, 67, 206);
-    stopBC();
+    go(speed, 119, 44);
     return 0;
     go(speed, 0, 26);
     nv = 26;
