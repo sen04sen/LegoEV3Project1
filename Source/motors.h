@@ -110,11 +110,11 @@ void goBC(int sp, int uy = 0) {
 }
 
 void moveB(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = true) {
-    Speed_compiled compiled = Speed_compiled(p, dist, uping, downing);
+    Speed_compiled compiled = Speed_compiled(p, abs(dist), uping, downing);
 
     double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
     int encoders = 0;
-    while (encoders < dist) {
+    while (encoders < abs(dist)) {
         encoders = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st);
         if (dist > 0) SpeedMotor(E_Port_B, -compiled(encoders));
         else SpeedMotor(E_Port_B, compiled(encoders));
@@ -126,11 +126,11 @@ void moveB(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = t
 void moveB(int _, int dist, bool stop = 1, bool uping = true, bool downing = true) { moveB(ONEMOTOR, dist, stop, uping, downing); }
 
 void moveC(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = true) {
-    Speed_compiled compiled = Speed_compiled(p, dist, uping, downing);
+    Speed_compiled compiled = Speed_compiled(p, abs(dist), uping, downing);
 
     double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
     int encoders = 0;
-    while (encoders < dist) {
+    while (encoders < abs(dist)) {
         encoders = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st);
         if (dist > 0) SpeedMotor(E_Port_C, compiled(encoders));
         else SpeedMotor(E_Port_C, -compiled(encoders));
@@ -184,10 +184,10 @@ void moveBC(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = 
     int home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                 GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
 
-    Speed_compiled compiled = Speed_compiled(p, dist, uping, downing);
+    Speed_compiled compiled = Speed_compiled(p, abs(dist), uping, downing);
 
     int encoders = 0;
-    while (encoders < dist) {
+    while (encoders < abs(dist)) {
         encoders = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                         GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home);
 
