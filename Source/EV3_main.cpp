@@ -280,11 +280,69 @@ void buildplaces() {
     vertoplaces[31] = 337;
 }
 
+bool is_end(Field f) {
+    if (f.cnt1 == 4 && f.cnt2 == 4 && f.cnt3 == 4 && f.cntutils == 4) {
+        bool m1 = 0, m2 = 0;
+        bool bad = 0;
+        for (int i = 0; i < 4; i++) {
+            if (f.hom1[i] == f.house1.left)
+                m1 = 1;
+            if (f.hom1[i] == f.house1.right)
+                m2 = 1;
+            if (f.hom1[i] != f.B) {
+                bad = 1;
+                break;
+            }
+        }
+        if (bad || !m1 || !m2)
+            return 0;
+        m1 = 0, m2 = 0;
+        bad = 0;
+        for (int i = 0; i < 4; i++) {
+            if (f.hom2[i] == f.house2.left)
+                m1 = 1;
+            if (f.hom2[i] == f.house2.right)
+                m2 = 1;
+            if (f.hom2[i] != f.B) {
+                bad = 1;
+                break;
+            }
+        }
+        if (bad || !m1 || !m2)
+            return 0;
+        m1 = 0, m2 = 0;
+        bad = 0;
+        for (int i = 0; i < 4; i++) {
+            if (f.hom3[i] == f.house3.left)
+                m1 = 1;
+            if (f.hom3[i] == f.house3.right)
+                m2 = 1;
+            if (f.hom3[i] != f.B) {
+                bad = 1;
+                break;
+            }
+        }
+        if (bad || !m1 || !m2)
+            return 0;
+        return 1;
+    }
+    else
+        return 0;
+}
 
 void perebor(Field f, int ndist, vector<int> nway) {
     if (ndist > mindist)
         return;
     nway.pb(f.robot.now_position);
+    if (is_end(f)) {
+        int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[0]);
+        if (mindist < dt + ndist) {
+            nway.pb(0);
+            min_way = nway;
+            mindist = dt + ndist;
+        }
+        return;
+    }
     if (f.robot.how_front < 4) {
         if (f.yellowA1 == 4) {
             int pref = f.robot.now_position;
@@ -578,7 +636,7 @@ void perebor(Field f, int ndist, vector<int> nway) {
             f.robot.now_position = pref;
         }
     }
-    if (f.robot.how_back > 0) {
+    if (f.robot.how_back > 0){
         if (f.cnt1 < 4) {
             if (f.robot.how_back == 2) {
                 if (f.house1.left == f.robot.cback2 || f.house1.right == f.robot.cback2) {
@@ -745,9 +803,63 @@ void perebor(Field f, int ndist, vector<int> nway) {
             }
         }
     }
-    if (f.robot.how_front == 2) {
-        if (f.cntutils < 4) {
-
+    if (f.cntutils < 4) {
+        if (f.robot.how_front == 2) {
+            int pref = f.robot.now_position;
+            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[20]);
+            f.robot.now_position = 20;
+            f.robot.how_front -= 2;
+            f.cntutils += 2;
+            perebor(f, ndist + dt, nway);
+            f.cntutils -= 2;
+            f.robot.how_front += 2;
+            f.robot.now_position = pref;
+        }
+        else if (f.cntutils == 0) {
+            int pref = f.robot.now_position;
+            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[20]);
+            f.robot.now_position = 20;
+            f.robot.how_front -= 4;
+            f.cntutils += 4;
+            perebor(f, ndist + dt, nway);
+            f.cntutils -= 4;
+            f.robot.how_front += 4;
+            f.robot.now_position = pref;
+        }
+        if (f.robot.how_back == 2) {
+            int pref = f.robot.now_position;
+            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[33]);
+            f.robot.now_position = 33;
+            f.robot.how_back -= 2;
+            f.cntutils += 2;
+            perebor(f, ndist + dt, nway);
+            f.cntutils -= 2;
+            f.robot.how_back += 2;
+            f.robot.now_position = pref;
+        }
+        else {
+            if (f.cntutils == 2) {
+                int pref = f.robot.now_position;
+                int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[34]);
+                f.robot.now_position = 34;
+                f.robot.how_back -= 2;
+                f.cntutils += 2;
+                perebor(f, ndist + dt, nway);
+                f.cntutils -= 2;
+                f.robot.how_back += 2;
+                f.robot.now_position = pref;
+            }
+            else {
+                int pref = f.robot.now_position;
+                int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[35]);
+                f.robot.now_position = 35;
+                f.robot.how_back -= 4;
+                f.cntutils += 4;
+                perebor(f, ndist + dt, nway);
+                f.cntutils -= 4;
+                f.robot.how_back += 4;
+                f.robot.now_position = pref;
+            }
         }
     }
 }
@@ -1835,8 +1947,9 @@ void buildg() {
     add(117, 59, f12);
 
     add(28, 53, f13);
-    add(27, 52, f14);
+    //add(27, 53, f14);
     add(58, 35, f32);
+    //add(57, 35, f32);
 
     add(118, 59, f15);
     add(117, 59, f16);
@@ -1990,168 +2103,6 @@ void buildg() {
     add(151, 356, f111);
     add(184, 148, f112);
     add(148, 185, f113);*/
-
-
-
-   /* add(15, 25, f13);
-
-    add(25, 26, f14);
-
-    add(26, 120, f15);
-    add(120, 25, f15a);
-    add(120, 23, f15b);
-
-    add(150, 23, f26);
-
-    add(27, 109, f16);
-
-    add(28, 50, f17);
-    add(32, 50, f18);
-    add(42, 36, f17);
-    add(46, 36, f18);
-
-    add(40, 62, f19);
-    add(44, 62, f20);
-    add(54, 48, f19);
-    add(58, 48, f20);
-
-
-    add(52, 74, f21);
-    add(56, 74, f22);
-    add(66, 60, f21);
-    add(70, 60, f22);
-
-    add(64, 86, f23);
-    add(68, 86, f24);
-
-    add(0, 9, f25);
-
-    add(112, 113, f4);
-    add(113, 114, f28);
-    add(114, 113, f29);
-    add(113, 115, f30);
-    add(115, 116, f31);
-
-    add(116, 117, f32);
-    add(117, 119, f33);
-
-    add(119, 116, f34);
-
-    add(151, 59, f35);
-    add(119, 59, f36);
-
-    add(65, 121, f13);
-
-    add(121, 122, f37);
-    add(122, 123, f15);
-    add(123, 121, f15a);
-    add(123, 73, f15b);
-    add(152, 73, f26a);
-
-    add(86, 75, f38);
-    add(75, 97, f39);
-    add(97, 87, f8);
-    add(87, 90, f1);
-    add(90, 124, f40);
-    add(124, 125, f41);
-    add(125, 60, f42);
-    add(125, 74, f43);
-
-    add(109, 99, f44);
-    add(99, 100, f45);
-    add(99, 102, f45x);
-    add(108, 102, f45y);
-    add(110, 100, f45z);
-    add(100, 112, f46);
-
-    add(51, 126, f47);
-    add(126, 127, f48);
-    add(127, 128, f49);
-    add(128, 48, f50);
-    add(128, 62, f51);
-
-    add(59, 131, f52);
-    add(53, 131, f53);
-    add(131, 53, f54);
-
-    add(22, 129, f55);
-    add(129, 130, f56);
-    add(130, 129, f57);
-
-    add(129, 22, f58);
-    add(129, 38, f59);
-
-    add(50, 132, f60);
-    add(36, 132, f61);
-    add(132, 133, f62);
-    add(133, 132, f63);
-    add(132, 50, f64);
-    add(132, 36, f65);
-    add(48, 134, f66);
-    add(44, 134, f67);
-    add(134, 135, f68);
-    add(135, 134, f69);
-    add(134, 48, f70);
-    add(134, 62, f71);
-
-    /*add(23, 136, twb);
-    add(137, 25, f72);
-    add(136, 38, f73);
-
-    add(60, 138, twb);
-    add(59, 139, twc);
-    add(62, 138, twc);
-    add(59, 140, twb);
-    add(138, 116, f74);
-    add(140, 48, f75);
-    add(139, 74, f76);
-
-    add(73, 142, twc);
-    add(141, 121, f77);
-    add(142, 60, f78);*/
-
-    /*add(112, 115, f79);
-    add(0, 9, f80);
-    add(130, 146, f81);
-    add(146, 109, f82);
-    add(146, 35, f83);
-    add(27, 144, f84);
-    add(101, 144, f85);
-    add(144, 145, f86);
-    add(145, 147, f87);
-    add(147, 22, f88);
-    add(147, 38, f89);
-    add(41, 137, f90);
-    add(137, 41, f91);
-    add(40, 139, f92);
-    add(139, 140, f93);
-    add(140, 141, f94);
-    add(141, 116, f95);
-    add(141, 59, f96);
-    add(54, 139, f97);
-    add(54, 48, f98);
-    add(40, 62, f99);
-    add(52, 142, f100);
-    add(142, 143, f101);
-    add(143, 138, f102);
-    add(143, 147, f103);
-    add(147, 116, f104);
-    add(147, 59, f105);
-    add(51, 148, f106);
-    add(148, 149, f107);
-    add(149, 138, f108);
-    add(149, 125, f109);
-    add(25, 150, f110);
-    add(116, 151, f111);
-    add(121, 152, f112);
-    add(151, 153, f113);
-    add(153, 154, f114);
-    add(154, 113, f115);
-    add(154, 108, f116);
-    add(102, 155, f117);
-    add(155, 156, f118);
-    add(156, 155, f119);
-    add(155, 110, f120);*/
 }
 
 void vivod_h() {
@@ -2176,19 +2127,6 @@ int EV3_main()
     gclr(4);
     buildDegreesConstants();
     buildg();
-    int ender = 0;
-    int* a[1000000];
-    try {
-        for (int i = 0; i < 1000000; ++i) {
-            a[i] = new int[how];
-            ender++;
-        }
-    }
-    catch (...) {
-        write(10, 10, ender);
-    }
-    write(90, 90, ender);
-    wait(5000);
     //vivod_h();
     /*goD(speedD);
     wait(950);
@@ -2198,6 +2136,7 @@ int EV3_main()
     stopA();
     moveA(1);*/
     go(speed, 7, 67);
+    return 0;
     go(speed, 67, 206);
     stopBC();
     return 0;
