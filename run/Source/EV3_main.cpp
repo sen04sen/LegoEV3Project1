@@ -2168,14 +2168,14 @@ const int how = 100000;
 
 int EV3_main()
 {
-    CreateThread(okonchanie, nullptr);
-    CreateThread(control, nullptr);
+    CreateThread(okonchanie, 0);
+    CreateThread(control, 0);
     Clear_Display();
     while (true) {
-        how_a = 50;
-        wait(5000);
+        how_a = 500;
+        waitA();
         how_a = 100;
-        wait(3000);
+        waitA();
     }
     return 0;
     line(MIN, 300, 4);
