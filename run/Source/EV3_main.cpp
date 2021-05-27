@@ -2154,6 +2154,13 @@ int EV3_main()
 {
     CreateThread(okonchanie, 0);
     CreateThread(control, 0);
+    while (true)
+    {
+        how_a = 200;
+        waitA();
+        how_a = 100;
+        waitA();
+    }
     Clear_Display();
     s3();
     s2();
