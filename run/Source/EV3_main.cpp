@@ -9,6 +9,7 @@
 //#include <sstream>
 #include <sstream>
 #include <set>
+#include <map>
 
 #include <EV3_Motor.h>
 #include "EV3_LCDDisplay.h"
@@ -34,6 +35,8 @@ using namespace std;
 
 #define pb push_back
 
+int maxim = 0;
+
 int go(int sp, int from, int toto) {
     pair<pair<double, int>, Edge> msgo[maxv];
     for (int i = 0; i < maxv; i++) {
@@ -44,11 +47,15 @@ int go(int sp, int from, int toto) {
     set<pair<double, int> > st;
     st.insert(make_pair((double)0, from));
     bool end = 0;
+    
     while (!st.empty()) {
         double dd = st.begin()->first;
         int v = st.begin()->second;
-        st.erase(st.begin());
+        st.erase(st.begin( ));
+
         for (int i = 0; i < g[v].size(); i++) {
+            write(50, 50, maxim);
+            maxim = max(int(st.size() * sizeof(pair<double, int>)), maxim);
             int to = g[v][i].getTo();
             if (dd + g[v][i].getTime() < msgo[to].first.first) {
                 st.erase(make_pair(msgo[to].first.first, to));
@@ -2005,7 +2012,9 @@ int EV3_main()
     g.resize(g.size());
     for (int i = 0; i < g.size(); ++i) g[i].resize(g[i].size());
     go(speed, 345, 109);
-    go(speed, 109, 338);
+    go(speed, 345, 338);
+    write(90, 90, maxim);
+    wait(5000);
     return 0;
     Field f = StandartInit();
     f.B = YELLOW;

@@ -6,18 +6,6 @@
 #ifndef utils_h
 #define utils_h
 
-#include <vector>
-#include <string>
-#include <sstream>
-
-#include <EV3_Motor.h>
-#include "EV3_LCDDisplay.h"
-#include "EV3_Sensor_Color.h"
-#include "EV3_Sensor_UART.h"
-#include "EV3_Thread.h"
-#include "EV3_Timer.h"
-#include "EV3_BrickUI.h"
-
 using namespace ev3_c_api;
 using namespace std;
 
