@@ -2210,7 +2210,7 @@ int EV3_main()
     wait(10000);
     write(40, 40, diist(345, 338));
     wait(10000);*/
-    go(0, 345, 338);
+    go(0, 7, 338);
 
     Clear_Display();
     write(50, 50, "end");
