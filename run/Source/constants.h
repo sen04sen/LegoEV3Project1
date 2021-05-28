@@ -12,11 +12,11 @@
 
 
 
-const int cntplaces = 33    ;
+const int cntplaces = 36;
 const int maxv = 500;
 const int ce = 21 * 2;
 const int ver = 22;
-const int black = 10;
+const int black = 14;
 const int bluck = 30;
 const int bley = 40;
 const double Pr = 0.3;
@@ -32,7 +32,7 @@ const int w90 = 550;
 const int ndir = 0;
 const int speed = 23;
 int speedD = 20;
-int speedA = 60;
+int speedA = 100;
 
 int get_deg_line_B = 0;
 bool isend = 0;
@@ -42,10 +42,10 @@ double up_loops = 100;
 double block_cubes = 334;
 double after_take_cubes = 150;
 double before_take_cubes = 460;
-double before_take_blue_loops = 240;
-double after_take_blue_loops = 100;
-double before_take_green_loops = 204;
-double after_take_green_loops = 60;
+double before_take_blue_loops = 870;
+double after_take_blue_loops = 500;
+double before_take_green_loops = 515;
+double after_take_green_loops = 240;
 double up = 10;
 double near_put_loops = 180;
 double xren_loops = 490;
@@ -63,7 +63,7 @@ Speed ONE1 = Speed(80, 20, 0.45, 1, 100, 300, 300, 100);     ///< Для одн�
 Speed MIN = Speed(20, 20, 0.35, 0, 0, 0, 0, 0);
 Speed MIN1 = Speed(12, 12, 0.3, 0, 0, 0, 0, 0);
 Speed ONE = Speed(30, 20, 0.5, 0.3, 100, 50, 50, 30);        ///< Для одного
-Speed ZERO = Speed(80, 20, 1.2, 2, 150, 150, 150, 100);   ///< Настройка линии (функция lineNew) класс Speed
+Speed ZERO = Speed(80, 20, 1, 2, 150, 150, 150, 100);   ///< Настройка линии (функция lineNew) класс Speed
 Speed ONEMOTOR = Speed(100, 20, 0, 0, 100, 100, 150, 50);    ///< Для moveB или moveС
 Speed MOVEBC = Speed(100, 20, 0, 0, 100, 250, 250, 70);      ///< Для moveBC
 Speed TURN = Speed(100, 15, 0, 0, 100, 300, 300, 50);        ///< Для turn
@@ -98,8 +98,8 @@ void buildDegreesConstants() {                          /// Заполнение
     grad.pb(500);
 }
 
-vector<vector<Edge> > Edge::g = vector<vector<Edge> >(maxv);
+//vector<vector<Edge> > Edge::g = vector<vector<Edge> >(maxv);
 
-vector<vector<Edge> > &g = Edge::g;
+vector<vector<Edge> > g = vector<vector<Edge> >(maxv);
 
 #endif

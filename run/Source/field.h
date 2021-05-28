@@ -38,7 +38,7 @@ enum Color {
 struct DoubleMarker {
     Color left;  ///< Цвет левого маркера
     Color right; ///< Цвет правого маркера
-
+    
     DoubleMarker() : left(NOREAD), right(NOREAD) {} ///< Конструктор без параметров (не используй) (задает оба NOREAD)
 
     /*!
