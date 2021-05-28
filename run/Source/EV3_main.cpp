@@ -27,6 +27,7 @@
 #include "constants.h"
 #include "field.h"
 #include "control.h"
+#include "file.h"
 
 
 using namespace ev3_c_api;
@@ -2153,15 +2154,17 @@ const int how = 100000;
 int EV3_main()
 {
     CreateThread(okonchanie, 0);
-    CreateThread(control, 0);
-    while (true)
-    {
-        how_a = 200;
-        waitA();
-        how_a = 100;
-        waitA();
-    }
+    //CreateThread(control, 0);
     Clear_Display();
+    File f = File("try.txt", 1, 1);
+    f.print("try");
+    f.print("try");
+    f.print("try");
+    f.print("try");
+    CloseFileAll();
+    OpenFile();
+    wait(5000);
+    return 0;
     s3();
     s2();
     gclr(4);
