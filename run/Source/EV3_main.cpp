@@ -54,8 +54,8 @@ int go(int sp, int from, int toto) {
         st.erase(st.begin( ));
 
         for (int i = 0; i < g[v].size(); i++) {
-            write(50, 50, maxim);
-            maxim = max(int(st.size() * sizeof(pair<double, int>)), maxim);
+            //write(50, 50, maxim);
+            //maxim = max(int(st.size() * sizeof(pair<double, int>)), maxim);
             int to = g[v][i].getTo();
             if (dd + g[v][i].getTime() < msgo[to].first.first) {
                 st.erase(make_pair(msgo[to].first.first, to));
@@ -72,6 +72,8 @@ int go(int sp, int from, int toto) {
         if (end)
             break;
     }
+    write(100, 100, 4);
+    wait(4010);
     vector<pair<Edge, int> > way;
     int nv = toto;
     while (nv != from) {
@@ -2000,10 +2002,12 @@ const int how = 100000;
 
 int EV3_main()
 {
-    system("free -h");
+    Clear_Display();
+    write(10, 10, 0);
+    wait(3000);
     CreateThread(okonchanie, 0);
     //CreateThread(control, 0);
-    Clear_Display();
+    
     s3();
     s2();
     gclr(4);
@@ -2011,10 +2015,26 @@ int EV3_main()
     buildg();
     g.resize(g.size());
     for (int i = 0; i < g.size(); ++i) g[i].resize(g[i].size());
+
+    write(10, 10, 99);
+    wait(3000);
+    try { 
+        //go(speed, 345, 338);
+        go(speed, 345, 109);
+        go(speed, 109, 338);
+        write(80, 80, 9);
+        wait(5000);
+    }
+    catch (...) {
+        write(80, 80, 3);
+        wait(5000);
+    }
+    wait(10000);
+    return 0;
     go(speed, 345, 109);
-    go(speed, 345, 338);
+    go(speed, 109, 338);
     write(90, 90, maxim);
-    wait(5000);
+    wait(6000);
     return 0;
     Field f = StandartInit();
     f.B = YELLOW;
