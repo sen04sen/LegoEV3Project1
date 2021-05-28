@@ -27,7 +27,6 @@
 #include "constants.h"
 #include "field.h"
 #include "control.h"
-#include "file.h"
 
 
 using namespace ev3_c_api;
@@ -323,10 +322,7 @@ bool is_end(Field &f) {
 
 int uyuyuy = 0;
 
-void perebor(Field &f, int ndist, vector<int> nway) {
-    write(10, 10, uyuyuy);
-    uyuyuy++;
-    wait(300);
+/*void perebor(Field &f, int ndist, vector<int> nway) {
     if (ndist > mindist)
         return;
     nway.pb(f.robot.now_position);
@@ -339,8 +335,6 @@ void perebor(Field &f, int ndist, vector<int> nway) {
         }
         return;
     }
-    write(1, 1, 9);
-    wait(3000);
     if (f.robot.how_front < 4) {
         if (f.yellowA1 == 4) {
             write(30, 30, vertoplaces[1]);
@@ -853,7 +847,7 @@ void perebor(Field &f, int ndist, vector<int> nway) {
             f.robot.now_position = pref;
         }
     }
-}
+}*/
 
 void f1d() {
     moveBC(speed, dws, 1);
@@ -1994,32 +1988,21 @@ const int how = 100000;
 
 int EV3_main()
 {
-    system("free -h");
+    //system("free -h");
     CreateThread(okonchanie, 0);
     //CreateThread(control, 0);
     Clear_Display();
-    File f = File("try.txt", 1, 1);
-    f.print("try");
-    f.print("try");
-    f.print("try");
-    f.print("try");
-    CloseFileAll();
-    OpenFile();
-    wait(5000);
-    return 0;
-    s3();
+    /*s3();
     s2();
-    gclr(4);
+    gclr(4);*/
     buildDegreesConstants();
     buildg();
-    g.resize(g.size());
-    for (int i = 0; i < g.size(); ++i) g[i].resize(g[i].size());
-    go(speed, 345, 109);
-    go(speed, 109, 338);
+    //g.resize(g.size());
+    //for (int i = 0; i < g.size(); ++i) g[i].resize(g[i].size());
+    go(speed, 345, 338);
     return 0;
-    Field f = StandartInit();
+    /*Field f = StandartInit();
     f.B = YELLOW;
-    f.house1.left = NONE;
     f.house1.right = YELLOW;
     f.house2.left = GREEN;
     f.house2.right = GREEN;
@@ -2057,5 +2040,5 @@ int EV3_main()
     stopA();
     moveA(speedA, after_take_green_loops);
     wait(20000);
-    return 0;
+    return 0;*/
 }
