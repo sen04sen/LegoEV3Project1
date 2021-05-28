@@ -32,7 +32,7 @@ using namespace ev3_c_api;
     \endcode
 */
 class Edge {
-    short int to;       ///< Номер вершины, куда ведет ребро
+    int to;       ///< Номер вершины, куда ведет ребро
 
     void (*def)(); ///< Указатель на функцию проезда по ребру
 

@@ -7,10 +7,6 @@
 #ifndef file_H
 #define file_H
 
-#include <string>
-
-#include "EV3_File.h"
-
 #include "utils.h"
 
 using namespace ev3_c_api;

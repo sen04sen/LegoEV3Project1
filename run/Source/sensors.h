@@ -132,7 +132,7 @@ Color read_marker() {
 }
 
 DoubleMarker read_home() {
-    int dist = 360;
+    /*int dist = 380;
     read_marker();
     int home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                 GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
@@ -153,9 +153,9 @@ DoubleMarker read_home() {
         encoders = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                         GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home);
 
-        if (120 < encoders && encoders < 220) {
+        if (140 < encoders && encoders < 250) {
             left[read_marker()]++;
-        } else if (240 < encoders && encoders < 360) {
+        } else if (270 < encoders && encoders < 360) {
             right[read_marker()]++;
         }
 
@@ -164,11 +164,11 @@ DoubleMarker read_home() {
         SpeedMotor(E_Port_C, nowSpeed);
     }
 
-    stopBC();
+    stopBC();*/
 
     DoubleMarker ans;
 
-    left[NONE] /= 10;
+    /*left[NONE] /= 10;
     int how = 0;
     for (map<Color, int>::iterator it = left.begin(); it != left.end(); ++it)
         if (it->second > how) {
@@ -184,7 +184,7 @@ DoubleMarker read_home() {
             how = it->second;
         }
     write(1, 1, ans.left);
-    write(20, 1, ans.right);
+    write(20, 1, ans.right);*/
     return ans;
 }
 

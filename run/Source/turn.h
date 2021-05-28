@@ -6,6 +6,8 @@
 #ifndef turn_h
 #define turn_h
 
+#include "speed.h"
+
 /*!
     \defgroup turn Поворот
     \brief Модуль, содержащий функцию поворота на месте
@@ -60,13 +62,14 @@ void turn(int sp, int dt, int tp) {
     stopBC();
 }
 
-void t1w(int sp, int dt, int tp) {
+void t1w_old(int sp, int dt, int tp) {
     if (tp >= 0) {
         if (tp < 2) {
             stopC();
             SpeedMotor(E_Port_B, -1 * (sp));
             double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
-            while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < abs(dt - 180));
+            dt -= 180;
+            while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < abs(dt));
             while (s3() > black);
             st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
             while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < abs(d1w));
@@ -75,7 +78,9 @@ void t1w(int sp, int dt, int tp) {
             stopB();
             SpeedMotor(E_Port_C, sp);
             double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-            while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(dt - 180));
+            while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(dt)){
+
+            };
             while (s2() > black);
             st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
             while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(d1w));
