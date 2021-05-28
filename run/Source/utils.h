@@ -6,13 +6,9 @@
 #ifndef utils_h
 #define utils_h
 
-#include <iostream>
 #include <vector>
 #include <string>
-#include <stdio.h>
-#include <stdlib.h>
 #include <sstream>
-#include <set>
 
 #include <EV3_Motor.h>
 #include "EV3_LCDDisplay.h"

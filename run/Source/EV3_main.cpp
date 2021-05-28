@@ -1,20 +1,20 @@
 // docs https://sen04sen.github.io/LegoEV3Project1/html/index.html
 
-#include <iostream>
+//#define abs(x) ((x > 0) ? x : -x)
+
 #include <vector>
 #include <string>
-#include <stdio.h>
+//#include <stdio.h>
 #include <stdlib.h>
+//#include <sstream>
 #include <sstream>
 #include <set>
-#include <functional>
 
 #include <EV3_Motor.h>
 #include "EV3_LCDDisplay.h"
 #include "EV3_Sensor_Color.h"
 #include "EV3_Sensor_UART.h"
 #include "EV3_Thread.h"
-#include "EV3_Bluetooth.h"
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
 
@@ -66,15 +66,15 @@ int go(int sp, int from, int toto) {
         if (end)
             break;
     }
-    vector<Edge> way;
+    vector<pair<Edge, int> > way;
     int nv = toto;
     while (nv != from) {
-        way.pb(msgo[nv].second);
+        way.pb(make_pair(msgo[nv].second, nv ));
         nv = msgo[nv].first.second;
     }
     for (int i = way.size() - 1; i >= 0; i--) {
-        Edge nw = way[i];
-        nw();
+        Edge nw = way[i].first;
+        nw(0);
     }
     return way.size();
 }
@@ -115,6 +115,7 @@ int diist(int from, int toto) {
     while (nv != from) {
         way.pb(msgo[nv].second);
         nv = msgo[nv].first.second;
+        nv = msgo[nv].first.second;
     }
     return way.size();
 }
@@ -143,36 +144,36 @@ void unloading_cubes(int cnt) {
     else {
         moveA(1);
         moveBC(speed, 160);
-        moveBC(-speed, 50);
+        moveBC(speed, -50);
         moveA(0);
-        moveBC(-speed, 120);
+        moveBC(speed, -120);
     }
 }
 
 void unloading_loops(int cnt) {
     stopBC();
     if (cnt == 4) {
-        moveBC(-speed, 250);
+        moveBC(speed, -250);
         moveD(20, near_put_loops);
         wait(300);
         moveD(speedD, put_loops);
         moveBC(speed, 80);
-        moveBC(-speed, 200);
+        moveBC(speed, -200);
         moveD(speedD, up_loops);
         moveA(0);
         moveBC(speed, 470);
-        moveBC(-speed, 100);
+        moveBC(speed, -100);
     }
     else {
-        moveBC(-speed, 250);
+        moveBC(speed, -250);
         moveD(20, near_put_loops);
         wait(300);
         moveD(speedD, xren_loops);
-        moveBC(-speed, 80);
+        moveBC(speed, -80);
         moveD(speedD, up_loops);
         moveA(0);
-        moveBC(speed, 430);
-        moveBC(-speed, 100);
+        moveBC(speed, -430);
+        moveBC(speed, 100);
     }
 }
 
@@ -217,24 +218,22 @@ void get_4_blue() {
 
 
 DoubleMarker gtf() {
-    moveBC(0, 125);
-    stopBC();
-    moveC(0, -590);
-    stopBC();
+    moveBC(speed, -40);
+    turn(speed, d90, -1);
     DoubleMarker a = read_home();
-    moveBC(0, -530);
     stopBC();
+    wait(5010);
     return(a);
 }
 
 
 vector<int> min_way;
-int mindist = 1000000000;
+int mindist = 1000000001;
 int vertoplaces[cntplaces];
 int distplaces[cntplaces][cntplaces];
 
 void buildplaces() {
-    vertoplaces[0] = 7;
+    vertoplaces[0] = 1;
     vertoplaces[1] = 338;
     vertoplaces[2] = 339;
     vertoplaces[3] = 340;
@@ -243,32 +242,36 @@ void buildplaces() {
     vertoplaces[6] = 348;
     vertoplaces[7] = 349;
     vertoplaces[8] = 350;
-    vertoplaces[9] = 342;
+    vertoplaces[9] = 351;
     vertoplaces[10] = 238;
     vertoplaces[11] = 235;
     vertoplaces[12] = 232;
-    vertoplaces[13] = 347;
+    vertoplaces[13] = 3000;
     vertoplaces[14] = 260;
-    vertoplaces[15] = 351;
-    vertoplaces[16] = 352;
-    vertoplaces[17] = 353;
-    vertoplaces[18] = 354;
-    vertoplaces[19] = 346;
-    vertoplaces[20] = 344;
+    vertoplaces[15] = 352;
+    vertoplaces[16] = 353;
+    vertoplaces[17] = 354;
+    vertoplaces[18] = 355;
+    vertoplaces[19] = 356;
+    vertoplaces[20] = 362;
     vertoplaces[21] = 151;
     vertoplaces[22] = 148;
     vertoplaces[23] = 343;
     vertoplaces[24] = 67;
     vertoplaces[25] = 64;
     vertoplaces[26] = 44;
-    vertoplaces[27] = 355;
-    vertoplaces[28] = 356;
-    vertoplaces[29] = 357;
-    vertoplaces[30] = 358;
-    vertoplaces[31] = 337;
+    vertoplaces[27] = 357;
+    vertoplaces[28] = 358;
+    vertoplaces[29] = 359;
+    vertoplaces[30] = 360;
+    vertoplaces[31] = 361;
+    vertoplaces[32] = 363;
+    vertoplaces[33] = 364;
+    vertoplaces[34] = 365;
+    vertoplaces[35] = 366;
 }
 
-bool is_end(Field f) {
+bool is_end(Field &f) {
     if (f.cnt1 == 4 && f.cnt2 == 4 && f.cnt3 == 4 && f.cntutils == 4) {
         bool m1 = 0, m2 = 0;
         bool bad = 0;
@@ -318,21 +321,30 @@ bool is_end(Field f) {
         return 0;
 }
 
-void perebor(Field f, int ndist, vector<int> nway) {
+int uyuyuy = 0;
+
+void perebor(Field &f, int ndist, vector<int> nway) {
+    write(10, 10, uyuyuy);
+    uyuyuy++;
+    wait(300);
     if (ndist > mindist)
         return;
     nway.pb(f.robot.now_position);
     if (is_end(f)) {
-        int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[0]);
+        int dt = diist(f.robot.now_position, vertoplaces[0]);
         if (mindist < dt + ndist) {
-            nway.pb(0);
+            nway.pb(vertoplaces[0]);
             min_way = nway;
             mindist = dt + ndist;
         }
         return;
     }
+    write(1, 1, 9);
+    wait(3000);
     if (f.robot.how_front < 4) {
         if (f.yellowA1 == 4) {
+            write(30, 30, vertoplaces[1]);
+            wait(3000);
             int pref = f.robot.now_position;
             if (f.robot.how_front == 2) {
                 f.robot.cfront2 = YELLOW;
@@ -342,8 +354,12 @@ void perebor(Field f, int ndist, vector<int> nway) {
             }
             f.robot.how_front += 2;
             f.yellowA1 = NONE;
-            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[1]);
-            f.robot.now_position = 1;
+            write(50, 50, f.robot.now_position);
+            wait(3000);
+            int dt = diist(f.robot.now_position, vertoplaces[1]);
+            write(30, 30, 1);
+            wait(3000);
+            f.robot.now_position = vertoplaces[1];
             perebor(f, ndist + dt, nway);
             f.robot.how_front -= 2;
             f.yellowA1 = YELLOW;
@@ -359,8 +375,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
             }
             f.robot.how_front += 2;
             f.yellowA3 = NONE;
-            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[3]);
-            f.robot.now_position = 3;
+            int dt = diist(f.robot.now_position, vertoplaces[3]);
+            f.robot.now_position = vertoplaces[3];
             perebor(f, ndist + dt, nway);
             f.robot.how_front -= 2;
             f.yellowA3 = YELLOW;
@@ -374,14 +390,14 @@ void perebor(Field f, int ndist, vector<int> nway) {
             f.robot.cfront1 = YELLOW;
             f.robot.cfront2 = YELLOW;
             f.yellowB1 = NONE;
-            int dt1 = diist(vertoplaces[f.robot.now_position], vertoplaces[24]);
-            int dt2 = diist(vertoplaces[f.robot.now_position], vertoplaces[25]);
+            int dt1 = diist(f.robot.now_position, vertoplaces[24]);
+            int dt2 = diist(f.robot.now_position, vertoplaces[25]);
             if (dt1 > dt2) {
-                f.robot.now_position = 25;
+                f.robot.now_position = vertoplaces[25];
                 perebor(f, ndist + dt2, nway);
             }
             else {
-                f.robot.now_position = 24;
+                f.robot.now_position = vertoplaces[24];
                 perebor(f, ndist + dt1, nway);
             }
             f.yellowB1 = YELLOW;
@@ -394,14 +410,14 @@ void perebor(Field f, int ndist, vector<int> nway) {
             f.robot.cfront1 = GREEN;
             f.robot.cfront2 = GREEN;
             f.greenB1 = NONE;
-            int dt1 = diist(vertoplaces[f.robot.now_position], vertoplaces[21]);
-            int dt2 = diist(vertoplaces[f.robot.now_position], vertoplaces[22]);
+            int dt1 = diist(f.robot.now_position, vertoplaces[21]);
+            int dt2 = diist(f.robot.now_position, vertoplaces[22]);
             if (dt1 > dt2) {
-                f.robot.now_position = 22;
+                f.robot.now_position = vertoplaces[22];
                 perebor(f, ndist + dt2, nway);
             }
             else {
-                f.robot.now_position = 21;
+                f.robot.now_position = vertoplaces[21];
                 perebor(f, ndist + dt1, nway);
             }
             f.greenB1 = GREEN;
@@ -414,14 +430,14 @@ void perebor(Field f, int ndist, vector<int> nway) {
             f.robot.cfront1 = BLUE;
             f.robot.cfront2 = BLUE;
             f.blueB1 = NONE;
-            int dt1 = diist(vertoplaces[f.robot.now_position], vertoplaces[10]);
-            int dt2 = diist(vertoplaces[f.robot.now_position], vertoplaces[11]);
+            int dt1 = diist(f.robot.now_position, vertoplaces[10]);
+            int dt2 = diist(f.robot.now_position, vertoplaces[11]);
             if (dt1 > dt2) {
-                f.robot.now_position = 10;
+                f.robot.now_position = vertoplaces[10];
                 perebor(f, ndist + dt2, nway);
             }
             else {
-                f.robot.now_position = 11;
+                f.robot.now_position = vertoplaces[11];
                 perebor(f, ndist + dt1, nway);
             }
             f.blueB1 = BLUE;
@@ -434,8 +450,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
             if (f.robot.how_front == 2) {
                 if (f.house1.left == f.robot.cfront1 || f.house1.right == f.robot.cfront1) {
                     int pref = f.robot.now_position;
-                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[28]);
-                    f.robot.now_position = 28;
+                    int dt = diist(f.robot.now_position, vertoplaces[28]);
+                    f.robot.now_position = vertoplaces[28];
                     f.robot.how_front -= 2;
                     f.cnt1 += 2;
                     f.hom1.pb(f.robot.cfront1);
@@ -451,8 +467,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
             else {
                 if (f.house1.left == f.robot.cfront2 || f.house1.right == f.robot.cfront2) {
                     int pref = f.robot.now_position;
-                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[27]);
-                    f.robot.now_position = 27;
+                    int dt = diist(f.robot.now_position, vertoplaces[27]);
+                    f.robot.now_position = vertoplaces[27];
                     f.robot.how_front -= 2;
                     f.cnt1 += 2;
                     f.hom1.pb(f.robot.cfront2);
@@ -465,8 +481,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
                     f.robot.now_position = pref;
                     if ((f.house1.left == f.robot.cfront1 || f.house1.right == f.robot.cfront1) && f.cnt1 == 0) {
                         int pref = f.robot.now_position;
-                        int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[28]);
-                        f.robot.now_position = 28;
+                        int dt = diist(f.robot.now_position, vertoplaces[28]);
+                        f.robot.now_position = vertoplaces[28];
                         f.robot.how_front -= 4;
                         f.cnt1 += 4;
                         f.hom1.pb(f.robot.cfront1);
@@ -489,8 +505,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
             if (f.robot.how_front == 2) {
                 if (f.house2.left == f.robot.cfront1 || f.house2.right == f.robot.cfront1) {
                     int pref = f.robot.now_position;
-                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[6]);
-                    f.robot.now_position = 6;
+                    int dt = diist(f.robot.now_position, vertoplaces[6]);
+                    f.robot.now_position = vertoplaces[6];
                     f.robot.how_front -= 2;
                     f.cnt2 += 2;
                     f.hom2.pb(f.robot.cfront1);
@@ -506,8 +522,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
             else {
                 if (f.house2.left == f.robot.cfront2 || f.house2.right == f.robot.cfront2) {
                     int pref = f.robot.now_position;
-                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[5]);
-                    f.robot.now_position = 5;
+                    int dt = diist(f.robot.now_position, vertoplaces[5]);
+                    f.robot.now_position = vertoplaces[5];
                     f.robot.how_front -= 2;
                     f.cnt2 += 2;
                     f.hom2.pb(f.robot.cfront2);
@@ -520,8 +536,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
                     f.robot.now_position = pref;
                     if ((f.house2.left == f.robot.cfront1 || f.house2.right == f.robot.cfront1) && f.cnt2 == 0) {
                         int pref = f.robot.now_position;
-                        int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[6]);
-                        f.robot.now_position = 6;
+                        int dt = diist(f.robot.now_position, vertoplaces[6]);
+                        f.robot.now_position = vertoplaces[6];
                         f.robot.how_front -= 4;
                         f.cnt2 += 4;
                         f.hom2.pb(f.robot.cfront1);
@@ -544,8 +560,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
             if (f.robot.how_front == 2) {
                 if (f.house3.left == f.robot.cfront1 || f.house3.right == f.robot.cfront1) {
                     int pref = f.robot.now_position;
-                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[16]);
-                    f.robot.now_position = 16;
+                    int dt = diist(f.robot.now_position, vertoplaces[16]);
+                    f.robot.now_position = vertoplaces[16];
                     f.robot.how_front -= 2;
                     f.cnt3 += 2;
                     f.hom3.pb(f.robot.cfront1);
@@ -561,8 +577,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
             else {
                 if (f.house3.left == f.robot.cfront2 || f.house3.right == f.robot.cfront2) {
                     int pref = f.robot.now_position;
-                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[15]);
-                    f.robot.now_position = 15;
+                    int dt = diist(f.robot.now_position, vertoplaces[15]);
+                    f.robot.now_position = vertoplaces[15];
                     f.robot.how_front -= 2;
                     f.cnt3 += 2;
                     f.hom3.pb(f.robot.cfront2);
@@ -575,8 +591,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
                     f.robot.now_position = pref;
                     if ((f.house3.left == f.robot.cfront1 || f.house3.right == f.robot.cfront1) && f.cnt3 == 0) {
                         int pref = f.robot.now_position;
-                        int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[16]);
-                        f.robot.now_position = 16;
+                        int dt = diist(f.robot.now_position, vertoplaces[16]);
+                        f.robot.now_position = vertoplaces[16];
                         f.robot.how_front -= 4;
                         f.cnt3 += 4;
                         f.hom3.pb(f.robot.cfront1);
@@ -603,8 +619,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
             f.robot.cfront1 = BLUE;
             f.robot.cfront2 = BLUE;
             f.blueA1 = NONE;
-            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[13]);
-            f.robot.now_position = 13;
+            int dt = diist(f.robot.now_position, vertoplaces[13]);
+            f.robot.now_position = vertoplaces[13];
             perebor(f, ndist + dt, nway);
             f.blueA1 = BLUE;
             f.robot.how_back = 0;
@@ -616,8 +632,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
             f.robot.cfront1 = GREEN;
             f.robot.cfront2 = GREEN;
             f.greenA1 = NONE;
-            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[23]);
-            f.robot.now_position = 23;
+            int dt = diist(f.robot.now_position, vertoplaces[23]);
+            f.robot.now_position = vertoplaces[23];
             perebor(f, ndist + dt, nway);
             f.greenA1 = GREEN;
             f.robot.how_back = 0;
@@ -629,8 +645,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
             if (f.robot.how_back == 2) {
                 if (f.house1.left == f.robot.cback2 || f.house1.right == f.robot.cback2) {
                     int pref = f.robot.now_position;
-                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[26]);
-                    f.robot.now_position = 26;
+                    int dt = diist(f.robot.now_position, vertoplaces[26]);
+                    f.robot.now_position = vertoplaces[26];
                     f.robot.how_back -= 2;
                     f.cnt1 += 2;
                     f.hom1.pb(f.robot.cback2);
@@ -646,8 +662,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
             else {
                 if (f.house1.left == f.robot.cback1 || f.house1.right == f.robot.cback1) {
                     int pref = f.robot.now_position;
-                    int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[29]);
-                    f.robot.now_position = 29;
+                    int dt = diist(f.robot.now_position, vertoplaces[29]);
+                    f.robot.now_position = vertoplaces[29];
                     f.robot.how_back -= 2;
                     f.cnt1 += 2;
                     f.hom1.pb(f.robot.cback1);
@@ -659,9 +675,9 @@ void perebor(Field f, int ndist, vector<int> nway) {
                     f.robot.how_back += 2;
                     f.robot.now_position = pref;
                     if ((f.house1.left == f.robot.cback2 || f.house1.right == f.robot.cback2) && f.cnt1 == 0) {
-                        int pref = f.robot.now_position;
-                        int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[30]);
-                        f.robot.now_position = 30;
+                        int pref2 = f.robot.now_position;
+                        int dt = diist(f.robot.now_position, vertoplaces[30]);
+                        f.robot.now_position = vertoplaces[30];
                         f.robot.how_back -= 4;
                         f.cnt1 += 4;
                         f.hom1.pb(f.robot.cback1);
@@ -675,7 +691,7 @@ void perebor(Field f, int ndist, vector<int> nway) {
                         f.hom1.pop_back();
                         f.hom1.pop_back();
                         f.robot.how_back += 4;
-                        f.robot.now_position = pref;
+                        f.robot.now_position = pref2;
                     }
                 }
             }
@@ -794,8 +810,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
     if (f.cntutils < 4) {
         if (f.robot.how_front == 2) {
             int pref = f.robot.now_position;
-            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[20]);
-            f.robot.now_position = 20;
+            int dt = diist(f.robot.now_position, vertoplaces[20]);
+            f.robot.now_position = vertoplaces[20];
             f.robot.how_front -= 2;
             f.cntutils += 2;
             perebor(f, ndist + dt, nway);
@@ -805,8 +821,8 @@ void perebor(Field f, int ndist, vector<int> nway) {
         }
         else if (f.cntutils == 0) {
             int pref = f.robot.now_position;
-            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[20]);
-            f.robot.now_position = 20;
+            int dt = diist(f.robot.now_position, vertoplaces[32]);
+            f.robot.now_position = vertoplaces[32];
             f.robot.how_front -= 4;
             f.cntutils += 4;
             perebor(f, ndist + dt, nway);
@@ -814,10 +830,10 @@ void perebor(Field f, int ndist, vector<int> nway) {
             f.robot.how_front += 4;
             f.robot.now_position = pref;
         }
-        if (f.robot.how_back == 2) {
+        if (f.robot.how_back == 4) {
             int pref = f.robot.now_position;
-            int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[33]);
-            f.robot.now_position = 33;
+            int dt = diist(f.robot.now_position, vertoplaces[33]);
+            f.robot.now_position = vertoplaces[33];
             f.robot.how_back -= 2;
             f.cntutils += 2;
             perebor(f, ndist + dt, nway);
@@ -825,29 +841,16 @@ void perebor(Field f, int ndist, vector<int> nway) {
             f.robot.how_back += 2;
             f.robot.now_position = pref;
         }
-        else {
-            if (f.cntutils == 2) {
-                int pref = f.robot.now_position;
-                int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[34]);
-                f.robot.now_position = 34;
-                f.robot.how_back -= 2;
-                f.cntutils += 2;
-                perebor(f, ndist + dt, nway);
-                f.cntutils -= 2;
-                f.robot.how_back += 2;
-                f.robot.now_position = pref;
-            }
-            else {
-                int pref = f.robot.now_position;
-                int dt = diist(vertoplaces[f.robot.now_position], vertoplaces[35]);
-                f.robot.now_position = 35;
-                f.robot.how_back -= 4;
-                f.cntutils += 4;
-                perebor(f, ndist + dt, nway);
-                f.cntutils -= 4;
-                f.robot.how_back += 4;
-                f.robot.now_position = pref;
-            }
+        if (f.robot.how_back == 2) {
+            int pref = f.robot.now_position;
+            int dt = diist(f.robot.now_position, vertoplaces[34]);
+            f.robot.now_position = vertoplaces[34];
+            f.robot.how_back -= 2;
+            f.cntutils += 2;
+            perebor(f, ndist + dt, nway);
+            f.cntutils -= 2;
+            f.robot.how_back += 2;
+            f.robot.now_position = pref;
         }
     }
 }
@@ -964,16 +967,14 @@ void f19() {
 }
 
 void f20() {
-    moveBC(speed, -320);
+    moveBC(speed, -360);
 }
 
 void f21() {
-    turn(speed, d90, 3);
     line(speed, 50, 4);
 }
 
 void f22() {
-    turn(speed, d90, 0);
     line(speed, 50, 1);
 }
 
@@ -994,11 +995,11 @@ void f26() {
 }
 
 void take4green() {
-    //moveA(speedA, 100);
+    moveA(speedA, 520);
     moveBC(-speed, 130);
     line(speed, grad[8] - dws + 130, 0);
     stopBC();
-    //moveA(speedA, 200);
+    moveA(speedA, 200);
 }
 
 void f27() {
@@ -1066,7 +1067,7 @@ void f42() {
 }
 
 void f43() {
-    turn(speed, w90, -2);
+    t1w(speed, w90, -2);
     line(speed, dws - 60, 0);
 }
 
@@ -1174,6 +1175,14 @@ void f61() {
     line(speed, 650 - dtw, 1);
 }
 
+void f60a() {
+    line(speed, 380 - dws, 0);
+}
+
+void f61a() {
+    line(speed, 380 - dtw, 0);
+}
+
 void f62() {
     line(speed, 750 - dws, 0);
 }
@@ -1222,23 +1231,57 @@ void f67c() {
     line(speed, 800 - dtw, 4);
 }
 
+void f66d() {
+    line(speed, 380 - dws, 0);
+}
+
+void f67d() {
+    line(speed, 380 - dtw, 0);
+}
+
+void f66e() {
+    line(speed, 410 - dws, 0);
+}
+
+void f67e() {
+    line(speed, 410 - dtw, 0);
+}
+
+void f66f() {
+    line(speed, 130, 0);
+}
+
+void f67f() {
+    line(speed, 130, 0);
+}
+
+
+void f66g() {
+    line(speed, 410 - dws, 0);
+}
+
+void f67g() {
+    line(speed, 410 - dtw, 0);
+}
+
+
+
 void f68() {
     d2 = gtf();
 }
 
 void f69() {
-    moveBC(speed, -20, 1);
-    turn(speed, d90, 0);
+    moveBC(speed, -40);
+    turn(speed, d90, -1);
     getRGB(4);
     wait(100);
     if (getRGB(4).r > 15 || getRGB(4).g > 15) {
         gdeb = 2;
     }
     moveB(speed, w90, 1);
-    moveBC(-speed, 30);
+    moveBC(speed, -30);
     goBC(speed);
     while (s3() > black);
-    moveBC(speed, dws, 1);
 }
 
 void f70() {
@@ -1322,12 +1365,15 @@ void f89() {
 }
 
 void f90() {
-    line(speed, grad[11] - dws, 2);
+    line(speed, 200, 1);
 }
 
 void f91() {
-    turn(speed, d90, 0);
     line(speed, 50, 1);
+}
+
+void f91a() {
+    line(speed, 50, 4);
 }
 
 void f92() {
@@ -1363,11 +1409,22 @@ void f98() {
 }
 
 void get4blue1() {
-
+    moveBC(speed, -150);
+    moveA(speedA, before_take_blue_loops);
+    line(MIN, 100, 1);
+    moveBC(MIN, 70);
+    moveA(speedA, after_take_blue_loops);
 }
 
 void get4blue2() {
+    stopBC();
+    moveA(speedA, before_take_blue_loops);
+    moveBC(MIN, 70);
+    moveA(speedA, after_take_blue_loops);
+}
 
+void bb() {
+    moveBC(speed, 30);
 }
 
 void f99() {
@@ -1399,417 +1456,173 @@ void f104() {
     line(speed, grad[6] - dtw, 0);
 }
 
-/*void f13() {
-    lineNEW(MIN1, grad[2] - dws, 4);
+void f103a() {
+    line(speed, grad[5] - dws, 0);
 }
 
-void f14() {
-    d1 = gtf();
-    //d1 = DoubleMarker(Color(4), Color(4)); //�������-------------------------------------------------------------------------------------------
+void f104a() {
+    line(speed, grad[5] - dtw, 0);
 }
 
-void f15() {
-    moveBC(speed, -320);
+void f105() {
+    moveD(speedD, before_take_cubes);
+    moveBC(speed, -300);
+    //moveBC(MIN, -100);
+    moveD(speedD, after_take_cubes);
 }
 
-void f15a() {
-    turn(speed, d90, 3);
-    moveD(speedD, up);
-    line(ONE, 50, 4);
-}
-
-void f15b() {
-    turn(speed, d90, 0);
-    line(speed, 50, 1);
-}
-
-void f16() {
-    line(speed, grad[4] - dws, 1);
-}
-
-void f17() {
-    line(speed, grad[7] - dws, 2);
-}
-
-void f18() {
-    line(speed, grad[7] - dsl, 2);
-}
-
-void f19() {
-    line(speed, grad[9] - dws, 3);
-}
-
-void f20() {
-    line(speed, grad[9] - dsl, 3);
-}
-
-void f21() {
-    line(speed, grad[11] - dws, 2);
-}
-
-void f22() {
-    line(speed, grad[11] - dsl, 2);
-}
-
-void f23() {
-    line(speed, grad[13] - dws, 3);
-}
-
-void f24() {
-    line(speed, grad[13] - dsl, 3);
-}
-
-void f25() {
-    moveC(speed, 50);
-    moveB(speed, 40);
-    moveBC(speed, 410, 0);
-    stopC();
-    moveB(speed, 850, 1);
-    c_cubes += 2;
-    turn(speed, 65, -1);
-    moveA(0);
-    getRGB(4);
-    wait(100);
-    /*if (getRGB(4).r > 15 || getRGB(4).g > 15) {
-        gdeb = 4;
-    }*/
-
- /*   write(1, 1, gdeb);
-    moveBC(speed, 425, 0);
+void f106() {
+    moveBC(speed, 800 - dws - 70, 0);
     while (s2() > black);
-    stopB();
-    moveC(speed, 370);
-    line(speed, 300, 3);
 }
 
-void f26() {
-    turn(speed, d180, 2);
-    line(speed, grad[2] - 2 * dws, 1);
-}
-
-void f28() {
-    moveA(1);
-    moveBCNEW(MIN, 340, 1);
-    c_cubes += 2;
-    moveA(0);
-}
-
-void f29() {
-    moveBC(speed, -340, 1);
-}
-
-void f30() {
-    turn(speed, d90 + 30, -1);
-    goBC(speed);
+void f107() {
+    moveBC(speed, 650 - dws - 70, 0);
     while (s2() > black);
-    moveBC(speed, dws, 1);
 }
 
-void f31() {
-    turn(speed, d90 + 40, 3);
-    line(ONE, 200, 4);
+void f108() {
+    moveD(speedD, before_take_cubes);
+    moveBC(speed, -800);
+    //moveBC(MIN, -100);
+    moveD(speedD, after_take_cubes);
 }
 
-void f32() {
-    d2 = gtf();
-    //d2 = DoubleMarker(Color(3), Color(3)); //�������-------------------------------------------------------------------
+void f109() {
+    moveD(speedD, before_take_cubes);
+    moveBC(speed, -650);
+    //moveBC(MIN, -100);
+    moveD(speedD, after_take_cubes);
 }
 
-void f33() {
-    moveBC(speed, -20, 1);
-    turn(speed, d90, 0);
-    getRGB(4);
-    wait(100);
-    /*if (getRGB(4).r > 15 || getRGB(4).g > 15) {
-        gdeb = 2;
-    }*/
- /*   moveB(speed, turn1wheel, 1);
-    moveBC(-speed, 30);
+void f110() {
+    moveD(speedD, before_take_cubes);
+    moveBC(speed, -250);
+    //moveBC(MIN, -100);
+    moveD(speedD, after_take_cubes);
+}
+
+void f111() {
+    moveBC(speed, 250);
+}
+
+void f112() {
+    moveD(speedD, before_take_cubes);
+    moveBC(speed, -250);
+    //moveBC(MIN, -100);
+    moveD(speedD, after_take_cubes);
+}
+
+void f113() {
+    moveBC(speed, 250);
+}
+
+void f114() {
+    moveD(speedD, before_take_cubes);
+    moveBC(speed, -250);
+    //moveBC(MIN, -100);
+    moveD(speedD, after_take_cubes);
+}
+
+void f115() {
     goBC(speed);
     while (s3() > black);
-    moveBC(speed, dws, 1);
 }
 
-void f34() {
-    turn(speed, d90, 0);
-    line(ONE, 300, 4);
-}
-
-void f35() {
-    turn(speed, d180, 2);
-    line(speed, grad[10] - dws * 2, 1);
-}
-
-void f36() {
-    turn(speed, d90, 3);
-    line(speed, 200, 1);
-}
-
-void f37() {
-    d3 = gtf();
-    //d3 = DoubleMarker(Color(2), Color(0)); //�������----------------------------------------------------------------------------------------
-}
-
-void f38() {
-    moveBC(speed, 40);
-    turn(speed, d90, 3);
-}
-
-void f39() {
-    moveBC(speed, 50, 0);
-    lineNEW(ONE, 460, 5);
-    goBC(speed);
-    while (s2() > black);
-}
-
-void f40() {
-    wait(30);
-    moveBC(15, -50);
-    moveA(1);
-    line(10, 120, 0);
-    moveBC(speed, 420);
-    moveA(0);
-}
-
-void f41() {
-    turn(speed, d90, 3);
-    moveBC(speed, 460, 0);
-    while (s2() > black);
-    moveBC(speed, dws);
-}
-
-void f42() {
-    turn(speed, d90, 0);
-    line(speed, 500, 2);
-}
-
-void f43() {
-    turn(speed, d90, 3);
-    line(speed, 200, 2);
-}
-
-void f44() {
-    moveBC(speed, dws - 50);
-}
-
-void f45() {
-    turn(speed, d90 - 50, 0);
-    turn(speed, 80, -1);
-}
-
-void f46() {
-    line(ONE, grad[6] - dws + 20, 8);
-    getRGB(2);
-    moveBC(speed, 55, 0);
-    while (getRGB(2).b < 100);
-    moveBC(speed, 80, 1);
-    s2();
-}
-
-void f47() {
-    line(speed, 290, 0);
-    stopBC();
-    turn(speed, d90, 3);
-}
-
-void f48() {
-    moveA(1);
-    moveBC(MIN, 540);
-    moveA(0);
-}
-
-void f49() {
-    turn(speed, d90, 3);
-    moveBC(speed, 140, 0);
-    while (s2() > black);
-    moveBC(speed, dws, 1);
-}
-
-void f50() {
-    turn(speed, d90, 0);
-    line(speed, 290, 3);
-}
-
-void f51() {
-    turn(speed, d90, 3);
-    line(speed, 390, 3);
-}
-
-void f52() {
-    stopBC();
-    moveA(0);
-    moveBC(-10, 70);
+void f116() {
     moveD(speedD, before_take_cubes);
-    moveA(1);
-    moveBC(-10, 50);
-    moveA(0);
-    moveBC(-10, 40);
+    moveBC(speed, -400);
+    //moveBC(MIN, -100);
     moveD(speedD, after_take_cubes);
-    moveA(1);
-    moveBC(speed, 440);
-    moveD(speedD, before_take_cubes);
 }
 
-void f53() {
-    stopBC();
-    moveA(0);
-    moveBC(-10, 70);
-    moveD(speedD, before_take_cubes);
-    moveA(1);
-    moveBC(-10, 50);
-    moveA(0);
-    moveBC(-10, 40);
-    moveD(speedD, after_take_cubes);
-    moveA(1);
-    moveBC(speed, 440 - dws);
-    moveD(speedD, before_take_cubes);
+void f117() {
+    moveBC(speed, 400);
 }
 
-void f54() {
-    moveBC(-speed, 280 - dws);
-    moveD(speedD, up);
+void f118() {
+    line(speed, 180 - dws, 3);
 }
 
-void f55() {
-    moveBC(-speed, 110);
-    turn(speed, d90, 0);
+void f119() {
+    line(speed, 180 - dtw, 3);
 }
 
-void f56() {
-    moveA(1);
-    moveBC
-    (MIN, 520);
-    moveA(0);
+void f120() {
+    line(speed, 180 - dws, 0);
 }
 
-void f57() {
-    moveBC(-speed, 580);
+void f121() {
+    line(speed, 180 - dtw, 0);
 }
 
-void f58() {
-    turn(speed, d90, 3);
-    line(speed, 110, 3);
+void f122() {
+    line(speed, 180 - dws, 0);
 }
 
-void f59() {
-    turn(speed, d90, 0);
-    line(speed, 490, 3);
+void f123() {
+    line(speed, 180 - dtw, 0);
 }
 
-void f60() {
-    stopBC();
-    moveBC(-speed, 50);
-    turn(speed, d90, 0);
+void f124() {
+    line(speed, 180 - dws, 2);
 }
 
-void f61() {
-    stopBC();
-    turn(speed, d90, 3);
+void f125() {
+    line(speed, 180 - dtw, 2);
 }
 
-void f62() {
-    moveBC(-speed, 150);
-    moveD(10, before_take_green_loops);
-    moveBC(10, 80);
-    moveD(10, after_take_green_loops);
+void unload_loops0() {
+
 }
 
-void f63() {
-    moveBC(speed, 70);
+void unload_loops1() {
+
 }
 
-void f64() {
-    turn(speed, d90, 3);
-    line(speed, 50, 2);
+void unload_loops2() {
+
 }
 
-void f65() {
-    turn(speed, d90, 0);
+void unload_cubes0() {
+
 }
 
-void f66() {
-    stopBC();
-    moveBC(-speed, 50);
-    turn(speed, d90, 3);
+void unload_cubes1() {
+
 }
 
-void f67() {
-    line(speed, 210, 0);
-    stopBC();
-    turn(speed, d90, 0);
+void hcb() {
+
 }
 
-void f68() {
-    moveBC(-speed, 150);
-    moveD(10, before_take_green_loops);
-    moveBC(10, 80);
-    moveD(10, after_take_green_loops);
+void hlb() {
+
 }
 
-void f69() {
-    moveBC(speed, 70);
+void utilsll() {
+
 }
 
-void f70() {
-    turn(speed, d90, 0);
-    line(speed, 50, 3);
+void utilslr() {
+
 }
 
-void f71() {
-    turn(speed, d90, 3);
-    line(speed, 700, 3);
+void backutils1() {
+
 }
 
-void f72() {
-    line(speed, grad[2] - dtw, 4);
+void utilscubes() {
+
 }
 
-void f73() {
-    line(speed, grad[3] - dtw, 3);
+void backutilscubes() {
+
 }
 
-void f74() {
-    line(speed, grad[10] - dtw, 4);
-}
+void fend() {
 
-void f75() {
-    line(speed, grad[9] - dtw, 3);
 }
-
-void f76() {
-    line(speed, grad[11] - dtw, 2);
-}
-
-void f77() {
-    line(speed, grad[12] - dtw, 4);
-}
-
-void f78() {
-    line(speed, grad[11] - dtw, 2);
-}
-
-void twb() {
-    stopBC();
-    moveBC(-speed, 50);
-    moveB(speed, turn1wheel - 180, 0);
-    while (s3() > black);
-    moveB(speed, 100);
-}
-
-void twc() {
-    stopBC();
-    moveBC(-speed, 50);
-    moveC(speed, turn1wheel - 180, 0);
-    while (s2() > black);
-    moveC(speed, 100);
-}
-
-void f79() {
-    turn(speed, 30, -1);
-    goBC(speed);
-    while (s2() > black);
-    moveBC(speed, dws, 1);
-}*/
 
 void add(int from, int to, void (*def)(), double time = 1.0) {
     g[from].pb(Edge(to, def, time));
@@ -1882,50 +1695,6 @@ void addcrossroad(int v, int u, int r, int d, int l) {
     }
 }
 
-/*void put_loops_4(int clr) {
-    if (d3.left == clr && d3.right == clr) {
-        go(speed, nv, 121);
-        unloading_loops(4);
-        c_loops -= 4;
-        nv = 121;
-    }
-    else if (d3.left == clr || d3.right == clr) {
-        go(speed, nv, 121);
-        unloading_loops(2);
-        c_loops -= 2;
-        nv = 121;
-    }
-    if (d2.left == clr && d2.right == clr) {
-        go(speed, nv, 116);
-        unloading_loops(4);
-        c_loops -= 4;
-        nv = 116;
-    }
-    else if (d2.left == clr || d2.right == clr) {
-        go(speed, nv, 116);
-        if (c_loops == 2)
-            unloading_loops(4);
-        else
-            unloading_loops(2);
-        c_loops -= 2;
-        nv = 116;
-    }
-    if (d1.left == clr && d1.right == clr) {
-        go(speed, nv, 25);
-        unloading_loops(4);
-        c_loops -= 4;
-        nv = 25;
-    }
-    else if (d1.left == clr || d1.right == clr) {
-        go(speed, nv, 25);
-        if (c_loops == 2)
-            unloading_loops(4);
-        else
-            unloading_loops(2);
-        c_loops -= 2;
-        nv = 25;
-    }
-}*/
 
 void buildg() {
     addcrossroad(0, 0, 0, 0, 0);
@@ -1959,6 +1728,8 @@ void buildg() {
 
     add(7, 20, f8);
 
+    add(13, 1, fend);
+
     add(16, 29, f9);
     add(15, 29, f10);
     add(34, 23, f9);
@@ -1975,12 +1746,12 @@ void buildg() {
     //add(57, 35, f32);
 
     add(118, 59, f15);
-    add(117, 59, f16);
+    //add(117, 59, f16);
     add(52, 113, f33);
     add(51, 113, f34);
 
     add(31, 44, f17);
-    add(30, 44, f18);
+    //add(30, 44, f18);
 
     add(337, 26, f35);
 
@@ -1988,12 +1759,7 @@ void buildg() {
 
     add(336, 298, f20);
     add(295, 44, f21);
-    add(289, 25, f22);
-
-    add(112, 125, f23);
-    add(111, 125, f24);
-    add(130, 119, f23);
-    add(129, 119, f24);
+    add(289, 26, f22);
 
     add(109, 86, f25);
     add(108, 86, f26);
@@ -2004,7 +1770,7 @@ void buildg() {
     add(108, 98, f29);
     add(103, 116, f36);
     add(102, 116, f37);
-        
+
     add(97, 86, f38);
     //add(96, 86, f39);
     add(91, 104, f40);
@@ -2034,14 +1800,17 @@ void buildg() {
     add(177, 143, f53);
 
     add(169, 182, f54);
-    add(168, 182, f55); 
+    //add(168, 182, f55); 
     add(187, 176, f56);
     add(186, 176, f57);
 
     add(169, 194, f58);
-    add(168, 194, f59); 
+    add(168, 194, f59);
     add(199, 176, f60);
     add(198, 176, f61);
+
+    add(199, 188, f60a);
+    add(198, 188, f61a);
 
     add(169, 302, f62);
     add(168, 302, f63);
@@ -2057,8 +1826,20 @@ void buildg() {
     add(193, 206, f66b);
     add(192, 206, f67b);
 
+    add(193, 301, f66f);
+    add(307, 199, f67f);
+
+    add(307, 188, f66g);
+    add(306, 188, f67g);
+
     add(181, 206, f66c);
     add(180, 206, f67c);
+
+    add(181, 194, f66d);
+    add(180, 194, f67d);
+
+    add(181, 302, f66e);
+    add(180, 302, f67e);
 
     add(206, 341, f68);
 
@@ -2088,15 +1869,16 @@ void buildg() {
     add(249, 227, f85);
 
     add(247, 260, f86);
-    add(246, 260, f87);
+    //add(246, 260, f87);
 
     add(260, 345, f88);
-    
+
     add(345, 334, f89);
 
     add(346, 242, f90);
 
     add(325, 242, f91);
+    add(331, 260, f91a);
 
     add(244, 269, f92);
 
@@ -2110,8 +1892,10 @@ void buildg() {
     add(277, 280, f97);
     add(277, 286, f98);
 
-    add(280, 347, get4blue1);
-    add(281, 347, get4blue2);
+    add(280, 3000, get4blue1);
+    add(281, 3000, get4blue2);
+
+    add(3000, 280, bb);
 
     add(55, 67, f99);
     add(67, 56, f100);
@@ -2122,22 +1906,78 @@ void buildg() {
     add(88, 161, f103);
     add(87, 161, f104);
 
-    /*add(280, 232, f101);
+    add(94, 83, f103a);
+    add(95, 83, f104a);
 
-    add(235, 224, f102);
-    add(238, 203, f103);
-    add(223, 235, f104);
-    add(202, 238, f105);
+    add(280, 232, f105);
 
-    add(79, 338, f106);
-    add(338, 79, f107);
-    add(163, 340, f108);
-    add(340, 163, f109);
+    add(235, 224, f106);
+    add(238, 203, f107);
+    add(223, 235, f108);
+    add(202, 238, f109);
 
-    add(139, 151, f110);
-    add(151, 356, f111);
-    add(184, 148, f112);
-    add(148, 185, f113);*/
+    add(79, 338, f110);
+    add(338, 79, f111);
+    add(163, 340, f112);
+    add(340, 163, f113);
+
+    add(139, 151, f114);
+    add(151, 356, f115);
+    add(184, 148, f116);
+    add(148, 185, f117);
+
+    add(253, 352, unload_cubes0);
+    add(37, 357, unload_cubes0);
+    add(211, 347, unload_cubes0);
+    add(253, 353, unload_cubes1);
+    add(37, 358, unload_cubes1);
+    add(211, 348, unload_cubes1);
+    add(260, 354, unload_loops0);
+    add(44, 359, unload_loops0);
+    add(206, 349, unload_loops0);
+    add(260, 355, unload_loops1);
+    add(44, 360, unload_loops1);
+    add(206, 350, unload_loops1);
+    add(260, 356, unload_loops2);
+    add(44, 361, unload_loops2);
+    add(206, 351, unload_loops2);
+    add(347, 211, hcb);
+    add(348, 211, hcb);
+    add(352, 253, hcb);
+    add(353, 253, hcb);
+    add(357, 37, hcb);
+    add(358, 37, hcb);
+    add(354, 346, hlb);
+    add(355, 346, hlb);
+    add(356, 346, hlb);
+    add(349, 342, hlb);
+    add(350, 342, hlb);
+    add(351, 342, hlb);
+    add(359, 337, hlb);
+    add(360, 337, hlb);
+    add(361, 337, hlb);
+
+    addcrossroad(367, 0, 1, 0, 1);
+    addcrossroad(379, 0, 1, 0, 1);
+
+    add(371, 173, f118);
+    //add(370, 173, f119);
+    add(178, 378, f120);
+    //add(177, 378, f121);
+
+    add(172, 384, f122);
+    //add(171, 384, f123);
+    add(389, 179, f124);
+    //add(388, 179, f125);
+
+    add(374, 364, utilsll);
+    add(386, 365, utilslr);
+    add(364, 374, backutils1);
+    add(365, 374, backutils1);
+    add(169, 362, utilscubes);
+    add(169, 363, utilscubes);
+    add(362, 169, backutilscubes);
+    add(363, 169, backutilscubes);
 }
 
 void vivod_h() {
@@ -2151,8 +1991,10 @@ void vivod_h() {
 
 const int how = 100000;
 
+
 int EV3_main()
 {
+    system("free -h");
     CreateThread(okonchanie, 0);
     //CreateThread(control, 0);
     Clear_Display();
@@ -2170,167 +2012,50 @@ int EV3_main()
     gclr(4);
     buildDegreesConstants();
     buildg();
+    g.resize(g.size());
+    for (int i = 0; i < g.size(); ++i) g[i].resize(g[i].size());
+    go(speed, 345, 109);
+    go(speed, 109, 338);
+    return 0;
+    Field f = StandartInit();
+    f.B = YELLOW;
+    f.house1.left = NONE;
+    f.house1.right = YELLOW;
+    f.house2.left = GREEN;
+    f.house2.right = GREEN;
+    f.house3.left = BLUE;
+    f.house3.right = YELLOW;
+    f.robot.now_position = 345;
+    f.cnt1 = f.cnt2 = f.cnt3 = f.cntutils = f.robot.how_front = f.robot.how_back = 0;
+    f.yellowA1 = f.yellowA2 = f.yellowA3 = f.yellowA4 = YELLOW;
+    f.greenA1 = f.greenA2 = f.greenA3 = f.greenA4 = GREEN;
+    f.blueA1 = f.blueA2 = f.blueA3 = f.blueA4 = BLUE;
+    f.yellowB1 = f.yellowB2 = f.yellowB3 = f.yellowB4 = YELLOW;
+    f.greenB1 = f.greenB2 = f.greenB3 = f.greenB4 = NONE;
+    f.blueB1 = f.blueB2 = f.blueB3 = f.blueB4 = NONE;
+    buildplaces();
+    vector<int> watafak;
+    try {
+        perebor(f, 0, watafak);
+    }
+    catch (...) {
+        write(70, 70, 35);
+    }
+    write(50, 10, "end");
+    wait(5000);
+    for (int i = 0; i < min_way.size(); i++) {
+        write(1, 1, min_way[i]);
+        wait(3000);
+    }
+    return 0;
     //vivod_h();
     goD(-speedD);
     wait(500);
     goD(0);
-    goA(-20);
-    wait(400);
+    goA(-50);
+    wait(600);
     stopA();
-    go(speed, 119, 44);
-    return 0;
-    go(speed, 0, 26);
-    nv = 26;
-    if (d1.left == 4 || d1.right == 4) {
-        go(speed, 26, 25);
-        stopBC();
-        unloading_cubes(4);
-        c_cubes -= 2;
-        go(speed, 25, 114);
-    }
-    else {
-        go(speed, 26, 114);
-    }
-    go(speed, 114, 117);
-    go(speed, 117, 119);
-    if (d1.left == 4 && d1.right == 4) {
-        c_cubes -= 2;
-        go(speed, 119, 131);
-        go(speed, 131, 122);
-    }
-    else if (d2.left == 4 && d2.right == 4) {
-        go(speed, 119, 116);
-        unloading_cubes(4);
-        c_cubes -= 4;
-        go(speed, 116, 122);
-    }
-    else if (d2.left == 4 || d2.right == 4) {
-        go(speed, 119, 116);
-        if (c_cubes == 2)
-            unloading_cubes(4);
-        else {
-            unloading_cubes(2);
-        }
-        c_cubes -= 2;
-        go(speed, 116, 122);
-    }
-    else {
-        go(speed, 119, 122);
-    }
-    go(speed, 122, 123);
-    if (d3.left == 4 || d3.right == 4) {
-        go(speed, 123, 121);
-        if (c_cubes == 2) {
-            unloading_cubes(4);
-        }
-        else {
-            unloading_cubes(2);
-        }
-        c_cubes -= 2;
-        nv = 121;
-    }
-    else {
-        nv = 123;
-    }
-    if (c_cubes == 2) {
-        go(speed, nv, 131);
-        c_cubes = 0;
-        nv = 131;
-    }
-    gdeb = 3; //�����������������������������������-----------------------------------------------------------------------------------------
-    int gg = 127;
-    if (gdeb == 4)
-        gg = 130;
-    else if (gdeb == 2)
-        gg = 124;
-    go(speed, nv, gg);
-    nv = gg;
-    if (d1.left == 4 && d1.right == 4) {
-        go(speed, nv, 25);
-        unloading_cubes(2);
-        nv = 25;
-        if (d2.left == 0 || d2.right == 0) {
-            go(speed, nv, 116);
-            unloading_cubes(4);
-            nv = 116;
-        }
-        else {
-            go(speed, nv, 121);
-            unloading_cubes(4);
-            nv = 121;
-        }
-    }
-    else {
-        if (d1.left == 0 || d1.right == 0) {
-            go(speed, nv, 25);
-            unloading_cubes(2);
-            nv = 25;
-        }
-        else if (d2.left == 0 || d2.right == 0) {
-            go(speed, nv, 116);
-            unloading_cubes(2);
-            nv = 116;
-        }
-        else {
-            go(speed, nv, 121);
-            unloading_cubes(2);
-            nv = 121;
-        }
-        moveA(0);
-        turn(speed, d90, 3);
-        moveA(1);
-        moveBC(speed, 210);
-        moveBC(-speed, 210);
-        turn(speed, d90, 0);
-    }
-    int cc = 0;
-    if (d1.left == 2)
-        cc++;
-    if (d1.right == 2)
-        cc++;
-    if (d2.left == 2)
-        cc++;
-    if (d2.right == 2)
-        cc++;
-    if (d3.left == 2)
-        cc++;
-    if (d3.right == 2)
-        cc++;
-/*    if (cc == 2) {
-        go(speed, nv, 97);
-        get_4_blue();
-        nv = 66;
-        put_loops_4(2);
-        if (nv == 25) {
-            go(speed, nv, 133);
-            go(speed, 133, 135);
-            nv = 135;
-        }
-        else {
-            go(speed, nv, 135);
-            go(speed, 135, 133);
-            nv = 133;
-        }
-        c_loops += 4;
-        put_loops_4(3);
-    }
-    else {
-        if (nv == 25) {
-            go(speed, nv, 133);
-            go(speed, 133, 135);
-            nv = 135;
-        }
-        else {
-            go(speed, nv, 135);
-            go(speed, 135, 133);
-            nv = 133;
-        }
-        c_loops += 4;
-        put_loops_4(3);
-        go(speed, nv, 97);
-        get_4_blue();
-        nv = 66;
-        put_loops_4(2);
-    }*/
+    moveA(speedA, after_take_green_loops);
+    wait(20000);
     return 0;
 }
