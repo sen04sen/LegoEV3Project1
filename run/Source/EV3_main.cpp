@@ -88,7 +88,6 @@ Field f = StandartInit();
 }*/
 
 int go(int sp, int from, int toto) {
-    T_TimerId t = Timer_Start();
     vector<int> father(maxv, -1);
     father[from] = 0;
     queue<int> q;
@@ -122,9 +121,14 @@ int go(int sp, int from, int toto) {
     write(50, 50, Timer_Destroy(t));     22 �� � ��������������� ����
     wait(5000);*/ 
 
-    for (int i = way.size() - 1; i >= 0; i--)
+    for (int i = way.size() - 1; i >= 0; i--) {
+
         (*way[i])(0);
-    
+        stopBC();
+        Clear_Display();
+        write(100, 100, way[i]->getTo());
+        wait(5000);
+    }
     return way.size();
 }
 
@@ -2211,6 +2215,8 @@ int EV3_main()
     write(40, 40, diist(345, 338));
     wait(10000);*/
     go(0, 7, 338);
+    go(0, 338, 345);
+    stopBC();
 
     Clear_Display();
     write(50, 50, "end");

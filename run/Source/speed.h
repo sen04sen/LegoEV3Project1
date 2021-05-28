@@ -41,6 +41,27 @@ struct Speed {
         down_enc = _end_enc;
         zero_enc = _zero_enc;
     }
+
+    Speed(const Speed &copy) {
+        max_sp  = copy.max_sp;
+        min_sp = copy.max_sp;
+        p = copy.p;
+        d = copy.d;
+        normal_enc = copy.normal_enc;
+        up_enc = copy.up_enc;
+        down_enc = copy.down_enc;
+        zero_enc = copy.zero_enc;
+    }
+    Speed& operator=(const Speed& copy) {
+        max_sp = copy.max_sp;
+        min_sp = copy.max_sp;
+        p = copy.p;
+        d = copy.d;
+        normal_enc = copy.normal_enc;
+        up_enc = copy.up_enc;
+        down_enc = copy.down_enc;
+        zero_enc = copy.zero_enc;
+    }
 };
 
 class Speed_compiled {
