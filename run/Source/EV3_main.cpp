@@ -38,7 +38,7 @@ using namespace std;
 int maxim = 0;
 
 int go(int sp, int from, int toto) {
-    pair<pair<double, int>, Edge> msgo[maxv];
+    static pair<pair<double, int>, Edge> msgo[maxv];
     for (int i = 0; i < maxv; i++) {
         msgo[i].first.first = (double)1000000000;
         msgo[i].first.second = -1;
@@ -76,6 +76,51 @@ int go(int sp, int from, int toto) {
     int nv = toto;
     while (nv != from) {
         way.pb(make_pair(msgo[nv].second, nv ));
+        nv = msgo[nv].first.second;
+    }
+    for (int i = way.size() - 1; i >= 0; i--) {
+        Edge nw = way[i].first;
+        nw(0);
+    }
+    return way.size();
+}
+
+int gobfs(int sp, int from, int toto) {
+    static pair<pair<bool, int>, Edge> msgo[maxv];
+    for (int i = 0; i < maxv; i++) {
+        msgo[i].first.first = 0;
+        msgo[i].first.second = -1;
+    }
+    msgo[from].first.first = 0;
+    queue<int> st;
+    st.push(from);
+    bool end = 0;
+
+    while (!st.empty()) {
+        int v = st.front();
+        st.pop();
+
+        for (int i = 0; i < g[v].size(); i++) {
+            int to = g[v][i].getTo();
+            if (dd + g[v][i].getTime() < msgo[to].first.first) {
+                st.erase(make_pair(msgo[to].first.first, to));
+                msgo[to].first.first = dd + g[v][i].getTime();
+                msgo[to].first.second = v;
+                msgo[to].second = g[v][i];
+                if (to == toto) {
+                    end = 1;
+                    break;
+                }
+                st.insert(make_pair(msgo[to].first.first, to));
+            }
+        }
+        if (end)
+            break;
+    }
+    vector<pair<Edge, int> > way;
+    int nv = toto;
+    while (nv != from) {
+        way.pb(make_pair(msgo[nv].second, nv));
         nv = msgo[nv].first.second;
     }
     for (int i = way.size() - 1; i >= 0; i--) {
