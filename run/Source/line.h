@@ -34,7 +34,7 @@ void line(Speed p, int dist, int type, bool uping = true, bool downing = true, d
     // Какая-то типизация
     if (type == 4) {
         getRGB(3);
-        EV3_Sleep(50);
+        wait(500);
     }
     if (type == 4) getRGB(3);
 
@@ -120,7 +120,7 @@ void line(Speed p, int dist, int type, bool uping = true, bool downing = true, d
     \param dist Предполагаемое расстояние до конца линии
     \param type Тип линии (тут лучше шарит создатель)
 */
-void line(int _, int dist, int type, bool uping = true, bool downing = true, int end_preview = standart_line_preview_looking) {
+void line(int _, int dist, int type, bool uping = true, bool downing = true, double end_preview = standart_line_preview_looking) {
     line(ZERO, dist, type, uping, downing, end_preview);
 }
 
