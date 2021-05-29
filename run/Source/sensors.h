@@ -132,31 +132,39 @@ Color read_marker() {
 }
 
 DoubleMarker read_home() {
-    /*int dist = 380;
+    int dist = 380;
     read_marker();
     int home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                 GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
 
     Speed_compiled compiled = Speed_compiled(READ, 350);
-    map<Color, int> left;
-    left[BLUE] = 0;
-    left[YELLOW] = 0;
-    left[GREEN] = 0;
-    left[NONE] = 0;
-    map<Color, int> right;
-    right[BLUE] = 0;
-    right[YELLOW] = 0;
-    right[GREEN] = 0;
-    right[NONE] = 0;
+
+    int left_BLUE = 0;
+    int left_YELLOW = 0;
+    int left_GREEN = 0;
+    int left_NONE = 0;
+    int right_BLUE = 0;
+    int right_YELLOW = 0;
+    int right_GREEN = 0;
+    int right_NONE = 0;
+
     int encoders = 0;
     while (encoders < dist) {
         encoders = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                         GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home);
 
         if (140 < encoders && encoders < 250) {
-            left[read_marker()]++;
+            Color now = read_marker();
+            if (now == BLUE) left_BLUE++;
+            if (now == YELLOW) left_YELLOW++;
+            if (now == GREEN) left_GREEN++;
+            else left_NONE++;
         } else if (270 < encoders && encoders < 360) {
-            right[read_marker()]++;
+            Color now = read_marker();
+            if (now == BLUE) right_BLUE++;
+            if (now == YELLOW) right_YELLOW++;
+            if (now == GREEN) right_GREEN++;
+            else right_NONE++;
         }
 
         int nowSpeed = compiled(encoders);
@@ -164,27 +172,33 @@ DoubleMarker read_home() {
         SpeedMotor(E_Port_C, nowSpeed);
     }
 
-    stopBC();*/
+    stopBC();
 
     DoubleMarker ans;
 
-    /*left[NONE] /= 10;
-    int how = 0;
-    for (map<Color, int>::iterator it = left.begin(); it != left.end(); ++it)
-        if (it->second > how) {
-            ans.left = it->first;
-            how = it->second;
-        }
+    left_NONE /= 10;
+    int left_max = max(left_BLUE, max(left_YELLOW, max(left_GREEN, left_NONE)));
+    if (left_max == left_BLUE)
+        ans.left = BLUE;
+    else if (left_max == left_YELLOW)
+        ans.left = YELLOW;
+    else if (left_max == left_GREEN)
+        ans.left = GREEN;
+    else ans.left = NONE;
 
-    right[NONE] /= 10;
-    how = 0;
-    for (map<Color, int>::iterator it = right.begin(); it != right.end(); ++it)
-        if (it->second > how) {
-            ans.right = it->first;
-            how = it->second;
-        }
-    write(1, 1, ans.left);
-    write(20, 1, ans.right);*/
+    right_NONE /= 10;
+
+    int right_max = max(right_BLUE, max(right_YELLOW, max(right_GREEN, right_NONE)));
+    if (right_max == right_BLUE)
+        ans.right = BLUE;
+    else if (right_max == right_YELLOW)
+        ans.right = YELLOW;
+    else if (right_max == right_GREEN)
+        ans.right = GREEN;
+    else ans.right = NONE;
+    
+    write(1, 1, int(ans.left));
+    write(20, 1, int(ans.right));
     return ans;
 }
 
