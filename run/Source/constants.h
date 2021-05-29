@@ -21,7 +21,7 @@ const int bluck = 30;
 const int bley = 40;
 const double Pr = 0.3;
 const int grey = 40;
-const double dws = 180; // ���������� ����� ��������� � �������
+const double dws = 170; // ���������� ����� ��������� � �������
 const double dsl = 60; //����� �������� � �����
 const double dtw = 340;
 const int d90 = 265;
@@ -56,16 +56,16 @@ double xren_loops = 490;
 */
 
 ///@{
-const int lineArrayLen = 20;                            ///< Длинна массива задержек для линии
+const int32_t lineArrayLen = 20;                            ///< Длинна массива задержек для линии
 const double standart_line_preview_looking = 0.8;           ///< За это расстояние до конца линии робот начинает чекать датчиком конец
-const int deltaSensors = -2;                             ///< Разность показаний датчиков
+const int32_t deltaSensors = -2;                             ///< Разность показаний датчиков
 const Speed DOP1 = Speed(80, 20, 0.35, 0.7, 100, 300, 300, 100);   ///< Для двух
 const Speed ONE1 = Speed(80, 20, 0.45, 1, 100, 300, 300, 100);     ///< Для одного
 const Speed MIN = Speed(10, 10, 0.3, 0, 0, 0, 0, 0);
 const Speed MIN1 = Speed(12, 12, 0.3, 0, 0, 0, 0, 0);
 const Speed ONE = Speed(20, 20, 0.4, 0, 100, 50, 50, 30);        ///< Для одного
 //Speed ZERO = Speed(80, 20, 0.5, 1, 50, 100, 100, 50);   ///< Настройка линии (функция lineNew) класс Speed
-const Speed ZERO = Speed(20, 20, 0.3, 0, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
+const Speed ZERO = Speed(20, 20, 0.1, 0, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
 //Speed ONEMOTOR = Speed(100, 20, 0, 0, 0, 100, 100, 0);    ///< Для moveB или moveС
 const Speed ONEMOTOR = Speed(20, 20, 0.2, 0, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
 //Speed MOVEBC = Speed(100, 20, 0, 0, 100, 250, 250, 70);      ///< Для moveBC

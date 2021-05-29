@@ -255,7 +255,6 @@ bool is_end(Field &f) {
         return 0;
 }
 
-int uyuyuy = 0;
 /*
 void perebor(Field &f, int ndist, vector<int> nway) {
     Clear_Display();
@@ -942,10 +941,11 @@ void take4green() {
     //moveA(speedA, before_take_green_loops);
     how_a = before_take_green_loops;
     moveBC(MIN, -50);
-    line(MIN1, 115, 0);
+    line(MIN1, 120, 0);
     stopBC();
     //moveA(speedA, after_take_green_loops);
     how_a = after_take_green_loops;
+    wait(1000);
 }
 
 void f27() {
@@ -1317,6 +1317,7 @@ void f90() {
 }
 
 void f91() {
+    moveBC(speed, -60);
     line(speed, 50, 1);
 }
 
@@ -1492,13 +1493,13 @@ void f111() {
 
 void f112() {
     moveD(speedD, before_take_cubes);
-    moveBC(speed, -170);
+    moveBC(speed, -120);
     //moveBC(MIN, -100);
     moveD(speedD, after_take_cubes);
 }
 
 void f113() {
-    moveBC(speed, 170);
+    moveBC(speed, 120);
 }
 
 void f114() {
@@ -1612,6 +1613,7 @@ void unload_loops2() {
     wait(1000);
     turn(speed, 120, -1);
     moveBC(speed, 60);
+    wait(1000);
     how_a = give2loops;
     wait(1000);
     moveBC(speed, -60);
@@ -2117,169 +2119,173 @@ int EV3_main()
     T_TimerId t = Timer_Start();
     try {
 
-    int npos;
+        int npos;
 
-    Clear_Display();
-    CreateThread(control, 0);
-    CreateThread(okonchanie, 0);
+        Clear_Display();
+        CreateThread(control, 0);
+        CreateThread(okonchanie, 0);
 
-    ResetMotor(E_Port_B);
-    ResetMotor(E_Port_C);
-    s3();
-    s2();
-    gclr(4);
-    buildDegreesConstants();
-    buildg();
-    buildplaces();
+        ResetMotor(E_Port_B);
+        ResetMotor(E_Port_C);
+        s3();
+        s2();
+        gclr(4);
+        buildDegreesConstants();
+        buildg();
 
         goD(-speedD);
         wait(300);
         goD(0);
         how_a = after_take_green_loops;
 
-    go(speed, 7, 336);
-    go(speed, 336, 338);
-    go(speed, 338, 340);
-    go(speed, 340, 341);
-    go(speed, 341, 345);
-    npos = 345;
-    stopBC();
+        go(speed, 7, 336);
+        go(speed, 336, 338);
+        go(speed, 338, 340);
+        go(speed, 340, 341);
+        go(speed, 341, 345);
+        npos = 345;
+        stopBC();
 
-    f.B = YELLOW;
+        f.B = YELLOW;
 
-    int fhome = 0;
+        int fhome = 0;
 
-    int cntyellow = 0;
-    for (int i = 1; i < 4; i++) {
-        if (f.house[i].left == 4)
-            cntyellow++;
-        if (f.house[i].right == 4)
-            cntyellow++;
-    }
+        int cntyellow = 0;
+        for (int i = 1; i < 4; i++) {
+            if (f.house[i].left == 4)
+                cntyellow++;
+            if (f.house[i].right == 4)
+                cntyellow++;
+        }
 
-    for (int i = 1; i < 4; i++) {
-        if (f.house[i].left == 4) {
-            if (f.house[i].right == 0) {
-                if (cntyellow == 2)
-                    continue;
+        for (int i = 1; i < 4; i++) {
+            if (f.house[i].left == 4) {
+                if (f.house[i].right == 0) {
+                    if (cntyellow == 2)
+                        continue;
+                    fhome = i;
+                    break;
+                }
                 fhome = i;
                 break;
             }
-            fhome = i;
-            break;
         }
-    }
-    bool ok = 0;
-    int topos;
-    if (fhome == 1)
-        topos = 370;
-    else if (fhome == 2)
-        topos = 360;
-    else
-        topos = 365;
-    int cntfr = 4;
-    int cntbck = 0;
-    Color front = YELLOW;
-    Color back = GREEN;
-    Color first = GREEN;
-    if (f.house[fhome].left == 2 || f.house[fhome].right == 2) {
-        go(speed, npos, 347);
-        npos = 347;
-        cntbck = 4;
-        back = BLUE;
-        first = BLUE;
-    }
-    else if (f.house[fhome].left == 2 || f.house[fhome].right == 2) {
-        go(speed, npos, 343);
-        npos = 343;
-        cntbck = 4;
-    }
-    else {
-        go(speed, npos, 343);
-        npos = 343;
-        cntbck = 4;
-        go(speed, npos, topos + 1);
-        npos = topos + 1;
-        ok = 1;
-        cntfr = 0;
-    }
-    if (!ok) {
-        go(speed, npos, topos);
-        npos = topos;
-        go(speed, npos, topos + 2);
-        cntfr -= 2;
-        cntbck -= 2;
-    }
-    for (int i = 1; i < 4; i++) {
-        if (i == fhome)
-            continue;
-        if (cntfr > 0) {
-            if (f.house[i].left == front || f.house[i].right == front) {
-                cntfr -= 2;
-                if (i == 1) {
-                    topos = 370;
+        bool ok = 0;
+        int topos;
+        if (fhome == 1)
+            topos = 370;
+        else if (fhome == 2)
+            topos = 360;
+        else
+            topos = 365;
+        int cntfr = 4;
+        int cntbck = 0;
+        Color front = YELLOW;
+        Color back = GREEN;
+        Color first = GREEN;
+        if (f.house[fhome].left == 2 || f.house[fhome].right == 2) {
+            go(speed, npos, 347);
+            npos = 347;
+            cntbck = 4;
+            back = BLUE;
+            first = BLUE;
+        }
+        else if (f.house[fhome].left == 2 || f.house[fhome].right == 2) {
+            go(speed, npos, 343);
+            npos = 343;
+            cntbck = 4;
+        }
+        else {
+            go(speed, npos, 343);
+            npos = 343;
+            cntbck = 4;
+            go(speed, npos, topos + 1);
+            npos = topos + 1;
+            ok = 1;
+            cntfr = 0;
+        }
+        if (!ok) {
+            go(speed, npos, topos);
+            npos = topos;
+            go(speed, npos, topos + 2);
+            cntfr -= 2;
+            cntbck -= 2;
+        }
+        for (int i = 1; i < 4; i++) {
+            if (i == fhome)
+                continue;
+            if (cntfr > 0) {
+                if (f.house[i].left == front || f.house[i].right == front) {
+                    cntfr -= 2;
+                    if (i == 1) {
+                        topos = 370;
+                    }
+                    else if (i == 2) {
+                        topos = 360;
+                    }
+                    else {
+                        topos = 365;
+                    }
+                    go(speed, npos, topos);
+                    npos = topos;
                 }
-                else if (i == 2) {
-                    topos = 360;
-                }
-                else {
-                    topos = 365;
-                }
-                go(speed, npos, topos);
-                npos = topos;
             }
+            if (cntbck > 0) {
+                if (f.house[i].left == back || f.house[i].right == back) {
+                    int lst = cntbck;
+                    cntbck -= 2;
+                    if (i == 1) {
+                        topos = 370;
+                    }
+                    else if (i == 2) {
+                        topos = 360;
+                    }
+                    else {
+                        topos = 365;
+                    }
+                    if (f.house[i].left == back && f.house[i].right == back)
+                        cntbck -= 2;
+                    if (cntbck == 2) {
+                        go(speed, npos, topos + 2);
+                        npos = topos + 2;
+                    }
+                    else if (lst - cntbck == 2) {
+                        go(speed, npos, topos + 3);
+                        npos = topos + 3;
+                    }
+                    else {
+                        go(speed, npos, topos + 4);
+                        npos = topos + 4;
+                    }
+                }
+            }
+        }
+        if (cntfr > 0) {
+            go(speed, npos, 375);
+            npos = 375;
         }
         if (cntbck > 0) {
-            if (f.house[i].left == back || f.house[i].right == back) {
-                int lst = cntbck;
-                cntbck -= 2;
-                if (i == 1) {
-                    topos = 370;
-                }
-                else if (i == 2) {
-                    topos = 360;
-                }
-                else {
-                    topos = 365;
-                }
-                if (f.house[i].left == back && f.house[i].right == back)
-                    cntbck -= 2;
-                if (cntbck == 2) {
-                    go(speed, npos, topos + 2);
-                    npos = topos + 2;
-                }
-                else if (lst - cntbck == 2) {
-                    go(speed, npos, topos + 3);
-                    npos = topos + 3;
-                }
-                else {
-                    go(speed, npos, topos + 4);
-                    npos = topos + 4;
-                }
-            }
+            go(speed, npos, 377);
+            npos = 377;
         }
-    }
-    if (cntfr > 0) {
-        go(speed, npos, 375);
-        npos = 375;
-    }
-    if (cntbck > 0) {
-        go(speed, npos, 377);
-        npos = 377;
-    }
-    go(speed, npos, 67);
-    if (first == GREEN) {
-        go(speed, 67, 347);
-        npos = 347;
-        back = GREEN;
-    }
-    else {
-        go(speed, 67, 343);
-        npos = 343;
-        back = BLUE;
-    }
-    cntfr = 4;
-    cntbck = 4;
+        go(speed, npos, 67);
+        if (first == GREEN) {
+            go(speed, 67, 347);
+            npos = 347;
+            back = GREEN;
+        }
+        else {
+            go(speed, 67, 343);
+            npos = 343;
+            back = BLUE;
+        }
+        cntfr = 4;
+        cntbck = 4;
+        for (int i = 1; i < 4; i++) {
+            if (i == fhome)
+                continue;
+
+        }
     }
     catch (Exception& exc) {
         print("EXC: " + exc.what());
