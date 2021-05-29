@@ -103,10 +103,7 @@ int go(int sp, int from, int toto) {
         }
     }
     if (father[toto] == -1) {
-        Clear_Display();
-        write(50, 50, "NO WAY");
-        wait(5000);
-        throw Exception("NO WAY");
+        throw Exception("NO WAY (go)");
     }
     vector<Edge*> way;
     int now = toto;
@@ -189,6 +186,9 @@ int diist(int from, int toto) {
                 q.push(g[v][i].get_to());
             }
         }
+    }
+    if (dist[toto] == maxv) {
+        throw Exception("NO WAY (diist)");
     }
     return dist[toto];
 }
@@ -2193,92 +2193,107 @@ void builddfs() {
 
 int EV3_main()
 {
-    Clear_Display();
-    CreateThread(control, NULL);
-    CreateThread(okonchanie, NULL);
-    Edge e = Edge(1, NULL);
+    try {
+        Clear_Display();
+        CreateThread(control, NULL);
+        CreateThread(okonchanie, NULL);
+        throw exception();
+        diist(7, 405);
+        Edge e = Edge(1, NULL);
 
-    write(10, 10, e.get_to());
-    write(30, 30, e.get_active());
-    write(50, 50, e.get_index());
-    write(70, 70, e.get_time());
-    wait(5000);
-    return 0;
+        write(10, 10, e.get_to());
+        write(30, 30, e.get_active());
+        write(50, 50, e.get_index());
+        write(70, 70, e.get_time());
+        wait(5000);
+        return 0;
 
-    s3();
-    s2();
-    gclr(4);
-    buildDegreesConstants();
-    buildg();
-    buildplaces();
+        s3();
+        s2();
+        gclr(4);
+        buildDegreesConstants();
+        buildg();
+        buildplaces();
 
-    goD(-speedD);
-    wait(300);
-    goD(0);
-    how_a = after_take_green_loops;
+        goD(-speedD);
+        wait(300);
+        goD(0);
+        how_a = after_take_green_loops;
 
-    go(0, 7, 67);
-    go(0, 67, 86);
-    go(0, 86, 64);
-    go(0, 64, 44);
+        go(0, 7, 67);
+        go(0, 67, 86);
+        go(0, 86, 64);
+        go(0, 64, 44);
 
-    stopBC();
-    wait(30000);
-    Clear_Display();
-    return 0;
-    go(speed, 345, 109);
-    go(speed, 109, 338);
-    write(90, 90, maxim);
-    wait(6000);
-    return 0;
+        stopBC();
+        wait(30000);
+        Clear_Display();
+        return 0;
+        go(speed, 345, 109);
+        go(speed, 109, 338);
+        write(90, 90, maxim);
+        wait(6000);
+        return 0;
 
-    /*f.B = YELLOW;
-    go(speed, 7, 336);
-    go(speed, 336, 136);
-    ColorRGB x = getRGB(4);
-    if (x.r + x.b + x.g > 10)
-        f.B = GREEN;
-    go(speed, 136, 341);
-    go(speed, 341, 345);
-    stopBC();
-    go(speed, 345, 67);
-    go(speed, 67, 206);
-    turn(speed, d180, 0);
-    moveBC(speed, -150);
-    moveD(speedD, before_take_cubes);
-    Clear_Display();
-    write(80, 1, f.B);
-    wait(5000);*/
-    f.B = YELLOW;
-    f.house1.left = NONE;
-    f.house1.right = YELLOW;
-    f.house2.left = GREEN;
-    f.house2.right = GREEN;
-    f.house3.left = BLUE;
-    f.house3.right = YELLOW;
-    f.robot.now_position = 345;
-    f.cnt1 = f.cnt2 = f.cnt3 = f.cntutils = f.robot.how_front = f.robot.how_back = 0;
-    f.yellowA1 = f.yellowA2 = f.yellowA3 = f.yellowA4 = YELLOW;
-    f.greenA1 = f.greenA2 = f.greenA3 = f.greenA4 = GREEN;
-    f.blueA1 = f.blueA2 = f.blueA3 = f.blueA4 = BLUE;
-    f.yellowB1 = f.yellowB2 = f.yellowB3 = f.yellowB4 = YELLOW;
-    f.greenB1 = f.greenB2 = f.greenB3 = f.greenB4 = NONE;
-    f.blueB1 = f.blueB2 = f.blueB3 = f.blueB4 = NONE;
-    if (f.B == YELLOW)
+        /*f.B = YELLOW;
+        go(speed, 7, 336);
+        go(speed, 336, 136);
+        ColorRGB x = getRGB(4);
+        if (x.r + x.b + x.g > 10)
+            f.B = GREEN;
+        go(speed, 136, 341);
+        go(speed, 341, 345);
+        stopBC();
+        go(speed, 345, 67);
+        go(speed, 67, 206);
+        turn(speed, d180, 0);
+        moveBC(speed, -150);
+        moveD(speedD, before_take_cubes);
+        Clear_Display();
+        write(80, 1, f.B);
+        wait(5000);*/
+        f.B = YELLOW;
+        f.house1.left = NONE;
+        f.house1.right = YELLOW;
+        f.house2.left = GREEN;
+        f.house2.right = GREEN;
+        f.house3.left = BLUE;
+        f.house3.right = YELLOW;
+        f.robot.now_position = 345;
+        f.cnt1 = f.cnt2 = f.cnt3 = f.cntutils = f.robot.how_front = f.robot.how_back = 0;
+        f.yellowA1 = f.yellowA2 = f.yellowA3 = f.yellowA4 = YELLOW;
+        f.greenA1 = f.greenA2 = f.greenA3 = f.greenA4 = GREEN;
+        f.blueA1 = f.blueA2 = f.blueA3 = f.blueA4 = BLUE;
         f.yellowB1 = f.yellowB2 = f.yellowB3 = f.yellowB4 = YELLOW;
-    if (f.B == BLUE)
-        f.blueB1 = f.blueB2 = f.blueB3 = f.blueB4 = BLUE;
-    if (f.B == GREEN)
-        f.greenB1 = f.greenB2 = f.greenB3 = f.greenB4 = GREEN;
-    return 0;
-    //vivod_h();
-    goD(-speedD);
-    wait(500);
-    goD(0);
-    goA(-50);
-    wait(600);
-    stopA();
-    moveA(speedA, after_take_green_loops);
-    wait(20000);
-    return 0;
+        f.greenB1 = f.greenB2 = f.greenB3 = f.greenB4 = NONE;
+        f.blueB1 = f.blueB2 = f.blueB3 = f.blueB4 = NONE;
+        if (f.B == YELLOW)
+            f.yellowB1 = f.yellowB2 = f.yellowB3 = f.yellowB4 = YELLOW;
+        if (f.B == BLUE)
+            f.blueB1 = f.blueB2 = f.blueB3 = f.blueB4 = BLUE;
+        if (f.B == GREEN)
+            f.greenB1 = f.greenB2 = f.greenB3 = f.greenB4 = GREEN;
+        return 0;
+        //vivod_h();
+        goD(-speedD);
+        wait(500);
+        goD(0);
+        goA(-50);
+        wait(600);
+        stopA();
+        moveA(speedA, after_take_green_loops);
+        wait(20000);
+        return 0;
+    }
+    catch (Exception& exc) {
+        clear();
+        print(5, exc.what());
+        wait(50000);
+    }
+    catch (exception& exc) {
+        clear();
+        print(4, "STD ERROR:");
+        print(5, exc.what());
+        wait(50000);
+    }
 }

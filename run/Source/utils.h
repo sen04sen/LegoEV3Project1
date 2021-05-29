@@ -48,7 +48,7 @@ public:
 
     Exception(int line) : m_error(str(line)) {}
 
-    const char *what() { return m_error.c_str(); }
+    string what() { return str(m_error); }
 };
 
 /*!
@@ -61,6 +61,14 @@ void write(int x, int y, IT uy) {
     string a = str(uy);
     Draw_Text(x, y, E_Font_Normal, 0, &(a[0]));
 }
+
+template<class IT>
+void print(int y, IT uy) {
+    string a = str(uy);
+    Draw_Text(0, (11 - y) * 10, E_Font_Normal, 0, &(a[0]));
+}
+
+void clear() { Clear_Display(); }
 
 /*!
 \brief Функция, которая запускается потоком и завершает работу программы по кнопке
