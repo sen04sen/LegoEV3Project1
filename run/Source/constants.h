@@ -102,8 +102,8 @@ void buildDegreesConstants() {                          /// Заполнение
     grad.pb(500);
 }
 
-//vector<vector<Edge> > Edge::g = vector<vector<Edge> >(maxv);
+vector<vector<Edge> > Edge::g = vector<vector<Edge> >(maxv);
 
-vector<vector<Edge> > g = vector<vector<Edge> >(maxv);
+vector<vector<Edge> > &g = Edge::g;
 
 #endif
