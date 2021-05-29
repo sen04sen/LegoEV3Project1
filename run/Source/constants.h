@@ -56,7 +56,7 @@ double xren_loops = 490;
 
 ///@{
 const int lineArrayLen = 20;                            ///< Длинна массива задержек для линии
-const int standart_line_preview_looking = 50;           ///< За это расстояние до конца линии робот начинает чекать датчиком конец
+const double standart_line_preview_looking = 0.8;           ///< За это расстояние до конца линии робот начинает чекать датчиком конец
 const int deltaSensors = -4;                             ///< Разность показаний датчиков
 const Speed DOP1 = Speed(80, 20, 0.35, 0.7, 100, 300, 300, 100);   ///< Для двух
 const Speed ONE1 = Speed(80, 20, 0.45, 1, 100, 300, 300, 100);     ///< Для одного

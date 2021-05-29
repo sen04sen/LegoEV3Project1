@@ -141,6 +141,24 @@ public:
                     g[i][j].open();
     }
 
+    static void close_point(short point) {
+        for (int i = 0; i < g.size(); ++i)
+            for (int j = 0; j < g[i].size(); ++j)
+                if (g[i][j].get_to() == point)
+                    g[i][j].close();
+        for (int i = 0; i < g[point].size(); ++i)
+            g[point][i].close();
+    }
+
+    static void open_point(short point) {
+        for (int i = 0; i < g.size(); ++i)
+            for (int j = 0; j < g[i].size(); ++j)
+                if (g[i][j].get_to() == point)
+                    g[i][j].open();
+        for (int i = 0; i < g[point].size(); ++i)
+            g[point][i].open();
+    }
+
 };
 ///@}
 

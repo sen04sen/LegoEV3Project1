@@ -29,7 +29,7 @@ using namespace std;
     \warning Просто надо помнить, что эта линия не предполагает движения назaд
 */
 
-void line(Speed p, int dist, int type, bool uping = true, bool downing = true, int end_preview = standart_line_preview_looking) {
+void line(Speed p, int dist, int type, bool uping = true, bool downing = true, double end_preview = standart_line_preview_looking) {
     // Просто надо помнить, что эта линия не предполагает движения назaд
     // Какая-то типизация
     if (type == 4) {
@@ -51,7 +51,7 @@ void line(Speed p, int dist, int type, bool uping = true, bool downing = true, i
         int encoders = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                         GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home;
 
-        if (encoders > dist - end_preview) {
+        if (encoders > dist * end_preview) {
             if (type == 0 || type == 6 || type == 8 || type == 10) {
                 if (encoders >= dist) stop = 1;
             } else {
