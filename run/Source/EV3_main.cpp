@@ -1764,8 +1764,8 @@ void fend() {
 
 }
 
-void add(int from, int to, void (*def)(), double time = 1.0) {
-    g[from].pb(Edge(to, def, time));
+void add(int from, int to, void (*def)(), short time = 1000, bool active = true, short index = 0) {
+    g[from].pb(Edge(to, def, time, active, index));
 }
 
 void addcrossroad(int v, int u, int r, int d, int l) {
@@ -1981,7 +1981,7 @@ void buildg() {
     add(181, 302, f66e);
     add(180, 302, f67e);
 
-    add(206, 341, f68);
+    add(206, 341, f68, 1000, 0, 1);
     add(341, 203, f69);
 
     add(342, 307, f70);
@@ -2043,8 +2043,8 @@ void buildg() {
     add(271, 274, f2l);
     add(274, 251, f127);
 
-    add(358, 131, f128);
-    add(352, 179, f129);
+    add(358, 131, f128, 1000, 1, 3);
+    add(352, 179, f129, 1000, 1, 2);
 
     add(55, 67, f99);
     add(67, 56, f100);
@@ -2223,6 +2223,7 @@ int EV3_main()
     go(0, 7, 235);
     go(0, 235, 206);
     stopBC();
+    Edge::close(1);
     go(0, 206, 238);
     go(0, 238, 260);
 
