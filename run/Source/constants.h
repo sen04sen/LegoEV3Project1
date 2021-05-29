@@ -58,20 +58,20 @@ double xren_loops = 490;
 const int lineArrayLen = 20;                            ///< Длинна массива задержек для линии
 const int standart_line_preview_looking = 50;           ///< За это расстояние до конца линии робот начинает чекать датчиком конец
 const int deltaSensors = -4;                             ///< Разность показаний датчиков
-Speed DOP1 = Speed(80, 20, 0.35, 0.7, 100, 300, 300, 100);   ///< Для двух
-Speed ONE1 = Speed(80, 20, 0.45, 1, 100, 300, 300, 100);     ///< Для одного
-Speed MIN = Speed(10, 10, 0.3, 0, 0, 0, 0, 0);
-Speed MIN1 = Speed(12, 12, 0.3, 0, 0, 0, 0, 0);
-Speed ONE = Speed(20, 20, 0.4, 0.2, 100, 50, 50, 30);        ///< Для одного
+const Speed DOP1 = Speed(80, 20, 0.35, 0.7, 100, 300, 300, 100);   ///< Для двух
+const Speed ONE1 = Speed(80, 20, 0.45, 1, 100, 300, 300, 100);     ///< Для одного
+const Speed MIN = Speed(10, 10, 0.3, 0, 0, 0, 0, 0);
+const Speed MIN1 = Speed(12, 12, 0.3, 0, 0, 0, 0, 0);
+const Speed ONE = Speed(20, 20, 0.4, 0.2, 100, 50, 50, 30);        ///< Для одного
 //Speed ZERO = Speed(80, 20, 0.5, 1, 50, 100, 100, 50);   ///< Настройка линии (функция lineNew) класс Speed
-Speed ZERO = Speed(20, 20, 0.2, 0.1, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
+const Speed ZERO = Speed(20, 20, 0.2, 0.1, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
 //Speed ONEMOTOR = Speed(100, 20, 0, 0, 0, 100, 100, 0);    ///< Для moveB или moveС
-Speed ONEMOTOR = Speed(20, 20, 0.2, 0.1, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
+const Speed ONEMOTOR = Speed(20, 20, 0.2, 0.1, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
 //Speed MOVEBC = Speed(100, 20, 0, 0, 100, 250, 250, 70);      ///< Для moveBC
-Speed MOVEBC = Speed(20, 20, 0.2, 0.1, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
+const Speed MOVEBC = Speed(20, 20, 0.2, 0.1, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
 //Speed TURN = Speed(100, 15, 0, 0, 100, 300, 300, 50);        ///< Для turn
-Speed TURN = Speed(20, 20, 0.2, 0.1, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
-Speed READ = Speed(30, 20, 0.5, 0.3, 100, 50, 50, 30);       ///< Для чтения
+const Speed TURN = Speed(20, 20, 0.2, 0.1, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
+const Speed READ = Speed(30, 20, 0.5, 0.3, 100, 50, 50, 30);       ///< Для чтения
 ///}@
 
 #define pb push_back

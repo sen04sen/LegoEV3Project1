@@ -32,8 +32,8 @@ struct Speed {
     Speed() {}
 
     Speed(int _max_sp, int _min_sp, double _p, double _d, int _normal_enc, int _up_enc, int _end_enc, int _zero_enc) {
-        max_sp = _max_sp;
-        min_sp = _min_sp;
+        max_sp = (char)_max_sp;
+        min_sp = (char)_min_sp;
         p = _p;
         d = _d;
         normal_enc = _normal_enc;
@@ -52,6 +52,7 @@ struct Speed {
         down_enc = copy.down_enc;
         zero_enc = copy.zero_enc;
     }
+
     Speed& operator=(const Speed& copy) {
         max_sp = copy.max_sp;
         min_sp = copy.max_sp;
@@ -62,6 +63,15 @@ struct Speed {
         down_enc = copy.down_enc;
         zero_enc = copy.zero_enc;
     }
+
+    int get_max_sp() { return (int)max_sp; }
+    int get_min_sp() { return (int)min_sp; }
+    double get_p() { return p; }
+    double get_d() { return d; }
+    int get_normal_enc() { return normal_enc; }
+    int get_up_enc() { return up_enc; }
+    int get_down_enc() { return down_enc; }
+    int get_zero_enc() { return zero_enc; }
 };
 
 class Speed_compiled {
@@ -77,23 +87,23 @@ public:
     }
 
     int operator()(int now_dist) {
-        int speed = p.max_sp;
-        if (now_dist > way - p.zero_enc && downing) speed = p.min_sp;
-        else if (now_dist < p.normal_enc && uping) speed = p.min_sp;
+        int speed = p.get_max_sp();
+        if (now_dist > way - p.get_zero_enc() && downing) speed = p.min_sp;
+        else if (now_dist < p.get_normal_enc() && uping) speed = p.min_sp;
         else {
-            int down_sp = p.max_sp, up_sp = p.max_sp;
-            if (now_dist > way - p.zero_enc - p.down_enc && downing) {
-                down_sp = double(p.max_sp) -
-                          double(now_dist - (way - p.zero_enc - p.down_enc)) * double(p.max_sp - p.min_sp) /
-                          double(p.down_enc);
+            int down_sp = p.get_max_sp(), up_sp = p.get_max_sp();
+            if (now_dist > way - p.get_zero_enc() - p.get_down_enc() && downing) {
+                down_sp = double(p.get_max_sp()) -
+                          double(now_dist - (way - p.get_zero_enc() - p.get_down_enc())) * double(p.get_max_sp() - p.get_min_sp()) /
+                          double(p.get_down_enc());
             }
-            if (now_dist < p.normal_enc + p.up_enc && uping) {
-                up_sp = double(now_dist - p.normal_enc) * double(p.max_sp - p.min_sp) / double(p.up_enc) +
-                        double(p.min_sp);
+            if (now_dist < p.get_normal_enc() + p.get_up_enc() && uping) {
+                up_sp = double(now_dist - p.get_normal_enc()) * double(p.get_max_sp() - p.get_min_sp()) / double(p.get_up_enc()) +
+                        double(p.get_min_sp());
             }
             speed = min(down_sp, up_sp);
         }
-        if (speed < p.min_sp) speed = p.min_sp;
+        if (speed < p.get_min_sp()) speed = p.get_min_sp();
 
         return speed;
     }
