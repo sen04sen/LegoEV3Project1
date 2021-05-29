@@ -127,21 +127,20 @@ public:
 
     void close() { set_active(false); }    ///< \brief Делает ребро неактивным
 
-    static void close(int index) {
+    static void close(short index) {
         for (int i = 0; i < g.size(); ++i)
-            for (int j = 0; j < g[i].size(); ++i) {
-                if (g[i][j].index == index)
+            for (int j = 0; j < g[i].size(); ++i)
+                if (g[i][j].get_index() == (unsigned char)index)
                     g[i][j].close();
-            }
     }
 
-    static void open(int index) {
+    static void open(short index) {
         for (int i = 0; i < g.size(); ++i)
-            for (int j = 0; j < g[i].size(); ++i) {
-                if (g[i][j].index == index)
+            for (int j = 0; j < g[i].size(); ++i)
+                if (g[i][j].get_index() == (unsigned char)index)
                     g[i][j].open();
-            }
     }
+
 };
 ///@}
 
