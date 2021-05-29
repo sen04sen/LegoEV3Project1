@@ -169,8 +169,7 @@ void moveBC(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = 
     Speed_compiled compiled = Speed_compiled(p, abs(dist), uping, downing);
 
     int encoders = 0;
-    //Арсений поставил модуль. Должен быть)))
-    while (abs(encoders) < abs(dist)) {
+    while (encoders < abs(dist)) {
         encoders = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                         GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home);
 

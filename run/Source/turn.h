@@ -60,8 +60,8 @@ void turn(int sp, int dt, int tp) {
         Speed_compiled compiled = Speed_compiled(TURN, abs(dt));
 
         int encoders = 0;
-        write(10, 10, 1);
-        wait(5000);
+        //write(10, 10, 1);
+        //wait(5000);
         while (encoders < abs(dt)) {
             encoders = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) +
                 GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home);
