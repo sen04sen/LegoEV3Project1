@@ -63,19 +63,55 @@ void write(int x, int y, IT uy) {
 }
 
 template<class IT>
-void print(int y, IT uy) {
+void line_print(int y, IT uy) {
     string a = str(uy);
     Draw_Text(0, (11 - y) * 10, E_Font_Normal, 0, &(a[0]));
 }
 
-void clear() { Clear_Display(); }
+vector <string> docs = vector <string>();
+
+void clear_docs() {
+    docs.clear();
+    Clear_Display();
+}
+
+short write_docs(short start = 0) {
+    Clear_Display();
+    start = max(start, (short)0);
+    start = min(start, short(abs(int(docs.size() - 12))));
+    try {
+        for (int i = 0; i < 12; ++i)
+            line_print(i, docs.at(docs.size() - 1 - start - i));
+    }
+    catch(...){}
+    return start;
+}
+
+template<class IT>
+void print(IT message) {
+    string s = str(message);
+    if (s.size() > 30) s.resize(30);
+    docs.push_back(s);
+    write_docs();
+}
+
+void read_docs() {
+    int now = write_docs();
+    while (true) {
+        if (GetBrickButtonPressed() == 1) now--;
+        else if (GetBrickButtonPressed() == 4) now++;
+        wait(101);
+        write_docs(now);
+    }
+}
+
 
 /*!
 \brief Функция, которая запускается потоком и завершает работу программы по кнопке
 */
 void* okonchanie(void *_) {
     wait(1000);
-    while (!isBrickButtonPressed(E_BTN_ESC));
+    while (!isBrickButtonPressed(E_BTN_ESC)) wait(50);
     StopMotorAll();
     wait(300);
     exit(0);

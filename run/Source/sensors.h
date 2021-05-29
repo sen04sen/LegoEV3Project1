@@ -6,8 +6,6 @@
 #ifndef sensors_h
 #define sensors_h
 
-
-
 #include "field.h"
 #include "speed.h"
 
@@ -132,23 +130,23 @@ Color read_marker() {
 }
 
 DoubleMarker read_home() {
-    int dist = 380;
+    int32_t dist = 380;
     read_marker();
-    int home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
+    int32_t home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                 GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
 
-    Speed_compiled compiled = Speed_compiled(READ, 350);
+    Speed_compiled compiled = Speed_compiled(READ, 380);
 
-    int left_BLUE = 0;
-    int left_YELLOW = 0;
-    int left_GREEN = 0;
-    int left_NONE = 0;
-    int right_BLUE = 0;
-    int right_YELLOW = 0;
-    int right_GREEN = 0;
-    int right_NONE = 0;
+    int32_t left_BLUE = 0;
+    int32_t left_YELLOW = 0;
+    int32_t left_GREEN = 0;
+    int32_t left_NONE = 0;
+    int32_t right_BLUE = 0;
+    int32_t right_YELLOW = 0;
+    int32_t right_GREEN = 0;
+    int32_t right_NONE = 0;
 
-    int encoders = 0;
+    int32_t encoders = 0;
     while (encoders < dist) {
         encoders = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                         GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home);
@@ -167,7 +165,7 @@ DoubleMarker read_home() {
             else right_NONE++;
         }
 
-        int nowSpeed = compiled(encoders);
+        int32_t nowSpeed = compiled(encoders);
         SpeedMotor(E_Port_B, -nowSpeed);
         SpeedMotor(E_Port_C, nowSpeed);
     }
@@ -177,7 +175,8 @@ DoubleMarker read_home() {
     DoubleMarker ans;
 
     left_NONE /= 10;
-    int left_max = max(left_BLUE, max(left_YELLOW, max(left_GREEN, left_NONE)));
+
+    int32_t left_max = max(left_BLUE, max(left_YELLOW, max(left_GREEN, left_NONE)));
     if (left_max == left_BLUE)
         ans.left = BLUE;
     else if (left_max == left_YELLOW)
@@ -188,7 +187,7 @@ DoubleMarker read_home() {
 
     right_NONE /= 10;
 
-    int right_max = max(right_BLUE, max(right_YELLOW, max(right_GREEN, right_NONE)));
+    int32_t right_max = max(right_BLUE, max(right_YELLOW, max(right_GREEN, right_NONE)));
     if (right_max == right_BLUE)
         ans.right = BLUE;
     else if (right_max == right_YELLOW)
@@ -197,8 +196,8 @@ DoubleMarker read_home() {
         ans.right = GREEN;
     else ans.right = NONE;
     
-    write(1, 1, int(ans.left));
-    write(20, 1, int(ans.right));
+    write(1, 1, int32_t(ans.left));
+    write(20, 1, int32_t(ans.right));
     return ans;
 }
 

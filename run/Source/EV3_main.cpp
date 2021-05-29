@@ -37,57 +37,8 @@ int maxim = 0;
 
 Field f = StandartInit();
 
-/*int goDEIC(int sp, int from, int toto) {
-    static pair<pair<double, int>, Edge> msgo[maxv];
-    for (int i = 0; i < maxv; i++) {
-        msgo[i].first.first = (double)1000000000;
-        msgo[i].first.second = -1;
-    }
-    msgo[from].first.first = (double)0;
-    set<pair<double, int> > st;
-    st.insert(make_pair((double)0, from));
-    bool end = 0;
-
-    write(100, 100, 87);
-    wait(4010);
-    while (!st.empty()) {
-        double dd = st.begin()->first;
-        int v = st.begin()->second;
-        st.erase(st.begin( ));
-
-        for (int i = 0; i < g[v].size(); i++) {
-            //write(50, 50, maxim);
-            //maxim = max(int(st.size() * sizeof(pair<double, int>)), maxim);
-            int to = g[v][i].getTo();
-            if (dd + g[v][i].getTime() < msgo[to].first.first) {
-                st.erase(make_pair(msgo[to].first.first, to));
-                msgo[to].first.first = dd + g[v][i].getTime();
-                msgo[to].first.second = v;
-                msgo[to].second = g[v][i];
-                if (to == toto) {
-                    end = 1;
-                    break;
-                }
-                st.insert(make_pair(msgo[to].first.first, to));
-            }
-        }
-        if (end)
-            break;
-    }
-    vector<pair<Edge, int> > way;
-    int nv = toto;
-    while (nv != from) {
-        way.pb(make_pair(msgo[nv].second, nv ));
-        nv = msgo[nv].first.second;
-    }
-    for (int i = way.size() - 1; i >= 0; i--) {
-        Edge nw = way[i].first;
-        nw(0);
-    }
-    return way.size();
-}*/
-
 int go(int sp, int from, int toto) {
+    T_TimerId t = Timer_Start();
     vector<int> father(maxv, -1);
     father[from] = 0;
     queue<int> q;
@@ -114,65 +65,15 @@ int go(int sp, int from, int toto) {
         now = father[now];
     }
 
-    for (int i = way.size() - 1; i >= 0; i--) {
-
+    for (int i = way.size() - 1; i >= 0; i--)
         (*way[i])(0);
-    }
+    print("go time: " + str(Timer_Destroy(t)));
     return way.size();
 }
-/*int diist(int from, int toto) {
-    pair<pair<double, int>, Edge> msgo[maxv];
-    for (int i = 0; i < maxv; i++) {
-        msgo[i].first.first = (double)1000000000;
-        msgo[i].first.second = -1;
-    }
-    msgo[from].first.first = (double)0;
-    set<pair<double, int> > st;
-    st.insert(make_pair((double)0, from));
-    bool end = 0;
 
-    while (!st.empty()) {
-        double dd = st.begin()->first;
-        int v = st.begin()->second;
-        st.erase(st.begin());
-
-        for (int i = 0; i < g[v].size(); i++) {
-            //write(50, 50, maxim);
-            //maxim = max(int(st.size() * sizeof(pair<double, int>)), maxim);
-            int to = g[v][i].getTo();
-            if (dd + g[v][i].getTime() < msgo[to].first.first) {
-                st.erase(make_pair(msgo[to].first.first, to));
-                msgo[to].first.first = dd + g[v][i].getTime();
-                msgo[to].first.second = v;
-                msgo[to].second = g[v][i];
-                if (to == toto) {
-                    end = 1;
-                    break;
-                }
-                st.insert(make_pair(msgo[to].first.first, to));
-            }
-        }
-        if (end)
-            break;
-    }
-    vector<pair<Edge, int> > way;
-    int nv = toto;
-    if (msgo[nv].first.second == -1) {
-        Clear_Display();
-        write(1, 1, "NO WAY!!!");
-        write(1, 40, from);
-        write(40, 40, toto);
-        wait(10000);
-    }
-    while (nv != from) {
-        write(100, 100, 0);
-        way.pb(make_pair(msgo[nv].second, nv));
-        nv = msgo[nv].first.second;
-    }
-    return way.size();
-}*/
 
 int diist(int from, int toto) {
+    T_TimerId t = Timer_Start();
     vector<int> dist(maxv, maxv);
     dist[from] = 0;
     queue<int> q;
@@ -190,6 +91,7 @@ int diist(int from, int toto) {
     if (dist[toto] == maxv) {
         throw Exception("NO WAY (diist)");
     }
+    print("diist time: " + str(Timer_Destroy(t)));
     return dist[toto];
 }
 
@@ -2145,75 +2047,36 @@ void vivod_h() {
     }
 }
 
-int used[maxv];
 
-int clrclr = 1;
-
-void dfs(int v) {
-    used[v] = clrclr;
-    Clear_Display();
-    write(40, 40, v);
-    write(60, 60, g[v].size());
-    write(80, 80, used[v]);
-    wait(100);
-    for (int i = 0; i < g[v].size(); i++) {
-        int to = g[v][i].get_to();
-        if (used[to] == 0) {
-            dfs(to);
-        }
-    }
-}
-
-void builddfs() {
-    for (int i = 0; i < maxv; i++)
-        used[i] = 0;
-    dfs(1);
-    write(1, 1, "start");
-    wait(3000);
-    Clear_Display();
-    for (int i = 0; i < 391; i++) {
-        write(1, 1, i);
-        write(20, 20, used[i]);
-        wait(1000);
-    }
-    write(1, 1, "end");
-    wait(10001);
-}
 /*
     bool: 1
     char: 1
     short: 2
     int: 4
-    long: 
-    long long: 
-    float: 
-    double: 
-    long double: 
+    int32_t: 4 
 */
 
 int EV3_main()
 {
+    T_TimerId t = Timer_Start();
     try {
-        Clear_Display();
+        clear_docs();
         CreateThread(control, NULL);
         CreateThread(okonchanie, NULL);
-        throw exception();
-        diist(7, 405);
-        Edge e = Edge(1, NULL);
-
-        write(10, 10, e.get_to());
-        write(30, 30, e.get_active());
-        write(50, 50, e.get_index());
-        write(70, 70, e.get_time());
-        wait(5000);
-        return 0;
-
         s3();
         s2();
         gclr(4);
         buildDegreesConstants();
         buildg();
         buildplaces();
+
+        print(sizeof(int32_t));
+        print(sizeof(int32_t));
+        print(sizeof(int32_t));
+
+        throw Exception("end");
+
+        
 
         goD(-speedD);
         wait(300);
@@ -2228,12 +2091,10 @@ int EV3_main()
         stopBC();
         wait(30000);
         Clear_Display();
-        return 0;
         go(speed, 345, 109);
         go(speed, 109, 338);
         write(90, 90, maxim);
         wait(6000);
-        return 0;
 
         /*f.B = YELLOW;
         go(speed, 7, 336);
@@ -2273,8 +2134,6 @@ int EV3_main()
             f.blueB1 = f.blueB2 = f.blueB3 = f.blueB4 = BLUE;
         if (f.B == GREEN)
             f.greenB1 = f.greenB2 = f.greenB3 = f.greenB4 = GREEN;
-        return 0;
-        //vivod_h();
         goD(-speedD);
         wait(500);
         goD(0);
@@ -2282,18 +2141,15 @@ int EV3_main()
         wait(600);
         stopA();
         moveA(speedA, after_take_green_loops);
-        wait(20000);
-        return 0;
     }
     catch (Exception& exc) {
-        clear();
-        print(5, exc.what());
-        wait(50000);
+        print("EXC: " + exc.what());
     }
     catch (exception& exc) {
-        clear();
-        print(4, "STD ERROR:");
-        print(5, exc.what());
-        wait(50000);
+        print("STD ERROR");
+        print(exc.what());
     }
+    print("time: " + str(Timer_Destroy(t)));
+    read_docs();
+    return 0;
 }
