@@ -103,8 +103,8 @@ void line(Speed p, int dist, int type, bool uping = true, bool downing = true, i
 
         int nowSpeed = speed_control(encoders);
 
-        double kP = p.p * ((double) nowSpeed / (double) p.max_sp);
-        double kD = p.d * ((double) nowSpeed / (double) p.max_sp);
+        double kP = p.get_p() * ((double) nowSpeed / (double) p.max_sp);
+        double kD = p.get_d() * ((double) nowSpeed / (double) p.max_sp);
 
         SpeedMotor(E_Port_B, max((short)-100, short(-1 * (nowSpeed - error * kP - (error - errors[count % lineArrayLen]) * kD))));
         SpeedMotor(E_Port_C, min((short)100, short(nowSpeed + error * kP + (error - errors[count % lineArrayLen]) * kD)));

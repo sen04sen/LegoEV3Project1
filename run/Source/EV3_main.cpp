@@ -2175,7 +2175,6 @@ void vivod_h() {
     }
 }
 
-
 int used[maxv];
 
 int clrclr = 1;
@@ -2229,6 +2228,14 @@ int EV3_main()
     Clear_Display();
     CreateThread(control, 0);
     CreateThread(okonchanie, 0);
+
+    write(10, 10, sizeof(Edge));
+
+    write(30, 30, sizeof(int));
+    write(50, 50, sizeof(void (*)()));
+
+    return 0;
+
     s3();
     s2();
     gclr(4);
