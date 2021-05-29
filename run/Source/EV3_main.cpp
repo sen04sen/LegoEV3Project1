@@ -1,12 +1,10 @@
-// docs https://sen04sen.github.io/LegoEV3Project1/html/index.html
+﻿// docs https://sen04sen.github.io/LegoEV3Project1/html/index.html
 
 //#define abs(x) ((x > 0) ? x : -x)
 
 #include <vector>
 #include <string>
-//#include <stdio.h>
 #include <stdlib.h>
-//#include <sstream>
 #include <sstream>
 #include <queue>
 
@@ -49,7 +47,9 @@ Field f = StandartInit();
     set<pair<double, int> > st;
     st.insert(make_pair((double)0, from));
     bool end = 0;
-    
+
+    write(100, 100, 87);
+    wait(4010);
     while (!st.empty()) {
         double dd = st.begin()->first;
         int v = st.begin()->second;
@@ -118,8 +118,8 @@ int go(int sp, int from, int toto) {
     }
 
     /*Clear_Display();
-    write(50, 50, Timer_Destroy(t));     22 �� � ��������������� ����
-    wait(5000);*/ 
+    write(50, 50, Timer_Destroy(t)); 
+    wait(5000);*/
 
     for (int i = way.size() - 1; i >= 0; i--) {
 
@@ -127,52 +127,6 @@ int go(int sp, int from, int toto) {
     }
     return way.size();
 }
-
-/*int gobfs(int sp, int from, int toto) {
-    static pair<pair<bool, int>, Edge> msgo[maxv];
-    for (int i = 0; i < maxv; i++) {
-        msgo[i].first.first = 0;
-        msgo[i].first.second = -1;
-    }
-    msgo[from].first.first = 0;
-    queue<int> st;
-    st.push(from);
-    bool end = 0;
-
-    while (!st.empty()) {
-        int v = st.front();
-        st.pop();
-
-        for (int i = 0; i < g[v].size(); i++) {
-            int to = g[v][i].getTo();
-            if (dd + g[v][i].getTime() < msgo[to].first.first) {
-                st.erase(make_pair(msgo[to].first.first, to));
-                msgo[to].first.first = dd + g[v][i].getTime();
-                msgo[to].first.second = v;
-                msgo[to].second = g[v][i];
-                if (to == toto) {
-                    end = 1;
-                    break;
-                }
-                st.insert(make_pair(msgo[to].first.first, to));
-            }
-        }
-        if (end)
-            break;
-    }
-    vector<pair<Edge, int> > way;
-    int nv = toto;
-    while (nv != from) {
-        way.pb(make_pair(msgo[nv].second, nv));
-        nv = msgo[nv].first.second;
-    }
-    for (int i = way.size() - 1; i >= 0; i--) {
-        Edge nw = way[i].first;
-        nw(0);
-    }
-    return way.size();
-}*/
-
 /*int diist(int from, int toto) {
     pair<pair<double, int>, Edge> msgo[maxv];
     for (int i = 0; i < maxv; i++) {
@@ -447,7 +401,7 @@ bool is_end(Field &f) {
 }
 
 int uyuyuy = 0;
-
+/*
 void perebor(Field &f, int ndist, vector<int> nway) {
     Clear_Display();
     write(1, 1, uyuyuy);
@@ -988,6 +942,7 @@ void perebor(Field &f, int ndist, vector<int> nway) {
     }
     write(1, 70, 7);
 }
+*/
 
 void f1d() {
     moveBC(speed, dws, 1);
@@ -2259,14 +2214,10 @@ int EV3_main()
 
     Clear_Display();
     return 0;
-    //CreateThread(control, 0);
-    
-    
-    
-
-    builddfs();
-
-    wait(10000);
+    go(speed, 345, 109);
+    go(speed, 109, 338);
+    write(90, 90, maxim);
+    wait(6000);
     return 0;
 
     /*f.B = YELLOW;
@@ -2290,26 +2241,26 @@ int EV3_main()
     f.house1.left = NONE;
     f.house1.right = YELLOW;
     f.house2.left = GREEN;
-    f.house2.right = BLUE;
-    f.house3.left = GREEN;
+    f.house2.right = GREEN;
+    f.house3.left = BLUE;
     f.house3.right = YELLOW;
     f.robot.now_position = 345;
     f.cnt1 = f.cnt2 = f.cnt3 = f.cntutils = f.robot.how_front = f.robot.how_back = 0;
     f.yellowA1 = f.yellowA2 = f.yellowA3 = f.yellowA4 = YELLOW;
     f.greenA1 = f.greenA2 = f.greenA3 = f.greenA4 = GREEN;
     f.blueA1 = f.blueA2 = f.blueA3 = f.blueA4 = BLUE;
-    f.yellowB1 = f.yellowB2 = f.yellowB3 = f.yellowB4 = NONE;
+    f.yellowB1 = f.yellowB2 = f.yellowB3 = f.yellowB4 = YELLOW;
     f.greenB1 = f.greenB2 = f.greenB3 = f.greenB4 = NONE;
     f.blueB1 = f.blueB2 = f.blueB3 = f.blueB4 = NONE;
-    if (f.B == YELLOW)
-        f.yellowB1 = f.yellowB2 = f.yellowB3 = f.yellowB4 = YELLOW;
-    if (f.B == BLUE)
-        f.blueB1 = f.blueB2 = f.blueB3 = f.blueB4 = BLUE;
-    if (f.B == GREEN)
-        f.greenB1 = f.greenB2 = f.greenB3 = f.greenB4 = GREEN;
+    buildplaces();
     vector<int> watafak;
-    perebor(f, 0, watafak);
-    write(1, 1, "end");
+    try {
+        //perebor(f, 0, watafak);
+    }
+    catch (...) {
+        write(70, 70, 35);
+    }
+    write(50, 10, "end");
     wait(5000);
     for (int i = 0; i < min_way.size(); i++) {
         write(1, 1, min_way[i]);
