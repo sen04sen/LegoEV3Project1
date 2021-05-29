@@ -1213,21 +1213,21 @@ void f53() {
 }
 
 void f50() {
-    line(speed, 350 - dws, 8);
+    line(speed, 300 - dws, 8);
     stopBC();
     turn(speed, 70, -2);
     moveBC(speed, 90);
     turn(speed, 70, 0);
-    line(speed, 40, 3);
+    line(speed, 90, 3);
 }
 
 void f51() {
-    line(speed, 350 - dtw, 8);
+    line(speed, 300 - dtw, 8);
     stopBC();
     turn(speed, 70, -2);
     moveBC(speed, 90);
     turn(speed, 70, 0);
-    line(speed, 40, 3);
+    line(speed, 90, 3);
 }
 
 void f54() {
@@ -1376,9 +1376,8 @@ void f70() {
 }
 
 void f71() {
-    line(speed, 50, 0);
+    line(speed, 70, 0);
     stopBC();
-    wait(5000);
 }
 
 void f72() {
@@ -1607,7 +1606,7 @@ void f106a() {
 
 void f106b() {
     turn(speed, d90 + 20, 3);
-    line(speed, 300, 2);
+    line(speed, 200, 2);
 }
 
 void f107() {
@@ -1936,10 +1935,10 @@ void buildg() {
     add(127, 343, take4green);
     add(343, 127, f27);
 
-    add(124, 173, f44);
-    add(123, 173, f45);
-    add(178, 131, f44);
-    add(177, 131, f45);
+    add(124, 173, f44, 1000, 1, 2);
+    add(123, 173, f45, 1000, 1, 3);
+    add(178, 131, f44, 1000, 1, 4);
+    add(177, 131, f45, 1000, 1, 5);
 
     add(124, 137, f46);
     add(123, 137, f47);
@@ -2055,8 +2054,8 @@ void buildg() {
     add(271, 274, f2l);
     add(274, 251, f127);
 
-    add(358, 131, f128, 1000, 1, 3);
-    add(352, 179, f129, 1000, 1, 2);
+    add(358, 131, f128);
+    add(352, 179, f129);
 
     add(55, 67, f99);
     add(67, 56, f100);
@@ -2239,12 +2238,14 @@ int EV3_main()
 
     Edge::close(2);
     Edge::close(3);
+    Edge::close(4);
+    Edge::close(5);
+    Edge::close_point(341);
 
     
 
     go(0, 7, 235);
     go(0, 235, 206);
-    Edge::close(1);
     
     
     

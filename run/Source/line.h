@@ -51,7 +51,7 @@ void line(Speed p, int dist, int type, bool uping = true, bool downing = true, d
         int encoders = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                         GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home;
 
-        if (encoders > dist * end_preview) {
+        if (encoders > (double) dist * 0.8) {
             if (type == 0 || type == 6 || type == 8 || type == 10) {
                 if (encoders >= dist) stop = 1;
             } else {
@@ -120,7 +120,7 @@ void line(Speed p, int dist, int type, bool uping = true, bool downing = true, d
     \param dist Предполагаемое расстояние до конца линии
     \param type Тип линии (тут лучше шарит создатель)
 */
-void line(int _, int dist, int type, bool uping = true, bool downing = true, int end_preview = standart_line_preview_looking) {
+void line(int _, int dist, int type, bool uping = true, bool downing = true, double end_preview = standart_line_preview_looking) {
     line(ZERO, dist, type, uping, downing, end_preview);
 }
 
