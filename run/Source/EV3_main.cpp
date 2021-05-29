@@ -1537,6 +1537,8 @@ void f95() {
     line(ONE, 460, 5);
     goBC(speed);
     while (s2() > black);
+    stopBC();
+    wait(5001);
 }
 
 void f96() {
@@ -1570,7 +1572,7 @@ void take4blue2() {
 }
 
 void bb() {
-    moveBC(speed, 30);
+    moveBC(speed, -250);
 }
 
 void f99() {
@@ -1590,7 +1592,7 @@ void f101() {
 }
 
 void f102() {
-    moveBC(speed, 340, 0);
+    moveBC(speed, 330, 0);
     while (s2() > black);
 }
 
@@ -1737,6 +1739,18 @@ void f124() {
 void f125() {
     line(speed, 180 - dtw, 2);
 }
+
+void f126() {
+    line(speed, 180, 6);
+    moveBC(speed, dsl, 0);
+    while (s3() > black);
+}
+
+void f127() {
+    line(speed, 50, 3);
+}
+
+
 
 void unload_loops0() {
 
@@ -2063,7 +2077,12 @@ void buildg() {
     add(280, 347, take4blue1);
     add(281, 347, take4blue2);
 
-    add(347, 280, bb);
+    add(347, 281, bb);
+    add(281, 282, f6d);
+    add(282, 272, f126);
+    add(272, 271, f1d);
+    add(271, 274, f2l);
+    add(274, 251, f127);
 
     add(55, 67, f99);
     add(67, 56, f100);
@@ -2241,15 +2260,13 @@ int EV3_main()
     goD(0);
     how_a = after_take_green_loops;
 
-    go(0, 206, 347);
-    /*go(0, 347, 343);
-    go(0, 343, 44);
-    go(0, 44, 206);
-    go(0, 206, 260);
-    go(0, 260, 338);
-    go(0, 338, 340);
-    go(0, 340, 347);*/
+    go(0, 7, 67);
+    go(0, 67, 86);
+    go(0, 86, 64);
+    go(0, 64, 44);
 
+    stopBC();
+    wait(30000);
     Clear_Display();
     return 0;
     //CreateThread(control, 0);
@@ -2300,14 +2317,6 @@ int EV3_main()
         f.blueB1 = f.blueB2 = f.blueB3 = f.blueB4 = BLUE;
     if (f.B == GREEN)
         f.greenB1 = f.greenB2 = f.greenB3 = f.greenB4 = GREEN;
-    vector<int> watafak;
-    perebor(f, 0, watafak);
-    write(1, 1, "end");
-    wait(5000);
-    for (int i = 0; i < min_way.size(); i++) {
-        write(1, 1, min_way[i]);
-        wait(3000);
-    }
     return 0;
     //vivod_h();
     goD(-speedD);
