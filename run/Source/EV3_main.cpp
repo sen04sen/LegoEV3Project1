@@ -1594,8 +1594,20 @@ void f105() {
 }
 
 void f106() {
+    turn(speed, 40, -1);
     moveBC(speed, 430, 0);
     while (s2() > black);
+    moveBC(speed, dws);
+}
+
+void f106a() {
+    turn(speed, d90 - 20, 0);
+    line(speed, 300, 2);
+}
+
+void f106b() {
+    turn(speed, d90 + 20, 3);
+    line(speed, 300, 2);
 }
 
 void f107() {
@@ -1983,7 +1995,6 @@ void buildg() {
 
     add(206, 341, f68, 1000, 1, 1);
     add(341, 203, f69);
-    add(341, 203, f69);
 
     add(342, 307, f70);
 
@@ -2067,7 +2078,11 @@ void buildg() {
 
     add(280, 232, f105);
 
-    add(235, 224, f106);
+    add(235, 402, f106);
+
+    add(402, 179, f106a);
+    add(402, 245, f106b);
+
     add(238, 203, f107);
     add(223, 235, f108);
     add(202, 238, f109);
@@ -2220,6 +2235,10 @@ int EV3_main()
     wait(300);
     goD(0);
     how_a = after_take_green_loops;
+
+
+    Edge::close(2);
+    Edge::close(3);
 
     
 
