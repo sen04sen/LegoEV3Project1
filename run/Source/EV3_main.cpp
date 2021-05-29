@@ -1605,7 +1605,7 @@ void f107() {
 
 void f108() {
     moveD(speedD, before_take_cubes);
-    moveBC(speed, -600);
+    moveBC(speed, -660);
     moveD(speedD, after_take_cubes);
 }
 
@@ -1981,7 +1981,8 @@ void buildg() {
     add(181, 302, f66e);
     add(180, 302, f67e);
 
-    add(206, 341, f68, 1000, 0, 1);
+    add(206, 341, f68, 1000, 1, 1);
+    add(341, 203, f69);
     add(341, 203, f69);
 
     add(342, 307, f70);
