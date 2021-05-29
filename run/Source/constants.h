@@ -106,4 +106,6 @@ vector<vector<Edge> > Edge::g = vector<vector<Edge> >(maxv);
 
 vector<vector<Edge> > &g = Edge::g;
 
+int Edge::convert_ms = 50;
+
 #endif
