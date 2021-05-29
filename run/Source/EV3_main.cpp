@@ -37,6 +37,37 @@ using namespace std;
 
 int maxim = 0;
 
+int used[maxv];
+
+int clrclr = 1;
+
+void dfs(int v) {
+    used[v] = clrclr;
+    for (int i = 0; i < g[v].size(); i++) {
+        int to = g[v][i].getTo();
+        if (used[to] == 0) {
+            dfs(to);
+        }
+    }
+}
+
+void builddfs() {
+    for (int i = 0; i < maxv; i++)
+        used[i] = 0;
+    dfs(0);
+    write(1, 1, "start");
+    wait(3000);
+    Clear_Display();
+    for (int i = 0; i < 391; i++) {
+        if (used[i] != clrclr) {
+            write(1, 1, i);
+            wait(3000);
+        }
+    }
+    write(1, 1, "end");
+    wait(10000);
+}
+
 int go(int sp, int from, int toto) {
     pair<pair<double, int>, Edge> msgo[maxv];
     for (int i = 0; i < maxv; i++) {
@@ -47,7 +78,9 @@ int go(int sp, int from, int toto) {
     set<pair<double, int> > st;
     st.insert(make_pair((double)0, from));
     bool end = 0;
-    
+
+    write(100, 100, 87);
+    wait(4010);
     while (!st.empty()) {
         double dd = st.begin()->first;
         int v = st.begin()->second;
@@ -2003,8 +2036,6 @@ const int how = 100000;
 int EV3_main()
 {
     Clear_Display();
-    write(10, 10, 0);
-    wait(3000);
     CreateThread(okonchanie, 0);
     //CreateThread(control, 0);
     
@@ -2016,12 +2047,15 @@ int EV3_main()
     g.resize(g.size());
     for (int i = 0; i < g.size(); ++i) g[i].resize(g[i].size());
 
+    builddfs();
+    return 0;
+
     write(10, 10, 99);
     wait(3000);
     try { 
-        //go(speed, 345, 338);
-        go(speed, 345, 109);
-        go(speed, 109, 338);
+        go(speed, 345, 338);
+        //go(speed, 345, 109);
+        //go(speed, 109, 338);
         write(80, 80, 9);
         wait(5000);
     }
