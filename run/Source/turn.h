@@ -24,7 +24,7 @@ void turn(int sp, int dt, int tp) {
         Speed_compiled compiled = Speed_compiled(TURN, abs(dt));
 
         int encoders = 0;
-        while (encoders < abs(dt - 140)) {
+        while (encoders < abs(dt - 40)) {
             encoders = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) +
                 GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home);
 

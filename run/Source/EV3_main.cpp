@@ -1028,7 +1028,7 @@ void f12() {
 }
 
 void f13() {
-    line(speed, grad[18] - dws, 0);
+    line(speed, grad[18] - dws - 15, 0);
 }
 
 void f14() {
@@ -1381,10 +1381,12 @@ void f70() {
 
 void f71() {
     line(speed, 50, 0);
+    stopBC();
+    wait(5000);
 }
 
 void f72() {
-    line(speed, 410, 0);
+    line(speed, 430, 0);
 }
 
 void f72a() {
@@ -1532,23 +1534,24 @@ void bb() {
 
 void f99() {
     moveD(speedD, before_take_cubes);
-    moveBC(speed, -300, 0);
-    moveBC(MIN, -100);
+    moveBC(speed, -400, 0);
     moveD(speedD, after_take_cubes);
 }
 
 void f100() {
-    moveBC(speed, 200, 0);
+    moveBC(speed, 180, 0);
     while (s2() > black);
 }
 
 void f101() {
+    moveD(speedD, before_take_cubes);
     moveBC(speed, -590);
+    moveD(speedD, after_take_cubes);
 }
 
 void f102() {
-    moveBC(speed, 330, 0);
-    while (s2() > black);
+    moveBC(speed, 350, 0);
+    while (s3() > black);
 }
 
 void f103() {
@@ -1595,7 +1598,7 @@ void f105() {
 }
 
 void f106() {
-    moveBC(speed, 800 - dws - 70, 0);
+    moveBC(speed, 430, 0);
     while (s2() > black);
 }
 
@@ -1606,8 +1609,7 @@ void f107() {
 
 void f108() {
     moveD(speedD, before_take_cubes);
-    moveBC(speed, -800);
-    //moveBC(MIN, -100);
+    moveBC(speed, -600);
     moveD(speedD, after_take_cubes);
 }
 
@@ -1642,8 +1644,7 @@ void f113() {
 
 void f114() {
     moveD(speedD, before_take_cubes);
-    moveBC(speed, -250);
-    //moveBC(MIN, -100);
+    moveBC(speed, -350);
     moveD(speedD, after_take_cubes);
 }
 
@@ -1654,13 +1655,13 @@ void f115() {
 
 void f116() {
     moveD(speedD, before_take_cubes);
-    moveBC(speed, -400);
-    //moveBC(MIN, -100);
+    moveBC(speed, -500);
     moveD(speedD, after_take_cubes);
 }
 
 void f117() {
-    moveBC(speed, 400);
+    moveBC(speed, 250, 0);
+    while (s3() > black);
 }
 
 void f118() {
@@ -1703,6 +1704,14 @@ void f126() {
 
 void f127() {
     line(speed, 50, 3);
+}
+
+void f128() {
+    line(speed, 350, 3);
+}
+
+void f129() {
+    line(speed, 350, 3);
 }
 
 
@@ -1977,7 +1986,6 @@ void buildg() {
     add(180, 302, f67e);
 
     add(206, 341, f68);
-
     add(341, 203, f69);
 
     add(342, 307, f70);
@@ -2001,7 +2009,7 @@ void buildg() {
     add(225, 179, f81);
 
     add(220, 245, f82);
-    add(219, 245, f83);
+    //add(219, 245, f83);
     add(250, 227, f84);
     add(249, 227, f85);
 
@@ -2038,6 +2046,9 @@ void buildg() {
     add(272, 271, f1d);
     add(271, 274, f2l);
     add(274, 251, f127);
+
+    add(358, 131, f128);
+    add(352, 179, f129);
 
     add(55, 67, f99);
     add(67, 56, f100);
@@ -2203,13 +2214,6 @@ int EV3_main()
     CreateThread(control, 0);
     CreateThread(okonchanie, 0);
 
-    write(10, 10, sizeof(Edge));
-
-    write(30, 30, sizeof(int));
-    write(50, 50, sizeof(void (*)()));
-
-    return 0;
-
     s3();
     s2();
     gclr(4);
@@ -2222,13 +2226,14 @@ int EV3_main()
     goD(0);
     how_a = after_take_green_loops;
 
-    go(0, 7, 67);
-    go(0, 67, 86);
-    go(0, 86, 64);
-    go(0, 64, 44);
+    go(0, 7, 235);
+    go(0, 235, 206);
+    stopBC();
+    go(0, 206, 238);
+    go(0, 238, 260);
 
     stopBC();
-    wait(30000);
+    wait(100000);
     Clear_Display();
     return 0;
     go(speed, 345, 109);
@@ -2249,7 +2254,7 @@ int EV3_main()
     go(speed, 345, 67);
     go(speed, 67, 206);
     turn(speed, d180, 0);
-    moveBC(speed, -150);
+    moveBC(speed, -150);q
     moveD(speedD, before_take_cubes);
     Clear_Display();
     write(80, 1, f.B);
