@@ -29,26 +29,26 @@ using namespace std;
     \warning Просто надо помнить, что эта линия не предполагает движения назaд
 */
 
-void line(Speed p, int dist, int type, bool uping = true, bool downing = true, double end_preview = standart_line_preview_looking) {
+void line(Speed p, int32_t dist, short type, bool uping = true, bool downing = true, double end_preview = standart_line_preview_looking) {
     // Просто надо помнить, что эта линия не предполагает движения назaд
     // Какая-то типизация
     if (type == 4) {
         getRGB(3);
-        EV3_Sleep(50);
+        wait(500);
     }
     if (type == 4) getRGB(3);
 
-    int home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
+    int32_t home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                 GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
 
     Speed_compiled speed_control = Speed_compiled(p, dist, uping, downing);
 
-    vector<int> errors = vector<int>(lineArrayLen, 0);
+    vector<short> errors = vector<short>(lineArrayLen, 0);
 
     bool stop = 0; // флаг завершения
-    for (int count = 0; !stop; count++) {
+    for (int32_t count = 0; !stop; count++) {
 
-        int encoders = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
+        int32_t encoders = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                         GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home;
 
         if (encoders > (double) dist * 0.6) {
@@ -73,7 +73,7 @@ void line(Speed p, int dist, int type, bool uping = true, bool downing = true, d
             }
         }
 
-        int error = 0;
+        double error = 0;
         switch (type) {
             case 10:
                 error = (double)(grey - s3()) * 3 / 3;
@@ -101,15 +101,15 @@ void line(Speed p, int dist, int type, bool uping = true, bool downing = true, d
                 break;
         } // подсчет ошибки
 
-        int nowSpeed = speed_control(encoders);
+        int32_t nowSpeed = speed_control(encoders);
 
         double kP = p.get_p() * ((double) nowSpeed / (double) p.max_sp);
         double kD = p.get_d() * ((double) nowSpeed / (double) p.max_sp);
 
-        SpeedMotor(E_Port_B, max((short)-100, short(-1 * (nowSpeed - error * kP - (error - errors[count % lineArrayLen]) * kD))));
-        SpeedMotor(E_Port_C, min((short)100, short(nowSpeed + error * kP + (error - errors[count % lineArrayLen]) * kD)));
+        SpeedMotor(E_Port_B, max((int32_t)-100, int32_t(-1 * (nowSpeed - error * kP - (error - (int32_t)errors[count % lineArrayLen]) * kD))));
+        SpeedMotor(E_Port_C, min((int32_t)100, int32_t(nowSpeed + error * kP + (error - (int32_t)errors[count % lineArrayLen]) * kD)));
 
-        errors[count % lineArrayLen] = error; // для d составляющей
+        errors[count % lineArrayLen] = (short)error; // для d составляющей
     }
     if (type == 4) s3(); // Какая-то типизация
 }
@@ -120,7 +120,7 @@ void line(Speed p, int dist, int type, bool uping = true, bool downing = true, d
     \param dist Предполагаемое расстояние до конца линии
     \param type Тип линии (тут лучше шарит создатель)
 */
-void line(int _, int dist, int type, bool uping = true, bool downing = true, double end_preview = standart_line_preview_looking) {
+void line(int32_t _, int32_t dist, short type, bool uping = true, bool downing = true, double end_preview = standart_line_preview_looking) {
     line(ZERO, dist, type, uping, downing, end_preview);
 }
 

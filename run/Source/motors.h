@@ -21,7 +21,7 @@ using namespace std;
 ///@{
 
 void moveA(int uy) {
-    static double stadegd = GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
+    static int32_t stadegd = GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
     double dist;
     if (uy == 1) {
         dist = stadegd - 80;
@@ -30,7 +30,7 @@ void moveA(int uy) {
     } else {
         dist = stadegd - 120;
     }
-    double st = dist - GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
+    int32_t st = dist - GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
     if (st >= 0) {
         SpeedMotor(E_Port_A, 20);
         while (GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium) < dist);
@@ -78,7 +78,6 @@ void goA(int sp) {
     SpeedMotor(E_Port_A, sp);
 }
 
-
 void goBC(int sp, int uy = 0) {
     if (uy == 0) {
         SpeedMotor(E_Port_B, -1 * (sp));
@@ -92,11 +91,11 @@ void goBC(int sp, int uy = 0) {
     }
 }
 
-void moveB(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = true) {
+void moveB(Speed p, int32_t dist, bool stop = 1, bool uping = true, bool downing = true) {
     Speed_compiled compiled = Speed_compiled(p, abs(dist), uping, downing);
 
-    double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
-    int encoders = 0;
+    int32_t st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
+    int32_t encoders = 0;
     while (encoders < abs(dist)) {
         encoders = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st);
         if (dist > 0) SpeedMotor(E_Port_B, -compiled(encoders));
@@ -111,8 +110,8 @@ void moveB(int _, int dist, bool stop = 1, bool uping = true, bool downing = tru
 void moveC(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = true) {
     Speed_compiled compiled = Speed_compiled(p, abs(dist), uping, downing);
 
-    double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-    int encoders = 0;
+    int32_t st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
+    int32_t encoders = 0;
     while (encoders < abs(dist)) {
         encoders = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st);
         if (dist > 0) SpeedMotor(E_Port_C, compiled(encoders));
@@ -125,9 +124,9 @@ void moveC(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = t
 void moveC(int _, int dist, bool stop = 1, bool uping = true, bool downing = true) { moveC(ONEMOTOR, dist, stop, uping, downing); }
 
 void moveD(int sp, int dist) {
-    static double stadegd = GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
-    dist = (double) dist + stadegd;
-    double st = dist - GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
+    static int32_t stadegd = GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
+    dist = dist + stadegd;
+    int32_t st = dist - GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium);
     if (st >= 0) {
         SpeedMotor(E_Port_D, sp);
         while (GetMotor_RotationAngle(E_Port_D, E_MotorType_Medium) < dist);
@@ -139,9 +138,9 @@ void moveD(int sp, int dist) {
 }
 
 void moveA(int sp, int dist) {
-    static double stadegd = GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
+    static int32_t stadegd = GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
     dist = (double)dist + stadegd;
-    double st = dist - GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
+    int32_t st = dist - GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
     if (st >= 0) {
         SpeedMotor(E_Port_A, sp);
         while (GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium) < dist);
@@ -163,17 +162,17 @@ void moveA(int sp, int dist) {
     \todo воплотить ее (полсе вторника)
 */
 void moveBC(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = true) {
-    int home = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
-                GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2);
+    int32_t home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
+                GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
 
     Speed_compiled compiled = Speed_compiled(p, abs(dist), uping, downing);
 
-    int encoders = 0;
-    while (abs(encoders) < abs(dist)) {
-        encoders = abs(abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
-                        GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2) - home);
+    int32_t encoders = 0;
+    while (encoders < abs(dist)) {
+        encoders = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
+                        GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home);
 
-        int nowSpeed = compiled(encoders);
+        int32_t nowSpeed = compiled(encoders);
         if (dist > 0) {
             SpeedMotor(E_Port_B, -nowSpeed);
             SpeedMotor(E_Port_C, nowSpeed);

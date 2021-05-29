@@ -46,26 +46,27 @@ public:
 
     Edge() {} ///< Конструктор без параметров (не используй)
 
-    void set_to(short _to) { to = _to; }
+    void set_to(int _to) { to = (short)_to; }
     short get_to() { return to; }
 
     
-    void set_time(short _time) {
-        time = abs(_time);
-        if (_time > 126 * convert_ms)
-            _time = 126 * convert_ms;
+    void set_time(int _time) {
+        short short_time = short(_time);
+        time = abs(short_time);
+        if (short_time > 126 * convert_ms)
+            short_time = 126 * convert_ms;
 
-        _time = _time / convert_ms;
+        short_time = short(int32_t(short_time) / convert_ms);
 
-        if (time > 0) time = char(_time);
-        else time == char(-_time);
+        if (time > 0) time = char(short_time);
+        else time == char(-short_time);
     }
 
-    short get_time() {
+    int get_time() {
         if (time > 0) 
             return short(convert_ms) * time;
         else 
-            return 32767;
+            return 9999999;
     }
 
     void set_active(bool _active) {
@@ -89,7 +90,7 @@ public:
         делая длинну очень большой, позволяет, также разблокировать ребра обратно (по умолчанию 0)
     \return Возвращает ребро
     */
-    Edge(short _to, void (*const _def)(), int _time = 1000, bool _active = true, short _index = 0) {
+    Edge(short _to, void (*const _def)(), short _time = 1000, bool _active = true, short _index = 0) {
         to = _to;
         def = _def;
         set_time(_time);

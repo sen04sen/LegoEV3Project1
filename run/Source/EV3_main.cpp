@@ -37,57 +37,8 @@ int maxim = 0;
 
 Field f = StandartInit();
 
-/*int goDEIC(int sp, int from, int toto) {
-    static pair<pair<double, int>, Edge> msgo[maxv];
-    for (int i = 0; i < maxv; i++) {
-        msgo[i].first.first = (double)1000000000;
-        msgo[i].first.second = -1;
-    }
-    msgo[from].first.first = (double)0;
-    set<pair<double, int> > st;
-    st.insert(make_pair((double)0, from));
-    bool end = 0;
-
-    write(100, 100, 87);
-    wait(4010);
-    while (!st.empty()) {
-        double dd = st.begin()->first;
-        int v = st.begin()->second;
-        st.erase(st.begin( ));
-
-        for (int i = 0; i < g[v].size(); i++) {
-            //write(50, 50, maxim);
-            //maxim = max(int(st.size() * sizeof(pair<double, int>)), maxim);
-            int to = g[v][i].getTo();
-            if (dd + g[v][i].getTime() < msgo[to].first.first) {
-                st.erase(make_pair(msgo[to].first.first, to));
-                msgo[to].first.first = dd + g[v][i].getTime();
-                msgo[to].first.second = v;
-                msgo[to].second = g[v][i];
-                if (to == toto) {
-                    end = 1;
-                    break;
-                }
-                st.insert(make_pair(msgo[to].first.first, to));
-            }
-        }
-        if (end)
-            break;
-    }
-    vector<pair<Edge, int> > way;
-    int nv = toto;
-    while (nv != from) {
-        way.pb(make_pair(msgo[nv].second, nv ));
-        nv = msgo[nv].first.second;
-    }
-    for (int i = way.size() - 1; i >= 0; i--) {
-        Edge nw = way[i].first;
-        nw(0);
-    }
-    return way.size();
-}*/
-
 int go(int sp, int from, int toto) {
+    T_TimerId t = Timer_Start();
     vector<int> father(maxv, -1);
     father[from] = 0;
     queue<int> q;
@@ -103,10 +54,7 @@ int go(int sp, int from, int toto) {
         }
     }
     if (father[toto] == -1) {
-        Clear_Display();
-        write(50, 50, "NO WAY");
-        wait(5000);
-        throw Exception("NO WAY");
+        throw Exception("NO WAY (go)");
     }
     vector<Edge*> way;
     int now = toto;
@@ -117,65 +65,15 @@ int go(int sp, int from, int toto) {
         now = father[now];
     }
 
-    for (int i = way.size() - 1; i >= 0; i--) {
-
+    for (int i = way.size() - 1; i >= 0; i--)
         (*way[i])(0);
-    }
+    print("go time: " + str(Timer_Destroy(t)));
     return way.size();
 }
-/*int diist(int from, int toto) {
-    pair<pair<double, int>, Edge> msgo[maxv];
-    for (int i = 0; i < maxv; i++) {
-        msgo[i].first.first = (double)1000000000;
-        msgo[i].first.second = -1;
-    }
-    msgo[from].first.first = (double)0;
-    set<pair<double, int> > st;
-    st.insert(make_pair((double)0, from));
-    bool end = 0;
 
-    while (!st.empty()) {
-        double dd = st.begin()->first;
-        int v = st.begin()->second;
-        st.erase(st.begin());
-
-        for (int i = 0; i < g[v].size(); i++) {
-            //write(50, 50, maxim);
-            //maxim = max(int(st.size() * sizeof(pair<double, int>)), maxim);
-            int to = g[v][i].getTo();
-            if (dd + g[v][i].getTime() < msgo[to].first.first) {
-                st.erase(make_pair(msgo[to].first.first, to));
-                msgo[to].first.first = dd + g[v][i].getTime();
-                msgo[to].first.second = v;
-                msgo[to].second = g[v][i];
-                if (to == toto) {
-                    end = 1;
-                    break;
-                }
-                st.insert(make_pair(msgo[to].first.first, to));
-            }
-        }
-        if (end)
-            break;
-    }
-    vector<pair<Edge, int> > way;
-    int nv = toto;
-    if (msgo[nv].first.second == -1) {
-        Clear_Display();
-        write(1, 1, "NO WAY!!!");
-        write(1, 40, from);
-        write(40, 40, toto);
-        wait(10000);
-    }
-    while (nv != from) {
-        write(100, 100, 0);
-        way.pb(make_pair(msgo[nv].second, nv));
-        nv = msgo[nv].first.second;
-    }
-    return way.size();
-}*/
 
 int diist(int from, int toto) {
+    T_TimerId t = Timer_Start();
     vector<int> dist(maxv, maxv);
     dist[from] = 0;
     queue<int> q;
@@ -190,6 +88,10 @@ int diist(int from, int toto) {
             }
         }
     }
+    if (dist[toto] == maxv) {
+        throw Exception("NO WAY (diist)");
+    }
+    print("diist time: " + str(Timer_Destroy(t)));
     return dist[toto];
 }
 
@@ -301,50 +203,7 @@ DoubleMarker gtf() {
     return(a);
 }
 
-
-vector<int> min_way;
-int mindist = 1000000001;
-int vertoplaces[cntplaces];
-int distplaces[cntplaces][cntplaces];
-
-void buildplaces() {
-    vertoplaces[0] = 1;
-    vertoplaces[1] = 338;
-    vertoplaces[2] = 339;
-    vertoplaces[3] = 340;
-    vertoplaces[4] = 206;
-    vertoplaces[5] = 347;
-    vertoplaces[6] = 348;
-    vertoplaces[7] = 349;
-    vertoplaces[8] = 350;
-    vertoplaces[9] = 351;
-    vertoplaces[10] = 238;
-    vertoplaces[11] = 235;
-    vertoplaces[12] = 232;
-    vertoplaces[13] = 3000;
-    vertoplaces[14] = 260;
-    vertoplaces[15] = 352;
-    vertoplaces[16] = 353;
-    vertoplaces[17] = 354;
-    vertoplaces[18] = 355;
-    vertoplaces[19] = 356;
-    vertoplaces[20] = 362;
-    vertoplaces[21] = 151;
-    vertoplaces[22] = 148;
-    vertoplaces[23] = 343;
-    vertoplaces[24] = 67;
-    vertoplaces[25] = 64;
-    vertoplaces[26] = 44;
-    vertoplaces[27] = 357;
-    vertoplaces[28] = 358;
-    vertoplaces[29] = 359;
-    vertoplaces[30] = 360;
-    vertoplaces[31] = 361;
-    vertoplaces[32] = 363;
-    vertoplaces[33] = 364;
-    vertoplaces[34] = 365;
-    vertoplaces[35] = 366;
-}
+int uyuyuy = 0;
 
 bool is_end(Field &f) {
     if (f.cnt1 == 4 && f.cnt2 == 4 && f.cnt3 == 4 && f.cntutils == 4) {
@@ -2206,50 +2065,13 @@ void vivod_h() {
     }
 }
 
-int used[maxv];
 
-int clrclr = 1;
-
-void dfs(int v) {
-    used[v] = clrclr;
-    Clear_Display();
-    write(40, 40, v);
-    write(60, 60, g[v].size());
-    write(80, 80, used[v]);
-    wait(100);
-    for (int i = 0; i < g[v].size(); i++) {
-        int to = g[v][i].get_to();
-        if (used[to] == 0) {
-            dfs(to);
-        }
-    }
-}
-
-void builddfs() {
-    for (int i = 0; i < maxv; i++)
-        used[i] = 0;
-    dfs(1);
-    write(1, 1, "start");
-    wait(3000);
-    Clear_Display();
-    for (int i = 0; i < 391; i++) {
-        write(1, 1, i);
-        write(20, 20, used[i]);
-        wait(1000);
-    }
-    write(1, 1, "end");
-    wait(10001);
-}
 /*
     bool: 1
     char: 1
     short: 2
     int: 4
-    long: 
-    long long: 
-    float: 
-    double: 
-    long double: 
+    int32_t: 4 
 */
 
 /*Color inmove() {
@@ -2292,6 +2114,8 @@ void builddfs() {
 
 int EV3_main()
 {
+    T_TimerId t = Timer_Start();
+    try {
 
     int npos;
 
@@ -2308,10 +2132,10 @@ int EV3_main()
     buildg();
     buildplaces();
 
-    goD(-speedD);
-    wait(300);
-    goD(0);
-    how_a = after_take_green_loops;
+        goD(-speedD);
+        wait(300);
+        goD(0);
+        how_a = after_take_green_loops;
 
     go(speed, 7, 336);
     go(speed, 336, 338);
@@ -2456,6 +2280,14 @@ int EV3_main()
     }
     cntfr = 4;
     cntbck = 4;
-    wait(30000);
-    return 0;
+    }
+    catch (Exception& exc) {
+        print("EXC: " + exc.what());
+    }
+    catch (exception& exc) {
+        print("STD ERROR");
+        print(exc.what());
+    }
+    print("time: " + str(Timer_Destroy(t)));
+    read_docs();
 }

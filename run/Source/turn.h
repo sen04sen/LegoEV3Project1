@@ -18,17 +18,17 @@ void turn(int sp, int dt, int tp) {
     stopBC();
     if (tp >= 0) {
         double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-        int home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) +
+        int32_t home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) +
             GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
 
         Speed_compiled compiled = Speed_compiled(TURN, abs(dt));
 
-        int encoders = 0;
-        while (encoders < abs(dt - 60)) {
+        int32_t encoders = 0;
+        while (encoders < abs(dt - 140)) {
             encoders = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) +
                 GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home);
 
-            int nowSpeed = compiled(encoders);
+            int32_t nowSpeed = compiled(encoders);
 
             if (tp < 2 || tp == 4) {
                 SpeedMotor(E_Port_B, -1 * (nowSpeed));
@@ -54,19 +54,17 @@ void turn(int sp, int dt, int tp) {
         st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
         while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < dovorot);
     } else {
-        int home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) +
+        int32_t home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) +
             GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
 
         Speed_compiled compiled = Speed_compiled(TURN, abs(dt));
 
-        int encoders = 0;
-        //write(10, 10, 1);
-        //wait(5000);
+        int32_t encoders = 0;
         while (encoders < abs(dt)) {
             encoders = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) +
                 GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home);
 
-            int nowSpeed = compiled(encoders);
+            int32_t nowSpeed = compiled(encoders);
 
             if (tp == -1) {
                 SpeedMotor(E_Port_B, -1 * (nowSpeed));
@@ -81,51 +79,13 @@ void turn(int sp, int dt, int tp) {
     stopBC();
 }
 
-void t1w_old(int sp, int dt, int tp) {
+void t1w(int32_t sp, int32_t dt, int32_t tp) {
     if (tp >= 0) {
         if (tp < 2) {
             stopC();
-            SpeedMotor(E_Port_B, -1 * (sp));
-            double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
-            dt -= 180;
-            while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < abs(dt));
-            while (s3() > black);
-            st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
-            while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < abs(d1w));
-        } else {
-            stopB();
-            SpeedMotor(E_Port_C, sp);
-            double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-            dt -= 180;
-            while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(dt));
-            while (s2() > black);
-            st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-            while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(d1w));
-        }
-    } else {
-        if (tp == -1) {
-            stopC();
-            SpeedMotor(E_Port_B, -1 * (sp));
-            double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
-            while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < abs(dt));
-        } else {
-            stopB();
-            SpeedMotor(E_Port_C, sp);
-            double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
-            while (abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st) < abs(dt));
-        }
-    }
-    stopBC();
-}
-
-void t1w(int sp, int dt, int tp) {
-    if (tp >= 0) {
-        if (tp < 2) {
-            stopC();
-            //SpeedMotor(E_Port_B, -1 * (sp));
             dt -= 180;
             Speed_compiled compiled = Speed_compiled(ONEMOTOR, abs(dt));
-            int encoders = 0;
+            int32_t encoders = 0;
             double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
             while (encoders < abs(dt)) {
                 encoders = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st);
@@ -136,10 +96,9 @@ void t1w(int sp, int dt, int tp) {
             while (abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st) < abs(d1w));
         } else {
             stopB();
-            //SpeedMotor(E_Port_C, sp);
             dt -= 180;
             Speed_compiled compiled = Speed_compiled(ONEMOTOR, abs(dt));
-            int encoders = 0;
+            int32_t encoders = 0;
             double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
             while (encoders < abs(dt)) {
                 encoders = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st);
@@ -154,7 +113,7 @@ void t1w(int sp, int dt, int tp) {
             stopC();
             //SpeedMotor(E_Port_B, -1 * (sp));
             Speed_compiled compiled = Speed_compiled(ONEMOTOR, abs(dt));
-            int encoders = 0;
+            int32_t encoders = 0;
             double st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
             while (encoders < abs(dt)) {
                 encoders = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st);
@@ -164,7 +123,7 @@ void t1w(int sp, int dt, int tp) {
             stopB();
             //SpeedMotor(E_Port_C, sp);
             Speed_compiled compiled = Speed_compiled(ONEMOTOR, abs(dt));
-            int encoders = 0;
+            int32_t encoders = 0;
             double st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
             while (encoders < abs(dt)) {
                 encoders = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st);
