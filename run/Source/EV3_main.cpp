@@ -2221,10 +2221,14 @@ int EV3_main()
     goD(0);
     how_a = after_take_green_loops;
 
+    
+
     go(0, 7, 235);
     go(0, 235, 206);
-    stopBC();
     Edge::close(1);
+    
+    
+    
     go(0, 206, 238);
     go(0, 238, 260);
 

@@ -129,14 +129,14 @@ public:
 
     static void close(short index) {
         for (int i = 0; i < g.size(); ++i)
-            for (int j = 0; j < g[i].size(); ++i)
+            for (int j = 0; j < g[i].size(); ++j)
                 if (g[i][j].get_index() == index)
                     g[i][j].close();
     }
 
     static void open(short index) {
         for (int i = 0; i < g.size(); ++i)
-            for (int j = 0; j < g[i].size(); ++i)
+            for (int j = 0; j < g[i].size(); ++j)
                 if (g[i][j].get_index() == index)
                     g[i][j].open();
     }
