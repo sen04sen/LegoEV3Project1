@@ -124,10 +124,6 @@ int go(int sp, int from, int toto) {
     for (int i = way.size() - 1; i >= 0; i--) {
 
         (*way[i])(0);
-        //stopBC();
-        //Clear_Display();
-        //write(100, 100, way[i]->getTo());
-        //wait(5000);
     }
     return way.size();
 }
@@ -1133,15 +1129,17 @@ void f26() {
 }
 
 void take4green() {
-    moveA(speedA, 520);
-    moveBC(-speed, 130);
-    line(speed, grad[8] - dws + 130, 0);
+    //moveA(speedA, before_take_green_loops);
+    how_a = before_take_green_loops;
+    moveBC(MIN, -50);
+    line(MIN1, 115, 0);
     stopBC();
-    moveA(speedA, 200);
+    //moveA(speedA, after_take_green_loops);
+    how_a = after_take_green_loops;
 }
 
 void f27() {
-    moveBC(-speed, grad[8] - dws);
+    moveBC(speed, -80);
 }
 
 void f28() {
@@ -1173,7 +1171,7 @@ void f34() {
 }
 
 void f35() {
-    line(speed, 200, 1);
+    line(speed, grad[2] - 2 * dws, 1);
 }
 
 void f36() {
@@ -1423,19 +1421,25 @@ void f69() {
 }
 
 void f70() {
-
+    line(speed, 100, 0);
 }
 
 void f71() {
-
+    line(speed, 50, 0);
 }
 
 void f72() {
-
+    line(speed, 410, 0);
 }
 
+void f72a() {
+    line(speed, grad[10] - 2 * dws, 0);
+}
+
+
 void f73() {
-    moveBC(speed, 650, 0);
+    moveBC(speed, 450, 0);
+    while (s2() > black);
 }
 
 void f74() {
@@ -1503,7 +1507,7 @@ void f89() {
 }
 
 void f90() {
-    line(speed, 200, 1);
+    line(speed, grad[12] - 2 * dws, 1);
 }
 
 void f91() {
@@ -1519,17 +1523,18 @@ void f92() {
 }
 
 void f93() {
-    line(speed, 365 - dsl, 0);
+    moveBC(speed, dsl, 0);
+    line(speed, 100 - dsl, 0);
 }
 
 void f94() {
-    turn(speed, d90 - 40, 3);
-    turn(speed, 40, -2);
+    turn(speed, d90 - 70, 3);
+    turn(speed, 70, -2);
 }
 
 void f95() {
     moveBC(speed, 50, 0);
-    line(speed, 460, 5);
+    line(ONE, 460, 5);
     goBC(speed);
     while (s2() > black);
 }
@@ -1546,15 +1551,18 @@ void f98() {
     turn(speed, d90, 3);
 }
 
-void get4blue1() {
-    moveBC(speed, -150);
-    moveA(speedA, before_take_blue_loops);
-    line(MIN, 100, 1);
-    moveBC(MIN, 70);
-    moveA(speedA, after_take_blue_loops);
+void take4blue1() {
+    moveBC(speed, -200);
+    //moveA(speedA, before_take_blue_loops);
+    how_a = before_take_blue_loops;
+    line(MIN1, 100, 1);
+    moveBC(MIN1, 120);
+    //moveA(speedA, after_take_blue_loops);
+    how_a = after_take_blue_loops;
+    wait(500);
 }
 
-void get4blue2() {
+void take4blue2() {
     stopBC();
     moveA(speedA, before_take_blue_loops);
     moveBC(MIN, 70);
@@ -1588,18 +1596,22 @@ void f102() {
 
 void f103() {
     line(speed, grad[6] - dws, 0);
+    moveBC(speed, 50, 0);
 }
 
 void f104() {
     line(speed, grad[6] - dtw, 0);
+    moveBC(speed, 50, 0);
 }
 
 void f103a() {
     line(speed, grad[5] - dws, 0);
+    moveBC(speed, 50, 0);
 }
 
 void f104a() {
     line(speed, grad[5] - dtw, 0);
+    moveBC(speed, 50, 0);
 }
 
 void f103b() {
@@ -1999,11 +2011,13 @@ void buildg() {
 
     add(341, 203, f69);
 
-    add(342, 308, f70);
+    add(342, 307, f70);
 
     add(342, 200, f71);
 
-    add(342, 176, f72);
+    add(342, 188, f72);
+
+    add(342, 176, f72a);
 
     add(160, 305, f73);
 
@@ -2046,10 +2060,10 @@ void buildg() {
     add(277, 280, f97);
     add(277, 286, f98);
 
-    add(280, 3000, get4blue1);
-    add(281, 3000, get4blue2);
+    add(280, 347, take4blue1);
+    add(281, 347, take4blue2);
 
-    add(3000, 280, bb);
+    add(347, 280, bb);
 
     add(55, 67, f99);
     add(67, 56, f100);
@@ -2086,58 +2100,71 @@ void buildg() {
     add(184, 148, f116);
     add(148, 185, f117);
 
-    add(253, 352, unload_cubes0);
-    add(37, 357, unload_cubes0);
-    add(211, 347, unload_cubes0);
-    add(253, 353, unload_cubes1);
-    add(37, 358, unload_cubes1);
-    add(211, 348, unload_cubes1);
-    add(260, 354, unload_loops0);
-    add(44, 359, unload_loops0);
-    add(206, 349, unload_loops0);
-    add(260, 355, unload_loops1);
-    add(44, 360, unload_loops1);
-    add(206, 350, unload_loops1);
-    add(260, 356, unload_loops2);
-    add(44, 361, unload_loops2);
-    add(206, 351, unload_loops2);
-    add(347, 211, hcb);
-    add(348, 211, hcb);
-    add(352, 253, hcb);
-    add(353, 253, hcb);
-    add(357, 37, hcb);
-    add(358, 37, hcb);
-    add(354, 346, hlb);
-    add(355, 346, hlb);
-    add(356, 346, hlb);
-    add(349, 342, hlb);
-    add(350, 342, hlb);
-    add(351, 342, hlb);
-    add(359, 337, hlb);
-    add(360, 337, hlb);
-    add(361, 337, hlb);
+    add(206, 342, f5l);
+    add(260, 346, f5l);
+    add(44, 337, f5l);
 
-    addcrossroad(367, 0, 1, 0, 1);
-    addcrossroad(379, 0, 1, 0, 1);
+    add(346, 365, unload_cubes0);
+    add(337, 370, unload_cubes0);
+    add(342, 360, unload_cubes0);
 
-    add(371, 173, f118);
-    //add(370, 173, f119);
-    add(178, 378, f120);
-    //add(177, 378, f121);
+    add(346, 366, unload_cubes1);
+    add(337, 371, unload_cubes1);
+    add(342, 361, unload_cubes1);
 
-    add(172, 384, f122);
-    //add(171, 384, f123);
-    add(389, 179, f124);
-    //add(388, 179, f125);
+    add(260, 367, unload_loops0);
+    add(44, 372, unload_loops0);
+    add(206, 362, unload_loops0);
 
-    add(374, 364, utilsll);
+    add(260, 368, unload_loops1);
+    add(44, 373, unload_loops1);
+    add(206, 363, unload_loops1);
+
+    add(260, 369, unload_loops2);
+    add(44, 374, unload_loops2);
+    add(206, 364, unload_loops2);
+
+    add(365, 346, hcb);
+    add(370, 337, hcb);
+    add(360, 342, hcb);
+
+    add(366, 346, hcb);
+    add(371, 337, hcb);
+    add(361, 342, hcb);
+
+    add(367, 346, hlb);
+    add(372, 337, hlb);
+    add(362, 342, hlb);
+
+    add(368, 346, hlb);
+    add(373, 337, hlb);
+    add(363, 342, hlb);
+
+    add(369, 346, hlb);
+    add(374, 337, hlb);
+    add(364, 342, hlb);
+
+    addcrossroad(378, 0, 1, 0, 1);
+    addcrossroad(390, 0, 1, 0, 1);
+
+    add(382, 173, f118);
+    //add(381, 173, f119);
+    add(178, 389, f120);
+    //add(177, 389, f121);
+
+    add(172, 395, f122);
+    //add(171, 395, f123);
+    add(400, 179, f124);
+    //add(400, 179, f125);
+
+    /*add(374, 364, utilsll);
     add(386, 365, utilslr);
     add(364, 374, backutils1);
     add(365, 374, backutils1);
     add(169, 362, utilscubes);
     add(169, 363, utilscubes);
     add(362, 169, backutilscubes);
-    add(363, 169, backutilscubes);
+    add(363, 169, backutilscubes);*/
 }
 
 void vivod_h() {
@@ -2181,7 +2208,7 @@ void builddfs() {
         wait(1000);
     }
     write(1, 1, "end");
-    wait(10000);
+    wait(10001);
 }
 /*
     bool: 1
@@ -2209,18 +2236,21 @@ int EV3_main()
     buildg();
     buildplaces();
 
-    /*Clear_Display();
-    write(10, 10, go(0, 345, 338));
-    wait(10000);
-    write(40, 40, diist(345, 338));
-    wait(10000);*/
-    go(0, 7, 338);
-    go(0, 338, 345);
-    stopBC();
+    goD(-speedD);
+    wait(300);
+    goD(0);
+    how_a = after_take_green_loops;
+
+    go(0, 206, 347);
+    /*go(0, 347, 343);
+    go(0, 343, 44);
+    go(0, 44, 206);
+    go(0, 206, 260);
+    go(0, 260, 338);
+    go(0, 338, 340);
+    go(0, 340, 347);*/
 
     Clear_Display();
-    write(50, 50, "end");
-    wait(10000);
     return 0;
     //CreateThread(control, 0);
     
@@ -2232,10 +2262,6 @@ int EV3_main()
     wait(10000);
     return 0;
 
-    goD(-speedD);
-    wait(300);
-    goD(0);
-    how_a = after_take_green_loops;
     /*f.B = YELLOW;
     go(speed, 7, 336);
     go(speed, 336, 136);

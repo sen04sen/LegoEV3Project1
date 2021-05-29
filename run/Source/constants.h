@@ -13,15 +13,15 @@
 
 
 const int cntplaces = 36;
-const int maxv = 400;
+const int maxv = 410;
 const int ce = 21 * 2;
 const int ver = 22;
-const int black = 18;
+const int black = 21;
 const int bluck = 30;
 const int bley = 40;
 const double Pr = 0.3;
 const int grey = 40;
-const double dws = 170; // ���������� ����� ��������� � �������
+const double dws = 180; // ���������� ����� ��������� � �������
 const double dsl = 60; //����� �������� � �����
 const double dtw = 340;
 const int d90 = 270;
@@ -42,10 +42,10 @@ double up_loops = 100;
 double block_cubes = 334;
 double after_take_cubes = 150;
 double before_take_cubes = 460;
-double before_take_blue_loops = 870;
+double before_take_blue_loops = 890;
 double after_take_blue_loops = 500;
-double before_take_green_loops = 515;
-double after_take_green_loops = 240;
+double before_take_green_loops = 555;
+double after_take_green_loops = 200;
 double up = 10;
 double near_put_loops = 180;
 double xren_loops = 490;
@@ -60,17 +60,17 @@ const int standart_line_preview_looking = 50;           ///< За это рас�
 const int deltaSensors = -4;                             ///< Разность показаний датчиков
 Speed DOP1 = Speed(80, 20, 0.35, 0.7, 100, 300, 300, 100);   ///< Для двух
 Speed ONE1 = Speed(80, 20, 0.45, 1, 100, 300, 300, 100);     ///< Для одного
-Speed MIN = Speed(20, 20, 0.35, 0.1, 0, 0, 0, 0);
+Speed MIN = Speed(10, 10, 0.3, 0, 0, 0, 0, 0);
 Speed MIN1 = Speed(12, 12, 0.3, 0, 0, 0, 0, 0);
-Speed ONE = Speed(30, 20, 0.5, 0.3, 100, 50, 50, 30);        ///< Для одного
+Speed ONE = Speed(20, 20, 0.4, 0.2, 100, 50, 50, 30);        ///< Для одного
 //Speed ZERO = Speed(80, 20, 0.5, 1, 50, 100, 100, 50);   ///< Настройка линии (функция lineNew) класс Speed
-Speed ZERO = Speed(20, 20, 0.35, 0.1, 0, 0, 0, 0);
+Speed ZERO = Speed(20, 20, 0.2, 0.1, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
 //Speed ONEMOTOR = Speed(100, 20, 0, 0, 0, 100, 100, 0);    ///< Для moveB или moveС
-Speed ONEMOTOR = Speed(20, 20, 0.35, 0.1, 0, 0, 0, 0);
+Speed ONEMOTOR = Speed(20, 20, 0.2, 0.1, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
 //Speed MOVEBC = Speed(100, 20, 0, 0, 100, 250, 250, 70);      ///< Для moveBC
-Speed MOVEBC = Speed(20, 20, 0.35, 0.1, 0, 0, 0, 0);
+Speed MOVEBC = Speed(20, 20, 0.2, 0.1, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
 //Speed TURN = Speed(100, 15, 0, 0, 100, 300, 300, 50);        ///< Для turn
-Speed TURN = Speed(20, 20, 0.35, 0.1, 0, 0, 0, 0);
+Speed TURN = Speed(20, 20, 0.2, 0.1, 0, 0, 0, 0); // p.s. для ИГОРЯ замедлил
 Speed READ = Speed(30, 20, 0.5, 0.3, 100, 50, 50, 30);       ///< Для чтения
 ///}@
 
