@@ -1,4 +1,4 @@
-﻿// docs https://sen04sen.github.io/LegoEV3Project1/html/index.html
+// docs https://sen04sen.github.io/LegoEV3Project1/html/index.html
 
 //#define abs(x) ((x > 0) ? x : -x)
 
