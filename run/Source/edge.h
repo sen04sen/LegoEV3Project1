@@ -77,7 +77,7 @@ public:
 
     bool get_active() { return time > 0; }
 
-    void set_index(short _index) { index = unsigned char(_index); }
+    void set_index(short _index) { index = (unsigned char)_index; }
     short get_index() { return (short)index; }
 
     /*!
