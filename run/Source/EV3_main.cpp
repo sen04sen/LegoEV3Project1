@@ -1433,9 +1433,8 @@ int EV3_main()
         buildDegreesConstants();
         buildg();
 
-        print(sizeof(int32_t));
-        print(sizeof(int32_t));
-        print(sizeof(int32_t));
+        line(Speed(70, 20, 0.4, 4.0, 100, 100, 100, 50), grad[0], 3);
+        stopBC();
 
         throw Exception("end");
 
