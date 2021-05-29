@@ -77,7 +77,7 @@ public:
 
     bool get_active() { return time > 0; }
 
-    void set_index(short _index) { index = unsigned char(_index); }
+    void set_index(short _index) { index = (unsigned char)_index; }
     short get_index() { return (short)index; }
 
     /*!
@@ -130,14 +130,14 @@ public:
     static void close(short index) {
         for (int i = 0; i < g.size(); ++i)
             for (int j = 0; j < g[i].size(); ++i)
-                if (g[i][j].get_index() == (unsigned char)index)
+                if (g[i][j].get_index() == index)
                     g[i][j].close();
     }
 
     static void open(short index) {
         for (int i = 0; i < g.size(); ++i)
             for (int j = 0; j < g[i].size(); ++i)
-                if (g[i][j].get_index() == (unsigned char)index)
+                if (g[i][j].get_index() == index)
                     g[i][j].open();
     }
 
