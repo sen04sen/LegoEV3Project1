@@ -96,9 +96,9 @@ int go(int sp, int from, int toto) {
         int v = q.front();
         q.pop();
         for (int i = 0; i < g[v].size(); ++i) {
-            if (father[g[v][i].getTo()] == -1) {
-                father[g[v][i].getTo()] = v;
-                q.push(g[v][i].getTo());
+            if (father[g[v][i].get_to()] == -1 && g[v][i].get_active()) {
+                father[g[v][i].get_to()] = v;
+                q.push(g[v][i].get_to());
             }
         }
     }
@@ -112,14 +112,10 @@ int go(int sp, int from, int toto) {
     int now = toto;
     while (now != from) {
         for (int i = 0; i < g[father[now]].size(); ++i)
-            if (g[father[now]][i].getTo() == now)
+            if (g[father[now]][i].get_to() == now)
                 way.push_back(&g[father[now]][i]);
         now = father[now];
     }
-
-    /*Clear_Display();
-    write(50, 50, Timer_Destroy(t)); 
-    wait(5000);*/
 
     for (int i = way.size() - 1; i >= 0; i--) {
 
@@ -188,9 +184,9 @@ int diist(int from, int toto) {
         int v = q.front();
         q.pop();
         for (int i = 0; i < g[v].size(); ++i) {
-            if (dist[g[v][i].getTo()] > dist[v] + 1) {
-                dist[g[v][i].getTo()] = dist[v] + 1;
-                q.push(g[v][i].getTo());
+            if (dist[g[v][i].get_to()] > dist[v] + 1 && g[v][i].get_active()) {
+                dist[g[v][i].get_to()] = dist[v] + 1;
+                q.push(g[v][i].get_to());
             }
         }
     }
@@ -2161,7 +2157,7 @@ void dfs(int v) {
     write(80, 80, used[v]);
     wait(100);
     for (int i = 0; i < g[v].size(); i++) {
-        int to = g[v][i].getTo();
+        int to = g[v][i].get_to();
         if (used[to] == 0) {
             dfs(to);
         }
@@ -2195,19 +2191,18 @@ void builddfs() {
     long double: 
 */
 
-
-
 int EV3_main()
 {
     Clear_Display();
-    CreateThread(control, 0);
-    CreateThread(okonchanie, 0);
+    CreateThread(control, NULL);
+    CreateThread(okonchanie, NULL);
+    Edge e = Edge(1, NULL);
 
-    write(10, 10, sizeof(Edge));
-
-    write(30, 30, sizeof(int));
-    write(50, 50, sizeof(void (*)()));
-
+    write(10, 10, e.get_to());
+    write(30, 30, e.get_active());
+    write(50, 50, e.get_index());
+    write(70, 70, e.get_time());
+    wait(5000);
     return 0;
 
     s3();

@@ -20,10 +20,10 @@ using namespace std;
 */
 
 struct Speed {
-    int max_sp;
-    int min_sp;
     double p;
     double d;
+    int max_sp;
+    int min_sp;
     int normal_enc;
     int up_enc;
     int down_enc;

@@ -32,13 +32,53 @@ using namespace ev3_c_api;
     \endcode
 */
 class Edge {
-    int to;       ///< Номер вершины, куда ведет ребро
-
     void (*def)(); ///< Указатель на функцию проезда по ребру
+
+    short to;       ///< Номер вершины, куда ведет ребро
+
+    char time;
+    
+    unsigned char index;
+
 public:
     static vector<vector<Edge> > g; ///< Вектор для деикстры
+    static int convert_ms;
 
     Edge() {} ///< Конструктор без параметров (не используй)
+
+    void set_to(short _to) { to = _to; }
+    short get_to() { return to; }
+
+    
+    void set_time(short _time) {
+        time = abs(_time);
+        if (_time > 126 * convert_ms)
+            _time = 126 * convert_ms;
+
+        _time = _time / convert_ms;
+
+        if (time > 0) time = char(_time);
+        else time == char(-_time);
+    }
+
+    short get_time() {
+        if (time > 0) 
+            return short(convert_ms) * time;
+        else 
+            return 32767;
+    }
+
+    void set_active(bool _active) {
+        if (_active)
+            time = abs(time);
+        else
+            time = -abs(time);
+    }
+
+    bool get_active() { return time > 0; }
+
+    void set_index(short _index) { index = char(_index); }
+    short get_index() { return (short)index; }
 
     /*!
     \param _to Номер вершины, куда ведет ребро
@@ -49,7 +89,13 @@ public:
         делая длинну очень большой, позволяет, также разблокировать ребра обратно (по умолчанию 0)
     \return Возвращает ребро
     */
-    Edge(int _to, void (*const _def)(), double _time = 1.0, bool _active = true, int _index = 0) : to(_to),def(_def) {}
+    Edge(short _to, void (*const _def)(), int _time = 1000, bool _active = true, short _index = 0) {
+        to = _to;
+        def = _def;
+        set_time(_time);
+        set_active(_active);
+        set_index(_index);
+    }
 
     /*!
     \brief Запускает функцию проезда по ребру с перезаписью времени ребра
@@ -64,24 +110,24 @@ public:
     */
     void operator()(bool reWriteTime = true) {
         if (reWriteTime) {
+            T_TimerId t = Timer_Start();
             def();
+            set_time(Timer_Destroy(t));
         } else def();
     }
 
-    int getTo() { return (int)to; }          ///< \brief Возвращет то, куда ведет ребро
 
     /*!
     \brief Возвращает время ребра (если ребро неактивно, то возвращает 100000000.0)
     */
-    double getTime() { return 1.0; }
 
-    /*double getIndex() { return index; } ///< \brief Возвращает индекс ребра
+    double getIndex() { return index; } ///< \brief Возвращает индекс ребра
 
-    void open() { active = true; }      ///< \brief Делает ребро активным
+    void open() { set_active(true); }      ///< \brief Делает ребро активным
 
-    void close() { active = false; }    ///< \brief Делает ребро неактивным*/
+    void close() { set_active(false); }    ///< \brief Делает ребро неактивным
 
-    /*static void close(int index) {
+    static void close(int index) {
         for (int i = 0; i < g.size(); ++i)
             for (int j = 0; j < g[i].size(); ++i) {
                 if (g[i][j].index == index)
@@ -95,7 +141,7 @@ public:
                 if (g[i][j].index == index)
                     g[i][j].open();
             }
-    }*/
+    }
 };
 ///@}
 
