@@ -163,15 +163,15 @@ void moveA(int sp, int dist) {
     \todo воплотить ее (полсе вторника)
 */
 void moveBC(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = true) {
-    int home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
-                GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
+    int home = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
+                GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2);
 
     Speed_compiled compiled = Speed_compiled(p, abs(dist), uping, downing);
 
     int encoders = 0;
-    while (encoders < abs(dist)) {
-        encoders = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
-                        GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home);
+    while (abs(encoders) < abs(dist)) {
+        encoders = abs(abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
+                        GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2) - home);
 
         int nowSpeed = compiled(encoders);
         if (dist > 0) {

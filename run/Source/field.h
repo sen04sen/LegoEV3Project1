@@ -65,9 +65,7 @@ struct DoubleMarker {
     \todo Документация в разработке
 */
 struct Field {
-    DoubleMarker house1;       ///< Двойной маркер у 1 дома
-    DoubleMarker house2;       ///< Двойной маркер у 2 дома
-    DoubleMarker house3;       ///< Двойной маркер у 3 дома
+    DoubleMarker house[4];       ///< Двойной маркер у 1 дома
 
     vector<Color> hom1;
     vector<Color> hom2;
@@ -168,7 +166,7 @@ struct Field {
     }
 
     Field(Mode newMode) : mode(newMode) {
-        house1 = house2 = house3 = DoubleMarker(NOREAD, NOREAD);
+        house[1] = house[2] = house[3] = DoubleMarker(NOREAD, NOREAD);
         cnt1 = cnt2 = cnt3 = cntutils = 0;
 
         yellowA1 = yellowA2 = yellowA3 = yellowA4 = NOREAD;

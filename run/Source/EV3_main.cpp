@@ -195,9 +195,9 @@ int diist(int from, int toto) {
 
 
 Field field = StandartInit();
-DoubleMarker& d1 = field.house1;
-DoubleMarker& d2 = field.house2;
-DoubleMarker& d3 = field.house3;
+DoubleMarker& d1 = field.house[1];
+DoubleMarker& d2 = field.house[2];
+DoubleMarker& d3 = field.house[3];
 bool p1 = 0, p2 = 0, p3 = 0;
 double st;
 int gdeb = 3;
@@ -351,9 +351,9 @@ bool is_end(Field &f) {
         bool m1 = 0, m2 = 0;
         bool bad = 0;
         for (int i = 0; i < 4; i++) {
-            if (f.hom1[i] == f.house1.left)
+            if (f.hom1[i] == f.house[1].left)
                 m1 = 1;
-            if (f.hom1[i] == f.house1.right)
+            if (f.hom1[i] == f.house[1].right)
                 m2 = 1;
             if (f.hom1[i] != f.B) {
                 bad = 1;
@@ -365,9 +365,9 @@ bool is_end(Field &f) {
         m1 = 0, m2 = 0;
         bad = 0;
         for (int i = 0; i < 4; i++) {
-            if (f.hom2[i] == f.house2.left)
+            if (f.hom2[i] == f.house[2].left)
                 m1 = 1;
-            if (f.hom2[i] == f.house2.right)
+            if (f.hom2[i] == f.house[2].right)
                 m2 = 1;
             if (f.hom2[i] != f.B) {
                 bad = 1;
@@ -379,9 +379,9 @@ bool is_end(Field &f) {
         m1 = 0, m2 = 0;
         bad = 0;
         for (int i = 0; i < 4; i++) {
-            if (f.hom3[i] == f.house3.left)
+            if (f.hom3[i] == f.house[3].left)
                 m1 = 1;
-            if (f.hom3[i] == f.house3.right)
+            if (f.hom3[i] == f.house[3].right)
                 m2 = 1;
             if (f.hom3[i] != f.B) {
                 bad = 1;
@@ -1024,7 +1024,7 @@ void f12() {
 }
 
 void f13() {
-    line(speed, grad[18] - dws - 15, 0);
+    line(speed, grad[18] - dws - 30, 0);
 }
 
 void f14() {
@@ -1048,11 +1048,11 @@ void f18() {
 }
 
 void f19() {
-    f.house1 = gtf();
+    f.house[1] = gtf();
 }
 
 void f20() {
-    moveBC(speed, -360);
+    moveBC(speed, -380);
 }
 
 void f21() {
@@ -1217,7 +1217,7 @@ void f50() {
     stopBC();
     turn(speed, 70, -2);
     moveBC(speed, 90);
-    turn(speed, 70, 0);
+    turn(speed, 50, 0);
     line(speed, 90, 3);
 }
 
@@ -1226,7 +1226,7 @@ void f51() {
     stopBC();
     turn(speed, 70, -2);
     moveBC(speed, 90);
-    turn(speed, 70, 0);
+    turn(speed, 50, 0);
     line(speed, 90, 3);
 }
 
@@ -1354,17 +1354,12 @@ void f67g() {
 
 
 void f68() {
-    f.house2 = gtf();
+    f.house[2] = gtf();
 }
 
 void f69() {
     moveBC(speed, -40);
     turn(speed, d90, -1);
-    wait(5000);
-    ColorRGB x = getRGB(4);
-    if (x.r + x.g + x.b > 10) {
-        f.B = BLUE;
-    }
     moveB(speed, w90, 1);
     moveBC(speed, -30);
     goBC(speed);
@@ -1384,13 +1379,13 @@ void f72() {
     line(speed, 430, 0);
 }
 
-void f72a() {
+void f72a() {   
     line(speed, grad[10] - 2 * dws, 0);
 }
 
 
 void f73() {
-    moveBC(speed, 450, 0);
+    moveBC(speed, 420, 0);
     while (s2() > black);
 }
 
@@ -1451,11 +1446,11 @@ void f87() {
 }
 
 void f88() {
-    f.house3 = gtf();
+    f.house[3] = gtf();
 }
 
 void f89() {
-    moveBC(speed, -360);
+    moveBC(speed, -380);
 }
 
 void f90() {
@@ -1489,8 +1484,6 @@ void f95() {
     line(ONE, 460, 5);
     goBC(speed);
     while (s2() > black);
-    stopBC();
-    wait(5001);
 }
 
 void f96() {
@@ -1529,7 +1522,7 @@ void bb() {
 
 void f99() {
     moveD(speedD, before_take_cubes);
-    moveBC(speed, -400, 0);
+    moveBC(speed, -400);
     moveD(speedD, after_take_cubes);
 }
 
@@ -1551,22 +1544,22 @@ void f102() {
 
 void f103() {
     line(speed, grad[6] - dws, 0);
-    moveBC(speed, 50, 0);
+    moveBC(speed, 50);
 }
 
 void f104() {
     line(speed, grad[6] - dtw, 0);
-    moveBC(speed, 50, 0);
+    moveBC(speed, 50);
 }
 
 void f103a() {
     line(speed, grad[5] - dws, 0);
-    moveBC(speed, 50, 0);
+    moveBC(speed, 50);
 }
 
 void f104a() {
     line(speed, grad[5] - dtw, 0);
-    moveBC(speed, 50, 0);
+    moveBC(speed, 50);
 }
 
 void f103b() {
@@ -1640,13 +1633,13 @@ void f111() {
 
 void f112() {
     moveD(speedD, before_take_cubes);
-    moveBC(speed, -250);
+    moveBC(speed, -170);
     //moveBC(MIN, -100);
     moveD(speedD, after_take_cubes);
 }
 
 void f113() {
-    moveBC(speed, 250);
+    moveBC(speed, 170);
 }
 
 void f114() {
@@ -1710,7 +1703,8 @@ void f126() {
 }
 
 void f127() {
-    line(speed, 50, 3);
+    moveBC(speed, -60);
+    line(speed, 80, 3);
 }
 
 void f128() {
@@ -1724,23 +1718,64 @@ void f129() {
 
 
 void unload_loops0() {
-
+    turn(speed, 60, -2);
+    moveBC(speed, 15);
+    how_a = give2loops;
+    wait(1000);
+    moveBC(speed, -90);
+    how_a = after_take_green_loops;
+    wait(1000);
+    moveBC(speed, 70);
+    turn(speed, d180 - 60, 3);
+    wait(1000);
 }
 
 void unload_loops1() {
-
+    turn(speed, 60, -1);
+    moveBC(speed, 15);
+    how_a = give2loops + 100;
+    wait(1000);
+    moveBC(speed, -60);
+    how_a = after_take_green_loops;
+    wait(1000);
+    moveBC(speed, 50);
+    turn(speed, d180 - 60, 0);
+    wait(1000);
 }
 
 void unload_loops2() {
-
+    turn(speed, 60, -2);
+    moveBC(speed, 15);
+    how_a = give2loops;
+    wait(1000);
+    moveBC(speed, -60);
+    how_a = after_take_blue_loops;
+    wait(1000);
+    turn(speed, 120, -1);
+    moveBC(speed, 60);
+    how_a = give2loops;
+    wait(1000);
+    moveBC(speed, -60);
+    how_a = after_take_green_loops;
+    turn(speed, d180 - 60, 0);
+    wait(1000);
 }
 
 void unload_cubes0() {
-
+    moveD(speedD, before_take_cubes);
+    moveBC(speed, -120);
+    moveBC(speed, 60);
+    moveD(speedD, after_take_cubes);
+    line(speed, 60, 0);
 }
 
 void unload_cubes1() {
-
+    moveD(speedD, before_take_cubes);
+    moveBC(speed, -180);
+    moveBC(speed, 60, 0);
+    line(speed, 110, 0);
+    stopBC();
+    moveD(speedD, after_take_cubes);
 }
 
 void hcb() {
@@ -2217,12 +2252,55 @@ void builddfs() {
     long double: 
 */
 
+/*Color inmove() {
+    int home = (GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
+
+    int left_BLUE = 0;
+    int left_YELLOW = 0;
+    int left_GREEN = 0;
+    int left_NONE = 0;
+
+    int encoders = 0;
+    while (encoders < w90) {
+        encoders = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - home);
+
+        if (300 < encoders && encoders < w90) {
+            Color now = read_marker();
+            if (now == BLUE) left_BLUE++;
+            if (now == YELLOW) left_YELLOW++;
+            if (now == GREEN) left_GREEN++;
+            else left_NONE++;
+        }
+        SpeedMotor(E_Port_B, -20);
+    }
+
+    stopBC();
+
+    Color ans;
+
+    left_NONE /= 10;
+    int left_max = max(left_BLUE, max(left_YELLOW, max(left_GREEN, left_NONE)));
+    if (left_max == left_BLUE)
+        ans = BLUE;
+    else if (left_max == left_YELLOW)
+        ans = YELLOW;
+    else if (left_max == left_GREEN)
+        ans = GREEN;
+    else ans = NONE;
+    return ans;
+}*/
+
 int EV3_main()
 {
+
+    int npos;
+
     Clear_Display();
     CreateThread(control, 0);
     CreateThread(okonchanie, 0);
 
+    ResetMotor(E_Port_B);
+    ResetMotor(E_Port_C);
     s3();
     s2();
     gclr(4);
@@ -2235,80 +2313,149 @@ int EV3_main()
     goD(0);
     how_a = after_take_green_loops;
 
-
-    Edge::close(2);
-    Edge::close(3);
-    Edge::close(4);
-    Edge::close(5);
-    Edge::close_point(341);
-
-    
-
-    go(0, 7, 235);
-    go(0, 235, 206);
-    
-    
-    
-    go(0, 206, 238);
-    go(0, 238, 260);
-
-    stopBC();
-    wait(100000);
-    Clear_Display();
-    return 0;
-    go(speed, 345, 109);
-    go(speed, 109, 338);
-    write(90, 90, maxim);
-    wait(6000);
-    return 0;
-
-    /*f.B = YELLOW;
     go(speed, 7, 336);
-    go(speed, 336, 136);
-    ColorRGB x = getRGB(4);
-    if (x.r + x.b + x.g > 10)
-        f.B = GREEN;
-    go(speed, 136, 341);
+    go(speed, 336, 338);
+    go(speed, 338, 340);
+    go(speed, 340, 341);
     go(speed, 341, 345);
+    npos = 345;
     stopBC();
-    go(speed, 345, 67);
-    go(speed, 67, 206);
-    turn(speed, d180, 0);
-    moveBC(speed, -150);q
-    moveD(speedD, before_take_cubes);
-    Clear_Display();
-    write(80, 1, f.B);
-    wait(5000);*/
+
     f.B = YELLOW;
-    f.house1.left = NONE;
-    f.house1.right = YELLOW;
-    f.house2.left = GREEN;
-    f.house2.right = GREEN;
-    f.house3.left = BLUE;
-    f.house3.right = YELLOW;
-    f.robot.now_position = 345;
-    f.cnt1 = f.cnt2 = f.cnt3 = f.cntutils = f.robot.how_front = f.robot.how_back = 0;
-    f.yellowA1 = f.yellowA2 = f.yellowA3 = f.yellowA4 = YELLOW;
-    f.greenA1 = f.greenA2 = f.greenA3 = f.greenA4 = GREEN;
-    f.blueA1 = f.blueA2 = f.blueA3 = f.blueA4 = BLUE;
-    f.yellowB1 = f.yellowB2 = f.yellowB3 = f.yellowB4 = YELLOW;
-    f.greenB1 = f.greenB2 = f.greenB3 = f.greenB4 = NONE;
-    f.blueB1 = f.blueB2 = f.blueB3 = f.blueB4 = NONE;
-    if (f.B == YELLOW)
-        f.yellowB1 = f.yellowB2 = f.yellowB3 = f.yellowB4 = YELLOW;
-    if (f.B == BLUE)
-        f.blueB1 = f.blueB2 = f.blueB3 = f.blueB4 = BLUE;
-    if (f.B == GREEN)
-        f.greenB1 = f.greenB2 = f.greenB3 = f.greenB4 = GREEN;
-    return 0;
-    //vivod_h();
-    goD(-speedD);
-    wait(500);
-    goD(0);
-    goA(-50);
-    wait(600);
-    stopA();
-    moveA(speedA, after_take_green_loops);
-    wait(20000);
+
+    int fhome = 0;
+
+    int cntyellow = 0;
+    for (int i = 1; i < 4; i++) {
+        if (f.house[i].left == 4)
+            cntyellow++;
+        if (f.house[i].right == 4)
+            cntyellow++;
+    }
+
+    for (int i = 1; i < 4; i++) {
+        if (f.house[i].left == 4) {
+            if (f.house[i].right == 0) {
+                if (cntyellow == 2)
+                    continue;
+                fhome = i;
+                break;
+            }
+            fhome = i;
+            break;
+        }
+    }
+    bool ok = 0;
+    int topos;
+    if (fhome == 1)
+        topos = 370;
+    else if (fhome == 2)
+        topos = 360;
+    else
+        topos = 365;
+    int cntfr = 4;
+    int cntbck = 0;
+    Color front = YELLOW;
+    Color back = GREEN;
+    Color first = GREEN;
+    if (f.house[fhome].left == 2 || f.house[fhome].right == 2) {
+        go(speed, npos, 347);
+        npos = 347;
+        cntbck = 4;
+        back = BLUE;
+        first = BLUE;
+    }
+    else if (f.house[fhome].left == 2 || f.house[fhome].right == 2) {
+        go(speed, npos, 343);
+        npos = 343;
+        cntbck = 4;
+    }
+    else {
+        go(speed, npos, 343);
+        npos = 343;
+        cntbck = 4;
+        go(speed, npos, topos + 1);
+        npos = topos + 1;
+        ok = 1;
+        cntfr = 0;
+    }
+    if (!ok) {
+        go(speed, npos, topos);
+        npos = topos;
+        go(speed, npos, topos + 2);
+        cntfr -= 2;
+        cntbck -= 2;
+    }
+    for (int i = 1; i < 4; i++) {
+        if (i == fhome)
+            continue;
+        if (cntfr > 0) {
+            if (f.house[i].left == front || f.house[i].right == front) {
+                cntfr -= 2;
+                if (i == 1) {
+                    topos = 370;
+                }
+                else if (i == 2) {
+                    topos = 360;
+                }
+                else {
+                    topos = 365;
+                }
+                go(speed, npos, topos);
+                npos = topos;
+            }
+        }
+        if (cntbck > 0) {
+            if (f.house[i].left == back || f.house[i].right == back) {
+                int lst = cntbck;
+                cntbck -= 2;
+                if (i == 1) {
+                    topos = 370;
+                }
+                else if (i == 2) {
+                    topos = 360;
+                }
+                else {
+                    topos = 365;
+                }
+                if (f.house[i].left == back && f.house[i].right == back)
+                    cntbck -= 2;
+                if (cntbck == 2) {
+                    go(speed, npos, topos + 2);
+                    npos = topos + 2;
+                }
+                else if (lst - cntbck == 2) {
+                    go(speed, npos, topos + 3);
+                    npos = topos + 3;
+                }
+                else {
+                    go(speed, npos, topos + 4);
+                    npos = topos + 4;
+                }
+            }
+        }
+    }
+    if (cntfr > 0) {
+        go(speed, npos, 375);
+        npos = 375;
+    }
+    if (cntbck > 0) {
+        go(speed, npos, 377);
+        npos = 377;
+    }
+    go(speed, npos, 67);
+    if (first == GREEN) {
+        go(speed, 67, 347);
+        npos = 347;
+        back = GREEN;
+    }
+    else {
+        go(speed, 67, 343);
+        npos = 343;
+        back = BLUE;
+    }
+    cntfr = 4;
+    cntbck = 4;
+    wait(30000);
     return 0;
 }

@@ -51,7 +51,7 @@ void line(Speed p, int dist, int type, bool uping = true, bool downing = true, d
         int encoders = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                         GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home;
 
-        if (encoders > (double) dist * 0.8) {
+        if (encoders > (double) dist * 0.6) {
             if (type == 0 || type == 6 || type == 8 || type == 10) {
                 if (encoders >= dist) stop = 1;
             } else {
