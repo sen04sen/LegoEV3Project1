@@ -1,4 +1,4 @@
-// docs https://sen04sen.github.io/LegoEV3Project1/html/index.html
+﻿// docs https://sen04sen.github.io/LegoEV3Project1/html/index.html
 
 //#define abs(x) ((x > 0) ? x : -x)
 
@@ -8,7 +8,8 @@
 #include <stdlib.h>
 //#include <sstream>
 #include <sstream>
-#include <set>
+//#include <set>
+#include<queue>
 #include <map>
 
 #include <EV3_Motor.h>
@@ -36,38 +37,7 @@ using namespace std;
 #define pb push_back
 
 int maxim = 0;
-
-int used[maxv];
-
-int clrclr = 1;
-
-void dfs(int v) {
-    used[v] = clrclr;
-    for (int i = 0; i < g[v].size(); i++) {
-        int to = g[v][i].getTo();
-        if (used[to] == 0) {
-            dfs(to);
-        }
-    }
-}
-
-void builddfs() {
-    for (int i = 0; i < maxv; i++)
-        used[i] = 0;
-    dfs(0);
-    write(1, 1, "start");
-    wait(3000);
-    Clear_Display();
-    for (int i = 0; i < 391; i++) {
-        if (used[i] != clrclr) {
-            write(1, 1, i);
-            wait(3000);
-        }
-    }
-    write(1, 1, "end");
-    wait(10000);
-}
-
+/*
 int go(int sp, int from, int toto) {
     pair<pair<double, int>, Edge> msgo[maxv];
     for (int i = 0; i < maxv; i++) {
@@ -119,8 +89,52 @@ int go(int sp, int from, int toto) {
     }
     return way.size();
 }
+*/
+int go(int sp, int from, int toto) {
+    vector<int> father(maxv, -1);
+    father[from] = 0;
+    queue<int> q;
+    q.push(from);
+    while (!q.empty() && father[toto] == -1) {
+        int v = q.front();
+        q.pop();
+        for (int i = 0; i < g[v].size(); ++i) {
+            if (father[g[v][i].getTo()] == -1) {
+                father[g[v][i].getTo()] = v;
+                q.push(g[v][i].getTo());
+            }
+        }
+    }
+    if (father[toto] == -1) {
+        Clear_Display();
+        write(50, 50, "NO WAY");
+        wait(5000);
+        throw Exception("NO WAY");
+    }
+    vector<Edge*> way;
+    int now = toto;
+    while (now != from) {
+        for (int i = 0; i < g[father[now]].size(); ++i)
+            if (g[father[now]][i].getTo() == now)
+                way.push_back(&g[father[now]][i]);
+        now = father[now];
+    }
 
-int diist(int from, int toto) {
+    /*Clear_Display();
+    write(50, 50, Timer_Destroy(t)); 
+    wait(5000);*/
+
+    for (int i = way.size() - 1; i >= 0; i--) {
+
+        (*way[i])(0);
+        stopBC();
+        Clear_Display();
+        write(100, 100, way[i]->getTo());
+        wait(5000);
+    }
+    return way.size();
+}
+/*int diist(int from, int toto) {
     pair<pair<double, int>, Edge> msgo[maxv];
     for (int i = 0; i < maxv; i++) {
         msgo[i].first.first = (double)1000000000;
@@ -159,7 +173,7 @@ int diist(int from, int toto) {
         nv = msgo[nv].first.second;
     }
     return way.size();
-}
+}*/
 
 Field field = StandartInit();
 DoubleMarker& d1 = field.house1;
@@ -363,7 +377,7 @@ bool is_end(Field &f) {
 }
 
 int uyuyuy = 0;
-
+/*
 void perebor(Field &f, int ndist, vector<int> nway) {
     write(10, 10, uyuyuy);
     uyuyuy++;
@@ -895,6 +909,7 @@ void perebor(Field &f, int ndist, vector<int> nway) {
         }
     }
 }
+*/
 
 void f1d() {
     moveBC(speed, dws, 1);
@@ -2044,71 +2059,10 @@ int EV3_main()
     gclr(4);
     buildDegreesConstants();
     buildg();
-    g.resize(g.size());
-    for (int i = 0; i < g.size(); ++i) g[i].resize(g[i].size());
 
-    builddfs();
-    return 0;
-
-    write(10, 10, 99);
-    wait(3000);
-    try { 
-        go(speed, 345, 338);
-        //go(speed, 345, 109);
-        //go(speed, 109, 338);
-        write(80, 80, 9);
-        wait(5000);
-    }
-    catch (...) {
-        write(80, 80, 3);
-        wait(5000);
-    }
+    go(speed, 7, 338);
+    go(speed, 338, 340);
+    
     wait(10000);
-    return 0;
-    go(speed, 345, 109);
-    go(speed, 109, 338);
-    write(90, 90, maxim);
-    wait(6000);
-    return 0;
-    Field f = StandartInit();
-    f.B = YELLOW;
-    f.house1.left = NONE;
-    f.house1.right = YELLOW;
-    f.house2.left = GREEN;
-    f.house2.right = GREEN;
-    f.house3.left = BLUE;
-    f.house3.right = YELLOW;
-    f.robot.now_position = 345;
-    f.cnt1 = f.cnt2 = f.cnt3 = f.cntutils = f.robot.how_front = f.robot.how_back = 0;
-    f.yellowA1 = f.yellowA2 = f.yellowA3 = f.yellowA4 = YELLOW;
-    f.greenA1 = f.greenA2 = f.greenA3 = f.greenA4 = GREEN;
-    f.blueA1 = f.blueA2 = f.blueA3 = f.blueA4 = BLUE;
-    f.yellowB1 = f.yellowB2 = f.yellowB3 = f.yellowB4 = YELLOW;
-    f.greenB1 = f.greenB2 = f.greenB3 = f.greenB4 = NONE;
-    f.blueB1 = f.blueB2 = f.blueB3 = f.blueB4 = NONE;
-    buildplaces();
-    vector<int> watafak;
-    try {
-        perebor(f, 0, watafak);
-    }
-    catch (...) {
-        write(70, 70, 35);
-    }
-    write(50, 10, "end");
-    wait(5000);
-    for (int i = 0; i < min_way.size(); i++) {
-        write(1, 1, min_way[i]);
-        wait(3000);
-    }
-    return 0;
-    //vivod_h();
-    goD(-speedD);
-    wait(500);
-    goD(0);
-    goA(-50);
-    wait(600);
-    stopA();
-    moveA(speedA, after_take_green_loops);
-    wait(20000);
     return 0;
 }
