@@ -126,8 +126,8 @@ int go(int sp, int from, int toto) {
         (*way[i])(0);
         stopBC();
         Clear_Display();
-        write(100, 100, way[i]->getTo());
-        wait(5000);
+        //write(100, 100, way[i]->getTo());
+        //wait(5000);
     }
     return way.size();
 }
@@ -2200,7 +2200,7 @@ void builddfs() {
 int EV3_main()
 {
     Clear_Display();
-    CreateThread(control, 0);
+    //CreateThread(control, 0);
     CreateThread(okonchanie, 0);
     s3();
     s2();
