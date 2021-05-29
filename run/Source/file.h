@@ -7,10 +7,6 @@
 #ifndef file_H
 #define file_H
 
-#include <string>
-
-#include "EV3_File.h"
-
 #include "utils.h"
 
 using namespace ev3_c_api;
@@ -49,13 +45,15 @@ public:
         return ans;
     }
 
-    void write(string text) {
+    void print(string text) {
+        text += '\n';
+        write(10, 10, getTime());
         if (time) WriteFileString(headler, &((getTime() + "  " + text)[0]));
         else WriteFileString(headler, &((text)[0]));
     }
 
     ~File() {
-        write(getTime() + str("    FILE CLOSED"));
+        print(getTime() + str("    FILE CLOSED"));
         CloseFile(headler);
     }
 

@@ -70,7 +70,7 @@ void* okonchanie(void *_) {
     while (!isBrickButtonPressed(E_BTN_ESC));
     StopMotorAll();
     wait(300);
-    throw Exception("exit");
+    exit(0);
 }
 
 

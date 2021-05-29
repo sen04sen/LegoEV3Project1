@@ -6,23 +6,6 @@
 #ifndef line_h
 #define line_h
 
-#include <iostream>
-#include <math.h>
-#include <vector>
-#include <string>
-#include <sstream>
-#include <set>
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "EV3_Motor.h"
-#include "EV3_LCDDisplay.h"
-#include "EV3_Sensor_Color.h"
-#include "EV3_Sensor_UART.h"
-#include "EV3_Thread.h"
-#include "EV3_Timer.h"
-#include "EV3_BrickUI.h"
-
 #include "speed.h"
 #include "constants.h"
 #include "utils.h"
@@ -123,8 +106,8 @@ void line(Speed p, int dist, int type, bool uping = true, bool downing = true, i
         double kP = p.p * ((double) nowSpeed / (double) p.max_sp);
         double kD = p.d * ((double) nowSpeed / (double) p.max_sp);
 
-        SpeedMotor(E_Port_B, max(-100, int(-1 * (nowSpeed - error * kP - (error - errors[count % lineArrayLen]) * kD))));
-        SpeedMotor(E_Port_C, min(100, int(nowSpeed + error * kP + (error - errors[count % lineArrayLen]) * kD)));
+        SpeedMotor(E_Port_B, max((short)-100, short(-1 * (nowSpeed - error * kP - (error - errors[count % lineArrayLen]) * kD))));
+        SpeedMotor(E_Port_C, min((short)100, short(nowSpeed + error * kP + (error - errors[count % lineArrayLen]) * kD)));
 
         errors[count % lineArrayLen] = error; // для d составляющей
     }

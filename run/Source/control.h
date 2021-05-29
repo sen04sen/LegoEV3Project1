@@ -1,8 +1,6 @@
 #ifndef control_h
 #define control_h
 
-#include "EV3_Motor.h"
-
 #include "motors.h"
 
 volatile int how_a = 100;

@@ -13,10 +13,10 @@
 
 
 const int cntplaces = 36;
-const int maxv = 500;
+const int maxv = 400;
 const int ce = 21 * 2;
 const int ver = 22;
-const int black = 14;
+const int black = 18;
 const int bluck = 30;
 const int bley = 40;
 const double Pr = 0.3;
@@ -57,7 +57,7 @@ double xren_loops = 490;
 ///@{
 const int lineArrayLen = 20;                            ///< Длинна массива задержек для линии
 const int standart_line_preview_looking = 50;           ///< За это расстояние до конца линии робот начинает чекать датчиком конец
-const int deltaSensors = 10;                             ///< Разность показаний датчиков
+const int deltaSensors = -4;                             ///< Разность показаний датчиков
 Speed DOP1 = Speed(80, 20, 0.35, 0.7, 100, 300, 300, 100);   ///< Для двух
 Speed ONE1 = Speed(80, 20, 0.45, 1, 100, 300, 300, 100);     ///< Для одного
 Speed MIN = Speed(20, 20, 0.35, 0.1, 0, 0, 0, 0);
@@ -84,8 +84,8 @@ void buildDegreesConstants() {                          /// Заполнение
     grad.pb(470);
     grad.pb(820);
     grad.pb(760);
-    grad.pb(580);
-    grad.pb(580);
+    grad.pb(590);
+    grad.pb(590);
     grad.pb(270);
     grad.pb(220);
     grad.pb(980);

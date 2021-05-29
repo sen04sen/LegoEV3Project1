@@ -8,9 +8,7 @@
 #include <stdlib.h>
 //#include <sstream>
 #include <sstream>
-//#include <set>
-#include<queue>
-#include <map>
+#include <queue>
 
 #include <EV3_Motor.h>
 #include "EV3_LCDDisplay.h"
@@ -19,6 +17,8 @@
 #include "EV3_Thread.h"
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
+
+#define int short
 
 #include "utils.h"
 #include "motors.h"
@@ -30,16 +30,17 @@
 #include "field.h"
 #include "control.h"
 
-
 using namespace ev3_c_api;
 using namespace std;
 
 #define pb push_back
 
 int maxim = 0;
-/*
-int go(int sp, int from, int toto) {
-    pair<pair<double, int>, Edge> msgo[maxv];
+
+Field f = StandartInit();
+
+/*int goDEIC(int sp, int from, int toto) {
+    static pair<pair<double, int>, Edge> msgo[maxv];
     for (int i = 0; i < maxv; i++) {
         msgo[i].first.first = (double)1000000000;
         msgo[i].first.second = -1;
@@ -75,8 +76,6 @@ int go(int sp, int from, int toto) {
         if (end)
             break;
     }
-    write(100, 100, 4);
-    wait(4010);
     vector<pair<Edge, int> > way;
     int nv = toto;
     while (nv != from) {
@@ -88,8 +87,8 @@ int go(int sp, int from, int toto) {
         nw(0);
     }
     return way.size();
-}
-*/
+}*/
+
 int go(int sp, int from, int toto) {
     vector<int> father(maxv, -1);
     father[from] = 0;
@@ -144,11 +143,15 @@ int go(int sp, int from, int toto) {
     set<pair<double, int> > st;
     st.insert(make_pair((double)0, from));
     bool end = 0;
+
     while (!st.empty()) {
         double dd = st.begin()->first;
         int v = st.begin()->second;
         st.erase(st.begin());
+
         for (int i = 0; i < g[v].size(); i++) {
+            //write(50, 50, maxim);
+            //maxim = max(int(st.size() * sizeof(pair<double, int>)), maxim);
             int to = g[v][i].getTo();
             if (dd + g[v][i].getTime() < msgo[to].first.first) {
                 st.erase(make_pair(msgo[to].first.first, to));
@@ -165,15 +168,41 @@ int go(int sp, int from, int toto) {
         if (end)
             break;
     }
-    vector<Edge> way;
+    vector<pair<Edge, int> > way;
     int nv = toto;
+    if (msgo[nv].first.second == -1) {
+        Clear_Display();
+        write(1, 1, "NO WAY!!!");
+        write(1, 40, from);
+        write(40, 40, toto);
+        wait(10000);
+    }
     while (nv != from) {
-        way.pb(msgo[nv].second);
-        nv = msgo[nv].first.second;
+        write(100, 100, 0);
+        way.pb(make_pair(msgo[nv].second, nv));
         nv = msgo[nv].first.second;
     }
     return way.size();
 }*/
+
+int diist(int from, int toto) {
+    vector<int> dist(maxv, maxv);
+    dist[from] = 0;
+    queue<int> q;
+    q.push(from);
+    while (!q.empty() && dist[toto] == maxv) {
+        int v = q.front();
+        q.pop();
+        for (int i = 0; i < g[v].size(); ++i) {
+            if (dist[g[v][i].getTo()] > dist[v] + 1) {
+                dist[g[v][i].getTo()] = dist[v] + 1;
+                q.push(g[v][i].getTo());
+            }
+        }
+    }
+    return dist[toto];
+}
+
 
 Field field = StandartInit();
 DoubleMarker& d1 = field.house1;
@@ -273,11 +302,12 @@ void get_4_blue() {
 
 
 DoubleMarker gtf() {
+    gclr(4);
     moveBC(speed, -40);
     turn(speed, d90, -1);
     DoubleMarker a = read_home();
     stopBC();
-    wait(5010);
+    getRGB(4);
     return(a);
 }
 
@@ -379,13 +409,23 @@ bool is_end(Field &f) {
 int uyuyuy = 0;
 /*
 void perebor(Field &f, int ndist, vector<int> nway) {
-    write(10, 10, uyuyuy);
-    uyuyuy++;
-    wait(300);
+    Clear_Display();
+    write(1, 1, uyuyuy);
+    wait(100);
+    uyuyuy += 1;
     if (ndist > mindist)
         return;
+    Clear_Display();
+    write(1, 40, f.robot.now_position);
+    write(40, 40, f.yellowA1);
+    write(80, 40, f.yellowA3);
+    write(120, 40, f.robot.how_front);
+    wait(1000);
+    Clear_Display();
     nway.pb(f.robot.now_position);
     if (is_end(f)) {
+        write(1, 1, "WTF");
+        wait(1000);
         int dt = diist(f.robot.now_position, vertoplaces[0]);
         if (mindist < dt + ndist) {
             nway.pb(vertoplaces[0]);
@@ -394,12 +434,9 @@ void perebor(Field &f, int ndist, vector<int> nway) {
         }
         return;
     }
-    write(1, 1, 9);
-    wait(3000);
+    write(1, 70, 1);
     if (f.robot.how_front < 4) {
         if (f.yellowA1 == 4) {
-            write(30, 30, vertoplaces[1]);
-            wait(3000);
             int pref = f.robot.now_position;
             if (f.robot.how_front == 2) {
                 f.robot.cfront2 = YELLOW;
@@ -409,13 +446,9 @@ void perebor(Field &f, int ndist, vector<int> nway) {
             }
             f.robot.how_front += 2;
             f.yellowA1 = NONE;
-            write(50, 50, f.robot.now_position);
-            wait(3000);
             int dt = diist(f.robot.now_position, vertoplaces[1]);
-            write(30, 30, 1);
-            wait(3000);
             f.robot.now_position = vertoplaces[1];
-            perebor(f, ndist + dt, nway);
+            perebor(f, ndist + dt, nway);   
             f.robot.how_front -= 2;
             f.yellowA1 = YELLOW;
             f.robot.now_position = pref;
@@ -438,6 +471,7 @@ void perebor(Field &f, int ndist, vector<int> nway) {
             f.robot.now_position = pref;
         }
     }
+    write(1, 70, 2);
     if (f.robot.how_front == 0) {
         if (f.yellowB1 == 4) {
             int pref = f.robot.now_position;
@@ -500,6 +534,7 @@ void perebor(Field &f, int ndist, vector<int> nway) {
             f.robot.now_position = pref;
         }
     }
+    write(1, 70, 3);
     if (f.robot.how_front > 0) {
         if (f.cnt1 < 4) {
             if (f.robot.how_front == 2) {
@@ -667,12 +702,13 @@ void perebor(Field &f, int ndist, vector<int> nway) {
             }
         }
     }
+    write(1, 70, 4);
     if (f.robot.how_back == 0) {
         if (f.blueA1 == 2) {
             int pref = f.robot.now_position;
             f.robot.how_back += 4;
-            f.robot.cfront1 = BLUE;
-            f.robot.cfront2 = BLUE;
+            f.robot.cback1 = BLUE;
+            f.robot.cback2 = BLUE;
             f.blueA1 = NONE;
             int dt = diist(f.robot.now_position, vertoplaces[13]);
             f.robot.now_position = vertoplaces[13];
@@ -695,6 +731,7 @@ void perebor(Field &f, int ndist, vector<int> nway) {
             f.robot.now_position = pref;
         }
     }
+    write(1, 70, 5);
     if (f.robot.how_back > 0){
         if (f.cnt1 < 4) {
             if (f.robot.how_back == 2) {
@@ -862,6 +899,7 @@ void perebor(Field &f, int ndist, vector<int> nway) {
             }
         }
     }
+    write(1, 70, 6);
     if (f.cntutils < 4) {
         if (f.robot.how_front == 2) {
             int pref = f.robot.now_position;
@@ -908,6 +946,7 @@ void perebor(Field &f, int ndist, vector<int> nway) {
             f.robot.now_position = pref;
         }
     }
+    write(1, 70, 7);
 }
 */
 
@@ -1019,7 +1058,7 @@ void f18() {
 }
 
 void f19() {
-    d1 = gtf();
+    f.house1 = gtf();
 }
 
 void f20() {
@@ -1323,16 +1362,16 @@ void f67g() {
 
 
 void f68() {
-    d2 = gtf();
+    f.house2 = gtf();
 }
 
 void f69() {
     moveBC(speed, -40);
     turn(speed, d90, -1);
-    getRGB(4);
-    wait(100);
-    if (getRGB(4).r > 15 || getRGB(4).g > 15) {
-        gdeb = 2;
+    wait(5000);
+    ColorRGB x = getRGB(4);
+    if (x.r + x.g + x.b > 10) {
+        f.B = BLUE;
     }
     moveB(speed, w90, 1);
     moveBC(speed, -30);
@@ -1413,11 +1452,11 @@ void f87() {
 }
 
 void f88() {
-    d3 = gtf();
+    f.house3 = gtf();
 }
 
 void f89() {
-    moveBC(speed, -320);
+    moveBC(speed, -360);
 }
 
 void f90() {
@@ -1518,6 +1557,22 @@ void f103a() {
 
 void f104a() {
     line(speed, grad[5] - dtw, 0);
+}
+
+void f103b() {
+    line(speed, grad[5] - dws, 2);
+}
+
+void f104b() {
+    line(speed, grad[5] - dtw, 2);
+}
+
+void f103c() {
+    line(speed, grad[6] - dws, 3);
+}
+
+void f104c() {
+    line(speed, grad[6] - dtw, 3);
 }
 
 void f105() {
@@ -1962,8 +2017,14 @@ void buildg() {
     add(88, 161, f103);
     add(87, 161, f104);
 
+    add(166, 95, f103c);
+    add(165, 95, f104c);
+
     add(94, 83, f103a);
     add(95, 83, f104a);
+
+    add(76, 89, f103b);
+    add(75, 89, f104b);
 
     add(280, 232, f105);
 
@@ -2045,24 +2106,123 @@ void vivod_h() {
 }
 
 
-const int how = 100000;
+int used[maxv];
+
+int clrclr = 1;
+
+void dfs(int v) {
+    used[v] = clrclr;
+    Clear_Display();
+    write(40, 40, v);
+    write(60, 60, g[v].size());
+    write(80, 80, used[v]);
+    wait(100);
+    for (int i = 0; i < g[v].size(); i++) {
+        int to = g[v][i].getTo();
+        if (used[to] == 0) {
+            dfs(to);
+        }
+    }
+}
+
+void builddfs() {
+    for (int i = 0; i < maxv; i++)
+        used[i] = 0;
+    dfs(1);
+    write(1, 1, "start");
+    wait(3000);
+    Clear_Display();
+    for (int i = 0; i < 391; i++) {
+        write(1, 1, i);
+        write(20, 20, used[i]);
+        wait(1000);
+    }
+    write(1, 1, "end");
+    wait(10000);
+}
+/*
+    bool: 1
+    char: 1
+    short: 2
+    int: 4
+    long: 
+    long long: 
+    float: 
+    double: 
+    long double: 
+*/
+
 
 
 int EV3_main()
 {
     Clear_Display();
+    CreateThread(control, 0);
     CreateThread(okonchanie, 0);
-    //CreateThread(control, 0);
-    
     s3();
     s2();
     gclr(4);
     buildDegreesConstants();
     buildg();
+    buildplaces();
 
-    go(speed, 7, 338);
-    go(speed, 338, 340);
-    
+    /*Clear_Display();
+    write(10, 10, go(0, 345, 338));
     wait(10000);
+    write(40, 40, diist(345, 338));
+    wait(10000);*/
+    go(0, 7, 338);
+    go(0, 338, 345);
+    stopBC();
+
+    Clear_Display();
+    write(50, 50, "end");
+    wait(10000);
+    return 0;
+    go(speed, 345, 109);
+    go(speed, 109, 338);
+    write(90, 90, maxim);
+    wait(6000);
+    return 0;
+    Field f = StandartInit();
+    f.B = YELLOW;
+    f.house1.left = NONE;
+    f.house1.right = YELLOW;
+    f.house2.left = GREEN;
+    f.house2.right = GREEN;
+    f.house3.left = BLUE;
+    f.house3.right = YELLOW;
+    f.robot.now_position = 345;
+    f.cnt1 = f.cnt2 = f.cnt3 = f.cntutils = f.robot.how_front = f.robot.how_back = 0;
+    f.yellowA1 = f.yellowA2 = f.yellowA3 = f.yellowA4 = YELLOW;
+    f.greenA1 = f.greenA2 = f.greenA3 = f.greenA4 = GREEN;
+    f.blueA1 = f.blueA2 = f.blueA3 = f.blueA4 = BLUE;
+    f.yellowB1 = f.yellowB2 = f.yellowB3 = f.yellowB4 = YELLOW;
+    f.greenB1 = f.greenB2 = f.greenB3 = f.greenB4 = NONE;
+    f.blueB1 = f.blueB2 = f.blueB3 = f.blueB4 = NONE;
+    buildplaces();
+    vector<int> watafak;
+    try {
+        perebor(f, 0, watafak);
+    }
+    catch (...) {
+        write(70, 70, 35);
+    }
+    write(50, 10, "end");
+    wait(5000);
+    for (int i = 0; i < min_way.size(); i++) {
+        write(1, 1, min_way[i]);
+        wait(3000);
+    }
+    return 0;
+    //vivod_h();
+    goD(-speedD);
+    wait(500);
+    goD(0);
+    goA(-50);
+    wait(600);
+    stopA();
+    moveA(speedA, after_take_green_loops);
+    wait(20000);
     return 0;
 }

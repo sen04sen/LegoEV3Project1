@@ -24,7 +24,7 @@
     a = GREEN;
     \endcode
 */
-enum Color {
+enum Color  {
     NOREAD = -1,    ///< Не читали, не знаем что там
     NONE = 0,       ///< Там пусто
     YELLOW = 4,     ///< Желтый
@@ -190,7 +190,7 @@ struct Field {
         B = ans;
     }
 
-    int how_1(Color clr) { 
+    int how_1(Color clr) {
         int ans = 0;
         for (int i = 0; i < hom1.size(); ++i) if (hom1[i] = clr) ans++;
         return  ans;
