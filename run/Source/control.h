@@ -3,13 +3,13 @@
 
 #include "motors.h"
 
-volatile int how_a = 100;
+volatile int32_t how_a = 100;
 volatile bool work_a = 1;
 
 void* control(void* _) {
     goA(-100);
     wait(500);
-    int enc = GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
+    int32_t enc = GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium);
     while (abs(GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium) - enc) > 2) wait(100);
     stopA();
     wait(500);
@@ -20,7 +20,7 @@ void* control(void* _) {
         if (GetBrickButtonPressed() == 32) 
             break;
         if (abs(how_a - GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium)) > 2) {
-            int now = 0.3 * (how_a - GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium));
+            int32_t now = 0.3 * (how_a - GetMotor_RotationAngle(E_Port_A, E_MotorType_Medium));
             if (now > 0) {
                 if (now < 10) now = 10;
                 else if (now > 100) now = 100;

@@ -15,6 +15,7 @@
 #include "EV3_Thread.h"
 #include "EV3_Timer.h"
 #include "EV3_BrickUI.h"
+#include "EV3_Sound.h"
 
 #define int short
 
@@ -794,8 +795,8 @@ void perebor(Field &f, int ndist, vector<int> nway) {
         }
     }
     write(1, 70, 7);
-}
-*/
+}*/
+
 
 void f1d() {
     moveBC(speed, dws, 1);
@@ -2140,13 +2141,10 @@ bool is_yellowB() {
 
 int EV3_main()
 {
-    //T_TimerId t = Timer_Start();
-    //clear_docs();
+    T_TimerId t = Timer_Start();
+    clear_docs();
     CreateThread(control, NULL);
-    wait(100000);
-    /*try {
-        return 0;
-        /*
+    try {
         int npos;
 
         Clear_Display();
@@ -2159,7 +2157,6 @@ int EV3_main()
         buildDegreesConstants();
         buildg();
 
-        int npos;
 
         Edge::close(2);
         Edge::close(3);
@@ -2383,7 +2380,7 @@ int EV3_main()
     catch (exception& exc) {
         print("}");
         print(exc.what());
-    }*/
-    //print("time: " + str(Timer_Destroy(t)));
-    //read_docs();
+    }
+    print("time: " + str(Timer_Destroy(t)));
+    read_docs();
 }
