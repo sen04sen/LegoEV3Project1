@@ -2116,14 +2116,16 @@ void vivod_h() {
 
 int EV3_main()
 {
-    T_TimerId t = Timer_Start();
-    try {
-
+    //T_TimerId t = Timer_Start();
+    //clear_docs();
+    CreateThread(control, NULL);
+    wait(100000);
+    /*try {
+        return 0;
+        /*
         int npos;
 
         Clear_Display();
-        CreateThread(control, 0);
-        CreateThread(okonchanie, 0);
 
         ResetMotor(E_Port_B);
         ResetMotor(E_Port_C);
@@ -2293,7 +2295,7 @@ int EV3_main()
     catch (exception& exc) {
         print("STD ERROR");
         print(exc.what());
-    }
-    print("time: " + str(Timer_Destroy(t)));
-    read_docs();
+    }*/
+    //print("time: " + str(Timer_Destroy(t)));
+    //read_docs();
 }
