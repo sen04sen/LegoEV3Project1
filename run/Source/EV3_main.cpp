@@ -1427,16 +1427,12 @@ int EV3_main()
         clear_docs();
         CreateThread(control, NULL);
         CreateThread(okonchanie, NULL);
+        print("1234567890\n123456789012345678901234567890");
         s3();
         s2();
         gclr(4);
         buildDegreesConstants();
         buildg();
-
-        line(Speed(70, 20, 0.4, 4.0, 100, 100, 100, 50), grad[0], 3);
-        stopBC();
-
-        throw Exception("end");
 
         
 

@@ -37,6 +37,7 @@ string str(IT forConvert) {
 /*!
 	\brief Просто класс наших исключений (не пытайся разобраться)
 */
+
 class Exception {
 private:
     string m_error;
@@ -44,9 +45,8 @@ public:
 
     Exception(string error) : m_error(error) {}
 
-    Exception(char *error) : m_error(str(error)) {}
-
-    Exception(int line) : m_error(str(line)) {}
+    template <class T>
+    Exception(T error) : m_error(str(error)) {}
 
     string what() { return str(m_error); }
 };
@@ -90,13 +90,24 @@ short write_docs(short start = 0) {
 template<class IT>
 void print(IT message) {
     string s = str(message);
-    if (s.size() > 30) s.resize(30);
-    docs.push_back(s);
+    string a;
+    short i = 0;
+    while (i < s.size()) {
+        if (s[i] != '\n')
+            a += s[i];
+        else {
+            if (a.size() > 30) a.resize(30);
+            docs.push_back(a);
+        }
+        ++i;
+    }
+    if (a.size() > 0)
+        docs.push_back(a);
     write_docs();
 }
 
 void read_docs() {
-    int now = write_docs();
+    short now = write_docs();
     while (true) {
         if (GetBrickButtonPressed() == 1) now--;
         else if (GetBrickButtonPressed() == 4) now++;
