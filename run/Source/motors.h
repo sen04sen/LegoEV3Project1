@@ -96,6 +96,7 @@ void moveB(Speed p, int32_t dist, bool stop = 1, bool uping = true, bool downing
 
     int32_t st = GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium);
     int32_t encoders = 0;
+    stopBC();
     while (encoders < abs(dist)) {
         encoders = abs(GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium) - st);
         if (dist > 0) SpeedMotor(E_Port_B, -compiled(encoders));
@@ -112,6 +113,7 @@ void moveC(Speed p, int dist, bool stop = 1, bool uping = true, bool downing = t
 
     int32_t st = GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium);
     int32_t encoders = 0;
+    stopBC();
     while (encoders < abs(dist)) {
         encoders = abs(GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) - st);
         if (dist > 0) SpeedMotor(E_Port_C, compiled(encoders));

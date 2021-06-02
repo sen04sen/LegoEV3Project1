@@ -38,7 +38,6 @@ int maxim = 0;
 Field f = StandartInit();
 
 int go(int sp, int from, int toto) {
-    T_TimerId t = Timer_Start();
     vector<int> father(maxv, -1);
     father[from] = 0;
     queue<int> q;
@@ -54,7 +53,7 @@ int go(int sp, int from, int toto) {
         }
     }
     if (father[toto] == -1) {
-        throw Exception("NO WAY (go)");
+        throw Exception("NOWAYgo" + str(from) + " " + str(toto));
     }
     vector<Edge*> way;
     int now = toto;
@@ -67,13 +66,12 @@ int go(int sp, int from, int toto) {
 
     for (int i = way.size() - 1; i >= 0; i--)
         (*way[i])(0);
-    print("go time: " + str(Timer_Destroy(t)));
+    print("go " + str(from) + " " + str(toto));
     return way.size();
 }
 
 
 int diist(int from, int toto) {
-    T_TimerId t = Timer_Start();
     vector<int> dist(maxv, maxv);
     dist[from] = 0;
     queue<int> q;
@@ -89,17 +87,17 @@ int diist(int from, int toto) {
         }
     }
     if (dist[toto] == maxv) {
-        throw Exception("NO WAY (diist)");
+        throw Exception("NOWAYdiist" + str(from) + " " + str(toto));
     }
-    print("diist time: " + str(Timer_Destroy(t)));
+    print("diist " + str(from) + " " + str(toto));
     return dist[toto];
 }
 
 
 Field field = StandartInit();
-DoubleMarker& d1 = field.house[1];
-DoubleMarker& d2 = field.house[2];
-DoubleMarker& d3 = field.house[3];
+DM& d1 = field.house[1];
+DM& d2 = field.house[2];
+DM& d3 = field.house[3];
 bool p1 = 0, p2 = 0, p3 = 0;
 double st;
 int gdeb = 3;
@@ -193,11 +191,12 @@ void get_4_blue() {
 }
 
 
-DoubleMarker gtf() {
+DM gtf(int uy = 0) {
     gclr(4);
-    moveBC(speed, -40);
-    turn(speed, d90, -1);
-    DoubleMarker a = read_home();
+    moveBC(speed, -60);
+    if (uy == 1) turn(speed, d90 + 20, -1);
+    else turn(speed, d90, -1);
+    DM a = read_home();
     stopBC();
     getRGB(4);
     return(a);
@@ -906,7 +905,7 @@ void f18() {
 }
 
 void f19() {
-    f.house[1] = gtf();
+    f.house[1] = gtf(1);
 }
 
 void f20() {
@@ -940,16 +939,19 @@ void f26() {
 void take4green() {
     //moveA(speedA, before_take_green_loops);
     how_a = before_take_green_loops;
-    moveBC(MIN, -50);
-    line(MIN1, 120, 0);
+    moveBC(MIN, -100);
+    wait(5000);
+    line(MIN, 160, 0);
     stopBC();
+    wait(5000);
     //moveA(speedA, after_take_green_loops);
     how_a = after_take_green_loops;
     wait(1000);
+    wait(5000);
 }
 
 void f27() {
-    moveBC(speed, -80);
+    moveBC(speed, -60);
 }
 
 void f28() {
@@ -1013,7 +1015,7 @@ void f42() {
 }
 
 void f43() {
-    t1w(speed, w90, -2);
+    t1w(speed, w90 - 20, -2);
     line(speed, dws - 60, 0);
 }
 
@@ -1072,7 +1074,7 @@ void f53() {
 }
 
 void f50() {
-    line(speed, 300 - dws, 8);
+    line(ONE, 300 - dws, 8);
     stopBC();
     turn(speed, 70, -2);
     moveBC(speed, 90);
@@ -1219,7 +1221,7 @@ void f68() {
 void f69() {
     moveBC(speed, -40);
     turn(speed, d90, -1);
-    moveB(speed, w90, 1);
+    t1w(speed, w90 - 10, -1);
     moveBC(speed, -30);
     goBC(speed);
     while (s3() > black);
@@ -1239,13 +1241,15 @@ void f72() {
 }
 
 void f72a() {   
-    line(speed, grad[10] - 2 * dws, 0);
+    line(speed, grad[10] - 2 * dws - 40, 1);
 }
 
 
 void f73() {
+    turn(speed, 30, -1);
     moveBC(speed, 420, 0);
     while (s2() > black);
+    moveBC(speed, 30, 0);
 }
 
 void f74() {
@@ -1331,7 +1335,7 @@ void f92() {
 
 void f93() {
     moveBC(speed, dsl, 0);
-    line(speed, 100 - dsl, 0);
+    line(speed, 80 - dsl, 0);
 }
 
 void f94() {
@@ -1347,7 +1351,7 @@ void f95() {
 }
 
 void f96() {
-    moveBC(speed, dws);
+    moveBC(speed, dws + 20);
 }
 
 void f97() {
@@ -1362,8 +1366,8 @@ void take4blue1() {
     moveBC(speed, -200);
     //moveA(speedA, before_take_blue_loops);
     how_a = before_take_blue_loops;
-    line(MIN1, 100, 1);
-    moveBC(MIN1, 120);
+    line(MIN, 100, 1);
+    moveBC(MIN, 120);
     //moveA(speedA, after_take_blue_loops);
     how_a = after_take_blue_loops;
     wait(500);
@@ -1482,7 +1486,7 @@ void f109() {
 
 void f110() {
     moveD(speedD, before_take_cubes);
-    moveBC(speed, -250);
+    moveBC(speed, -200);
     //moveBC(MIN, -100);
     moveD(speedD, after_take_cubes);
 }
@@ -1557,13 +1561,13 @@ void f125() {
 }
 
 void f126() {
-    line(speed, 180, 6);
+    line(ONE, 180, 6);
     moveBC(speed, dsl, 0);
     while (s3() > black);
 }
 
 void f127() {
-    moveBC(speed, -60);
+    moveBC(speed, -100);
     line(speed, 80, 3);
 }
 
@@ -1576,48 +1580,56 @@ void f129() {
 }
 
 
+void f130() {
+    moveBC(speed, dws + 30);
+}
+
+
 
 void unload_loops0() {
-    turn(speed, 60, -2);
+    moveC(speed, 105);
     moveBC(speed, 15);
+    wait(1000);
     how_a = give2loops;
     wait(1000);
-    moveBC(speed, -90);
+    moveBC(speed, -60);
     how_a = after_take_green_loops;
     wait(1000);
-    moveBC(speed, 70);
+    moveBC(speed, 30);
     turn(speed, d180 - 60, 3);
     wait(1000);
 }
 
 void unload_loops1() {
-    turn(speed, 60, -1);
+    moveB(speed, 105);
     moveBC(speed, 15);
-    how_a = give2loops + 100;
+    wait(1000);
+    how_a = before_take_blue_loops;
     wait(1000);
     moveBC(speed, -60);
     how_a = after_take_green_loops;
     wait(1000);
-    moveBC(speed, 50);
+    moveBC(speed, 30);
     turn(speed, d180 - 60, 0);
     wait(1000);
 }
 
 void unload_loops2() {
-    turn(speed, 60, -2);
+    moveC(speed, 105);
+    how_a = give2loops;
+    wait(1000);
+    moveBC(speed, -80);
+    how_a = after_take_green_loops;
+    wait(1000);
+    turn(speed, 100, -1);
     moveBC(speed, 15);
-    how_a = give2loops;
     wait(1000);
-    moveBC(speed, -60);
-    how_a = after_take_blue_loops;
-    wait(1000);
-    turn(speed, 120, -1);
-    moveBC(speed, 60);
-    wait(1000);
-    how_a = give2loops;
+    how_a = before_take_blue_loops;
     wait(1000);
     moveBC(speed, -60);
     how_a = after_take_green_loops;
+    wait(1000);
+    moveBC(speed, 30);
     turn(speed, d180 - 60, 0);
     wait(1000);
 }
@@ -1648,7 +1660,15 @@ void hlb() {
 }
 
 void utilsll() {
-
+    turn(speed, d90, -1);
+    moveBC(speed, 100);
+    how_a = before_take_blue_loops;
+    wait(2000);
+    moveBC(speed, -100);
+    how_a = after_take_green_loops;
+    turn(speed, d90, -2);
+    moveBC(speed, -50);
+    line(speed, 50, 3);
 }
 
 void utilslr() {
@@ -1660,7 +1680,11 @@ void backutils1() {
 }
 
 void utilscubes() {
-
+    moveBC(speed, -220);
+    moveD(speed, 320);
+    wait(600);
+    moveD(speed, after_take_cubes);
+    moveBC(speed, 220);
 }
 
 void backutilscubes() {
@@ -1947,7 +1971,7 @@ void buildg() {
     add(281, 282, f6d);
     add(282, 272, f126);
     add(272, 271, f1d);
-    add(271, 274, f2l);
+    add(271, 274, f2d);
     add(274, 251, f127);
 
     add(358, 131, f128);
@@ -2036,9 +2060,6 @@ void buildg() {
     add(374, 337, hlb);
     add(364, 342, hlb);
 
-    addcrossroad(378, 0, 1, 0, 1);
-    addcrossroad(390, 0, 1, 0, 1);
-
     add(382, 173, f118);
     //add(381, 173, f119);
     add(178, 389, f120);
@@ -2049,14 +2070,13 @@ void buildg() {
     add(400, 179, f124);
     //add(400, 179, f125);
 
-    /*add(374, 364, utilsll);
-    add(386, 365, utilslr);
-    add(364, 374, backutils1);
-    add(365, 374, backutils1);
-    add(169, 362, utilscubes);
-    add(169, 363, utilscubes);
-    add(362, 169, backutilscubes);
-    add(363, 169, backutilscubes);*/
+    add(173, 376, utilsll);
+    //add(386, 365, utilslr);
+    //add(364, 374, backutils1);
+    add(376, 173, backutils1);
+    add(169, 375, utilscubes);
+    add(375, 169, backutilscubes);
+
 }
 
 void vivod_h() {
@@ -2065,6 +2085,10 @@ void vivod_h() {
         write(10, 10, getHSV(4).h);
         wait(50);
     }
+}
+
+bool is_yellowB() {
+
 }
 
 
@@ -2118,12 +2142,8 @@ int EV3_main()
 {
     T_TimerId t = Timer_Start();
     try {
-
-        int npos;
-
-        Clear_Display();
-        CreateThread(control, 0);
-        CreateThread(okonchanie, 0);
+        clear_docs();
+        CreateThread(control, NULL);
 
         ResetMotor(E_Port_B);
         ResetMotor(E_Port_C);
@@ -2132,6 +2152,14 @@ int EV3_main()
         gclr(4);
         buildDegreesConstants();
         buildg();
+
+        int npos;
+
+        Edge::close(2);
+        Edge::close(3);
+        Edge::close(4);
+        Edge::close(5);
+        Edge::change_def(131, 130, f130);
 
         goD(-speedD);
         wait(300);
@@ -2180,9 +2208,9 @@ int EV3_main()
             topos = 365;
         int cntfr = 4;
         int cntbck = 0;
-        Color front = YELLOW;
-        Color back = GREEN;
-        Color first = GREEN;
+        Clr front = YELLOW;
+        Clr back = GREEN;
+        Clr first = GREEN;
         if (f.house[fhome].left == 2 || f.house[fhome].right == 2) {
             go(speed, npos, 347);
             npos = 347;
@@ -2265,33 +2293,89 @@ int EV3_main()
             npos = 375;
         }
         if (cntbck > 0) {
-            go(speed, npos, 377);
-            npos = 377;
+            go(speed, npos, 376);
+            npos = 376;
         }
         go(speed, npos, 67);
         if (first == GREEN) {
             go(speed, 67, 347);
             npos = 347;
-            back = GREEN;
+            back = BLUE;
         }
         else {
             go(speed, 67, 343);
             npos = 343;
-            back = BLUE;
+            back = GREEN;
         }
         cntfr = 4;
         cntbck = 4;
         for (int i = 1; i < 4; i++) {
             if (i == fhome)
                 continue;
-
+            if (f.house[i].left == 0 || f.house[i].right == 0) {
+                if (i == 1) {
+                    topos = 370;
+                }
+                else if (i == 2) {
+                    topos = 360;
+                }
+                else {
+                    topos = 365;
+                }
+                go(speed, npos, topos);
+                npos = topos;
+            }
         }
+        go(speed, npos, 375);
+        npos = 375;
+        for (int i = 1; i < 4; i++) {
+            if (i == fhome)
+                continue;
+            if (cntbck > 0) {
+                if (f.house[i].left == back || f.house[i].right == back) {
+                    int lst = cntbck;
+                    cntbck -= 2;
+                    if (i == 1) {
+                        topos = 370;
+                    }
+                    else if (i == 2) {
+                        topos = 360;
+                    }
+                    else {
+                        topos = 365;
+                    }
+                    if (f.house[i].left == back && f.house[i].right == back)
+                        cntbck -= 2;
+                    if (cntbck == 2) {
+                        go(speed, npos, topos + 2);
+                        npos = topos + 2;
+                    }
+                    else if (lst - cntbck == 2) {
+                        go(speed, npos, topos + 3);
+                        npos = topos + 3;
+                    }
+                    else {
+                        go(speed, npos, topos + 4);
+                        npos = topos + 4;
+                    }
+                }
+            }
+        }
+        if (cntbck > 0) {
+            go(speed, npos, 376);
+            npos = 376;
+        }
+        go(speed, npos, 19);
+        how_a = 2000;
+        moveD(speedD, up);
+        moveBC(speed, -1400);
+        moveBC(speed, 70);
     }
     catch (Exception& exc) {
-        print("EXC: " + exc.what());
+        print("{" + exc.what());
     }
     catch (exception& exc) {
-        print("STD ERROR");
+        print("}");
         print(exc.what());
     }
     print("time: " + str(Timer_Destroy(t)));

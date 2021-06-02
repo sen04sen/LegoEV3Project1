@@ -36,7 +36,6 @@ void line(Speed p, int32_t dist, int32_t type, bool uping = true, bool downing =
         getRGB(3);
         EV3_Sleep(50);
     }
-    if (type == 4) getRGB(3);
 
     int32_t home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
         GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
@@ -51,7 +50,7 @@ void line(Speed p, int32_t dist, int32_t type, bool uping = true, bool downing =
         int32_t encoders = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
             GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home;
 
-        if (encoders > dist - end_preview) {
+        if (encoders > dist * end_preview) {
             if (type == 0 || type == 6 || type == 8 || type == 10) {
                 if (encoders >= dist) stop = 1;
             }
@@ -59,15 +58,14 @@ void line(Speed p, int32_t dist, int32_t type, bool uping = true, bool downing =
                 if (type == 1 && s2() < black && s3() < black) {
                     stop = 1;
                 }
-                else if (type == 2 && s3() < black) {
+                else if (type == 2 && s3()< black) {
                     stop = 1;
                 }
                 else if (type == 3 && s2() < black) {
                     stop = 1;
                 }
-                else if (type == 4) {
-                    ColorRGB color = getRGB(3);
-                    if (color.r - color.g > 70) stop = 1;
+                else if (type == 4 && (s3() - s3()) > 40) {
+                    stop = 1;
                 }
                 else if (type == 5 && s2() > bluck) {
                     stop = 1;
@@ -78,20 +76,19 @@ void line(Speed p, int32_t dist, int32_t type, bool uping = true, bool downing =
                 else if (type == 9 && s3() > bluck) stop = 1;
             }
         }
+        if (encoders > end_line * dist)
+            stop = 1;
 
         int32_t error = 0;
         switch (type) {
         case 10:
-            error = (double)(grey - s3()) * 3 / 3;
+            error = grey - s3();
             break;
         case 5:
             error = s3() - bley;
             break;
         case 6:
-            error = (double)(s3() - bley) * 3 / 3;
-            break;
-        case 4:
-            error = (double)(grey - s2()) * 4 / 3;
+            error = s3() - bley;
             break;
         case 7:
             error = s2() - grey;
@@ -116,8 +113,8 @@ void line(Speed p, int32_t dist, int32_t type, bool uping = true, bool downing =
         SpeedMotor(E_Port_C, min((short)100, short(nowSpeed + error * kP + (error - errors[count % lineArrayLen]) * kD)));
 
         errors[count % lineArrayLen] = error; // для d составляющей
+        wait(10);
     }
-    if (type == 4) s3(); // Какая-то типизация
 }
 
 /*!
@@ -128,6 +125,10 @@ void line(Speed p, int32_t dist, int32_t type, bool uping = true, bool downing =
 */
 void line(int32_t _, int32_t dist, int32_t type, bool uping = true, bool downing = true, double end_preview = standart_line_preview_looking) {
     line(ZERO, dist, type, uping, downing, end_preview);
+}
+
+void lineNEW(Speed p, int dist, int tpline, int tpend) {
+
 }
 
 ///}@
