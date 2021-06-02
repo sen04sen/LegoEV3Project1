@@ -196,8 +196,7 @@ DoubleMarker read_home() {
         ans.right = GREEN;
     else ans.right = NONE;
     
-    write(1, 1, int32_t(ans.left));
-    write(20, 1, int32_t(ans.right));
+    print("home: "  + str(int32_t(ans.left)) + ' ' + str(int32_t(ans.right)));
     return ans;
 }
 
