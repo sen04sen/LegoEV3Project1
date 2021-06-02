@@ -19,21 +19,6 @@ using namespace std;
 
 ///@{
 
-int s1() {
-    return GetReflect(E_Port_1);
-}
-
-int s2() {
-    return GetReflect(E_Port_2);
-}
-
-int s3() {
-    return GetReflect(E_Port_3);
-}
-
-int s4() {
-    return GetReflect(E_Port_4);
-}
 
 /*!
 	\brief Цвет в формате RGB
@@ -109,6 +94,23 @@ ColorRGB getRGB(int port) {
     return color;
 }
 
+
+int s1() {
+    return GetReflect(E_Port_1);
+}
+
+int s2() {
+    return GetReflect(E_Port_2);
+}
+
+int s3() {
+    return GetReflect(E_Port_3);
+}
+
+int s4() {
+    return GetReflect(E_Port_4);
+}
+
 /*!
     \brief Возвращает цвет с датчика в HSV
     \param port Порт
@@ -121,7 +123,7 @@ int gclr(int uy) {
     else return GetColor(E_Port_3);
 }
 
-Color read_marker() {
+Clr read_marker() {
     E_Color now = GetColor(E_Port_4);
     if (now == E_Color_Yellow || now == E_Color_Red || now == E_Color_Brown) return YELLOW;
     else if (now == E_Color_Blue) return BLUE;
@@ -129,13 +131,14 @@ Color read_marker() {
     else return NONE;
 }
 
-DoubleMarker read_home() {
-    int32_t dist = 380;
+DM read_home() {
+    
+    int32_t dist = 360;
     read_marker();
-    int32_t home = (GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
-                GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2;
+    int32_t home = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
+                GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2);
 
-    Speed_compiled compiled = Speed_compiled(READ, 380);
+    Speed_compiled compiled = Speed_compiled(READ, 360);
 
     int32_t left_BLUE = 0;
     int32_t left_YELLOW = 0;
@@ -151,16 +154,16 @@ DoubleMarker read_home() {
         encoders = abs((GetMotor_RotationAngle(E_Port_C, E_MotorType_Medium) -
                         GetMotor_RotationAngle(E_Port_B, E_MotorType_Medium)) / 2 - home);
 
-        if (140 < encoders && encoders < 250) {
-            Color now = read_marker();
+        if (160 < encoders && encoders < 250) {
+            Clr now = read_marker();
             if (now == BLUE) left_BLUE++;
             if (now == YELLOW) left_YELLOW++;
             if (now == GREEN) left_GREEN++;
             else left_NONE++;
         } else if (270 < encoders && encoders < 360) {
-            Color now = read_marker();
+            Clr now = read_marker();
             if (now == BLUE) right_BLUE++;
-            if (now == YELLOW) right_YELLOW++;
+            if (now == YELLOW) right_YELLOW++;      
             if (now == GREEN) right_GREEN++;
             else right_NONE++;
         }
@@ -168,13 +171,23 @@ DoubleMarker read_home() {
         int32_t nowSpeed = compiled(encoders);
         SpeedMotor(E_Port_B, -nowSpeed);
         SpeedMotor(E_Port_C, nowSpeed);
+        wait(10);
     }
 
     stopBC();
 
-    DoubleMarker ans;
+    print("left_BLUE " + str(left_BLUE));
+    print("left_YELLOW " + str(left_YELLOW));
+    print("left_GREEN " + str(left_GREEN));
+    print("left_NONE " + str(left_NONE));
+    print("right_BLUE " + str(right_BLUE));
+    print("right_YELLOW " + str(right_YELLOW));
+    print("right_GREEN " + str(right_GREEN));
+    print("right_NONE " + str(right_NONE));
 
-    left_NONE /= 10;
+    DM ans;
+
+    left_NONE /= 5;
 
     int32_t left_max = max(left_BLUE, max(left_YELLOW, max(left_GREEN, left_NONE)));
     if (left_max == left_BLUE)
@@ -185,7 +198,7 @@ DoubleMarker read_home() {
         ans.left = GREEN;
     else ans.left = NONE;
 
-    right_NONE /= 10;
+    right_NONE /= 5;
 
     int32_t right_max = max(right_BLUE, max(right_YELLOW, max(right_GREEN, right_NONE)));
     if (right_max == right_BLUE)
@@ -196,7 +209,9 @@ DoubleMarker read_home() {
         ans.right = GREEN;
     else ans.right = NONE;
     
-    print("home: "  + str(int32_t(ans.left)) + ' ' + str(int32_t(ans.right)));
+    static int32_t house = 1;
+    print("home " + str(house) + ": "  + str(int32_t(ans.left)) + ' ' + str(int32_t(ans.right)));
+    house++;
     return ans;
 }
 

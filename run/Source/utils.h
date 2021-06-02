@@ -117,18 +117,6 @@ void read_docs() {
 }
 
 
-/*!
-\brief Функция, которая запускается потоком и завершает работу программы по кнопке
-*/
-void* okonchanie(void *_) {
-    wait(1000);
-    while (!isBrickButtonPressed(E_BTN_ESC)) wait(50);
-    StopMotorAll();
-    wait(300);
-    exit(0);
-}
-
-
 
 void vivod_4() {
     for (int i = 0; i < 100; i++) {

@@ -6,6 +6,8 @@
 #ifndef edge_h
 #define edge_h
 
+#include "utils.h"
+
 using namespace std;
 using namespace ev3_c_api;
 
@@ -49,6 +51,7 @@ public:
     void set_to(int _to) { to = (short)_to; }
     short get_to() { return to; }
 
+    void set_def(void (* const _def)()) { def = _def; }
     
     void set_time(int _time) {
         short short_time = short(_time);
@@ -122,7 +125,6 @@ public:
     \brief Возвращает время ребра (если ребро неактивно, то возвращает 100000000.0)
     */
 
-    double getIndex() { return index; } ///< \brief Возвращает индекс ребра
 
     void open() { set_active(true); }      ///< \brief Делает ребро активным
 
@@ -158,6 +160,21 @@ public:
                     g[i][j].open();
         for (int i = 0; i < g[point].size(); ++i)
             g[point][i].open();
+    }
+
+    static void change_def(short from, short to, void (* const _def)()) {
+        bool doIt = 0;
+        for (int i = 0; i < g.size(); ++i)
+            if (i == from)
+                for (int j = 0; j < g[i].size(); ++j)
+                    if (g[i][j].get_to() == to) {
+                        g[i][j].set_def(_def);
+                        if (doIt)
+                            throw Exception("Change2Def");
+                        doIt = 1;
+                    }
+        if (!doIt)
+            throw Exception("noForChangeDef");
     }
 
 };
